@@ -1,0 +1,74 @@
+.home-box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 400px;
+	margin-left: -200px;
+	margin-top: -200px;
+	background-color: #fff;
+	border-radius: 4px;
+}
+
+.home-tabs {
+	border-bottom: 1px solid #ccc;
+	text-align: center;
+}
+
+.home-tab {
+	display: inline-block;
+	line-height: 50px;
+	padding: 0 16px;
+	color: #000;
+	cursor: pointer;
+}
+
+.home-tab.home-tab-selected {
+	background-color: #fff200;
+}
+
+.home-tab-content {
+	display: none;
+}
+
+.home-tab-content.home-tab-selected {
+	display: block;
+}
+
+.home-row {
+	padding: 16px;
+}
+
+.home-input {
+	font-family: 'GraphicPixel', Helvetica, sans-serif;
+	line-height: 50px;
+	font-size: 1.3em;
+	padding-left: 16px;
+	width: 100%;
+	border: 0;
+	border-bottom: 1px solid #ccc;
+	outline: 0;
+	-webkit-appearance: none;
+
+	&:focus {
+		border-bottom: 1px solid #000;
+	}
+}
+
+.home-btn {
+	font-family: 'GraphicPixel', Helvetica, sans-serif;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
+	line-height: 50px;
+	display: block;
+	padding: 0 16px;
+	float: right;
+	margin-bottom: 16px;
+	font-size: 1.3em;
+	-webkit-appearance: none;
+
+	&:hover {
+		box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+	}
+}

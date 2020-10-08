@@ -1,0 +1,19 @@
+<game-header></game-header>
+
+<form name="frm-login" (ngSubmit)="doLogin($event)" class="admin-login-form">
+	<div class="box">
+		<div class="header">Iniciar sesión</div>
+		<div class="body">
+			<div class="row">
+				<input type="text" [(ngModel)]="loginData.name" name="login-name" placeholder="Usuario">
+			</div>
+			<div class="row">
+				<input type="password" [(ngModel)]="loginData.pass" name="login-password" placeholder="Contraseña">
+			</div>
+		</div>
+		<div class="footer">
+			<input type="submit" value="Continuar">
+		</div>
+		<div class="error" *ngIf="loginError">Nombre de usuario o contraseña incorrecto</div>
+	</div>
+</form>

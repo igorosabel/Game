@@ -1,0 +1,39 @@
+header {
+	background-color: #000;
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5em;
+	height: 50px;
+	width: 100%;
+	top: 0;
+	z-index: 10;
+
+	img {
+		height: 80%;
+		display: inline-block;
+	}
+
+	a {
+		position: absolute;
+		display: flex;
+		height: 50px;
+		align-items: center;
+		color: #fff;
+		text-decoration: none;
+		padding: 0 16px;
+
+		&:hover {
+			color: #ff0;
+		}
+	}
+
+	.header-left {
+		left: 0;
+	}
+
+	.header-right {
+		right: 0;
+	}
+}

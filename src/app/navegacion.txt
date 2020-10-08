@@ -1,0 +1,58 @@
+Admin ( /admin/main )
+
+  Mundos ( /admin/worlds )
+    listado (editar / borrar) -> va a Escenarios
+    añadir nuevo
+
+    Escenarios del mundo X ( /admin/world/:id_world/scenarios )
+      listado -> va a Editar Escenario
+      añadir nuevo
+
+    Editar Escenario ( /admin/world/:id_world/scenario/:id_scenario )
+      editor del escenario
+        indicar si es el escenario inicial y marcar punto de salida
+        al pinchar en cada casilla poder modificar:
+          fondo -> se elige de la lista
+          objeto -> se elige de la lista pero se puede personalizar
+          personaje -> se elige de la lista
+
+  Todos los recursos ( /admin/resources )
+
+    Fondos ( /admin/resources/backgrounds )
+      listado completo (editar / borrar)
+        filtro por categorías -> se puede ir a Categorías de Fondos
+      añadir nuevo
+
+      Categorías de fondos ( /admin/resources/backgrounds/categories )
+        listado (editar / borrar)
+        añadir nueva
+
+    Personajes ( /admin/resources/characters )
+      listado completo (editar / borrar)
+        filtro por nombre / npc-monstruo
+      añadir nuevo
+
+    Objetos de escenario ( /admin/resources/scenario_objects )
+      listado completo (editar / borrar)
+      añadir nuevo
+
+      Items ( /admin/resources/items )
+      listado completo (editar / borrar)
+        filtro por tipo
+      añadir nuevo
+
+    Recursos ( /admin/resources/assets )
+      listado completo
+        filtro por tags / mundo
+
+  Usuarios ( /admin/users )
+    listado (editar / borrar) -> va a Partidas
+    añadir nuevo
+
+    Partidas del usuario X ( /admin/user/:id_user/games )
+      listado (editar / borrar)
+      editar muestra:
+        detalle de la partida
+        mundos desbloqueados
+        inventario
+        equipamiento
