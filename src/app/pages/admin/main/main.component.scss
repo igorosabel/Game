@@ -1,0 +1,42 @@
+.admin-menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	li {
+		margin: 16px;
+
+		a {
+			display: flex;
+			border: 2px solid #ff0;
+			width: 250px;
+			height: 60px;
+			justify-content: center;
+			align-items: center;
+			background-color: #fff;
+			color: #000;
+			text-decoration: none;
+			transition: all .3s ease-in-out;
+
+			&:hover {
+				font-size: 1.2em;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 900px) {
+	/* Main */
+	.admin-menu {
+		flex-direction: row;
+	}
+}

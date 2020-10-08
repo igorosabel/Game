@@ -12,11 +12,15 @@ import {
 	providedIn: 'root'
 })
 export class ApiService {
-	apiUrl = environment.apiUrl;
+	url = environment.url;
 
 	constructor(private http : HttpClient){}
 
 	login(data: LoginData): Observable<LoginResult> {
-		return this.http.post<LoginResult>(this.apiUrl + 'login', data);
+		return this.http.post<LoginResult>(this.url + 'login', data);
+	}
+
+	adminLogin(data: LoginData): Observable<LoginResult> {
+		return this.http.post<LoginResult>(this.url + 'admin/login', data);
 	}
 }
