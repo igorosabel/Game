@@ -1,1 +1,60 @@
-<p>assets works!</p>
+<game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Recursos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="assets-header">
+	<select id="assets-filter-tag">
+		<option [value]="null">Elige una tag</option>
+		<option *ngFor="let tag of tagList" [value]="tag.id">{{tag.name | urldecode}}</option>
+	</select>
+	<select id="assets-filter-world">
+		<option [value]="null">Elige un mundo</option>
+		<option *ngFor="let world of worldList" [value]="world.id">{{world.name | urldecode}}</option>
+	</select>
+</div>
+
+<div class="asset-list" id="list">
+	<div class="asset-item" *ngFor="let asset of assetList">
+		<img src="{{ asset.url | urldecode }}" alt="{{ asset.name | urldecode }}">
+		<div class="asset-info">
+			<span>{{ asset.name | urldecode }}</span>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="asset-edit" (click)="editAsset(asset)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="asset-delete" (click)="deleteAsset(asset)">
+		</div>
+	</div>
+	<div class="asset-message" *ngIf="message!=null">
+		{{message}}
+	</div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddAsset($event)">+</a>
+
+<div class="asset-detail" [ngClass]="{'asset-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{assetDetailHeader}}</span>
+			<a href="#" (click)="showAddAsset($event)">X</a>
+		</div>
+		<div class="row">
+			<input type="text" name="asset-name" [(ngModel)]="loadedAsset.name" placeholder="Nombre del recurso">
+		</div>
+		<div class="row">
+			<label for="asset-world">Mundo</label>
+			<select [(ngModel)]="loadedAsset.idWorld">
+				<option [value]="null">Ninguno</option>
+				<option *ngFor="let world of worldList" [value]="world.id">{{world.name | urldecode}}</option>
+			</select>
+		</div>
+		<div class="row row-image">
+			<div class="asset-preview" id="asset-image" [ngStyle]="{background:loadedAsset.style}"></div>
+			<button (click)="openFile()" *ngIf="!loadingFile">Elegir archivo</button>
+			<button disabled="disabled" *ngIf="loadingFile">Cargando...</button>
+			<input type="file" id="asset-file" value="" (change)="onFileChange($event)">
+		</div>
+		<div class="row">
+			<input type="text" name="asset-tags" [(ngModel)]="loadedAsset.tagList" placeholder="Tags del recurso">
+		</div>
+		<div class="footer">
+			<button (click)="saveAsset()" *ngIf="!savingAsset">Continuar</button>
+			<button disabled="disabled" *ngIf="savingAsset">Guardando...</button>
+		</div>
+	</div>
+</div>

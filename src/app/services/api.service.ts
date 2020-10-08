@@ -10,7 +10,10 @@ import {
 	WorldInterface,
 	StatusResult,
 	ScenarioResult,
-	ScenarioInterface
+	ScenarioInterface,
+	TagResult,
+	AssetResult,
+	AssetInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -51,5 +54,21 @@ export class ApiService {
 
 	deleteScenario(id: number): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-scenario', {id});
+	}
+
+	getTags(): Observable<TagResult> {
+		return this.http.post<TagResult>(this.url + 'admin/tag-list', {});
+	}
+
+	getAssets(): Observable<AssetResult> {
+		return this.http.post<AssetResult>(this.url + 'admin/asset-list', {});
+	}
+
+	saveAsset(asset: AssetInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-asset', asset);
+	}
+
+	deleteAsset(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/delete-asset', {id});
 	}
 }

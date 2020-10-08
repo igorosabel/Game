@@ -1,7 +1,14 @@
 import { Injectable }  from '@angular/core';
 import { World }    from '../model/world.model';
 import { Scenario }    from '../model/scenario.model';
-import { WorldInterface, ScenarioInterface } from '../interfaces/interfaces';
+import { Tag }    from '../model/tag.model';
+import { Asset }    from '../model/asset.model';
+import {
+	WorldInterface,
+	ScenarioInterface,
+	TagInterface,
+	AssetInterface
+} from '../interfaces/interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -39,5 +46,40 @@ export class ClassMapperService {
 	getScenario(s: ScenarioInterface) {
 		const scenario = new Scenario(s.id, s.idWorld, s.name, s.friendly);
 		return scenario;
+	}
+
+	getTags(response: TagInterface[]) {
+		const tags: Tag[] = [];
+
+		for (let t of response) {
+			let tag = this.getTag(t);
+			tags.push(tag);
+		}
+
+		return tags;
+	}
+
+	getTag(t: TagInterface) {
+		const tag = new Tag(t.id, t.name);
+		return tag;
+	}
+
+	getAssets(response: AssetInterface[]) {
+		const assets: Asset[] = [];
+
+		for (let a of response) {
+			let asset = this.getAsset(a);
+			assets.push(asset);
+		}
+
+		return assets;
+	}
+
+	getAsset(a: AssetInterface) {
+		const asset = new Asset(a.id, a.idWorld, a.name, a.url, []);
+		for (let t of a.tags) {
+			asset.tags.push(this.getTag(t));
+		}
+		return asset;
 	}
 }

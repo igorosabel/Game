@@ -1,10 +1,10 @@
-Admin ( /admin/main )
+X Admin ( /admin/main )
 
-  Mundos ( /admin/worlds )
+  X Mundos ( /admin/worlds )
     listado (editar / borrar) -> va a Escenarios
     añadir nuevo
 
-    Escenarios del mundo X ( /admin/world/:id_world/scenarios )
+    X Escenarios del mundo X ( /admin/world/:id_world/scenarios )
       listado -> va a Editar Escenario
       añadir nuevo
 
@@ -16,7 +16,7 @@ Admin ( /admin/main )
           objeto -> se elige de la lista pero se puede personalizar
           personaje -> se elige de la lista
 
-  Todos los recursos ( /admin/resources )
+  X Todos los recursos ( /admin/resources )
 
     Fondos ( /admin/resources/backgrounds )
       listado completo (editar / borrar)
