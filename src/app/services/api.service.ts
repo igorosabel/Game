@@ -5,7 +5,10 @@ import { environment }             from '../../environments/environment';
 
 import {
 	LoginData,
-	LoginResult
+	LoginResult,
+	WorldResult,
+	WorldInterface,
+	StatusResult
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -22,5 +25,17 @@ export class ApiService {
 
 	adminLogin(data: LoginData): Observable<LoginResult> {
 		return this.http.post<LoginResult>(this.url + 'admin/login', data);
+	}
+
+	getWorlds(): Observable<WorldResult> {
+		return this.http.post<WorldResult>(this.url + 'admin/world-list', {});
+	}
+
+	saveWorld(world: WorldInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-world', world);
+	}
+
+	deleteWorld(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/delete-world', {id});
 	}
 }

@@ -1,6 +1,6 @@
 import { Injectable }  from '@angular/core';
-/*import { Resource }    from '../model/resource.model';
-import { NPCResource } from '../interfaces/interfaces';*/
+import { World }    from '../model/world.model';
+import { WorldInterface, WorldResult } from '../interfaces/interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -8,19 +8,19 @@ import { NPCResource } from '../interfaces/interfaces';*/
 export class ClassMapperService {
 	constructor() {}
 
-	/*getResources(response: NPCResource[], idNPC: number) {
-		const resources: Resource[] = [];
+	getWorlds(response: WorldInterface[]) {
+		const worlds: World[] = [];
 
-		for (let r of response) {
-			let resource = this.getResource(r, idNPC);
-			resources.push(resource);
+		for (let w of response) {
+			let world = this.getWorld(w);
+			worlds.push(world);
 		}
 
-		return resources;
+		return worlds;
 	}
 
-	getResource(r: NPCResource, idNPC: number) {
-		const resource = new Resource(r.resource.id, r.resource.name, r.resource.minPrice, r.resource.maxPrice, r.value, idNPC);
-		return resource;
-	}*/
+	getWorld(w: WorldInterface) {
+		const world = new World(w.id, w.name, w.description, w.wordOne, w.wordTwo, w.wordThree, w.friendly);
+		return world;
+	}
 }
