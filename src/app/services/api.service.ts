@@ -8,7 +8,9 @@ import {
 	LoginResult,
 	WorldResult,
 	WorldInterface,
-	StatusResult
+	StatusResult,
+	ScenarioResult,
+	ScenarioInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -37,5 +39,17 @@ export class ApiService {
 
 	deleteWorld(id: number): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-world', {id});
+	}
+	
+	getScenarios(id: number): Observable<ScenarioResult> {
+		return this.http.post<ScenarioResult>(this.url + 'admin/scenario-list', {id});
+	}
+
+	saveScenario(scenario: ScenarioInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-scenario', scenario);
+	}
+
+	deleteScenario(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/delete-scenario', {id});
 	}
 }

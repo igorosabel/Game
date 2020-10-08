@@ -1,1 +1,34 @@
-<p>scenarios works!</p>
+<game-header [leftUrl]="['/admin','worlds']" leftTitle="&lt; Mundos" title="Escenarios" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="scenario-list">
+	<div class="header">Escenarios</div>
+	<div>
+		<div class="row" *ngFor="let scenario of scenarioList">
+			<a [routerLink]="['/admin', 'world', scenario.idWorld, 'scenario', scenario.id]">{{scenario.name}}</a>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-edit" (click)="editScenario(scenario)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-delete" (click)="deleteScenario(scenario)">
+		</div>
+		<div class="row center" *ngIf="message!=null">{{message}}</div>
+	</div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddScenario($event)">+</a>
+
+<div class="scenario-detail" [ngClass]="{'scenario-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{scenarioDetailHeader}}</span>
+			<a href="#" (click)="showAddScenario($event)">X</a>
+		</div>
+		<div class="row">
+			<input type="text" name="scenario-name" [(ngModel)]="loadedScenario.name" placeholder="Nombre del escenario">
+		</div>
+		<div class="row center">
+			<label for="scenario-friendly">Amistoso:</label>
+			<input type="checkbox" name="scenario-friendly" [checked]="loadedScenario.friendly" (click)="loadedScenario.friendly = !loadedScenario.friendly">
+		</div>
+		<div class="footer">
+			<button (click)="saveScenario()">Continuar</button>
+		</div>
+	</div>
+</div>

@@ -28,3 +28,15 @@ export interface WorldResult {
 	status: string;
 	list: WorldInterface[];
 }
+
+export interface ScenarioInterface {
+	id: number;
+	idWorld: number;
+	name: string;
+	friendly: boolean;
+}
+
+export interface ScenarioResult {
+	status: string;
+	list: ScenarioInterface[];
+}
