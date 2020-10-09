@@ -13,9 +13,11 @@ import { ClassMapperService } from '../../../../services/class-mapper.service';
 })
 export class AssetsComponent implements OnInit {
 	tagFilter: number = null;
+	worldFilter: number = null;
 	tagList: Tag[] = [];
 	worldList: World[] = [];
 	assetList: Asset[] = [];
+	assetListFiltered: Asset[] = [];
 	message: string = null;
 	loadedAsset: Asset = new Asset();
 	showDetail: boolean = false;
@@ -51,8 +53,37 @@ export class AssetsComponent implements OnInit {
 		this.as.getAssets().subscribe(result => {
 			if (result.status=='ok') {
 				this.assetList = this.cms.getAssets(result.list);
+				this.updateFilteredList();
 			}
 		});
+	}
+	
+	updateFilteredList() {
+		let filteredList = [];
+		if (this.tagFilter===null && this.worldFilter===null) {
+			filteredList = this.assetList;
+		}
+		else {
+			if (this.tagFilter!==null && this.worldFilter!==null) {
+				filteredList = this.assetList.filter(x => {
+					let tagsFiltered = x.tags.filter(t => t.id===this.tagFilter);
+					return (tagsFiltered.length > 0);
+				});
+				filteredList = filteredList.filter(x => x.idWorld===this.worldFilter);
+			}
+			else {
+				if (this.tagFilter!==null) {
+					filteredList = this.assetList.filter(x => {
+						let tagsFiltered = x.tags.filter(t => t.id===this.tagFilter);
+						return (tagsFiltered.length > 0);
+					});
+				}
+				if (this.worldFilter!==null) {
+					filteredList = this.assetList.filter(x => x.idWorld===this.worldFilter);
+				}
+			}
+		}
+		this.assetListFiltered = filteredList;
 	}
 	
 	resetLoadedAsset() {
