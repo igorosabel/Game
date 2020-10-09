@@ -1,7 +1,7 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Recursos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
 <div class="assets-header">
-	<select id="assets-filter-tag">
+	<select name="assets-filter-tag" [(ngModel)]="tagFilter">
 		<option [value]="null">Elige una tag</option>
 		<option *ngFor="let tag of tagList" [value]="tag.id">{{tag.name | urldecode}}</option>
 	</select>
@@ -15,7 +15,7 @@
 	<div class="asset-item" *ngFor="let asset of assetList">
 		<img src="{{ asset.url | urldecode }}" alt="{{ asset.name | urldecode }}">
 		<div class="asset-info">
-			<span>{{ asset.name | urldecode }}</span>
+			<span title="{{asset.name | urldecode}}">{{ asset.name | urldecode }}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="asset-edit" (click)="editAsset(asset)">
 			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="asset-delete" (click)="deleteAsset(asset)">
 		</div>

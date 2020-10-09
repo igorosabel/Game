@@ -37,33 +37,34 @@
 		background-color: #fff;
 		color: #000;
 		padding: 16px;
-		margin-right: 16px;
-    width: 160px;
-    margin-bottom: 16px;
+		margin-right: 11px;
+		width: 160px;
+		margin-bottom: 16px;
 
 		& > img {
 			width: 128px;
 		}
 
 		.asset-info {
-			display: inline-block;
-			width: 80px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 			height: 30px;
 			align-items: center;
 
 			span {
-				flex: 1;
+				display: inline-block;
+				width: 80px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 
 			.asset-edit {
 				cursor: pointer;
+				width: 24px;
 			}
 
 			.asset-delete {
 				cursor: pointer;
+				width: 24px;
 			}
 		}
 	}

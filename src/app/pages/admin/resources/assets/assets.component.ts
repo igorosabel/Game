@@ -12,6 +12,7 @@ import { ClassMapperService } from '../../../../services/class-mapper.service';
 	styleUrls: ['./assets.component.scss']
 })
 export class AssetsComponent implements OnInit {
+	tagFilter: number = null;
 	tagList: Tag[] = [];
 	worldList: World[] = [];
 	assetList: Asset[] = [];
