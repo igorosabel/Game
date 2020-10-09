@@ -1,1 +1,50 @@
-<p>backgrounds works!</p>
+<game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Fondos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="backgrounds-header">
+	<div>
+		<select name="backgrounds-filter-category" [(ngModel)]="backgroundCategoryFilter">
+			<option [ngValue]="null">Elige una categoría</option>
+			<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
+		</select>
+	</div>
+	<a routerLink="/admin/resources/backgrounds/categories">Categorías de fondos</a>
+</div>
+
+<div class="background-list" id="list">
+	<div class="background-item" *ngFor="let background of backgroundListFiltered">
+		<img src="{{ background.url | urldecode }}" alt="{{ background.name | urldecode }}">
+		<div class="background-info">
+			<span title="{{background.name | urldecode}}">{{ background.name | urldecode }}</span>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="background-edit" (click)="editBackground(background)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="background-delete" (click)="deleteBackground(background)">
+		</div>
+	</div>
+	<div class="background-message" *ngIf="message!=null">
+		{{message}}
+	</div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddBackground($event)">+</a>
+
+<div class="background-detail" [ngClass]="{'background-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{backgroundDetailHeader}}</span>
+			<a href="#" (click)="showAddBackground($event)">X</a>
+		</div>
+		<div class="row">
+			<input type="text" name="background-name" [(ngModel)]="loadedBackground.name" placeholder="Nombre del fondo">
+		</div>
+		<div class="row">
+			<label for="background-category">Categoría</label>
+			<select [(ngModel)]="loadedBackground.idBackgroundCategory">
+				<option [value]="null">Ninguna</option>
+				<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
+			</select>
+		</div>
+		<div class="footer">
+			<button (click)="saveBackground()" *ngIf="!savingBackground">Continuar</button>
+			<button disabled="disabled" *ngIf="savingBackground">Guardando...</button>
+		</div>
+	</div>
+</div>

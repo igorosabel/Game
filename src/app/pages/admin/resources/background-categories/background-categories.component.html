@@ -1,1 +1,30 @@
-<p>background-categories works!</p>
+<game-header [leftUrl]="['/admin','resources','backgrounds']" leftTitle="&lt; Fondos" title="Categorías de fondos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="background-category-list">
+	<div class="header">Categorías de fondos</div>
+	<div>
+		<div class="row" *ngFor="let backgroundCategory of backgroundCategoryList">
+			<span>{{backgroundCategory.name | urldecode}}</span>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="background-category-edit" (click)="editBackgroundCategory(backgroundCategory)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="background-category-delete" (click)="deleteBackgroundCategory(backgroundCategory)">
+		</div>
+		<div class="row center" *ngIf="message!=null">{{message}}</div>
+	</div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddBackgroundCategory($event)">+</a>
+
+<div class="background-category-detail" [ngClass]="{'background-category-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{backgroundCategoryDetailHeader}}</span>
+			<a href="#" (click)="showAddBackgroundCategory($event)">X</a>
+		</div>
+		<div class="row">
+			<input type="text" name="background-category-name" [(ngModel)]="loadedBackgroundCategory.name" placeholder="Nombre de la categoría de fondo">
+		</div>
+		<div class="footer">
+			<button (click)="saveBackgroundCategory()">Continuar</button>
+		</div>
+	</div>
+</div>

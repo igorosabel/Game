@@ -23,7 +23,7 @@ X Admin ( /admin/main )
         filtro por categorías -> se puede ir a Categorías de Fondos
       añadir nuevo
 
-      Categorías de fondos ( /admin/resources/backgrounds/categories )
+      X Categorías de fondos ( /admin/resources/backgrounds/categories )
         listado (editar / borrar)
         añadir nueva
 
@@ -41,7 +41,7 @@ X Admin ( /admin/main )
         filtro por tipo
       añadir nuevo
 
-    Recursos ( /admin/resources/assets )
+    X Recursos ( /admin/resources/assets )
       listado completo
         filtro por tags / mundo
 

@@ -1,5 +1,5 @@
 import { Component, OnInit }  from '@angular/core';
-import { CommonService }         from '../../../../services/common.service';
+import { CommonService }      from '../../../../services/common.service';
 import { ApiService }         from '../../../../services/api.service';
 import { ClassMapperService } from '../../../../services/class-mapper.service';
 import { World }              from '../../../../model/world.model';
@@ -20,15 +20,7 @@ export class WorldsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.message = 'Cargando...';
-		this.as.getWorlds().subscribe(result => {
-			if (result.status=='ok') {
-				this.message = null;
-				this.worldList = this.cms.getWorlds(result.list);
-			}
-			else {
-				this.message = 'ERROR: Ocurrió un error al obtener la lista de mundos.';
-			}
-		});
+		this.loadWorlds();
 	}
 	
 	loadWorlds() {

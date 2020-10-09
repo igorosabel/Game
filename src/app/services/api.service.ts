@@ -13,7 +13,10 @@ import {
 	ScenarioInterface,
 	TagResult,
 	AssetResult,
-	AssetInterface
+	AssetInterface,
+	BackgroundCategoryResult,
+	BackgroundCategoryInterface,
+	BackgroundResult
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -70,5 +73,21 @@ export class ApiService {
 
 	deleteAsset(id: number): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-asset', {id});
+	}
+
+	getBackgroundCategories(): Observable<BackgroundCategoryResult> {
+		return this.http.post<BackgroundCategoryResult>(this.url + 'admin/background-category-list', {});
+	}
+
+	saveBackgroundCategory(backgroundCategory: BackgroundCategoryInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-background-category', backgroundCategory);
+	}
+
+	deleteBackgroundCategory(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/delete-background-category', {id});
+	}
+
+	getBackgrounds(): Observable<BackgroundResult> {
+		return this.http.post<BackgroundResult>(this.url + 'admin/background-list', {});
 	}
 }

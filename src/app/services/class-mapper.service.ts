@@ -1,13 +1,17 @@
-import { Injectable }  from '@angular/core';
-import { World }    from '../model/world.model';
-import { Scenario }    from '../model/scenario.model';
-import { Tag }    from '../model/tag.model';
-import { Asset }    from '../model/asset.model';
+import { Injectable }         from '@angular/core';
+import { World }              from '../model/world.model';
+import { Scenario }           from '../model/scenario.model';
+import { Tag }                from '../model/tag.model';
+import { Asset }              from '../model/asset.model';
+import { BackgroundCategory } from '../model/background-category.model';
+import { Background }         from '../model/background.model';
 import {
 	WorldInterface,
 	ScenarioInterface,
 	TagInterface,
-	AssetInterface
+	AssetInterface,
+	BackgroundCategoryInterface,
+	BackgroundInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -81,5 +85,37 @@ export class ClassMapperService {
 			asset.tags.push(this.getTag(t));
 		}
 		return asset;
+	}
+
+	getBackgroundCategories(response: BackgroundCategoryInterface[]) {
+		const backgroundCategories: BackgroundCategory[] = [];
+
+		for (let bc of response) {
+			let backgroundCategory = this.getBackgroundCategory(bc);
+			backgroundCategories.push(backgroundCategory);
+		}
+
+		return backgroundCategories;
+	}
+
+	getBackgroundCategory(bc: BackgroundCategoryInterface) {
+		const backgroundCategory = new BackgroundCategory(bc.id, bc.name);
+		return backgroundCategory;
+	}
+
+	getBackgrounds(response: BackgroundInterface[]) {
+		const backgrounds: Background[] = [];
+
+		for (let b of response) {
+			let background = this.getBackground(b);
+			backgrounds.push(background);
+		}
+
+		return backgrounds;
+	}
+
+	getBackground(b: BackgroundInterface) {
+		const background = new Background(b.id, b.idBackgroundCategory, b.idAsset, b.assetUrl, b.name, b.crossable);
+		return background;
 	}
 }
