@@ -40,10 +40,12 @@ export const PAGES: any[] = [
 /*
  * Componentes
  */
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent }      from './components/header/header.component';
+import { AssetPickerComponent } from './components/asset-picker/asset-picker.component';
  
 export const COMPONENTS: any[] = [
-	HeaderComponent
+	HeaderComponent,
+	AssetPickerComponent
 ];
 
 /*

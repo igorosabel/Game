@@ -42,6 +42,10 @@
 				<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
 			</select>
 		</div>
+		<div class="row center">
+			<label for="background-category-crossable">¿Se puede cruzar?</label>
+			<input type="checkbox" name="background-category-crossable" [checked]="loadedBackground.crossable" (click)="loadedBackground.crossable = !loadedBackground.crossable">
+		</div>
 		<div class="footer">
 			<button (click)="saveBackground()" *ngIf="!savingBackground">Continuar</button>
 			<button disabled="disabled" *ngIf="savingBackground">Guardando...</button>
