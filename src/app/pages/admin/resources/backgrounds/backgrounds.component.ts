@@ -77,7 +77,6 @@ export class BackgroundsComponent implements OnInit {
 	}
 
 	selectedAsset(selectedAsset: AssetInterface) {
-		console.log(selectedAsset);
 		this.loadedBackground.idAsset = selectedAsset.id;
 		this.loadedBackground.assetUrl = selectedAsset.url;
 		if (selectedAsset.name!='') {
@@ -86,22 +85,20 @@ export class BackgroundsComponent implements OnInit {
 	}
 
 	saveBackground() {
-		console.log(this.loadedBackground);
-		return false;
 		let validate = true;
 		if (this.loadedBackground.name=='') {
 			validate = false;
 			alert('¡No puedes dejar el nombre del fondo en blanco!');
 		}
 
+    if (validate && this.loadedBackground.idBackgroundCategory===null) {
+		validate = false;
+		alert('¡No has elegido ninguna categoría para el fondo!');
+    }
+
 		if (validate && this.loadedBackground.idAsset===null) {
 			validate = false;
 			alert('¡No has elegido ningún recurso para el fondo!');
-		}
-
-		if (validate && this.loadedBackground.idBackgroundCategory===null) {
-			validate = false;
-			alert('¡No has elegido ninguna categoría para el fondo!');
 		}
 
 		if (validate) {
@@ -140,7 +137,10 @@ export class BackgroundsComponent implements OnInit {
 				if (result.status=='ok') {
 					this.loadBackgrounds();
 				}
-				else {
+				if (result.status=='in-use') {
+					alert('El fondo está siendo usado en un escenario. Cámbialo o bórralo antes de poder borrar este fondo');
+				}
+				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el fondo!');
 					this.message = 'ERROR: Ocurrió un error al borrar el fondo.';
 				}

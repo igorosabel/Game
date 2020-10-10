@@ -12,7 +12,7 @@
 
 <div class="background-list" id="list">
 	<div class="background-item" *ngFor="let background of backgroundListFiltered">
-		<img src="{{ background.url | urldecode }}" alt="{{ background.name | urldecode }}">
+		<img src="{{ background.assetUrl | urldecode }}" alt="{{ background.name | urldecode }}">
 		<div class="background-info">
 			<span title="{{background.name | urldecode}}">{{ background.name | urldecode }}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="background-edit" (click)="editBackground(background)">
@@ -47,7 +47,7 @@
 			<input type="checkbox" name="background-category-crossable" [checked]="loadedBackground.crossable" (click)="loadedBackground.crossable = !loadedBackground.crossable">
 		</div>
     <div class="row center">
-		<game-asset-picker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+		<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
     </div>
 		<div class="footer">
 			<button (click)="saveBackground()" *ngIf="!savingBackground">Continuar</button>
