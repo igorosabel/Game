@@ -45,7 +45,7 @@ export class Asset {
 		}
 	}
 
-	toInterface(boolean withUrl = false): AssetInterface {
+	toInterface(withUrl: boolean = false): AssetInterface {
 		const asset: AssetInterface = {
 			id: this.id,
 			idWorld: this.idWorld,
