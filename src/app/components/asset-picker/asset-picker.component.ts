@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Tag } from '../../model/tag.model';
 import { World } from '../../model/world.model';
 import { Asset } from '../../model/asset.model';
 import { ApiService } from '../../services/api.service';
 import { CommonService } from '../../services/common.service';
 import { ClassMapperService } from '../../services/class-mapper.service';
+import { AssetInterface } from '../../interfaces/interfaces';
 
 @Component({
 	selector: 'game-asset-picker',
@@ -21,7 +22,9 @@ export class AssetPickerComponent implements OnInit {
 	nameCopy: boolean = true;
 	selectedItem: number = null;
 
-	constructor() {}
+	@Output() selectAssetEvent = new EventEmitter<AssetInterface>();
+
+	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
 	ngOnInit(): void {
 		this.loadTags();
 		this.loadWorlds();
@@ -80,8 +83,19 @@ export class AssetPickerComponent implements OnInit {
 		}
 		this.assetListFiltered = filteredList;
 	}
-	
+
 	selectAsset(asset: Asset) {
 		this.selectedItem = asset.id;
+		const selectedAsset = asset.toInterface(true);
+		if (!this.nameCopy) {
+			selectedAsset.name = '';
+		}
+		this.selectAssetEvent.emit(selectedAsset);
+	}
+
+	resetSelected() {
+		this.tagFilter = null;
+		this.worldFilter = null;
+		this.selectedItem = null;
 	}
 }

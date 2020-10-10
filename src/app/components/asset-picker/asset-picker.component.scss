@@ -1,4 +1,4 @@
-.assets-header {
+.asset-picker-header {
 	padding: 0 16px;
     height: 50px;
     display: flex;
@@ -6,24 +6,30 @@
     border-bottom: 1px solid #ccc;
     margin-bottom: 16px;
 
-	& > select {
-		display: inline-block;
-	    padding: 8px;
-		margin-right: 16px;
-	    background-color: #fff;
-	    color: #000;
-	    border: 1px solid #fff;
-	    font-family: "GraphicPixel",Helvetica,sans-serif;
-		cursor: pointer;
-		transition: all .3s ease-in-out;
+	& > div {
+		flex: 1;
+		display: flex;
+		justify-content: flex-start;
 
-		&:hover {
-			border: 1px solid #000;
-		}
+		& > select {
+			display: inline-block;
+		    padding: 8px;
+			margin-right: 16px;
+		    background-color: #fff;
+		    color: #000;
+		    border: 1px solid #fff;
+		    font-family: "GraphicPixel",Helvetica,sans-serif;
+			cursor: pointer;
+			transition: all .3s ease-in-out;
 
-		& > option {
-			background-color: #fff;
-			color: #000;
+			&:hover {
+				border: 1px solid #000;
+			}
+
+			& > option {
+				background-color: #fff;
+				color: #000;
+			}
 		}
 	}
 }
@@ -57,9 +63,16 @@
 				white-space: nowrap;
 			}
 		}
+
+		&:hover {
+			cursor: pointer;
+			background-color: #74a0cc;
+			color: #fff;
+		}
 	}
-	
+
 	.asset-item-selected {
-		
+		background-color: #8f8fec !important;
+		color: #fff;
 	}
 }

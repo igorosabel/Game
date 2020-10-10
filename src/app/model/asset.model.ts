@@ -15,7 +15,7 @@ export class Asset {
 		this._tagList = null;
 		this.modified = false;
 	}
-	
+
 	get tagList() {
 		if (this._tagList===null) {
 			let str_tags = [];
@@ -26,7 +26,7 @@ export class Asset {
 		}
 		return this._tagList;
 	}
-	
+
 	set tagList(str) {
 		this._tagList = str;
 	}
@@ -45,12 +45,12 @@ export class Asset {
 		}
 	}
 
-	toInterface(): AssetInterface {
+	toInterface(boolean withUrl = false): AssetInterface {
 		const asset: AssetInterface = {
 			id: this.id,
 			idWorld: this.idWorld,
 			name: this.name,
-			url: (this.modified ? this.url : null),
+			url: (this.modified || withUrl) ? this.url : null,
 			tags: [],
 			tagList: this.tagList
 		};
