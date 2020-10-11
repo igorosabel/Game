@@ -7,11 +7,17 @@
 			<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
 		</select>
 	</div>
+  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+    <img src="/assets/list-items.svg">
+  </a>
+  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+    <img src="/assets/list-list.svg">
+  </a>
 	<a routerLink="/admin/resources/backgrounds/categories">Categorías de fondos</a>
 </div>
 
-<div class="background-list" id="list">
-	<div class="background-item" *ngFor="let background of backgroundListFiltered">
+<div class="background-list" [ngClass]="{'background-list-list': filterListOption=='list'}">
+	<div *ngFor="let background of backgroundListFiltered" [ngClass]="{'background-item': filterListOption=='items', 'background-list-item': filterListOption=='list'}">
 		<img src="{{ background.assetUrl | urldecode }}" alt="{{ background.name | urldecode }}">
     <img src="/assets/cant-cross.svg" class="cant-cross" *ngIf="!background.crossable">
 		<div class="background-info">

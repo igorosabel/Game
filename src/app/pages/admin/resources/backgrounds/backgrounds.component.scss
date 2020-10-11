@@ -30,6 +30,24 @@
 		}
 	}
 
+	.filter-option {
+		display: inline-flex;
+		height: 33px;
+		width: 33px;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid #000;
+		margin-right: 8px;
+
+		&:hover {
+			border: 1px solid #ccc;
+		}
+	}
+
+	.filter-option-selected {
+		border: 1px solid #fff;
+	}
+
 	& > a {
 		color: #fff;
 		text-decoration: none;
@@ -89,9 +107,46 @@
 		}
 	}
 
+	.background-list-item {
+		background-color:  #fff;
+		color: #000;
+		margin-bottom: 16px;
+		padding: 16px;
+		display: flex;
+		position: relative;
+
+		& > img {
+			width: 128px;
+		}
+
+		.cant-cross {
+			position: absolute;
+			top: 16px;
+			left: 16px;
+			width: 24px;
+		}
+
+		.background-info {
+			display: flex;
+			padding: 0 16px;
+			flex: 1;
+
+			span {
+				display: flex;
+				align-items: center;
+				flex: 1;
+			}
+		}
+	}
+
 	.background-message {
 		margin: 0 auto;
 	}
+}
+
+.background-list-list {
+	flex-wrap: nowrap;
+	flex-direction: column;
 }
 
 .background-detail {

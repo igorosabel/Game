@@ -14,6 +14,7 @@ import { AssetPickerComponent } from '../../../../components/asset-picker/asset-
 })
 export class BackgroundsComponent implements OnInit {
 	backgroundCategoryFilter: number = null;
+	filterListOption: string = 'items';
 	backgroundCategoryList: BackgroundCategory[] = [];
 	backgroundList: Background[] = [];
 	backgroundListFiltered: Background[] = [];
@@ -57,6 +58,11 @@ export class BackgroundsComponent implements OnInit {
 			filteredList = this.backgroundList.filter(x => x.idBackgroundCategory===this.backgroundCategoryFilter);
 		}
 		this.backgroundListFiltered = filteredList;
+	}
+
+	changeFilterListOption(ev, option) {
+		ev && ev.preventDefault();
+		this.filterListOption = option;
 	}
 
 	resetLoadedBackground() {

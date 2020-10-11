@@ -18,7 +18,7 @@ X Admin ( /admin/main )
 
   X Todos los recursos ( /admin/resources )
 
-    Fondos ( /admin/resources/backgrounds )
+    X Fondos ( /admin/resources/backgrounds )
       listado completo (editar / borrar)
         filtro por categorías -> se puede ir a Categorías de Fondos
       añadir nuevo
