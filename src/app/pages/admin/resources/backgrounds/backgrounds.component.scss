@@ -52,9 +52,17 @@
 		margin-right: 11px;
 		width: 160px;
 		margin-bottom: 16px;
+		position: relative;
 
 		& > img {
 			width: 128px;
+		}
+
+		.cant-cross {
+			position: absolute;
+			top: 16px;
+			right: 16px;
+			width: 24px;
 		}
 
 		.background-info {

@@ -11,7 +11,7 @@
   </div>
 	<span>
 		<label for="name-copy">Copiar nombre</label>
-		<input type="checkbox" name="name-copy" id="name-copy" [checked]="nameCopy" (click)="nameCopy = !nameCopy">
+		<input type="checkbox" name="name-copy" id="name-copy" [(ngModel)]="nameCopy">
 	</span>
 </div>
 

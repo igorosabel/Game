@@ -25,7 +25,7 @@
 		</div>
 		<div class="row center">
 			<label for="scenario-friendly">Amistoso:</label>
-			<input type="checkbox" name="scenario-friendly" [checked]="loadedScenario.friendly" (click)="loadedScenario.friendly = !loadedScenario.friendly">
+			<input type="checkbox" name="scenario-friendly" [(ngModel)]="loadedScenario.friendly">
 		</div>
 		<div class="footer">
 			<button (click)="saveScenario()">Continuar</button>

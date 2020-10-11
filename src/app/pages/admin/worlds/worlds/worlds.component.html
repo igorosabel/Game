@@ -37,7 +37,7 @@
 		</div>
 		<div class="row center">
 			<label for="world-friendly">Amistoso:</label>
-			<input type="checkbox" name="world-friendly" [checked]="loadedWorld.friendly" (click)="loadedWorld.friendly = !loadedWorld.friendly">
+			<input type="checkbox" name="world-friendly" [(ngModel)]="loadedWorld.friendly">
 		</div>
 		<div class="footer">
 			<button (click)="saveWorld()">Continuar</button>
