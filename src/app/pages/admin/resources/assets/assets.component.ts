@@ -14,6 +14,7 @@ import { ClassMapperService } from '../../../../services/class-mapper.service';
 export class AssetsComponent implements OnInit {
 	tagFilter: number = null;
 	worldFilter: number = null;
+	filterListOption: string = 'items';
 	tagList: Tag[] = [];
 	worldList: World[] = [];
 	assetList: Asset[] = [];
@@ -57,7 +58,7 @@ export class AssetsComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	updateFilteredList() {
 		let filteredList = [];
 		if (this.tagFilter===null && this.worldFilter===null) {
@@ -85,7 +86,12 @@ export class AssetsComponent implements OnInit {
 		}
 		this.assetListFiltered = filteredList;
 	}
-	
+
+	changeFilterListOption(ev, option) {
+		ev && ev.preventDefault();
+		this.filterListOption = option;
+	}
+
 	resetLoadedAsset() {
 		this.loadedAsset = new Asset();
 	}
@@ -102,7 +108,7 @@ export class AssetsComponent implements OnInit {
 			this.showDetail = false;
 		}
 	}
-	
+
 	openFile() {
 		document.getElementById('asset-file').click();
 	}
@@ -120,7 +126,7 @@ export class AssetsComponent implements OnInit {
 			};
 		}
 	}
-	
+
 	saveAsset() {
 		let validate = true;
 		if (this.loadedAsset.name=='') {

@@ -1,18 +1,26 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Recursos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
 <div class="assets-header">
-	<select name="assets-filter-tag" [(ngModel)]="tagFilter" (change)="updateFilteredList()">
-		<option [ngValue]="null">Elige una tag</option>
-		<option *ngFor="let tag of tagList" [ngValue]="tag.id">{{tag.name | urldecode}}</option>
-	</select>
-	<select name="assets-filter-world" [(ngModel)]="worldFilter" (change)="updateFilteredList()">
-		<option [ngValue]="null">Elige un mundo</option>
-		<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name | urldecode}}</option>
-	</select>
+	<div>
+		<select name="assets-filter-tag" [(ngModel)]="tagFilter" (change)="updateFilteredList()">
+			<option [ngValue]="null">Elige una tag</option>
+			<option *ngFor="let tag of tagList" [ngValue]="tag.id">{{tag.name | urldecode}}</option>
+		</select>
+		<select name="assets-filter-world" [(ngModel)]="worldFilter" (change)="updateFilteredList()">
+			<option [ngValue]="null">Elige un mundo</option>
+			<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name | urldecode}}</option>
+		</select>
+	</div>
+	<a href="#" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+		<img src="/assets/list-items.svg">
+	</a>
+	<a href="#" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+		<img src="/assets/list-list.svg">
+	</a>
 </div>
 
-<div class="asset-list" id="list">
-	<div class="asset-item" *ngFor="let asset of assetListFiltered">
+<div class="asset-list" [ngClass]="{'asset-list-list': filterListOption=='list'}">
+	<div *ngFor="let asset of assetListFiltered" [ngClass]="{'asset-item': filterListOption=='items', 'asset-list-item': filterListOption=='list'}">
 		<img src="{{ asset.url | urldecode }}" alt="{{ asset.name | urldecode }}">
 		<div class="asset-info">
 			<span title="{{asset.name | urldecode}}">{{ asset.name | urldecode }}</span>
