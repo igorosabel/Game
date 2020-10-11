@@ -88,3 +88,22 @@ export interface BackgroundResult {
 	status: string;
 	list: BackgroundInterface[];
 }
+
+export interface ItemInterface {
+	id: number;
+	type: number;
+	idAsset: number;
+	assetUrl: string;
+	name: string;
+	money: number;
+	health: number;
+	attack: number;
+	defense: number;
+	speed: number;
+	wearable: number;
+}
+
+export interface ItemResult {
+	status: string;
+	list: ItemInterface[];
+}

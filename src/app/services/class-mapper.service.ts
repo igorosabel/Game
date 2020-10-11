@@ -5,13 +5,15 @@ import { Tag }                from '../model/tag.model';
 import { Asset }              from '../model/asset.model';
 import { BackgroundCategory } from '../model/background-category.model';
 import { Background }         from '../model/background.model';
+import { Item }               from '../model/item.model';
 import {
 	WorldInterface,
 	ScenarioInterface,
 	TagInterface,
 	AssetInterface,
 	BackgroundCategoryInterface,
-	BackgroundInterface
+	BackgroundInterface,
+	ItemInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -117,5 +119,21 @@ export class ClassMapperService {
 	getBackground(b: BackgroundInterface) {
 		const background = new Background(b.id, b.idBackgroundCategory, b.idAsset, b.assetUrl, b.name, b.crossable);
 		return background;
+	}
+
+	getItems(response: ItemInterface[]) {
+		const items: Item[] = [];
+
+		for (let i of response) {
+			let item = this.getItem(i);
+			items.push(item);
+		}
+
+		return items;
+	}
+
+	getItem(i: ItemInterface) {
+		const item = new Item(i.id, i.type, i.idAsset, i.assetUrl, i.name, i.money, i.health, i.attack, i.defense, i.speed, i.wearable);
+		return item;
 	}
 }

@@ -1,1 +1,51 @@
-<p>items works!</p>
+<game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Items" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="items-header">
+	<div>
+		<select name="items-filter-type" [(ngModel)]="itemFilter" (change)="updateFilteredList()">
+			<option [ngValue]="null">Elige un tipo</option>
+			<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
+		</select>
+	</div>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+		<img src="/assets/list-items.svg">
+	</a>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+		<img src="/assets/list-list.svg">
+	</a>
+</div>
+
+<div class="item-list" [ngClass]="{'item-list-list': filterListOption=='list'}">
+	<div *ngFor="let item of itemListFiltered" [ngClass]="{'item-item': filterListOption=='items', 'item-list-item': filterListOption=='list'}">
+		<img src="{{ item.assetUrl | urldecode }}" alt="{{ item.name | urldecode }}">
+		<div class="item-info">
+			<span title="{{item.name | urldecode}}">{{ item.name | urldecode }}</span>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="item-edit" (click)="editItem(item)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="item-delete" (click)="deleteItem(item)">
+		</div>
+	</div>
+	<div class="item-message" *ngIf="message!=null">
+		{{message}}
+	</div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddItem($event)">+</a>
+
+<div class="item-detail" [ngClass]="{'item-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{itemDetailHeader}}</span>
+			<a href="#" (click)="showAddItem($event)">X</a>
+		</div>
+		<div class="row">
+			<input type="text" name="item-name" [(ngModel)]="loadedItem.name" placeholder="Nombre del item">
+		</div>
+		<div class="row center">
+			<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+		</div>
+		<div class="footer">
+			<button (click)="saveItem()" *ngIf="!savingItem">Continuar</button>
+			<button disabled="disabled" *ngIf="savingItem">Guardando...</button>
+		</div>
+	</div>
+</div>

@@ -17,7 +17,9 @@ import {
 	BackgroundCategoryResult,
 	BackgroundCategoryInterface,
 	BackgroundResult,
-	BackgroundInterface
+	BackgroundInterface,
+	ItemResult,
+	ItemInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -98,5 +100,17 @@ export class ApiService {
 
 	deleteBackground(id: number): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-background', {id});
+	}
+
+	getItems(): Observable<ItemResult> {
+		return this.http.post<ItemResult>(this.url + 'admin/item-list', {});
+	}
+
+	saveItem(item: ItemInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-item', item);
+	}
+
+	deleteItem(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/delete-item', {id});
 	}
 }
