@@ -2,7 +2,7 @@
 
 <div class="backgrounds-header">
 	<div>
-		<select name="backgrounds-filter-category" [(ngModel)]="backgroundCategoryFilter">
+		<select name="backgrounds-filter-category" [(ngModel)]="backgroundCategoryFilter" (change)="updateFilteredList()">
 			<option [ngValue]="null">Elige una categoría</option>
 			<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
 		</select>
