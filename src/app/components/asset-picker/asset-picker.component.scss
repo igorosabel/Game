@@ -38,6 +38,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	padding: 0 16px;
+  height: 380px;
+  overflow: auto;
 
 	.asset-item {
 		background-color: #fff;
