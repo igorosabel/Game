@@ -47,10 +47,12 @@
 		padding: 16px;
 		margin-right: 11px;
 		width: 160px;
+    height: 190px;
 		margin-bottom: 16px;
 
 		& > img {
-			width: 128px;
+			width: auto;
+      height: 128px;
 		}
 
 		.asset-info {

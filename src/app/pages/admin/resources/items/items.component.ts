@@ -104,26 +104,22 @@ export class ItemsComponent implements OnInit {
 			alert('¡No has elegido ningún recurso para el item!');
 		}
 
-		if (this.loadedItem.money=='') {
-			this.loadedItem.money = null;
-		}
-
 		if (validate && this.loadedItem.type==null) {
 			validate = false;
 			alert('¡No has elegido ningún tipo!');
 		}
 
-		if (validate && this.loadedItem.type==1 && this.loadedItem.attack=='') {
+		if (validate && this.loadedItem.type==1 && this.loadedItem.attack===null) {
 			validate = false;
 			alert('¡Has indicado que es un arma pero no has marcado cuanto daño hace!');
 		}
 
-		if (validate && this.loadedItem.type==2 && this.loadedItem.health=='') {
+		if (validate && this.loadedItem.type==2 && this.loadedItem.health===null) {
 			validate = false;
 			alert('¡Has indicado que es una poción pero no has marcado cuanta salud recupera!');
 		}
 
-		if (validate && this.loadedItem.type==3 && (this.loadedItem.defense=='' || this.loadedItem.speed=='' || this.loadedItem.wearable==null)) {
+		if (validate && this.loadedItem.type==3 && (this.loadedItem.defense===null || this.loadedItem.speed===null || this.loadedItem.wearable==null)) {
 			validate = false;
 			alert('¡Has indicado que es un equipo pero no has rellenado su defensa, equipo o donde va!');
 		}
