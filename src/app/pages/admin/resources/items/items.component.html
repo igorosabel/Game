@@ -43,6 +43,40 @@
 		<div class="row center">
 			<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
 		</div>
+		<div class="row cols">
+			<div class="col">
+				<input type="text" name="item-money" [(ngModel)]="loadedItem.money" placeholder="Valor del item">
+			</div>
+			<div class="col">
+				<select name="item-type" [(ngModel)]="loadedItem.type">
+					<option [ngValue]="null">Elige un tipo</option>
+					<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
+				</select>
+			</div>
+		</div>
+		<!-- tipo arma 1 -> attack -->
+		<div class="row" *ngIf="loadedItem.type==1">
+			<input type="text" name="item-attack" [(ngModel)]="loadedItem.attack" placeholder="Ataque del item">
+		</div>
+		<!-- tipo arma 2 -> health -->
+		<div class="row" *ngIf="loadedItem.type==2">
+			<input type="text" name="item-health" [(ngModel)]="loadedItem.health" placeholder="Curación del item">
+		</div>
+		<!-- tipo equipamiento 3 -> defense / speed / wearable -->
+		<div class="row cols" *ngIf="loadedItem.type==3">
+			<div class="col">
+				<input type="text" name="item-defense" [(ngModel)]="loadedItem.defense" placeholder="Defensa del item">
+			</div>
+			<div class="col">
+				<input type="text" name="item-speed" [(ngModel)]="loadedItem.speed" placeholder="Velocidad del item">
+			</div>
+			<div class="col">
+				<select name="item-wearable" [(ngModel)]="loadedItem.wearable">
+					<option [ngValue]="null">Elige un tipo</option>
+					<option *ngFor="let wearable of wearableList" [ngValue]="wearable.id">{{wearable.name}}</option>
+				</select>
+			</div>
+		</div>
 		<div class="footer">
 			<button (click)="saveItem()" *ngIf="!savingItem">Continuar</button>
 			<button disabled="disabled" *ngIf="savingItem">Guardando...</button>

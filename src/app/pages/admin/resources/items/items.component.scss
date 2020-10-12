@@ -167,7 +167,7 @@
 		.row {
 			padding: 8px 16px;
 
-			& > select {
+			select {
 				display: inline-block;
 				padding: 8px;
 				margin-right: 16px;
@@ -179,6 +179,18 @@
 				&:hover {
 					border: 1px solid #000;
 				}
+			}
+		}
+
+		.cols {
+			display: flex;
+			flex-direction: row;
+
+			.col {
+				flex: 1;
+				padding: 8px;
+				display: flex;
+				align-items: center;
 			}
 		}
 

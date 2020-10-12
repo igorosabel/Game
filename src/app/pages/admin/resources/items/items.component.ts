@@ -21,6 +21,12 @@ export class ItemsComponent implements OnInit {
 		{id: 3, name: 'Equipamiento'},
 		{id: 4, name: 'Objeto'},
 	];
+	wearableList = [
+		{id: 0, name: 'Cabeza'},
+		{id: 1, name: 'Cuello'},
+		{id: 2, name: 'Cuerpo'},
+		{id: 3, name: 'Botas'}
+	];
 	itemList: Item[] = [];
 	itemListFiltered: Item[] = [];
 	message: string = null;
@@ -98,7 +104,59 @@ export class ItemsComponent implements OnInit {
 			alert('¡No has elegido ningún recurso para el item!');
 		}
 
+		if (this.loadedItem.money=='') {
+			this.loadedItem.money = null;
+		}
+
+		if (validate && this.loadedItem.type==null) {
+			validate = false;
+			alert('¡No has elegido ningún tipo!');
+		}
+
+		if (validate && this.loadedItem.type==1 && this.loadedItem.attack=='') {
+			validate = false;
+			alert('¡Has indicado que es un arma pero no has marcado cuanto daño hace!');
+		}
+
+		if (validate && this.loadedItem.type==2 && this.loadedItem.health=='') {
+			validate = false;
+			alert('¡Has indicado que es una poción pero no has marcado cuanta salud recupera!');
+		}
+
+		if (validate && this.loadedItem.type==3 && (this.loadedItem.defense=='' || this.loadedItem.speed=='' || this.loadedItem.wearable==null)) {
+			validate = false;
+			alert('¡Has indicado que es un equipo pero no has rellenado su defensa, equipo o donde va!');
+		}
+
 		if (validate) {
+			// Arma
+			if (this.loadedItem.type==1) {
+				this.loadedItem.health = null;
+				this.loadedItem.defense = null;
+				this.loadedItem.speed = null;
+				this.loadedItem.wearable = null;
+			}
+			// Poción
+			if (this.loadedItem.type==2) {
+				this.loadedItem.attack = null;
+				this.loadedItem.defense = null;
+				this.loadedItem.speed = null;
+				this.loadedItem.wearable = null;
+			}
+			// Equipo
+			if (this.loadedItem.type==3) {
+				this.loadedItem.attack = null;
+				this.loadedItem.health = null;
+			}
+			// Objeto
+			if (this.loadedItem.type==4) {
+				this.loadedItem.attack = null;
+				this.loadedItem.health = null;
+				this.loadedItem.defense = null;
+				this.loadedItem.speed = null;
+				this.loadedItem.wearable = null;
+			}
+
 			this.as.saveItem(this.loadedItem.toInterface()).subscribe(result => {
 				if (result.status=='ok') {
 					this.showAddItem();
