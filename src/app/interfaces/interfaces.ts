@@ -89,6 +89,13 @@ export interface BackgroundResult {
 	list: BackgroundInterface[];
 }
 
+export interface ItemFrameInterface {
+	id: number;
+	idAsset: number;
+	assetUrl: string;
+	order: number;
+}
+
 export interface ItemInterface {
 	id: number;
 	type: number;
@@ -101,6 +108,7 @@ export interface ItemInterface {
 	defense: number;
 	speed: number;
 	wearable: number;
+	frames: ItemFrameInterface[];
 }
 
 export interface ItemResult {

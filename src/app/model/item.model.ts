@@ -1,4 +1,5 @@
-import { ItemInterface } from '../interfaces/interfaces';
+import { ItemInterface, ItemFrameInterface } from '../interfaces/interfaces';
+import { ItemFrame } from './item-frame.model';
 
 export class Item {
 	constructor(
@@ -12,7 +13,8 @@ export class Item {
 		public attack: number = null,
 		public defense: number = null,
 		public speed: number = null,
-		public wearable: number = null
+		public wearable: number = null,
+		public frames: ItemFrame[] = []
 	) {}
 
 	toInterface(): ItemInterface {
@@ -27,8 +29,12 @@ export class Item {
 			attack: this.attack,
 			defense: this.defense,
 			speed: this.speed,
-			wearable: this.wearable
+			wearable: this.wearable,
+			frames: []
 		};
+		for (let itemFrame of this.frames) {
+			item.frames.push(itemFrame.toInterface());
+		}
 		return item;
 	}
 }

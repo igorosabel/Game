@@ -5,6 +5,7 @@ import { Tag }                from '../model/tag.model';
 import { Asset }              from '../model/asset.model';
 import { BackgroundCategory } from '../model/background-category.model';
 import { Background }         from '../model/background.model';
+import { ItemFrame }          from '../model/item-frame.model';
 import { Item }               from '../model/item.model';
 import {
 	WorldInterface,
@@ -13,6 +14,7 @@ import {
 	AssetInterface,
 	BackgroundCategoryInterface,
 	BackgroundInterface,
+	ItemFrameInterface,
 	ItemInterface
 } from '../interfaces/interfaces';
 
@@ -120,6 +122,21 @@ export class ClassMapperService {
 		const background = new Background(b.id, b.idBackgroundCategory, b.idAsset, b.assetUrl, b.name, b.crossable);
 		return background;
 	}
+	
+	getItemFrames(response: ItemFrameInterface[]) {
+		const itemFrames: ItemFrame[] = [];
+		
+		for (let itf of response) {
+			let itemFrame = this.getItemFrame(itf);
+		}
+		
+		return itemFrames;
+	}
+	
+	getItemFrame(itf: ItemFrameInterface) {
+		const itemFrame = new ItemFrame(itf.id, itf.idAsset, itf.assetUrl, itf.order);
+		return itemFrame;
+	}
 
 	getItems(response: ItemInterface[]) {
 		const items: Item[] = [];
@@ -133,7 +150,7 @@ export class ClassMapperService {
 	}
 
 	getItem(i: ItemInterface) {
-		const item = new Item(i.id, i.type, i.idAsset, i.assetUrl, i.name, i.money, i.health, i.attack, i.defense, i.speed, i.wearable);
+		const item = new Item(i.id, i.type, i.idAsset, i.assetUrl, i.name, i.money, i.health, i.attack, i.defense, i.speed, i.wearable, this.getItemFrames(i.frames));
 		return item;
 	}
 }
