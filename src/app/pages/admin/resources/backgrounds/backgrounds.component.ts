@@ -67,6 +67,7 @@ export class BackgroundsComponent implements OnInit {
 
 	resetLoadedBackground() {
 		this.loadedBackground = new Background();
+		this.loadedBackground.assetUrl = '/assets/no-asset.png';
 	}
 
 	showAddBackground(ev = null) {
@@ -82,9 +83,13 @@ export class BackgroundsComponent implements OnInit {
 		}
 	}
 
+	openAssetPicker() {
+		this.assetPicker.showPicker();
+	}
+
 	selectedAsset(selectedAsset: AssetInterface) {
 		this.loadedBackground.idAsset = selectedAsset.id;
-		this.loadedBackground.assetUrl = selectedAsset.url;
+		this.loadedBackground.assetUrl = this.cs.urldecode(selectedAsset.url);
 		if (selectedAsset.name!='') {
 			this.loadedBackground.name = this.cs.urldecode(selectedAsset.name);
 		}

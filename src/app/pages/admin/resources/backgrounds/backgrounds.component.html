@@ -13,7 +13,7 @@
   <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
     <img src="/assets/list-list.svg">
   </a>
-	<a routerLink="/admin/resources/backgrounds/categories">Categorías de fondos</a>
+	<a routerLink="/admin/resources/backgrounds/categories">Categorías</a>
 </div>
 
 <div class="background-list" [ngClass]="{'background-list-list': filterListOption=='list'}">
@@ -39,22 +39,26 @@
 			<span>{{backgroundDetailHeader}}</span>
 			<a href="#" (click)="showAddBackground($event)">X</a>
 		</div>
-		<div class="row">
-			<input type="text" name="background-name" [(ngModel)]="loadedBackground.name" placeholder="Nombre del fondo">
+		<div class="row cols">
+			<div class="col">
+				<select [(ngModel)]="loadedBackground.idBackgroundCategory">
+					<option [value]="null">Sin categoría</option>
+					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
+				</select>
+			</div>
+			<div class="col col-wide">
+				<input type="text" name="background-name" [(ngModel)]="loadedBackground.name" placeholder="Nombre del fondo">
+			</div>
 		</div>
-		<div class="row">
-			<label for="background-category">Categoría</label>
-			<select [(ngModel)]="loadedBackground.idBackgroundCategory">
-				<option [value]="null">Ninguna</option>
-				<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
-			</select>
+		<div class="asset-preview">
+			<img [src]="loadedBackground.assetUrl" (click)="openAssetPicker()">
 		</div>
 		<div class="row center">
 			<label for="background-category-crossable">¿Se puede cruzar?</label>
 			<input type="checkbox" name="background-category-crossable" [(ngModel)]="loadedBackground.crossable">
 		</div>
     <div class="row center">
-		<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+		
     </div>
 		<div class="footer">
 			<button (click)="saveBackground()" *ngIf="!savingBackground">Continuar</button>
@@ -62,3 +66,5 @@
 		</div>
 	</div>
 </div>
+
+<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
