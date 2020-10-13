@@ -40,27 +40,27 @@
 		<div class="row">
 			<input type="text" name="item-name" [(ngModel)]="loadedItem.name" placeholder="Nombre del item">
 		</div>
-		<div class="row center">
-			<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+		<div class="asset-preview">
+			<img [src]="loadedItem.assetUrl" (click)="openAssetPicker()">
 		</div>
 		<div class="row cols">
-			<div class="col">
-				<input type="text" name="item-money" [(ngModel)]="loadedItem.money" placeholder="Valor del item">
-			</div>
 			<div class="col">
 				<select name="item-type" [(ngModel)]="loadedItem.type">
 					<option [ngValue]="null">Elige un tipo</option>
 					<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
 				</select>
 			</div>
-		</div>
-		<!-- tipo arma 1 -> attack -->
-		<div class="row" *ngIf="loadedItem.type==1">
-			<input type="text" name="item-attack" [(ngModel)]="loadedItem.attack" placeholder="Ataque del item">
-		</div>
-		<!-- tipo arma 2 -> health -->
-		<div class="row" *ngIf="loadedItem.type==2">
-			<input type="text" name="item-health" [(ngModel)]="loadedItem.health" placeholder="Curación del item">
+			<div class="col">
+				<input type="text" name="item-money" [(ngModel)]="loadedItem.money" placeholder="Valor del item">
+			</div>
+			<!-- tipo arma 1 -> attack -->
+			<div class="col" *ngIf="loadedItem.type==1">
+				<input type="text" name="item-attack" [(ngModel)]="loadedItem.attack" placeholder="Ataque del item">
+			</div>
+			<!-- tipo arma 2 -> health -->
+			<div class="col" *ngIf="loadedItem.type==2">
+				<input type="text" name="item-health" [(ngModel)]="loadedItem.health" placeholder="Curación del item">
+			</div>
 		</div>
 		<!-- tipo equipamiento 3 -> defense / speed / wearable -->
 		<div class="row cols" *ngIf="loadedItem.type==3">
@@ -83,3 +83,5 @@
 		</div>
 	</div>
 </div>
+
+<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>

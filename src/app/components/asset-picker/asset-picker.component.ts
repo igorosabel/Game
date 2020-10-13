@@ -13,6 +13,7 @@ import { AssetInterface } from '../../interfaces/interfaces';
 	styleUrls: ['./asset-picker.component.scss']
 })
 export class AssetPickerComponent implements OnInit {
+	show: boolean = false;
 	tagFilter: number = null;
 	worldFilter: number = null;
 	tagList: Tag[] = [];
@@ -29,6 +30,10 @@ export class AssetPickerComponent implements OnInit {
 		this.loadTags();
 		this.loadWorlds();
 		this.loadAssets();
+	}
+
+	showPicker() {
+		this.show = true;
 	}
 
 	loadTags() {
@@ -90,6 +95,7 @@ export class AssetPickerComponent implements OnInit {
 		if (!this.nameCopy) {
 			selectedAsset.name = '';
 		}
+		this.show = false;
 		this.selectAssetEvent.emit(selectedAsset);
 	}
 

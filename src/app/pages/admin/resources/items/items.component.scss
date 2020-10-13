@@ -166,6 +166,7 @@
 
 		.row {
 			padding: 8px 16px;
+			display: flex;
 
 			select {
 				display: inline-block;
@@ -179,6 +180,17 @@
 				&:hover {
 					border: 1px solid #000;
 				}
+			}
+		}
+
+		.asset-preview {
+			padding: 8px 16px;
+
+			img {
+				height: 128px;
+				display: block;
+				margin: 0 auto 16px;
+				cursor: pointer;
 			}
 		}
 
@@ -201,32 +213,32 @@
 			padding-right: 16px;
 			justify-content: flex-end;
 			border-top: 1px solid #ccc;
+		}
+		
+		button {
+			font-family: 'GraphicPixel', Helvetica, sans-serif;
+			cursor: pointer;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			background-color: #fff;
+			display: block;
+			padding: 0 16px;
+			font-size: 1.2em;
+			color: #000;
+			height: 30px;
+			outline: 0;
 
-			button {
-				font-family: 'GraphicPixel', Helvetica, sans-serif;
-				cursor: pointer;
-				border: 1px solid #ccc;
-				border-radius: 4px;
-				background-color: #fff;
-				display: block;
-				padding: 0 16px;
-				font-size: 1.2em;
-				color: #000;
-				height: 30px;
-				outline: 0;
+			&:hover {
+				box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+			}
 
-				&:hover {
-					box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-				}
+			&:disabled {
+				background-color: #eee;
+			}
 
-				&:disabled {
-					background-color: #eee;
-				}
-
-				&:disabled:hover {
-					box-shadow: none;
-					cursor: default;
-				}
+			&:disabled:hover {
+				box-shadow: none;
+				cursor: default;
 			}
 		}
 

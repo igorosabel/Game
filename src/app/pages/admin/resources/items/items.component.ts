@@ -69,6 +69,7 @@ export class ItemsComponent implements OnInit {
 
 	resetLoadedItem() {
 		this.loadedItem = new Item();
+		this.loadedItem.assetUrl = '/assets/no-asset.png';
 	}
 
 	showAddItem(ev = null) {
@@ -84,9 +85,13 @@ export class ItemsComponent implements OnInit {
 		}
 	}
 
+	openAssetPicker() {
+		this.assetPicker.showPicker();
+	}
+
 	selectedAsset(selectedAsset: AssetInterface) {
 		this.loadedItem.idAsset = selectedAsset.id;
-		this.loadedItem.assetUrl = selectedAsset.url;
+		this.loadedItem.assetUrl = this.cs.urldecode(selectedAsset.url);
 		if (selectedAsset.name!='') {
 			this.loadedItem.name = this.cs.urldecode(selectedAsset.name);
 		}
