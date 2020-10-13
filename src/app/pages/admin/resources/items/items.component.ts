@@ -32,6 +32,7 @@ export class ItemsComponent implements OnInit {
 	message: string = null;
 	loadedItem: Item = new Item();
 	showDetail: boolean = false;
+	detailtTab: string = 'data';
 	itemDetailHeader: string = '';
 	savingItem: boolean = false;
 	@ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
@@ -83,6 +84,10 @@ export class ItemsComponent implements OnInit {
 		else {
 			this.showDetail = false;
 		}
+	}
+
+	changeTab(tab: string) {
+		this.detailtTab = tab;
 	}
 
 	openAssetPicker() {
