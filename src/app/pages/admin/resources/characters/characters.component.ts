@@ -33,7 +33,7 @@ export class CharactersComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadCharacters();
 	}
-	
+
 	loadCharacters() {
 		this.as.getCharacters().subscribe(result => {
 			if (result.status=='ok') {
@@ -75,5 +75,9 @@ export class CharactersComponent implements OnInit {
 			this.showDetail = false;
 			this.resetLoadedCharacter();
 		}
+	}
+
+	changeTab(tab: string) {
+		this.detailtTab = tab;
 	}
 }

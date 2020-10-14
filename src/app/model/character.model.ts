@@ -22,32 +22,11 @@ export class Character {
 		public dropAssetUrl: string = null,
 		public dropChance: number = null,
 		public respawn: number = null,
-		public frames: CharacterFrame[] = []
+		public framesUp: CharacterFrame[] = [],
+		public framesDown: CharacterFrame[] = [],
+		public framesLeft: CharacterFrame[] = [],
+		public framesRight: CharacterFrame[] = []
 	) {}
-
-	getAllFramesByOrientation(orientation: number) {
-		const frameList = this.frames.filter(x => x.orientation==orientation);
-		frameList.sort(function(a, b) {
-			return a.order - b.order;
-		});
-		return frameList;
-	}
-
-	get allFramesUp() {		
-		return this.getAllFramesByOrientation(1);
-	}
-
-	get allFramesRight() {		
-		return this.getAllFramesByOrientation(2);
-	}
-
-	get allFramesDown() {		
-		return this.getAllFramesByOrientation(3);
-	}
-
-	get allFramesLeft() {		
-		return this.getAllFramesByOrientation(4);
-	}
 
 	toInterface(): CharacterInterface {
 		const character: CharacterInterface = {
@@ -70,10 +49,22 @@ export class Character {
 			dropAssetUrl: this.dropAssetUrl,
 			dropChance: this.dropChance,
 			respawn: this.respawn,
-			frames: []
+			framesUp: [],
+			framesDown: [],
+			framesLeft: [],
+			framesRight: []
 		};
-		for (let characterFrame of this.frames) {
-			character.frames.push(characterFrame.toInterface());
+		for (let characterFrame of this.framesUp) {
+			character.framesUp.push(characterFrame.toInterface());
+		}
+		for (let characterFrame of this.framesDown) {
+			character.framesDown.push(characterFrame.toInterface());
+		}
+		for (let characterFrame of this.framesLeft) {
+			character.framesLeft.push(characterFrame.toInterface());
+		}
+		for (let characterFrame of this.framesRight) {
+			character.framesRight.push(characterFrame.toInterface());
 		}
 		return character;
 	}

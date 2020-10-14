@@ -56,3 +56,23 @@ X Admin ( /admin/main )
         mundos desbloqueados
         inventario
         equipamiento
+
+
+
+datos		arriba		abajo		izquierda		derecha
+
+
+tipo			nombre
+
+health			attack			defense
+
+speed			respawn
+
+drop_id_item	drop_chance
+
+
+
+
+Preview			Imagen principal "arriba"		| X |
+
+Slider

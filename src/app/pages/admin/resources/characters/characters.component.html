@@ -30,3 +30,35 @@
 </div>
 
 <a href="#" class="fab-button" id="add-btn" (click)="showAddCharacter($event)">+</a>
+
+<div class="character-detail" [ngClass]="{'item-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{characterDetailHeader}}</span>
+			<a href="#" (click)="showAddCharacter($event)">X</a>
+		</div>
+		<div class="tabs">
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='data'}" (click)="changeTab('data')">Datos</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='up'}" (click)="changeTab('up')">Arriba</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='down'}" (click)="changeTab('down')">Abajo</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='left'}" (click)="changeTab('left')">Izquierda</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='right'}" (click)="changeTab('right')">Derecha</div>
+		</div>
+		<div class="body" [ngClass]="{'body-show':detailtTab=='data'}">
+			<div class="row cols">
+				<div class="col">
+					<select name="character-type" [(ngModel)]="loadedCharacter.type">
+						<option [ngValue]="null">Elige un tipo</option>
+						<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
+					</select>
+				</div>
+				<div class="col">
+					<input type="text" name="character-name" [(ngModel)]="loadedCharacter.name" placeholder="Nombre del personaje">
+				</div>
+			</div>
+		</div>
+		<div class="body" [ngClass]="{'body-show':detailtTab=='up'}">
+
+		</div>
+	</div>
+</div>

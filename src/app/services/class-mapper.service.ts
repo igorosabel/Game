@@ -149,18 +149,18 @@ export class ClassMapperService {
 			b.crossable
 		);
 	}
-	
+
 	getItemFrames(response: ItemFrameInterface[]) {
 		const itemFrames: ItemFrame[] = [];
-		
+
 		for (let itf of response) {
 			let itemFrame = this.getItemFrame(itf);
 			itemFrames.push(itemFrame);
 		}
-		
+
 		return itemFrames;
 	}
-	
+
 	getItemFrame(itf: ItemFrameInterface) {
 		return new ItemFrame(
 			itf.id,
@@ -197,18 +197,18 @@ export class ClassMapperService {
 			this.getItemFrames(i.frames)
 		);
 	}
-	
+
 	getCharacterFrames(response: CharacterFrameInterface[]) {
 		const characterFrames: CharacterFrame[] = [];
-		
+
 		for (let cf of response) {
 			let characterFrame = this.getCharacterFrame(cf);
 			characterFrames.push(characterFrame);
 		}
-		
+
 		return characterFrames;
 	}
-	
+
 	getCharacterFrame(cf: CharacterFrameInterface) {
 		return new CharacterFrame(
 			cf.id,
@@ -251,7 +251,10 @@ export class ClassMapperService {
 			c.dropAssetUrl,
 			c.dropChance,
 			c.respawn,
-			this.getCharacterFrames(c.frames)
+			this.getCharacterFrames(c.framesUp),
+      this.getCharacterFrames(c.framesDown),
+      this.getCharacterFrames(c.framesLeft),
+      this.getCharacterFrames(c.framesRight)
 		);
 	}
 }

@@ -149,7 +149,10 @@ export interface CharacterInterface {
 	dropChance: number;
 	dropAssetUrl: string;
 	respawn: number;
-	frames: CharacterFrameInterface[];
+	framesUp: CharacterFrameInterface[];
+	framesDown: CharacterFrameInterface[];
+	framesLeft: CharacterFrameInterface[];
+	framesRight: CharacterFrameInterface[];
 }
 
 export interface CharacterResult {
