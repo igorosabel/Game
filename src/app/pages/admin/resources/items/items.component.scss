@@ -268,16 +268,44 @@
 						overflow-y: hidden;
 						white-space: nowrap;
 
-
 						.animation-frame {
 							display: inline-block;
 							margin-right: 16px;
 							width: 128px;
 							height: 128px;
-							
+							position: relative;
+
 							img {
 								width: 100%;
 								height: 100%;
+							}
+
+							button {
+								display: none;
+								width: 24px;
+								height: 24px;
+								position: absolute;
+								cursor: pointer;
+								padding: 0;
+							}
+
+							.animation-delete {
+								top: 8px;
+								right: 8px;
+							}
+
+							.animation-left {
+								bottom: 8px;
+								left: 8px;
+							}
+
+							.animation-right {
+								bottom: 8px;
+								right: 8px;
+							}
+
+							&:hover button {
+								display: block;
 							}
 						}
 

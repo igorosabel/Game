@@ -125,7 +125,7 @@ export class ItemsComponent implements OnInit {
 			let frame = new ItemFrame(null, selectedAsset.id, this.cs.urldecode(selectedAsset.url), this.loadedItem.frames.length);
 			this.loadedItem.frames.push(frame);
 		}
-		
+
 		if (this.animationTimer!==null) {
 			clearInterval(this.animationTimer);
 			this.animationTimer = null;
@@ -150,6 +150,27 @@ export class ItemsComponent implements OnInit {
 			this.animationInd = 0;
 		}
 		this.animationImage = this.loadedItem.allFrames[this.animationInd];
+	}
+
+	frameDelete(frame: ItemFrame) {
+		const conf = confirm('¿Estás seguro de querer borrar este frame?');
+		if (conf) {
+			const ind = this.loadedItem.frames.findIndex(x => x.id==frame.id);
+			this.loadedItem.frames.splice(ind, 1);
+			this.updateFrameOrders();
+		}
+	}
+
+	frameLeft(frame: ItemFrame) {
+
+	}
+
+	frameRight(frame: ItemFrame) {
+
+	}
+
+	updateFrameOrders() {
+
 	}
 
 	saveItem() {
