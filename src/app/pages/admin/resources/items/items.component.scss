@@ -143,129 +143,134 @@
 		background-color: #fff;
 		color: #000;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 
-		.preview-col {
-			flex: 1;
-			border-right: 1px solid #ccc;
+		.header {
 			display: flex;
-			justify-content: center;
+			height: 50px;
 			align-items: center;
+			padding-left: 16px;
+			font-size: 1.2em;
+			border-bottom: 1px solid #ccc;
+			position: relative;
 
-			img {
-				width: 128px;
-				height: 128px;
+			a {
+				position: absolute;
+				right: 16px;
+				color: #888;
+				text-decoration: none;
+
+				&:hover {
+					color: #000;
+				}
 			}
 		}
 
-		.main-col {
-			flex: 5;
+		.detail-cols {
+			display: flex;
+			flex-direction: column;
 
-			.header {
+			.preview-col {
+				flex: 1;
+				border-right: 1px solid #ccc;
 				display: flex;
-				height: 50px;
+				justify-content: center;
 				align-items: center;
-				padding-left: 16px;
-				font-size: 1.2em;
-				border-bottom: 1px solid #ccc;
-				position: relative;
 
-				a {
-					position: absolute;
-					right: 16px;
-					color: #888;
-					text-decoration: none;
-
-					&:hover {
-						color: #000;
-					}
+				img {
+					width: 128px;
+					height: 128px;
 				}
 			}
 
-			.tabs {
-				display: flex;
-				height: 50px;
-				border-bottom: 1px solid #ccc;
-				align-items: flex-end;
-				background-color: #eee;
+			.main-col {
+				flex: 5;
 
-				.tab {
-					background-color: #fff;
-					border-left: 1px solid #ccc;
-					margin-left: 8px;
-					padding: 8px;
-					border-top: 1px solid #ccc;
-					border-right: 1px solid #ccc;
-					cursor: pointer;
-
-					&:hover {
-						background-color: #e6e6e6;
-					}
-				}
-
-				.tab-active {
-					font-weight: bold;
-					padding: 12px;
-				}
-			}
-
-			.body {
-				display: none;
-
-				.row {
-					padding: 8px 16px;
+				.tabs {
 					display: flex;
+					height: 50px;
+					border-bottom: 1px solid #ccc;
+					align-items: flex-end;
+					background-color: #eee;
 
-					select {
-						display: inline-block;
+					.tab {
+						background-color: #fff;
+						border-left: 1px solid #ccc;
+						margin-left: 8px;
 						padding: 8px;
-						margin-right: 16px;
-						border: 1px solid #fff;
-						font-family: "GraphicPixel",Helvetica,sans-serif;
+						border-top: 1px solid #ccc;
+						border-right: 1px solid #ccc;
 						cursor: pointer;
-						transition: all .3s ease-in-out;
 
 						&:hover {
-							border: 1px solid #000;
+							background-color: #e6e6e6;
+						}
+					}
+
+					.tab-active {
+						font-weight: bold;
+						padding: 12px;
+					}
+				}
+
+				.body {
+					display: none;
+
+					.row {
+						padding: 8px 16px;
+						display: flex;
+
+						select {
+							display: inline-block;
+							padding: 8px;
+							margin-right: 16px;
+							border: 1px solid #fff;
+							font-family: "GraphicPixel",Helvetica,sans-serif;
+							cursor: pointer;
+							transition: all .3s ease-in-out;
+
+							&:hover {
+								border: 1px solid #000;
+							}
+						}
+					}
+
+					.asset-preview {
+						padding: 8px 16px;
+
+						img {
+							height: 128px;
+							display: block;
+							margin: 0 auto 16px;
+							cursor: pointer;
+						}
+					}
+
+					.cols {
+						display: flex;
+						flex-direction: row;
+
+						.col {
+							flex: 1;
+							padding: 8px;
+							display: flex;
+							align-items: center;
 						}
 					}
 				}
 
-				.asset-preview {
-					padding: 8px 16px;
-
-					img {
-						height: 128px;
-						display: block;
-						margin: 0 auto 16px;
-						cursor: pointer;
-					}
+				.body-show {
+					display: block;
 				}
 
-				.cols {
+				.footer {
 					display: flex;
-					flex-direction: row;
-
-					.col {
-						flex: 1;
-						padding: 8px;
-						display: flex;
-						align-items: center;
-					}
+					height: 50px;
+					align-items: center;
+					padding-right: 16px;
+					justify-content: flex-end;
+					border-top: 1px solid #ccc;
 				}
-			}
-
-			.body-show {
-				display: block;
-			}
-
-			.footer {
-				display: flex;
-				height: 50px;
-				align-items: center;
-				padding-right: 16px;
-				justify-content: flex-end;
-				border-top: 1px solid #ccc;
 			}
 		}
 
@@ -304,4 +309,14 @@
 
 .item-detail-show {
   display: flex;
+}
+
+@media screen and (min-width: 900px) {
+	.item-detail {
+		.box {
+			.detail-cols {
+				flex-direction: row;
+			}
+		}
+	}
 }
