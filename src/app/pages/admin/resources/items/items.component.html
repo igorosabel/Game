@@ -92,10 +92,16 @@
 				<!-- Frames de la animación -->
 				<div class="body" [ngClass]="{'body-show':detailtTab=='animate'}">
 					<div class="animation-slider">
-						<div class="animation-frame" *ngFor="let frame of loadedItem.frames">
-              <button class="animation-delete" (click)="frameDelete(frame)"><img src="/assets/frame-delete.svg"></button>
-              <button class="animation-left" (click)="frameLeft(frame)"><img src="/assets/frame-left.svg"></button>
-              <button class="animation-right" (click)="frameRight(frame)"><img src="/assets/frame-right.svg"></button>
+						<div class="animation-frame" *ngFor="let frame of loadedItem.frames; let ind = index">
+							<button class="animation-delete" (click)="frameDelete(frame)">
+								<img src="/assets/frame-delete.svg">
+							</button>
+							<button class="animation-left" (click)="frameLeft(frame)" *ngIf="ind!=0">
+								<img src="/assets/frame-left.svg">
+							</button>
+							<button class="animation-right" (click)="frameRight(frame)" *ngIf="ind!=loadedItem.frames.length-1">
+								<img src="/assets/frame-right.svg">
+							</button>
 							<img [src]="frame.assetUrl">
 						</div>
 						<div class="animation-frame animation-frame-add">

@@ -162,15 +162,31 @@ export class ItemsComponent implements OnInit {
 	}
 
 	frameLeft(frame: ItemFrame) {
-
+		const ind = this.loadedItem.frames.findIndex(x => x.id==frame.id);
+		if (ind==0) {
+			return;
+		}
+		const aux = this.loadedItem.frames[ind];
+		this.loadedItem.frames[ind] = this.loadedItem.frames[ind -1];
+		this.loadedItem.frames[ind -1] = aux;
+		this.updateFrameOrders();
 	}
 
 	frameRight(frame: ItemFrame) {
-
+		const ind = this.loadedItem.frames.findIndex(x => x.id==frame.id);
+		if (ind==(this.loadedItem.frames.length-1)) {
+			return;
+		}
+		const aux = this.loadedItem.frames[ind];
+		this.loadedItem.frames[ind] = this.loadedItem.frames[ind +1];
+		this.loadedItem.frames[ind +1] = aux;
+		this.updateFrameOrders();
 	}
 
 	updateFrameOrders() {
-
+		for (let frameOrder in this.loadedItem.frames) {
+			this.loadedItem.frames[frameOrder].order = parseInt(frameOrder);
+		}
 	}
 
 	saveItem() {
