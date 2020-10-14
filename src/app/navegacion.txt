@@ -36,7 +36,7 @@ X Admin ( /admin/main )
       listado completo (editar / borrar)
       añadir nuevo
 
-    Items ( /admin/resources/items )
+    X Items ( /admin/resources/items )
       listado completo (editar / borrar)
         filtro por tipo
       añadir nuevo

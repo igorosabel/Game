@@ -249,6 +249,7 @@ export class ClassMapperService {
 			c.speed,
 			c.dropIdItem,
 			c.dropAssetUrl,
+			c.dropChance,
 			c.respawn,
 			this.getCharacterFrames(c.frames)
 		);

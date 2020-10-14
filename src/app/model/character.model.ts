@@ -20,6 +20,7 @@ export class Character {
 		public speed: number = null,
 		public dropIdItem: number = null,
 		public dropAssetUrl: string = null,
+		public dropChance: number = null,
 		public respawn: number = null,
 		public frames: CharacterFrame[] = []
 	) {}
@@ -67,6 +68,7 @@ export class Character {
 			speed: this.speed,
 			dropIdItem: this.dropIdItem,
 			dropAssetUrl: this.dropAssetUrl,
+			dropChance: this.dropChance,
 			respawn: this.respawn,
 			frames: []
 		};

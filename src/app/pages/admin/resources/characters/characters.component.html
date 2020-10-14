@@ -1,1 +1,32 @@
-<p>characters works!</p>
+<game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Personajes" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="characters-header">
+	<div>
+		<select name="characters-filter-type" [(ngModel)]="characterFilter" (change)="updateFilteredList()">
+			<option [ngValue]="null">Elige un tipo</option>
+			<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
+		</select>
+	</div>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+		<img src="/assets/list-items.svg">
+	</a>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+		<img src="/assets/list-list.svg">
+	</a>
+</div>
+
+<div class="character-list" [ngClass]="{'character-list-list': filterListOption=='list'}">
+	<div *ngFor="let character of characterListFiltered" [ngClass]="{'character-item': filterListOption=='items', 'character-list-item': filterListOption=='list'}">
+		<img src="{{ character.assetDownUrl | urldecode }}" alt="{{ character.name | urldecode }}">
+		<div class="character-info">
+			<span title="{{character.name | urldecode}}">{{ character.name | urldecode }}</span>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="character-edit" (click)="editCharacter(character)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="character-delete" (click)="deleteCharacter(character)">
+		</div>
+	</div>
+	<div class="character-message" *ngIf="message!=null">
+		{{message}}
+	</div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddCharacter($event)">+</a>

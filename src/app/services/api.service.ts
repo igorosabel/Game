@@ -9,6 +9,7 @@ import {
 	WorldResult,
 	WorldInterface,
 	StatusResult,
+	StatusMessageResult,
 	ScenarioResult,
 	ScenarioInterface,
 	TagResult,
@@ -19,7 +20,9 @@ import {
 	BackgroundResult,
 	BackgroundInterface,
 	ItemResult,
-	ItemInterface
+	ItemInterface,
+	CharacterResult,
+	CharacterInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -74,8 +77,8 @@ export class ApiService {
 		return this.http.post<StatusResult>(this.url + 'admin/save-asset', asset);
 	}
 
-	deleteAsset(id: number): Observable<StatusResult> {
-		return this.http.post<StatusResult>(this.url + 'admin/delete-asset', {id});
+	deleteAsset(id: number): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-asset', {id});
 	}
 
 	getBackgroundCategories(): Observable<BackgroundCategoryResult> {
@@ -110,7 +113,11 @@ export class ApiService {
 		return this.http.post<StatusResult>(this.url + 'admin/save-item', item);
 	}
 
-	deleteItem(id: number): Observable<StatusResult> {
-		return this.http.post<StatusResult>(this.url + 'admin/delete-item', {id});
+	deleteItem(id: number): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-item', {id});
+	}
+
+	getCharacters(): Observable<CharacterResult> {
+		return this.http.post<CharacterResult>(this.url + 'admin/character-list', {});
 	}
 }

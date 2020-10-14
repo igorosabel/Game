@@ -2,6 +2,11 @@ export interface StatusResult {
 	status: string;
 }
 
+export interface StatusMessageResult {
+	status: string;
+	message: string;
+}
+
 export interface LoginData {
 	name: string;
 	pass: string;
@@ -141,6 +146,7 @@ export interface CharacterInterface {
 	defense: number;
 	speed: number;
 	dropIdItem: number;
+	dropChance: number;
 	dropAssetUrl: string;
 	respawn: number;
 	frames: CharacterFrameInterface[];

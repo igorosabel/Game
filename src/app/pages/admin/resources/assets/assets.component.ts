@@ -179,7 +179,7 @@ export class AssetsComponent implements OnInit {
 					this.loadAssets();
 				}
 				else {
-					alert('¡Ocurrio un error al borrar el recurso!');
+					alert("¡Ocurrio un error al borrar el recurso!\n\n"+this.cs.urldecode(result.message));
 					this.message = 'ERROR: Ocurrió un error al borrar el recurso.';
 				}
 			});

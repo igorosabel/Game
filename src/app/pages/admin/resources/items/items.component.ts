@@ -20,7 +20,7 @@ export class ItemsComponent implements OnInit {
 		{id: 1, name: 'Arma'},
 		{id: 2, name: 'Poción'},
 		{id: 3, name: 'Equipamiento'},
-		{id: 4, name: 'Objeto'},
+		{id: 4, name: 'Objeto'}
 	];
 	wearableList = [
 		{id: 0, name: 'Cabeza'},
@@ -308,7 +308,7 @@ export class ItemsComponent implements OnInit {
 					this.loadItems();
 				}
 				if (result.status=='in-use') {
-					alert('El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item');
+					alert("El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n"+result.message);
 				}
 				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el item!');
