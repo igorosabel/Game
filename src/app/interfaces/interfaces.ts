@@ -115,3 +115,38 @@ export interface ItemResult {
 	status: string;
 	list: ItemInterface[];
 }
+
+export interface CharacterFrameInterface {
+	id: number;
+	idAsset: number;
+	assetUrl: string;
+	orientation: number;
+	order: number;
+}
+
+export interface CharacterInterface {
+	id: number;
+	name: string;
+	idAssetUp: number;
+	assetUpUrl: string;
+	idAssetDown: number;
+	assetDownUrl: string;
+	idAssetLeft: number;
+	assetLeftUrl: string;
+	idAssetRight: number;
+	assetRightUrl: string;
+	type: number;
+	health: number;
+	attack: number;
+	defense: number;
+	speed: number;
+	dropIdItem: number;
+	dropAssetUrl: string;
+	respawn: number;
+	frames: CharacterFrameInterface[];
+}
+
+export interface CharacterResult {
+	status: string;
+	list: CharacterInterface[];
+}

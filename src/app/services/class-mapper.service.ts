@@ -7,6 +7,8 @@ import { BackgroundCategory } from '../model/background-category.model';
 import { Background }         from '../model/background.model';
 import { ItemFrame }          from '../model/item-frame.model';
 import { Item }               from '../model/item.model';
+import { CharacterFrame }     from '../model/character-frame.model';
+import { Character }          from '../model/character.model';
 import {
 	WorldInterface,
 	ScenarioInterface,
@@ -15,7 +17,9 @@ import {
 	BackgroundCategoryInterface,
 	BackgroundInterface,
 	ItemFrameInterface,
-	ItemInterface
+	ItemInterface,
+	CharacterFrameInterface,
+	CharacterInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -36,8 +40,15 @@ export class ClassMapperService {
 	}
 
 	getWorld(w: WorldInterface) {
-		const world = new World(w.id, w.name, w.description, w.wordOne, w.wordTwo, w.wordThree, w.friendly);
-		return world;
+		return new World(
+			w.id,
+			w.name,
+			w.description,
+			w.wordOne,
+			w.wordTwo,
+			w.wordThree,
+			w.friendly
+		);
 	}
 
 	getScenarios(response: ScenarioInterface[]) {
@@ -52,8 +63,12 @@ export class ClassMapperService {
 	}
 
 	getScenario(s: ScenarioInterface) {
-		const scenario = new Scenario(s.id, s.idWorld, s.name, s.friendly);
-		return scenario;
+		return new Scenario(
+			s.id,
+			s.idWorld,
+			s.name,
+			s.friendly
+		);
 	}
 
 	getTags(response: TagInterface[]) {
@@ -68,8 +83,10 @@ export class ClassMapperService {
 	}
 
 	getTag(t: TagInterface) {
-		const tag = new Tag(t.id, t.name);
-		return tag;
+		return new Tag(
+			t.id,
+			t.name
+		);
 	}
 
 	getAssets(response: AssetInterface[]) {
@@ -84,11 +101,13 @@ export class ClassMapperService {
 	}
 
 	getAsset(a: AssetInterface) {
-		const asset = new Asset(a.id, a.idWorld, a.name, a.url, []);
-		for (let t of a.tags) {
-			asset.tags.push(this.getTag(t));
-		}
-		return asset;
+		return new Asset(
+			a.id,
+			a.idWorld,
+			a.name,
+			a.url,
+			this.getTags(a.tags)
+		);
 	}
 
 	getBackgroundCategories(response: BackgroundCategoryInterface[]) {
@@ -103,8 +122,10 @@ export class ClassMapperService {
 	}
 
 	getBackgroundCategory(bc: BackgroundCategoryInterface) {
-		const backgroundCategory = new BackgroundCategory(bc.id, bc.name);
-		return backgroundCategory;
+		return new BackgroundCategory(
+			bc.id,
+			bc.name
+		);
 	}
 
 	getBackgrounds(response: BackgroundInterface[]) {
@@ -119,8 +140,14 @@ export class ClassMapperService {
 	}
 
 	getBackground(b: BackgroundInterface) {
-		const background = new Background(b.id, b.idBackgroundCategory, b.idAsset, b.assetUrl, b.name, b.crossable);
-		return background;
+		return new Background(
+			b.id,
+			b.idBackgroundCategory,
+			b.idAsset,
+			b.assetUrl,
+			b.name,
+			b.crossable
+		);
 	}
 	
 	getItemFrames(response: ItemFrameInterface[]) {
@@ -135,8 +162,12 @@ export class ClassMapperService {
 	}
 	
 	getItemFrame(itf: ItemFrameInterface) {
-		const itemFrame = new ItemFrame(itf.id, itf.idAsset, itf.assetUrl, itf.order);
-		return itemFrame;
+		return new ItemFrame(
+			itf.id,
+			itf.idAsset,
+			itf.assetUrl,
+			itf.order
+		);
 	}
 
 	getItems(response: ItemInterface[]) {
@@ -151,7 +182,75 @@ export class ClassMapperService {
 	}
 
 	getItem(i: ItemInterface) {
-		const item = new Item(i.id, i.type, i.idAsset, i.assetUrl, i.name, i.money, i.health, i.attack, i.defense, i.speed, i.wearable, this.getItemFrames(i.frames));
-		return item;
+		return new Item(
+			i.id,
+			i.type,
+			i.idAsset,
+			i.assetUrl,
+			i.name,
+			i.money,
+			i.health,
+			i.attack,
+			i.defense,
+			i.speed,
+			i.wearable,
+			this.getItemFrames(i.frames)
+		);
+	}
+	
+	getCharacterFrames(response: CharacterFrameInterface[]) {
+		const characterFrames: CharacterFrame[] = [];
+		
+		for (let cf of response) {
+			let characterFrame = this.getCharacterFrame(cf);
+			characterFrames.push(characterFrame);
+		}
+		
+		return characterFrames;
+	}
+	
+	getCharacterFrame(cf: CharacterFrameInterface) {
+		return new CharacterFrame(
+			cf.id,
+			cf.idAsset,
+			cf.assetUrl,
+			cf.orientation,
+			cf.order
+		);
+	}
+
+	getCharacters(response: CharacterInterface[]) {
+		const characters: Character[] = [];
+
+		for (let c of response) {
+			let character = this.getCharacter(c);
+			characters.push(character);
+		}
+
+		return characters;
+	}
+
+	getCharacter(c: CharacterInterface) {
+		return new Character(
+			c.id,
+			c.name,
+			c.idAssetUp,
+			c.assetUpUrl,
+			c.idAssetDown,
+			c.assetDownUrl,
+			c.idAssetLeft,
+			c.assetLeftUrl,
+			c.idAssetRight,
+			c.assetRightUrl,
+			c.type,
+			c.health,
+			c.attack,
+			c.defense,
+			c.speed,
+			c.dropIdItem,
+			c.dropAssetUrl,
+			c.respawn,
+			this.getCharacterFrames(c.frames)
+		);
 	}
 }
