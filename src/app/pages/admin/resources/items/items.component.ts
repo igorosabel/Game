@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Item } from '../../../../model/item.model';
-import { ApiService } from '../../../../services/api.service';
-import { CommonService } from '../../../../services/common.service';
-import { ClassMapperService } from '../../../../services/class-mapper.service';
-import { AssetInterface } from '../../../../interfaces/interfaces';
-import { AssetPickerComponent } from '../../../../components/asset-picker/asset-picker.component';
+import { Item }                         from '../../../../model/item.model';
+import { ItemFrame }                    from '../../../../model/item-frame.model';
+import { ApiService }                   from '../../../../services/api.service';
+import { CommonService }                from '../../../../services/common.service';
+import { ClassMapperService }           from '../../../../services/class-mapper.service';
+import { AssetInterface }               from '../../../../interfaces/interfaces';
+import { AssetPickerComponent }         from '../../../../components/asset-picker/asset-picker.component';
 
 @Component({
 	selector: 'game-items',
@@ -36,6 +37,10 @@ export class ItemsComponent implements OnInit {
 	itemDetailHeader: string = '';
 	savingItem: boolean = false;
 	@ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
+	assetPickerWhere: string = null;
+	animationImage: string = null;
+	animationInd: number = -1;
+	animationTimer: number = null;
 
 	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
 
@@ -70,7 +75,15 @@ export class ItemsComponent implements OnInit {
 
 	resetLoadedItem() {
 		this.loadedItem = new Item();
-		this.loadedItem.assetUrl = '/assets/no-asset.png';
+		this.loadedItem.assetUrl = '/assets/no-asset.svg';
+		this.animationImage = '/assets/no-asset.svg';
+		this.assetPickerWhere = null;
+		this.changeTab('data');
+		this.animationInd = -1;
+		if (this.animationTimer!==null) {
+			clearInterval(this.animationTimer);
+			this.animationTimer = null;
+		}
 	}
 
 	showAddItem(ev = null) {
@@ -83,6 +96,7 @@ export class ItemsComponent implements OnInit {
 		}
 		else {
 			this.showDetail = false;
+			this.resetLoadedItem();
 		}
 	}
 
@@ -90,16 +104,52 @@ export class ItemsComponent implements OnInit {
 		this.detailtTab = tab;
 	}
 
-	openAssetPicker() {
+	openAssetPicker(type: string) {
+		if (type=='frame' && this.loadedItem.idAsset==null) {
+			alert('Primero tienes que elegir un recurso para el item. Una vez hecho esto podrás añadir frames a la animación.');
+			return;
+		}
+		this.assetPickerWhere = type;
 		this.assetPicker.showPicker();
 	}
 
 	selectedAsset(selectedAsset: AssetInterface) {
-		this.loadedItem.idAsset = selectedAsset.id;
-		this.loadedItem.assetUrl = this.cs.urldecode(selectedAsset.url);
-		if (selectedAsset.name!='') {
-			this.loadedItem.name = this.cs.urldecode(selectedAsset.name);
+		if (this.assetPickerWhere=='item') {
+			this.loadedItem.idAsset = selectedAsset.id;
+			this.loadedItem.assetUrl = this.cs.urldecode(selectedAsset.url);
+			if (selectedAsset.name!='') {
+				this.loadedItem.name = this.cs.urldecode(selectedAsset.name);
+			}
 		}
+		if (this.assetPickerWhere=='frame') {
+			let frame = new ItemFrame(null, selectedAsset.id, this.cs.urldecode(selectedAsset.url), this.loadedItem.frames.length);
+			this.loadedItem.frames.push(frame);
+		}
+		
+		if (this.animationTimer!==null) {
+			clearInterval(this.animationTimer);
+			this.animationTimer = null;
+		}
+		this.startAnimation();
+
+		this.assetPicker.resetSelected();
+	}
+
+	startAnimation() {
+		if (this.loadedItem.allFrames.length>1) {
+			this.animationTimer = setInterval(() => { this.animatePreview() }, 300);
+		}
+		else {
+			this.animationImage = this.loadedItem.assetUrl;
+		}
+	}
+
+	animatePreview() {
+		this.animationInd++;
+		if (this.animationInd >= this.loadedItem.allFrames.length) {
+			this.animationInd = 0;
+		}
+		this.animationImage = this.loadedItem.allFrames[this.animationInd];
 	}
 
 	saveItem() {

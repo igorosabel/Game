@@ -17,6 +17,15 @@ export class Item {
 		public frames: ItemFrame[] = []
 	) {}
 
+	get allFrames() {
+		const frameList = [];
+		frameList.push(this.assetUrl);
+		for (let frame of this.frames) {
+			frameList.push(frame.assetUrl);
+		}
+		return frameList;
+	}
+
 	toInterface(): ItemInterface {
 		const item: ItemInterface = {
 			id: this.id,
