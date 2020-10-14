@@ -128,6 +128,7 @@ export class ClassMapperService {
 		
 		for (let itf of response) {
 			let itemFrame = this.getItemFrame(itf);
+			itemFrames.push(itemFrame);
 		}
 		
 		return itemFrames;

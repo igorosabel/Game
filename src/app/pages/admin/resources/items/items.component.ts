@@ -232,15 +232,32 @@ export class ItemsComponent implements OnInit {
 			item.id,
 			item.type,
 			item.idAsset,
-			item.assetUrl,
-			item.name,
+			this.cs.urldecode(item.assetUrl),
+			this.cs.urldecode(item.name),
 			item.money,
 			item.health,
 			item.attack,
 			item.defense,
 			item.speed,
-			item.wearable
+			item.wearable,
+			[]
 		);
+		for (let frame of item.frames) {
+			frame.assetUrl = this.cs.urldecode(frame.assetUrl);
+			this.loadedItem.frames.push(frame);
+		}
+
+		this.animationImage = this.loadedItem.assetUrl;
+		this.assetPickerWhere = null;
+		this.changeTab('data');
+		this.animationInd = -1;
+		if (this.animationTimer!==null) {
+			clearInterval(this.animationTimer);
+			this.animationTimer = null;
+		}
+		if (this.loadedItem.frames.length>1) {
+			this.startAnimation();
+		}
 
 		this.itemDetailHeader = 'Editar item';
 		this.showDetail = true;
