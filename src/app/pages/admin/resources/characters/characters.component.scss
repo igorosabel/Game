@@ -173,6 +173,8 @@
 			border-bottom: 1px solid #ccc;
 			align-items: flex-end;
 			background-color: #eee;
+			width: 100%;
+			overflow-x: scroll;
 
 			.tab {
 				background-color: #fff;
@@ -236,10 +238,10 @@
 					flex: 1;
 					padding: 8px;
 					position: relative;
-					
+
 					label {
 						position: absolute;
-						font-size: 12px;
+						font-size: 8px;
 						top: 6px;
 						font-weight: bold;
 						left: 12px;
@@ -271,11 +273,11 @@
 
 				div {
 					text-align: center;
-					
+
 					a {
 						color: red;
 						text-decoration: none;
-						
+
 						&:hover {
 							text-decoration: underline;
 						}
@@ -387,4 +389,20 @@
 
 .item-detail-show {
   display: flex;
+}
+
+@media screen and (min-width: 900px) {
+	.character-detail {
+		.box {
+			.body {
+				.cols {
+					.col {
+						label {
+							font-size: 12px;
+						}
+					}
+				}
+			}
+		}
+	}
 }
