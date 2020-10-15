@@ -67,4 +67,14 @@ export class ItemPickerComponent implements OnInit {
 		this.selected = null;
 		this.updateFilteredList();
 	}
+	
+	getItemById(id: number) {
+		const itemFind = this.itemList.filter(x => x.id===id);
+		if (itemFind.length==0) {
+			return null;
+		}
+		else {
+			return itemFind[0].toInterface();
+		}
+	}
 }

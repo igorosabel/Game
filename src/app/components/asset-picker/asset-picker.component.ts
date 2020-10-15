@@ -105,4 +105,14 @@ export class AssetPickerComponent implements OnInit {
 		this.selectedItem = null;
 		this.updateFilteredList();
 	}
+	
+	getAssetById(id: number) {
+		const assetFind = this.assetList.filter(x => x.id===id);
+		if (assetFind.length==0) {
+			return null;
+		}
+		else {
+			return assetFind[0].toInterface();
+		}
+	}
 }
