@@ -1,14 +1,17 @@
-import { Injectable }         from '@angular/core';
-import { World }              from '../model/world.model';
-import { Scenario }           from '../model/scenario.model';
-import { Tag }                from '../model/tag.model';
-import { Asset }              from '../model/asset.model';
-import { BackgroundCategory } from '../model/background-category.model';
-import { Background }         from '../model/background.model';
-import { ItemFrame }          from '../model/item-frame.model';
-import { Item }               from '../model/item.model';
-import { CharacterFrame }     from '../model/character-frame.model';
-import { Character }          from '../model/character.model';
+import { Injectable }          from '@angular/core';
+import { World }               from '../model/world.model';
+import { Scenario }            from '../model/scenario.model';
+import { Tag }                 from '../model/tag.model';
+import { Asset }               from '../model/asset.model';
+import { BackgroundCategory }  from '../model/background-category.model';
+import { Background }          from '../model/background.model';
+import { ItemFrame }           from '../model/item-frame.model';
+import { Item }                from '../model/item.model';
+import { CharacterFrame }      from '../model/character-frame.model';
+import { Character }           from '../model/character.model';
+import { ScenarioObjectDrop }  from '../model/scenario-object-drop.model';
+import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
+import { ScenarioObject }      from '../model/scenario-object.model';
 import {
 	WorldInterface,
 	ScenarioInterface,
@@ -19,7 +22,10 @@ import {
 	ItemFrameInterface,
 	ItemInterface,
 	CharacterFrameInterface,
-	CharacterInterface
+	CharacterInterface,
+  ScenarioObjectDropInterface,
+  ScenarioObjectFrameInterface,
+  ScenarioObjectInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -252,9 +258,72 @@ export class ClassMapperService {
 			c.dropChance,
 			c.respawn,
 			this.getCharacterFrames(c.framesUp),
-      this.getCharacterFrames(c.framesDown),
-      this.getCharacterFrames(c.framesLeft),
-      this.getCharacterFrames(c.framesRight)
+			this.getCharacterFrames(c.framesDown),
+			this.getCharacterFrames(c.framesLeft),
+			this.getCharacterFrames(c.framesRight)
+		);
+	}
+
+	getScenarioObjectFrames(response: ScenarioObjectFrameInterface[]) {
+		const scenarioObjectFrames: ScenarioObjectFrame[] = [];
+
+		for (let sof of response) {
+			let scenarioObjectFrame = this.getScenarioObjectFrame(sof);
+			scenarioObjectFrames.push(scenarioObjectFrame);
+		}
+
+		return scenarioObjectFrames;
+	}
+
+	getScenarioObjectFrame(sof: ScenarioObjectFrameInterface) {
+		return new ScenarioObjectFrame(
+			sof.id,
+			sof.idAsset,
+			sof.assetUrl,
+			sof.order
+		);
+	}
+
+	getScenarioObjectDrops(response: ScenarioObjectDropInterface[]) {
+		const scenarioObjectDrops: ScenarioObjectDrop[] = [];
+
+		for (let sod of response) {
+			let scenarioObjectDrop = this.getScenarioObjectDrop(sod);
+			scenarioObjectDrops.push(scenarioObjectDrop);
+		}
+
+		return scenarioObjectDrops;
+	}
+
+	getScenarioObjectDrop(sod: ScenarioObjectDropInterface) {
+		return new ScenarioObjectDrop(
+			sod.id,
+			sod.idAsset,
+			sod.assetUrl,
+			sod.num
+		);
+	}
+
+	getScenarioObject(so: ScenarioObjectInterface) {
+		return new ScenarioObject(
+			so.id,
+			so.name,
+			so.idAsset,
+			so.assetUrl,
+			so.width,
+			so.height,
+			so.crossable,
+			so.activable,
+			so.idAssetActive,
+			so.assetActiveUrl,
+			so.activeTime,
+			so.activeTrigger,
+			so.activeTriggerCustom,
+			so.pickable,
+			so.grabbable,
+			so.breakable,
+			this.getScenarioObjectDrops(so.drops),
+			this.getScenarioObjectFrames(so.frames)
 		);
 	}
 }
