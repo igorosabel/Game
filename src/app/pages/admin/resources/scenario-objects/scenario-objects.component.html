@@ -1,1 +1,26 @@
-<p>scenario-objects works!</p>
+<game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Objetos de escenario" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
+
+<div class="scenario-object-header">
+  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+    <img src="/assets/list-items.svg">
+  </a>
+  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+    <img src="/assets/list-list.svg">
+  </a>
+</div>
+
+<div class="scenario-object-list" [ngClass]="{'scenario-object-list-list': filterListOption=='list'}">
+  <div *ngFor="let scenarioObject of scenarioObjectList" [ngClass]="{'scenario-object-item': filterListOption=='items', 'scenario-object-list-item': filterListOption=='list'}">
+    <img src="{{ scenarioObject.assetUrl | urldecode }}" alt="{{ scenarioObject.name | urldecode }}">
+    <div class="scenario-object-info">
+      <span title="{{scenarioObject.name | urldecode}}">{{ scenarioObject.name | urldecode }}</span>
+      <img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-object-edit" (click)="editScenarioObject(scenarioObject)">
+      <img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-object-delete" (click)="deleteScenarioObject(scenarioObject)">
+    </div>
+  </div>
+  <div class="scenario-object-message" *ngIf="message!=null">
+    {{message}}
+  </div>
+</div>
+
+<a href="#" class="fab-button" id="add-btn" (click)="showAddScenarioObject($event)">+</a>

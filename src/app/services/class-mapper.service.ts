@@ -304,6 +304,17 @@ export class ClassMapperService {
 		);
 	}
 
+	getScenarioObjects(response: ScenarioObjectInterface[]) {
+		const scenarioObjects: ScenarioObject[] = [];
+
+		for (let so of response) {
+			let scenarioObject = this.getScenarioObject(so);
+			scenarioObjects.push(scenarioObject);
+		}
+
+		return scenarioObjects;
+	}
+
 	getScenarioObject(so: ScenarioObjectInterface) {
 		return new ScenarioObject(
 			so.id,

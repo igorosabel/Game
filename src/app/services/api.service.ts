@@ -22,7 +22,9 @@ import {
 	ItemResult,
 	ItemInterface,
 	CharacterResult,
-	CharacterInterface
+	CharacterInterface,
+	ScenarioObjectResult,
+	ScenarioObjectInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -127,5 +129,17 @@ export class ApiService {
 
 	deleteCharacter(id: number): Observable<StatusMessageResult> {
 		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-character', {id});
+	}
+
+	getScenarioObjects(): Observable<ScenarioObjectResult> {
+		return this.http.post<ScenarioObjectResult>(this.url + 'admin/scenario-object-list', {});
+	}
+
+	saveScenarioObject(scenarioObject: ScenarioObjectInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-scenario-object', scenarioObject);
+	}
+
+	deleteScenarioObject(id: number): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-scenario-object', {id});
 	}
 }
