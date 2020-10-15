@@ -49,6 +49,7 @@
 				<!-- Datos del item -->
 				<div class="body" [ngClass]="{'body-show':detailtTab=='data'}">
 					<div class="row">
+						<label>Nombre del item</label>
 						<input type="text" name="item-name" [(ngModel)]="loadedItem.name" placeholder="Nombre del item">
 					</div>
 					<div class="asset-preview">
@@ -56,32 +57,39 @@
 					</div>
 					<div class="row cols">
 						<div class="col">
+							<label>Tipo de item</label>
 							<select name="item-type" [(ngModel)]="loadedItem.type">
 								<option [ngValue]="null">Elige un tipo</option>
 								<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
 							</select>
 						</div>
 						<div class="col">
+							<label>Valor del item</label>
 							<input type="text" name="item-money" [(ngModel)]="loadedItem.money" placeholder="Valor del item">
 						</div>
 						<!-- tipo arma 1 -> attack -->
 						<div class="col" *ngIf="loadedItem.type==1">
+							<label>Ataque del item</label>
 							<input type="text" name="item-attack" [(ngModel)]="loadedItem.attack" placeholder="Ataque del item">
 						</div>
 						<!-- tipo arma 2 -> health -->
 						<div class="col" *ngIf="loadedItem.type==2">
+							<label>Curación del item</label>
 							<input type="text" name="item-health" [(ngModel)]="loadedItem.health" placeholder="Curación del item">
 						</div>
 					</div>
 					<!-- tipo equipamiento 3 -> defense / speed / wearable -->
 					<div class="row cols" *ngIf="loadedItem.type==3">
 						<div class="col">
+							<label>Defensa del item</label>
 							<input type="text" name="item-defense" [(ngModel)]="loadedItem.defense" placeholder="Defensa del item">
 						</div>
 						<div class="col">
+							<label>Velocidad del item</label>
 							<input type="text" name="item-speed" [(ngModel)]="loadedItem.speed" placeholder="Velocidad del item">
 						</div>
 						<div class="col">
+							<label>Tipo de equipamiento</label>
 							<select name="item-wearable" [(ngModel)]="loadedItem.wearable">
 								<option [ngValue]="null">Elige un tipo</option>
 								<option *ngFor="let wearable of wearableList" [ngValue]="wearable.id">{{wearable.name}}</option>

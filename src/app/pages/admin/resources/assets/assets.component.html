@@ -45,7 +45,7 @@
 			<input type="text" name="asset-name" [(ngModel)]="loadedAsset.name" placeholder="Nombre del recurso">
 		</div>
 		<div class="row">
-			<label for="asset-world">Mundo</label>
+			<label>Elige mundo</label>
 			<select [(ngModel)]="loadedAsset.idWorld">
 				<option [value]="null">Ninguno</option>
 				<option *ngFor="let world of worldList" [value]="world.id">{{world.name | urldecode}}</option>
@@ -58,6 +58,7 @@
 			<input type="file" id="asset-file" value="" (change)="onFileChange($event)">
 		</div>
 		<div class="row">
+			<label>Tags del recurso</label>
 			<input type="text" name="asset-tags" [(ngModel)]="loadedAsset.tagList" placeholder="Tags del recurso">
 		</div>
 		<div class="footer">

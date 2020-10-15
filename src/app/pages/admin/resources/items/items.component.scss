@@ -222,11 +222,21 @@
 					.row {
 						padding: 8px 16px;
 						display: flex;
+						position: relative;
+
+						label {
+							position: absolute;
+							font-size: 8px;
+							top: 6px;
+							font-weight: bold;
+							left: 12px;
+						}
 
 						select {
 							display: inline-block;
 							padding: 8px;
 							margin-right: 16px;
+							margin-top: 16px;
 							border: 1px solid #fff;
 							font-family: "GraphicPixel",Helvetica,sans-serif;
 							cursor: pointer;
@@ -258,6 +268,15 @@
 							padding: 8px;
 							display: flex;
 							align-items: center;
+							position: relative;
+
+							label {
+								position: absolute;
+								font-size: 8px;
+								top: 6px;
+								font-weight: bold;
+								left: 12px;
+							}
 						}
 					}
 
@@ -374,6 +393,24 @@
 		.box {
 			.detail-cols {
 				flex-direction: row;
+
+				.main-col {
+					.body {
+						.row {
+							label {
+								font-size: 12px;
+							}
+						}
+
+						.cols {
+							.col {
+								label {
+									font-size: 12px;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}

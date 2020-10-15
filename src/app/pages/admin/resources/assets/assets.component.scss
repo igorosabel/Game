@@ -165,11 +165,13 @@
 
 		.row {
 			padding: 8px 16px;
+			position: relative;
 
-			& > select {
+			select {
 				display: inline-block;
 			    padding: 8px;
 				margin-right: 16px;
+				margin-top: 16px;
 			    border: 1px solid #fff;
 			    font-family: "GraphicPixel",Helvetica,sans-serif;
 				cursor: pointer;
@@ -178,6 +180,14 @@
 				&:hover {
 					border: 1px solid #000;
 				}
+			}
+
+			label {
+				position: absolute;
+				font-size: 8px;
+				top: 6px;
+				font-weight: bold;
+				left: 12px;
 			}
 		}
 
@@ -270,4 +280,16 @@
 
 .asset-detail-show {
 	display: flex;
+}
+
+@media screen and (min-width: 900px) {
+	.asset-detail {
+		.box {
+			.row {
+				label {
+					font-size: 12px;
+				}
+			}
+		}
+	}
 }

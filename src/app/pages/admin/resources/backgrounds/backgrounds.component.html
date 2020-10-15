@@ -41,12 +41,14 @@
 		</div>
 		<div class="row cols">
 			<div class="col">
+				<label>Tipo de fondo</label>
 				<select [(ngModel)]="loadedBackground.idBackgroundCategory">
 					<option [value]="null">Sin categoría</option>
 					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
 				</select>
 			</div>
 			<div class="col col-wide">
+				<label>Nombre del fondo</label>
 				<input type="text" name="background-name" [(ngModel)]="loadedBackground.name" placeholder="Nombre del fondo">
 			</div>
 		</div>
@@ -58,7 +60,7 @@
 			<input type="checkbox" name="background-category-crossable" [(ngModel)]="loadedBackground.crossable">
 		</div>
     <div class="row center">
-		
+
     </div>
 		<div class="footer">
 			<button (click)="saveBackground()" *ngIf="!savingBackground">Continuar</button>

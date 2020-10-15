@@ -194,6 +194,7 @@
 				display: inline-block;
 			    padding: 8px;
 				margin-right: 16px;
+				margin-top: 16px;
 			    border: 1px solid #fff;
 			    font-family: "GraphicPixel",Helvetica,sans-serif;
 				cursor: pointer;
@@ -225,6 +226,15 @@
 				padding: 8px;
 				display: flex;
 				align-items: center;
+				position: relative;
+
+				label {
+					position: absolute;
+					font-size: 8px;
+					top: 6px;
+					font-weight: bold;
+					left: 12px;
+				}
 			}
 
 			.col-wide {
@@ -276,4 +286,18 @@
 
 .background-detail-show {
 	display: flex;
+}
+
+@media screen and (min-width: 900px) {
+	.background-detail {
+		.box {
+			.cols {
+				.col {
+					label {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+	}
 }
