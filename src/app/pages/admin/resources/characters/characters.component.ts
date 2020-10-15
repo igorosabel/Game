@@ -332,7 +332,7 @@ export class CharactersComponent implements OnInit {
 			character.defense,
 			character.speed,
 			character.dropIdItem,
-			character.dropAssetUrl,
+			(character.dropAssetUrl!=null) ? this.cs.urldecode(character.dropAssetUrl) : '/assets/no-asset.svg',
 			character.dropChance,
 			character.respawn,
 			[],
@@ -346,37 +346,34 @@ export class CharactersComponent implements OnInit {
 				frame.assetUrl = this.cs.urldecode(frame.assetUrl);
 				this.loadedCharacter['frames'+sent].push(frame);
 			}
+			
+			this.animationImage[sent.toLowerCase()] = (this.loadedCharacter['asset'+sent+'Url']!=null) ? this.loadedCharacter['asset'+sent+'Url'] : '/assets/no-asset.svg';
+			this.animationInd[sent.toLowerCase()] = -1;
+			clearInterval(this.animationTimer[sent.toLowerCase()]);
+			this.animationTimer[sent.toLowerCase()] = null;
 		}
 
-		this.animationImage = this.loadedItem.assetUrl;
 		this.assetPickerWhere = null;
 		this.changeTab('data');
-		this.animationInd = -1;
-		if (this.animationTimer!==null) {
-			clearInterval(this.animationTimer);
-			this.animationTimer = null;
-		}
-		if (this.loadedItem.frames.length>1) {
-			this.startAnimation();
-		}
+		this.startAnimation();
 
-		this.itemDetailHeader = 'Editar item';
+		this.characterDetailHeader = 'Editar personaje';
 		this.showDetail = true;
 	}
 
-	deleteItem(item: Item) {
-		const conf = confirm('¿Estás seguro de querer borrar el item "'+this.cs.urldecode(item.name)+'"?');
+	deleteCharacter(character: Character) {
+		const conf = confirm('¿Estás seguro de querer borrar el personaje "'+this.cs.urldecode(character.name)+'"?');
 		if (conf) {
-			this.as.deleteItem(item.id).subscribe(result => {
+			this.as.deleteCharacter(character.id).subscribe(result => {
 				if (result.status=='ok') {
-					this.loadItems();
+					this.loadCharacters();
 				}
 				if (result.status=='in-use') {
-					alert("El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n"+result.message);
+					alert("El personaje está siendo usado. Cámbialo o bórralo antes de poder borrar este personaje.\n\n"+result.message);
 				}
 				if (status=='error') {
-					alert('¡Ocurrio un error al borrar el item!');
-					this.message = 'ERROR: Ocurrió un error al borrar el item.';
+					alert('¡Ocurrio un error al borrar el personaje!');
+					this.message = 'ERROR: Ocurrió un error al borrar el personaje.';
 				}
 			});
 		}
