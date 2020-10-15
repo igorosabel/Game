@@ -1,78 +1,58 @@
 X Admin ( /admin/main )
 
-  X Mundos ( /admin/worlds )
-    listado (editar / borrar) -> va a Escenarios
-    añadir nuevo
+	X Mundos ( /admin/worlds )
+		listado (editar / borrar) -> va a Escenarios
+		añadir nuevo
 
-    X Escenarios del mundo X ( /admin/world/:id_world/scenarios )
-      listado -> va a Editar Escenario
-      añadir nuevo
+		X Escenarios del mundo X ( /admin/world/:id_world/scenarios )
+			listado -> va a Editar Escenario
+			añadir nuevo
 
-    Editar Escenario ( /admin/world/:id_world/scenario/:id_scenario )
-      editor del escenario
-        indicar si es el escenario inicial y marcar punto de salida
-        al pinchar en cada casilla poder modificar:
-          fondo -> se elige de la lista
-          objeto -> se elige de la lista pero se puede personalizar
-          personaje -> se elige de la lista
+			Editar Escenario ( /admin/world/:id_world/scenario/:id_scenario )
+				editor del escenario
+					indicar si es el escenario inicial y marcar punto de salida
+					al pinchar en cada casilla poder modificar:
+				fondo -> se elige de la lista
+				objeto -> se elige de la lista pero se puede personalizar
+				personaje -> se elige de la lista
 
-  X Todos los recursos ( /admin/resources )
+	X Todos los recursos ( /admin/resources )
 
-    X Fondos ( /admin/resources/backgrounds )
-      listado completo (editar / borrar)
-        filtro por categorías -> se puede ir a Categorías de Fondos
-      añadir nuevo
+		X Fondos ( /admin/resources/backgrounds )
+			listado completo (editar / borrar)
+				filtro por categorías -> se puede ir a Categorías de Fondos
+			añadir nuevo
 
-      X Categorías de fondos ( /admin/resources/backgrounds/categories )
-        listado (editar / borrar)
-        añadir nueva
+			X Categorías de fondos ( /admin/resources/backgrounds/categories )
+				listado (editar / borrar)
+				añadir nueva
 
-    Personajes ( /admin/resources/characters )
-      listado completo (editar / borrar)
-        filtro por nombre / npc-monstruo
-      añadir nuevo
+		X Personajes ( /admin/resources/characters )
+			listado completo (editar / borrar)
+				filtro por nombre / npc-monstruo
+			añadir nuevo
 
-    Objetos de escenario ( /admin/resources/scenario_objects )
-      listado completo (editar / borrar)
-      añadir nuevo
+		Objetos de escenario ( /admin/resources/scenario-objects )
+			listado completo (editar / borrar)
+			añadir nuevo
 
-    X Items ( /admin/resources/items )
-      listado completo (editar / borrar)
-        filtro por tipo
-      añadir nuevo
+		X Items ( /admin/resources/items )
+			listado completo (editar / borrar)
+				filtro por tipo
+			añadir nuevo
 
-    X Recursos ( /admin/resources/assets )
-      listado completo
-        filtro por tags / mundo
+		X Recursos ( /admin/resources/assets )
+			listado completo
+			filtro por tags / mundo
 
-  Usuarios ( /admin/users )
-    listado (editar / borrar) -> va a Partidas
-    añadir nuevo
+	Usuarios ( /admin/users )
+		listado (editar / borrar) -> va a Partidas
+		añadir nuevo
 
-    Partidas del usuario X ( /admin/user/:id_user/games )
-      listado (editar / borrar)
-      editar muestra:
-        detalle de la partida
-        mundos desbloqueados
-        inventario
-        equipamiento
-
-
-
-datos		arriba		abajo		izquierda		derecha
-
-
-tipo			nombre
-
-health			attack			defense
-
-speed			respawn
-
-drop_id_item	drop_chance
-
-
-
-
-Preview			Imagen principal "arriba"		| X |
-
-Slider
+		Partidas del usuario X ( /admin/user/:id_user/games )
+			listado (editar / borrar)
+			editar muestra:
+				detalle de la partida
+				mundos desbloqueados
+				inventario
+				equipamiento
