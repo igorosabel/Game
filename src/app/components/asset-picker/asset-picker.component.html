@@ -17,7 +17,7 @@
 			</span>
 		</div>
 
-		<div class="asset-list" id="list">
+		<div class="asset-list">
 			<div class="asset-item" *ngFor="let asset of assetListFiltered" [ngClass]="{'asset-item-selected': asset.id==selectedItem}" (click)="selectAsset(asset)">
 				<img src="{{ asset.url | urldecode }}" alt="{{ asset.name | urldecode }}">
 				<div class="asset-info">

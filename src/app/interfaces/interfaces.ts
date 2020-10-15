@@ -125,7 +125,7 @@ export interface CharacterFrameInterface {
 	id: number;
 	idAsset: number;
 	assetUrl: string;
-	orientation: number;
+	orientation: string;
 	order: number;
 }
 

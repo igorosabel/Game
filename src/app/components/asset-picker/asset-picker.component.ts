@@ -1,11 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Tag } from '../../model/tag.model';
-import { World } from '../../model/world.model';
-import { Asset } from '../../model/asset.model';
-import { ApiService } from '../../services/api.service';
-import { CommonService } from '../../services/common.service';
-import { ClassMapperService } from '../../services/class-mapper.service';
-import { AssetInterface } from '../../interfaces/interfaces';
+import { Tag }                                     from '../../model/tag.model';
+import { World }                                   from '../../model/world.model';
+import { Asset }                                   from '../../model/asset.model';
+import { ApiService }                              from '../../services/api.service';
+import { CommonService }                           from '../../services/common.service';
+import { ClassMapperService }                      from '../../services/class-mapper.service';
+import { AssetInterface }                          from '../../interfaces/interfaces';
 
 @Component({
 	selector: 'game-asset-picker',
@@ -103,5 +103,6 @@ export class AssetPickerComponent implements OnInit {
 		this.tagFilter = null;
 		this.worldFilter = null;
 		this.selectedItem = null;
+		this.updateFilteredList();
 	}
 }

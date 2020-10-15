@@ -5,7 +5,7 @@ export class CharacterFrame {
 		public id: number = null,
 		public idAsset: number = null,
 		public assetUrl: string = null,
-		public orientation: number = null,
+		public orientation: string = null,
 		public order: number = null
 	) {}
 

@@ -155,14 +155,14 @@ export class ItemsComponent implements OnInit {
 	frameDelete(frame: ItemFrame) {
 		const conf = confirm('¿Estás seguro de querer borrar este frame?');
 		if (conf) {
-			const ind = this.loadedItem.frames.findIndex(x => x.id==frame.id);
+			const ind = this.loadedItem.frames.findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
 			this.loadedItem.frames.splice(ind, 1);
 			this.updateFrameOrders();
 		}
 	}
 
 	frameLeft(frame: ItemFrame) {
-		const ind = this.loadedItem.frames.findIndex(x => x.id==frame.id);
+		const ind = this.loadedItem.frames.findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
 		if (ind==0) {
 			return;
 		}
@@ -173,7 +173,7 @@ export class ItemsComponent implements OnInit {
 	}
 
 	frameRight(frame: ItemFrame) {
-		const ind = this.loadedItem.frames.findIndex(x => x.id==frame.id);
+		const ind = this.loadedItem.frames.findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
 		if (ind==(this.loadedItem.frames.length-1)) {
 			return;
 		}

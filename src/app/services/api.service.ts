@@ -120,4 +120,12 @@ export class ApiService {
 	getCharacters(): Observable<CharacterResult> {
 		return this.http.post<CharacterResult>(this.url + 'admin/character-list', {});
 	}
+
+	saveCharacter(character: CharacterInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-character', character);
+	}
+
+	deleteCharacter(id: number): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-character', {id});
+	}
 }

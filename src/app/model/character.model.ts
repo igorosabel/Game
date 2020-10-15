@@ -28,6 +28,31 @@ export class Character {
 		public framesRight: CharacterFrame[] = []
 	) {}
 
+	getAllFrames(sent: string) {
+		const frameList = [];
+		frameList.push(this['asset'+sent+'Url']);
+		for (let frame of this['frames'+sent]) {
+			frameList.push(frame.assetUrl);
+		}
+		return frameList;
+	}
+
+	get allFramesUp() {
+		return this.getAllFrames('Up');
+	}
+
+	get allFramesDown() {
+		return this.getAllFrames('Down');
+	}
+
+	get allFramesLeft() {
+		return this.getAllFrames('Left');
+	}
+
+	get allFramesRight() {
+		return this.getAllFrames('Right');
+	}
+
 	toInterface(): CharacterInterface {
 		const character: CharacterInterface = {
 			id: this.id,

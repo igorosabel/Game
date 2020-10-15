@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Character }                    from '../../../../model/character.model';
-import { CharacterFrame }               from '../../../../model/character-frame.model';
-import { ApiService }                   from '../../../../services/api.service';
-import { CommonService }                from '../../../../services/common.service';
-import { ClassMapperService }           from '../../../../services/class-mapper.service';
-import { AssetInterface }               from '../../../../interfaces/interfaces';
-import { AssetPickerComponent }         from '../../../../components/asset-picker/asset-picker.component';
+import { Component, OnInit, ViewChild }  from '@angular/core';
+import { Character }                     from '../../../../model/character.model';
+import { CharacterFrame }                from '../../../../model/character-frame.model';
+import { ApiService }                    from '../../../../services/api.service';
+import { CommonService }                 from '../../../../services/common.service';
+import { ClassMapperService }            from '../../../../services/class-mapper.service';
+import { AssetInterface, ItemInterface } from '../../../../interfaces/interfaces';
+import { AssetPickerComponent }          from '../../../../components/asset-picker/asset-picker.component';
+import { ItemPickerComponent }           from '../../../../components/item-picker/item-picker.component';
 
 @Component({
 	selector: 'game-characters',
@@ -26,7 +27,29 @@ export class CharactersComponent implements OnInit {
 	showDetail: boolean = false;
 	detailtTab: string = 'data';
 	characterDetailHeader: string = '';
+	dropItemName: string = '';
 	savingCharacter: boolean = false;
+	assetPickerWhere: string = null;
+	@ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
+	@ViewChild('itemPicker', { static: true }) itemPicker: ItemPickerComponent;
+	animationImage = {
+		up: '',
+		down: '',
+		left: '',
+		right: ''
+	};
+	animationInd = {
+		up: -1,
+		down: -1,
+		left: -1,
+		right: -1
+	}
+	animationTimer = {
+		up: null,
+		down: null,
+		left: null,
+		right: null
+	};
 
 	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
 
@@ -60,7 +83,21 @@ export class CharactersComponent implements OnInit {
 	}
 
 	resetLoadedCharacter() {
+		clearInterval(this.animationTimer.up);
+		clearInterval(this.animationTimer.down);
+		clearInterval(this.animationTimer.left);
+		clearInterval(this.animationTimer.right);
 		this.loadedCharacter = new Character();
+		this.loadedCharacter.dropAssetUrl = '/assets/no-asset.svg';
+		this.dropItemName = 'Elige un item';
+		this.loadedCharacter.assetUpUrl = '/assets/no-asset.svg';
+		this.animationImage.up = '/assets/no-asset.svg';
+		this.loadedCharacter.assetDownUrl = '/assets/no-asset.svg';
+		this.animationImage.down = '/assets/no-asset.svg';
+		this.loadedCharacter.assetLeftUrl = '/assets/no-asset.svg';
+		this.animationImage.left = '/assets/no-asset.svg';
+		this.loadedCharacter.assetRightUrl = '/assets/no-asset.svg';
+		this.animationImage.right = '/assets/no-asset.svg';
 	}
 
 	showAddCharacter(ev = null) {
@@ -68,6 +105,7 @@ export class CharactersComponent implements OnInit {
 		if (!this.showDetail) {
 			this.resetLoadedCharacter();
 			this.characterDetailHeader = 'Nuevo personaje';
+			this.detailtTab = 'data';
 
 			this.showDetail = true;
 		}
@@ -79,5 +117,200 @@ export class CharactersComponent implements OnInit {
 
 	changeTab(tab: string) {
 		this.detailtTab = tab;
+	}
+	
+	openItemPicker() {
+		this.itemPicker.showPicker();
+	}
+
+	selectedItem(selectedItem: ItemInterface) {
+		this.loadedCharacter.dropIdItem = selectedItem.id;
+		this.loadedCharacter.dropAssetUrl = this.cs.urldecode(selectedItem.assetUrl);
+		this.dropItemName = this.cs.urldecode(selectedItem.name);
+	}
+
+	removeSelectedDropItem(ev) {
+		ev && ev.preventDefault();
+		this.loadedCharacter.dropIdItem = null;
+		this.loadedCharacter.dropAssetUrl = '/assets/no-asset.svg';
+		this.dropItemName = 'Elige un item';
+	}
+
+	openAssetPicker(where: string) {
+		if (where.indexOf('frames')!=-1) {
+			const orientation = where.replace('frames', '').toLowerCase();
+			const whereCheck = orientation.substring(0,1).toUpperCase() + orientation.substring(1);
+			if (this.loadedCharacter['idAsset'+whereCheck]==null) {
+				alert('Antes de añadir un frame tienes que elegir una imagen principal.');
+				return;
+			}
+		}
+		this.assetPickerWhere = where;
+		this.assetPicker.showPicker();
+	}
+
+	selectedAsset(selectedAsset: AssetInterface) {
+		if (this.assetPickerWhere.indexOf('frames')!=-1) {
+			const orientation = this.assetPickerWhere.replace('frames', '').toLowerCase();
+			let frame = new CharacterFrame(
+				null,
+				selectedAsset.id,
+				this.cs.urldecode(selectedAsset.url),
+				orientation,
+				this.loadedCharacter[this.assetPickerWhere].length
+			);
+			this.loadedCharacter[this.assetPickerWhere].push(frame);
+		}
+		else {
+			const where = this.assetPickerWhere.substring(0,1).toUpperCase() + this.assetPickerWhere.substring(1);
+			this.loadedCharacter['idAsset'+where] = selectedAsset.id;
+			this.loadedCharacter['asset'+where+'Url'] = this.cs.urldecode(selectedAsset.url);
+		}
+		this.startAnimation();
+	}
+
+	startAnimation() {
+		const sentList = ['up','down','left','right'];
+		for (let sent of sentList) {
+			clearInterval(this.animationTimer[sent]);
+			let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
+			
+			if (this.loadedCharacter['allFrames'+sentUpper].length>1) {
+				this.animationTimer[sent] = setInterval(() => { this.animatePreview(sent) }, 300);
+			}
+			else {
+				this.animationImage[sent] = this.loadedCharacter['asset'+sentUpper+'Url'];
+			}
+		}
+	}
+
+	animatePreview(sent: string) {
+		let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
+		this.animationInd[sent]++;
+		if (this.animationInd[sent] >= this.loadedCharacter['allFrames'+sentUpper].length) {
+			this.animationInd[sent] = 0;
+		}
+		this.animationImage[sent] = this.loadedCharacter['allFrames'+sentUpper][this.animationInd[sent]];
+	}
+	
+	frameDelete(sent: string, frame: CharacterFrame) {
+		const conf = confirm('¿Estás seguro de querer borrar este frame?');
+		if (conf) {
+			let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
+			const ind = this.loadedCharacter['frames'+sentUpper].findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+			this.loadedCharacter['frames'+sentUpper].splice(ind, 1);
+			this.updateFrameOrders(sentUpper);
+		}
+	}
+
+	frameLeft(sent: string, frame: CharacterFrame) {
+		let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
+		const ind = this.loadedCharacter['frames'+sentUpper].findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+		if (ind==0) {
+			return;
+		}
+		const aux = this.loadedCharacter['frames'+sentUpper][ind];
+		this.loadedCharacter['frames'+sentUpper][ind] = this.loadedCharacter['frames'+sentUpper][ind -1];
+		this.loadedCharacter['frames'+sentUpper][ind -1] = aux;
+		this.updateFrameOrders(sentUpper);
+	}
+
+	frameRight(sent: string, frame: CharacterFrame) {
+		let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
+		const ind = this.loadedCharacter['frames'+sentUpper].findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+		if (ind==(this.loadedCharacter['frames'+sentUpper].length-1)) {
+			return;
+		}
+		const aux = this.loadedCharacter['frames'+sentUpper][ind];
+		this.loadedCharacter['frames'+sentUpper][ind] = this.loadedCharacter['frames'+sentUpper][ind +1];
+		this.loadedCharacter['frames'+sentUpper][ind +1] = aux;
+		this.updateFrameOrders(sentUpper);
+	}
+
+	updateFrameOrders(sent: string) {
+		for (let frameOrder in this.loadedCharacter['frames'+sent]) {
+			this.loadedCharacter['frames'+sent][frameOrder].order = parseInt(frameOrder);
+		}
+	}
+
+	saveCharacter() {
+		let validate = true;
+		if (this.loadedCharacter.type==null) {
+			alert('¡Tienes que elegir el tipo de personaje!');
+			validate = false;
+		}
+		
+		if (validate && this.loadedCharacter.name==null) {
+			alert('¡No puedes dejar el nombre del personaje en blanco!');
+			validate = false;
+		}
+		
+		if (this.loadedCharacter.type==1) {
+			if (validate && this.loadedCharacter.health==null) {
+				alert('¡No puedes dejar la salud del enemigo en blanco!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.attack==null) {
+				alert('¡No puedes dejar el ataque del enemigo en blanco!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.defense==null) {
+				alert('¡No puedes dejar la defensa del enemigo en blanco!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.speed==null) {
+				alert('¡No puedes dejar la velocidad del enemigo en blanco!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.respawn==null) {
+				alert('¡No puedes dejar el tiempo de reaparición del enemigo en blanco!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.dropIdItem!=null && this.loadedCharacter.dropChance==null) {
+				alert('¡Has elegido un item para el enemigo, pero no has indicado el porcentaje de obtención!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.dropChance!=null && this.loadedCharacter.dropIdItem==null) {
+				alert('¡Has indicado el porcentaje de obtención de un item pero no has elegido ninguno!');
+				validate = false;
+			}
+			
+			if (validate && this.loadedCharacter.dropChance!=null && this.loadedCharacter.dropChance>100) {
+				alert('¡El porcentaje de obtención de un item no puede ser superior a 100%!');
+				this.loadedCharacter.dropChance = 100;
+				validate = false;
+			}
+		}
+		
+		if (validate && this.loadedCharacter.idAssetDown==null) {
+			alert('Tienes que elegir por lo menos una imagen hacia abajo para el personaje');
+			validate = false;
+		}
+		
+		if (validate && this.loadedCharacter.type==1 && (this.loadedCharacter.idAssetDown==null || this.loadedCharacter.idAssetUp==null || this.loadedCharacter.idAssetLeft==null || this.loadedCharacter.idAssetRight==null)) {
+			alert('Para un enemigo tienes que elegir por lo menos una imagen en cada sentido.');
+			validate = false;
+		}
+		
+		if (validate) {
+			this.as.saveCharacter(this.loadedCharacter.toInterface()).subscribe(result => {
+				if (result.status=='ok') {
+					this.showAddCharacter();
+					this.loadCharacters();
+					this.itemPicker.resetSelected();
+					this.assetPicker.resetSelected();
+				}
+				else {
+					alert('¡Ocurrió un error al guardar el personaje!');
+					this.message = 'ERROR: Ocurrió un error al guardar el personaje.';
+				}
+			});
+		}
 	}
 }
