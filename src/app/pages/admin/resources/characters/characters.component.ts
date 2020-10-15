@@ -118,7 +118,7 @@ export class CharactersComponent implements OnInit {
 	changeTab(tab: string) {
 		this.detailtTab = tab;
 	}
-	
+
 	openItemPicker() {
 		this.itemPicker.showPicker();
 	}
@@ -174,7 +174,7 @@ export class CharactersComponent implements OnInit {
 		for (let sent of sentList) {
 			clearInterval(this.animationTimer[sent]);
 			let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
-			
+
 			if (this.loadedCharacter['allFrames'+sentUpper].length>1) {
 				this.animationTimer[sent] = setInterval(() => { this.animatePreview(sent) }, 300);
 			}
@@ -192,7 +192,7 @@ export class CharactersComponent implements OnInit {
 		}
 		this.animationImage[sent] = this.loadedCharacter['allFrames'+sentUpper][this.animationInd[sent]];
 	}
-	
+
 	frameDelete(sent: string, frame: CharacterFrame) {
 		const conf = confirm('¿Estás seguro de querer borrar este frame?');
 		if (conf) {
@@ -239,65 +239,65 @@ export class CharactersComponent implements OnInit {
 			alert('¡Tienes que elegir el tipo de personaje!');
 			validate = false;
 		}
-		
+
 		if (validate && this.loadedCharacter.name==null) {
 			alert('¡No puedes dejar el nombre del personaje en blanco!');
 			validate = false;
 		}
-		
+
 		if (this.loadedCharacter.type==1) {
 			if (validate && this.loadedCharacter.health==null) {
 				alert('¡No puedes dejar la salud del enemigo en blanco!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.attack==null) {
 				alert('¡No puedes dejar el ataque del enemigo en blanco!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.defense==null) {
 				alert('¡No puedes dejar la defensa del enemigo en blanco!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.speed==null) {
 				alert('¡No puedes dejar la velocidad del enemigo en blanco!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.respawn==null) {
 				alert('¡No puedes dejar el tiempo de reaparición del enemigo en blanco!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.dropIdItem!=null && this.loadedCharacter.dropChance==null) {
 				alert('¡Has elegido un item para el enemigo, pero no has indicado el porcentaje de obtención!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.dropChance!=null && this.loadedCharacter.dropIdItem==null) {
 				alert('¡Has indicado el porcentaje de obtención de un item pero no has elegido ninguno!');
 				validate = false;
 			}
-			
+
 			if (validate && this.loadedCharacter.dropChance!=null && this.loadedCharacter.dropChance>100) {
 				alert('¡El porcentaje de obtención de un item no puede ser superior a 100%!');
 				this.loadedCharacter.dropChance = 100;
 				validate = false;
 			}
 		}
-		
+
 		if (validate && this.loadedCharacter.idAssetDown==null) {
 			alert('Tienes que elegir por lo menos una imagen hacia abajo para el personaje');
 			validate = false;
 		}
-		
+
 		if (validate && this.loadedCharacter.type==1 && (this.loadedCharacter.idAssetDown==null || this.loadedCharacter.idAssetUp==null || this.loadedCharacter.idAssetLeft==null || this.loadedCharacter.idAssetRight==null)) {
 			alert('Para un enemigo tienes que elegir por lo menos una imagen en cada sentido.');
 			validate = false;
 		}
-		
+
 		if (validate) {
 			this.as.saveCharacter(this.loadedCharacter.toInterface()).subscribe(result => {
 				if (result.status=='ok') {
@@ -309,6 +309,74 @@ export class CharactersComponent implements OnInit {
 				else {
 					alert('¡Ocurrió un error al guardar el personaje!');
 					this.message = 'ERROR: Ocurrió un error al guardar el personaje.';
+				}
+			});
+		}
+	}
+
+	editCharacter(character: Character) {
+		this.loadedCharacter = new Character(
+			character.id,
+			character.name,
+			character.idAssetUp,
+			character.assetUpUrl,
+			character.idAssetDown,
+			character.assetDownUrl,
+			character.idAssetLeft,
+			character.assetLeftUrl,
+			character.idAssetRight,
+			character.assetRightUrl,
+			character.type,
+			character.health,
+			character.attack,
+			character.defense,
+			character.speed,
+			character.dropIdItem,
+			character.dropAssetUrl,
+			character.dropChance,
+			character.respawn,
+			[],
+			[],
+			[],
+			[]
+		);
+		let sentList = ['Up', 'Down', 'Left', 'Right'];
+		for (let sent of sentList) {
+			for (let frame of character['frames'+sent]) {
+				frame.assetUrl = this.cs.urldecode(frame.assetUrl);
+				this.loadedCharacter['frames'+sent].push(frame);
+			}
+		}
+
+		this.animationImage = this.loadedItem.assetUrl;
+		this.assetPickerWhere = null;
+		this.changeTab('data');
+		this.animationInd = -1;
+		if (this.animationTimer!==null) {
+			clearInterval(this.animationTimer);
+			this.animationTimer = null;
+		}
+		if (this.loadedItem.frames.length>1) {
+			this.startAnimation();
+		}
+
+		this.itemDetailHeader = 'Editar item';
+		this.showDetail = true;
+	}
+
+	deleteItem(item: Item) {
+		const conf = confirm('¿Estás seguro de querer borrar el item "'+this.cs.urldecode(item.name)+'"?');
+		if (conf) {
+			this.as.deleteItem(item.id).subscribe(result => {
+				if (result.status=='ok') {
+					this.loadItems();
+				}
+				if (result.status=='in-use') {
+					alert("El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n"+result.message);
+				}
+				if (status=='error') {
+					alert('¡Ocurrio un error al borrar el item!');
+					this.message = 'ERROR: Ocurrió un error al borrar el item.';
 				}
 			});
 		}
