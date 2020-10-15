@@ -159,3 +159,43 @@ export interface CharacterResult {
 	status: string;
 	list: CharacterInterface[];
 }
+
+export interface ScenarioObjectDropInterface {
+	id: number;
+	idAsset: number;
+	assetUrl: string;
+	num: number;
+}
+
+export interface ScenarioObjectFrameInterface {
+	id: number;
+	idAsset: number;
+	assetUrl: string;
+	order: number;
+}
+
+export interface ScenarioObjectInterface {
+	id: number;
+	name: string;
+	idAsset: number;
+	assetUrl: string;
+	width: number;
+	height: number;
+	crossable: boolean;
+	activable: boolean;
+	idAssetActive: number;
+	assetActiveUrl: string;
+	activeTime: number;
+	activeTrigger: number;
+	activeTriggerCustom: string;
+	pickable: boolean;
+	grabbable: boolean;
+	breakable: boolean;
+	drops: ScenarioObjectDropInterface[];
+	frames: ScenarioObjectFrameInterface[];
+}
+
+export interface ScenarioObjectResult {
+	status: string;
+	list: ScenarioObjectInterface[];
+}
