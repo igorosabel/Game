@@ -317,15 +317,15 @@ export class CharactersComponent implements OnInit {
 	editCharacter(character: Character) {
 		this.loadedCharacter = new Character(
 			character.id,
-			character.name,
+			this.cs.urldecode(character.name),
 			character.idAssetUp,
-			character.assetUpUrl,
+			(character.assetUpUrl!=null) ? this.cs.urldecode(character.assetUpUrl) : '/assets/no-asset.svg',
 			character.idAssetDown,
-			character.assetDownUrl,
+			this.cs.urldecode(character.assetDownUrl),
 			character.idAssetLeft,
-			character.assetLeftUrl,
+			(character.assetLeftUrl!=null) ? this.cs.urldecode(character.assetLeftUrl) : '/assets/no-asset.svg',
 			character.idAssetRight,
-			character.assetRightUrl,
+			(character.assetRightUrl!=null) ? this.cs.urldecode(character.assetRightUrl) : '/assets/no-asset.svg',
 			character.type,
 			character.health,
 			character.attack,
@@ -356,6 +356,14 @@ export class CharactersComponent implements OnInit {
 		this.assetPickerWhere = null;
 		this.changeTab('data');
 		this.startAnimation();
+		
+		if (character.dropIdItem!==null) {
+			const dropItem = this.itemPicker.getItemById(character.dropIdItem);
+			this.dropItemName = this.cs.urldecode(dropItem.name);
+		}
+		else {
+			this.dropItemName = 'Elige un item';
+		}
 
 		this.characterDetailHeader = 'Editar personaje';
 		this.showDetail = true;

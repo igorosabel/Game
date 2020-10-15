@@ -48,31 +48,38 @@
 		<div class="body" [ngClass]="{'body-show':detailtTab=='data'}">
 			<div class="row cols">
 				<div class="col">
+					<label>Tipo de personaje</label>
 					<select name="character-type" [(ngModel)]="loadedCharacter.type">
 						<option [ngValue]="null">Elige un tipo</option>
 						<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
 					</select>
 				</div>
 				<div class="col">
+					<label>Nombre del personaje</label>
 					<input type="text" name="character-name" [(ngModel)]="loadedCharacter.name" placeholder="Nombre del personaje">
 				</div>
 			</div>
 			<div class="row cols" *ngIf="loadedCharacter.type==1">
 				<div class="col">
+					<label>Salud del personaje</label>
 					<input type="number" name="character-health" min="1" step="1" [(ngModel)]="loadedCharacter.health" placeholder="Salud del personaje">
 				</div>
 				<div class="col">
+					<label>Ataque del personaje</label>
 					<input type="number" name="character-attack" min="1" step="1" [(ngModel)]="loadedCharacter.attack" placeholder="Ataque del personaje">
 				</div>
 				<div class="col">
+					<label>Defensa del personaje</label>
 					<input type="number" name="character-defense" min="1" step="1" [(ngModel)]="loadedCharacter.defense" placeholder="Defensa del personaje">
 				</div>
 			</div>
 			<div class="row cols" *ngIf="loadedCharacter.type==1">
 				<div class="col">
+					<label>Velocidad del personaje</label>
 					<input type="number" name="character-speed" min="1" step="1" [(ngModel)]="loadedCharacter.speed" placeholder="Velocidad del personaje">
 				</div>
 				<div class="col">
+					<label>Tiempo para volver a aparecer</label>
 					<input type="number" name="character-respawn" min="1" step="1" [(ngModel)]="loadedCharacter.respawn" placeholder="Tiempo para volver a aparecer">
 				</div>
 			</div>
@@ -85,6 +92,7 @@
 					</div>
 				</div>
 				<div class="col">
+					<label>Porcentaje de posibilidad de obtener item</label>
 					<input type="number" name="character-drop-chance" min="1" step="1" max="100" [(ngModel)]="loadedCharacter.dropChance" placeholder="Porcentaje de posibilidad de obtener item">
 				</div>
 			</div>
