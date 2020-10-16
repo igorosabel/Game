@@ -1,26 +1,26 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Objetos de escenario" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
 <div class="scenario-object-header">
-  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
-    <img src="/assets/list-items.svg">
-  </a>
-  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
-    <img src="/assets/list-list.svg">
-  </a>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+		<img src="/assets/list-items.svg">
+	</a>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+		<img src="/assets/list-list.svg">
+	</a>
 </div>
 
 <div class="scenario-object-list" [ngClass]="{'scenario-object-list-list': filterListOption=='list'}">
-  <div *ngFor="let scenarioObject of scenarioObjectList" [ngClass]="{'scenario-object-item': filterListOption=='items', 'scenario-object-list-item': filterListOption=='list'}">
-    <img src="{{ scenarioObject.assetUrl | urldecode }}" alt="{{ scenarioObject.name | urldecode }}">
-    <div class="scenario-object-info">
-      <span title="{{scenarioObject.name | urldecode}}">{{ scenarioObject.name | urldecode }}</span>
-      <img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-object-edit" (click)="editScenarioObject(scenarioObject)">
-      <img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-object-delete" (click)="deleteScenarioObject(scenarioObject)">
-    </div>
-  </div>
-  <div class="scenario-object-message" *ngIf="message!=null">
-    {{message}}
-  </div>
+	<div *ngFor="let scenarioObject of scenarioObjectList" [ngClass]="{'scenario-object-item': filterListOption=='items', 'scenario-object-list-item': filterListOption=='list'}">
+		<img src="{{ scenarioObject.assetUrl | urldecode }}" alt="{{ scenarioObject.name | urldecode }}">
+		<div class="scenario-object-info">
+			<span title="{{scenarioObject.name | urldecode}}">{{ scenarioObject.name | urldecode }}</span>
+			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-object-edit" (click)="editScenarioObject(scenarioObject)">
+			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-object-delete" (click)="deleteScenarioObject(scenarioObject)">
+		</div>
+	</div>
+	<div class="scenario-object-message" *ngIf="message!=null">
+		{{message}}
+	</div>
 </div>
 
 <a href="#" class="fab-button" id="add-btn" (click)="showAddScenarioObject($event)">+</a>
@@ -77,11 +77,23 @@
 					</select>
 				</div>
 			</div>
-			<div class="row cols" *ngIf="loadedScenarioObject.activable && (loadedScenarioObject.activeTrigger==0 || loadedScenarioObject.activeTrigger==2)">
+			<div class="row cols" *ngIf="loadedScenarioObject.activable">
 				<div class="col">
-					<label *ngIf="loadedScenarioObject.activeTrigger==0">Mensaje de activación</label>
-					<label *ngIf="loadedScenarioObject.activeTrigger==2">Orden a ejecutar</label>
-					<textarea [(ngModel)]="loadedScenarioObject.activeTriggerCustom"></textarea>
+					<ng-container *ngIf="loadedScenarioObject.activeTrigger==0">
+						<label>Mensaje de activación</label>
+						<textarea name="scenario-object-active-trigger-custom" [(ngModel)]="loadedScenarioObject.activeTriggerCustom"></textarea>
+					</ng-container>
+					<ng-container *ngIf="loadedScenarioObject.activeTrigger==1">
+						<label>Mundo al que transportar</label>
+						<select name="scenario-object-active-trigger-custom" [(ngModel)]="loadedScenarioObject.activeTriggerCustom">
+							<option [ngValue]="null">Elige un mundo</option>
+							<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name | urldecode}}</option>
+						</select>
+					</ng-container>
+					<ng-container *ngIf="loadedScenarioObject.activeTrigger==2">
+						<label>Orden a ejecutar</label>
+						<input type="text" name="scenario-object-active-trigger-custom" [(ngModel)]="loadedScenarioObject.activeTriggerCustom" placeholder="Orden a ejecutar">
+					</ng-container>
 				</div>
 			</div>
 			<div class="row cols">
@@ -134,7 +146,11 @@
 		</div>
 		<!-- Items -->
 		<div class="body" [ngClass]="{'body-show':detailtTab=='drops'}">
-			
+
+		</div>
+		<div class="footer">
+			<button (click)="saveScenarioObject()" *ngIf="!savingScenarioObject">Continuar</button>
+			<button disabled="disabled" *ngIf="savingScenarioObject">Guardando...</button>
 		</div>
 	</div>
 </div>

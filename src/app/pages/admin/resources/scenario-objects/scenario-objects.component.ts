@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild }  from '@angular/core';
+import { World }                         from '../../../../model/world.model';
 import { ScenarioObject }                from '../../../../model/scenario-object.model';
 import { ScenarioObjectFrame }           from '../../../../model/scenario-object-frame.model';
 import { ScenarioObjectDrop }            from '../../../../model/scenario-object-drop.model';
@@ -15,6 +16,7 @@ import { ItemPickerComponent }           from '../../../../components/item-picke
 	styleUrls: ['./scenario-objects.component.scss']
 })
 export class ScenarioObjectsComponent implements OnInit {
+	worldList: World[] = [];
 	filterListOption: string = 'items';
 	scenarioObjectList: ScenarioObject[] = [];
 	message: string = null;
@@ -25,19 +27,29 @@ export class ScenarioObjectsComponent implements OnInit {
 	activeTriggerTypes = [
 		{ id: 0, name: 'Mensaje' },
 		{ id: 1, name: 'Teleportación' },
-		{ id: 2, name: 'Personalizado' }
+		{ id: 2, name: 'Orden personalizada' }
 	];
 	animationImage: string = '';
 	animationTimer: number = null;
 	animationInd: number = -1;
 	assetPickerWhere: string = null;
+	savingScenarioObject: boolean = false;
 	@ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
 	@ViewChild('itemPicker', { static: true }) itemPicker: ItemPickerComponent;
 
 	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
 
 	ngOnInit(): void {
+		this.loadWorlds();
 		this.loadScenarioObjects();
+	}
+
+	loadWorlds() {
+		this.as.getWorlds().subscribe(result => {
+			if (result.status=='ok') {
+				this.worldList = this.cms.getWorlds(result.list);
+			}
+		});
 	}
 
 	loadScenarioObjects() {
@@ -75,7 +87,7 @@ export class ScenarioObjectsComponent implements OnInit {
 			this.resetLoadedScenarioObject();
 		}
 	}
-	
+
 	changeTab(tab: string) {
 		this.detailtTab = tab;
 	}
@@ -134,12 +146,16 @@ export class ScenarioObjectsComponent implements OnInit {
 			this.animationImage = this.loadedScenarioObject.assetUrl;
 		}
 	}
-	
+
 	animatePreview() {
 		this.animationInd++;
 		if (this.animationInd >= this.loadedScenarioObject.allFrames.length) {
 			this.animationInd = 0;
 		}
 		this.animationImage = this.loadedScenarioObject.allFrames[this.animationInd];
+	}
+
+	saveScenarioObject() {
+
 	}
 }

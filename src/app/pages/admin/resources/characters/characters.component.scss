@@ -293,6 +293,8 @@
 				overflow-x: scroll;
 				overflow-y: hidden;
 				white-space: nowrap;
+				border: 1px solid #ccc;
+				margin: 0 auto 16px;
 
 				.animation-frame {
 					display: inline-block;
