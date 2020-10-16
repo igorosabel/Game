@@ -104,7 +104,7 @@
 			width: 128px;
 		}
 
-		.background-info {
+		.character-info {
 			display: flex;
 			padding: 0 16px;
 			flex: 1;
@@ -387,7 +387,7 @@
 	}
 }
 
-.item-detail-show {
+.character-detail-show {
   display: flex;
 }
 
@@ -402,6 +402,10 @@
 						}
 					}
 				}
+			}
+
+			.tabs {
+				overflow-x: auto;
 			}
 		}
 	}

@@ -22,6 +22,11 @@ export class ScenarioObjectsComponent implements OnInit {
 	showDetail: boolean = false;
 	detailtTab: string = 'data';
 	scenarioObjectDetailHeader: string = '';
+	activeTriggerTypes = [
+		{ id: 0, name: 'Mensaje' },
+		{ id: 1, name: 'Teleportación' },
+		{ id: 2, name: 'Personalizado' }
+	];
 	animationImage: string = '';
 	animationTimer: number = null;
 	animationInd: number = -1;
@@ -48,8 +53,27 @@ export class ScenarioObjectsComponent implements OnInit {
 		this.filterListOption = option;
 	}
 
+	resetLoadedScenarioObject() {
+		clearInterval(this.animationTimer);
+		this.loadedScenarioObject = new ScenarioObject();
+		this.loadedScenarioObject.assetUrl = '/assets/no-asset.svg';
+		this.loadedScenarioObject.assetActiveUrl = '/assets/no-asset.svg';
+		this.animationImage = '/assets/no-asset.svg';
+	}
+
 	showAddScenarioObject(ev) {
 		ev && ev.preventDefault();
+		if (!this.showDetail) {
+			this.resetLoadedScenarioObject();
+			this.scenarioObjectDetailHeader = 'Nuevo objeto de escenario';
+			this.detailtTab = 'data';
+
+			this.showDetail = true;
+		}
+		else {
+			this.showDetail = false;
+			this.resetLoadedScenarioObject();
+		}
 	}
 	
 	changeTab(tab: string) {

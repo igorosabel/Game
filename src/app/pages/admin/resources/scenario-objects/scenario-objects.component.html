@@ -64,7 +64,26 @@
 					<input type="checkbox" name="scenario-object-activable" [(ngModel)]="loadedScenarioObject.activable">
 				</div>
 			</div>
-			
+			<div class="row cols" *ngIf="loadedScenarioObject.activable">
+				<div class="col">
+					<label>Tiempo activo</label>
+					<input type="number" min="0" step="1" name="scenario-object-active-time" [(ngModel)]="loadedScenarioObject.activeTime" placeholder="Tiempo activo">
+				</div>
+				<div class="col">
+					<label>Tipo de activador</label>
+					<select name="scenario-object-active-trigger" [(ngModel)]="loadedScenarioObject.activeTrigger">
+						<option [ngValue]="null">Elige tipo</option>
+						<option *ngFor="let type of activeTriggerTypes" [ngValue]="type.id">{{type.name}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="row cols" *ngIf="loadedScenarioObject.activable && (loadedScenarioObject.activeTrigger==0 || loadedScenarioObject.activeTrigger==2)">
+				<div class="col">
+					<label *ngIf="loadedScenarioObject.activeTrigger==0">Mensaje de activación</label>
+					<label *ngIf="loadedScenarioObject.activeTrigger==2">Orden a ejecutar</label>
+					<textarea [(ngModel)]="loadedScenarioObject.activeTriggerCustom"></textarea>
+				</div>
+			</div>
 			<div class="row cols">
 				<div class="col">
 					<label>Obtener</label>
@@ -87,7 +106,7 @@
 					<img [src]="loadedScenarioObject.assetUrl" (click)="openAssetPicker('main')">
 					<div>Imagen principal</div>
 				</div>
-				<div class="col picker">
+				<div class="col picker" *ngIf="loadedScenarioObject.activable">
 					<img [src]="loadedScenarioObject.assetActiveUrl" (click)="openAssetPicker('active')">
 					<div>Imagen activado</div>
 				</div>
