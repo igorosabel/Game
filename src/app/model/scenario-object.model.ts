@@ -22,6 +22,15 @@ export class ScenarioObject {
 		public frames = []
 	) {}
 
+	get allFrames() {
+		const frameList = [];
+		frameList.push(this.assetUrl);
+		for (let frame of this.frames) {
+			frameList.push(frame.assetUrl);
+		}
+		return frameList;
+	}
+
 	toInterface(): ScenarioObjectInterface {
 		const scenarioObject: ScenarioObjectInterface = {
 			id: this.id,

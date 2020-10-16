@@ -24,3 +24,101 @@
 </div>
 
 <a href="#" class="fab-button" id="add-btn" (click)="showAddScenarioObject($event)">+</a>
+
+<div class="scenario-object-detail" [ngClass]="{'scenario-object-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{scenarioObjectDetailHeader}}</span>
+			<a href="#" (click)="showAddScenarioObject($event)">X</a>
+		</div>
+		<div class="tabs">
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='data'}" (click)="changeTab('data')">Datos</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='animation'}" (click)="changeTab('animation')">Animación</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='drops'}" (click)="changeTab('drops')">Items</div>
+		</div>
+		<!-- Datos -->
+		<div class="body" [ngClass]="{'body-show':detailtTab=='data'}">
+			<div class="row cols">
+				<div class="col">
+					<label>Nombre del personaje</label>
+					<input type="text" name="scenario-object-name" [(ngModel)]="loadedScenarioObject.name" placeholder="Nombre del objeto">
+				</div>
+			</div>
+			<div class="row cols">
+				<div class="col">
+					<label>Anchura</label>
+					<input type="number" min="1" step="1" name="scenario-object-width" [(ngModel)]="loadedScenarioObject.width" placeholder="Anchura del objeto">
+				</div>
+				<div class="col">
+					<label>Altura</label>
+					<input type="number" min="1" step="1" name="scenario-object-height" [(ngModel)]="loadedScenarioObject.height" placeholder="Altura del objeto">
+				</div>
+			</div>
+			<div class="row cols">
+				<div class="col">
+					<label>Cruzable</label>
+					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable">
+				</div>
+				<div class="col">
+					<label>Activar</label>
+					<input type="checkbox" name="scenario-object-activable" [(ngModel)]="loadedScenarioObject.activable">
+				</div>
+			</div>
+			
+			<div class="row cols">
+				<div class="col">
+					<label>Obtener</label>
+					<input type="checkbox" name="scenario-object-pickable" [(ngModel)]="loadedScenarioObject.pickable">
+				</div>
+				<div class="col">
+					<label>Levantar</label>
+					<input type="checkbox" name="scenario-object-grabbable" [(ngModel)]="loadedScenarioObject.grabbable">
+				</div>
+				<div class="col">
+					<label>Romper</label>
+					<input type="checkbox" name="scenario-object-breakable" [(ngModel)]="loadedScenarioObject.breakable">
+				</div>
+			</div>
+		</div>
+		<!-- Animación -->
+		<div class="body" [ngClass]="{'body-show':detailtTab=='animation'}">
+			<div class="row cols">
+				<div class="col picker">
+					<img [src]="loadedScenarioObject.assetUrl" (click)="openAssetPicker('main')">
+					<div>Imagen principal</div>
+				</div>
+				<div class="col picker">
+					<img [src]="loadedScenarioObject.assetActiveUrl" (click)="openAssetPicker('active')">
+					<div>Imagen activado</div>
+				</div>
+				<div class="col preview-col">
+					<img [src]="animationImage">
+				</div>
+			</div>
+			<div class="animation-slider">
+				<div class="animation-frame" *ngFor="let frame of loadedScenarioObject.frames; let ind = index">
+					<button class="animation-delete" (click)="frameDelete(frame)">
+						<img src="/assets/frame-delete.svg">
+					</button>
+					<button class="animation-left" (click)="frameLeft(frame)" *ngIf="ind!=0">
+						<img src="/assets/frame-left.svg">
+					</button>
+					<button class="animation-right" (click)="frameRight(frame)" *ngIf="ind!=loadedScenarioObject.frames.length-1">
+						<img src="/assets/frame-right.svg">
+					</button>
+					<img [src]="frame.assetUrl">
+				</div>
+				<div class="animation-frame animation-frame-add">
+					<img src="/assets/add-frame.svg" (click)="openAssetPicker('frames')">
+				</div>
+			</div>
+		</div>
+		<!-- Items -->
+		<div class="body" [ngClass]="{'body-show':detailtTab=='drops'}">
+			
+		</div>
+	</div>
+</div>
+
+<game-asset-picker #assetPicker (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+<game-item-picker #itemPicker (selectItemEvent)="selectedItem($event)"></game-item-picker>
