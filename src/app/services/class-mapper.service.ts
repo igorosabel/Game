@@ -298,7 +298,8 @@ export class ClassMapperService {
 	getScenarioObjectDrop(sod: ScenarioObjectDropInterface) {
 		return new ScenarioObjectDrop(
 			sod.id,
-			sod.idAsset,
+			sod.idItem,
+      sod.itemName,
 			sod.assetUrl,
 			sod.num
 		);

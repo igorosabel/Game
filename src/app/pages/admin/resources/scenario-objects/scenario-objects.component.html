@@ -146,7 +146,17 @@
 		</div>
 		<!-- Items -->
 		<div class="body" [ngClass]="{'body-show':detailtTab=='drops'}">
-
+			<div class="scenario-object-drops">
+				<div class="scenario-object-add-drop">
+					<button (click)="openItemPicker()">Añadir item</button>
+				</div>
+				<div class="scenario-object-drop-list">
+					<div class="scenario-object-drop" *ngFor="let drop of loadedScenarioObject.drops">
+						<div class="scenario-object-drop-name">{{drop.itemName | urldecode}}</div>
+						<input type="number" min="1" step="1" name="scenario-object-drop-num" [(ngModel)]="drop.num" placeholder="Cantidad">
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="footer">
 			<button (click)="saveScenarioObject()" *ngIf="!savingScenarioObject">Continuar</button>

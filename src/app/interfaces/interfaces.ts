@@ -162,7 +162,8 @@ export interface CharacterResult {
 
 export interface ScenarioObjectDropInterface {
 	id: number;
-	idAsset: number;
+	idItem: number;
+  itemName: string;
 	assetUrl: string;
 	num: number;
 }

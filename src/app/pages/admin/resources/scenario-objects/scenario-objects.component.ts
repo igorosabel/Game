@@ -100,6 +100,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		let drop = new ScenarioObjectDrop(
 			null,
 			selectedItem.id,
+			this.cs.urldecode(selectedItem.name),
 			this.cs.urldecode(selectedItem.assetUrl),
 			1
 		);
