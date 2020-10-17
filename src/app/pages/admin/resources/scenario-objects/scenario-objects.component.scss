@@ -245,6 +245,12 @@
 				}
 			}
 
+			.cols-column {
+				flex-direction: column;
+				max-heigth: 200px;
+				overflow-y: scroll;
+			}
+
 			.picker {
 				flex-direction: column;
 
@@ -444,6 +450,11 @@
 							font-size: 12px;
 						}
 					}
+				}
+
+				.cols-column {
+					flex-direction: row;
+					overflow-y: auto;
 				}
 			}
 

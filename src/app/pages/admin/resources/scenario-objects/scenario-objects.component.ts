@@ -97,8 +97,7 @@ export class ScenarioObjectsComponent implements OnInit {
 	}
 
 	selectedItem(selectedItem: ItemInterface) {
-		debugger;
-		const ind = this.loadedScenarioObject.drops.findIndex(x => x.itemId==selectedItem.id);
+		const ind = this.loadedScenarioObject.drops.findIndex(x => x.idItem==selectedItem.id);
 		if (ind==-1) {
 			let drop = new ScenarioObjectDrop(
 				null,
@@ -168,6 +167,11 @@ export class ScenarioObjectsComponent implements OnInit {
 	}
 
 	saveScenarioObject() {
-
+		let validate = true;
+		
+		if (this.loadedScenarioObject.name==null) {
+			alert('¡No puedes dejar el nombre del objeto en blanco!');
+			validate = false;
+		}
 	}
 }
