@@ -63,12 +63,12 @@
 					<label>Activar</label>
 					<input type="checkbox" name="scenario-object-activable" [(ngModel)]="loadedScenarioObject.activable">
 				</div>
-			</div>
-			<div class="row cols" *ngIf="loadedScenarioObject.activable">
 				<div class="col">
 					<label>Tiempo activo</label>
 					<input type="number" min="0" step="1" name="scenario-object-active-time" [(ngModel)]="loadedScenarioObject.activeTime" placeholder="Tiempo activo">
 				</div>
+			</div>
+			<div class="row cols" *ngIf="loadedScenarioObject.activable">
 				<div class="col">
 					<label>Tipo de activador</label>
 					<select name="scenario-object-active-trigger" [(ngModel)]="loadedScenarioObject.activeTrigger">
@@ -76,9 +76,7 @@
 						<option *ngFor="let type of activeTriggerTypes" [ngValue]="type.id">{{type.name}}</option>
 					</select>
 				</div>
-			</div>
-			<div class="row cols" *ngIf="loadedScenarioObject.activable">
-				<div class="col">
+				<div class="col" *ngIf="loadedScenarioObject.activable">
 					<ng-container *ngIf="loadedScenarioObject.activeTrigger==0">
 						<label>Mensaje de activación</label>
 						<textarea name="scenario-object-active-trigger-custom" [(ngModel)]="loadedScenarioObject.activeTriggerCustom"></textarea>
