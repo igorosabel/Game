@@ -150,7 +150,11 @@
 				</div>
 				<div class="scenario-object-drop-list">
 					<div class="scenario-object-drop" *ngFor="let drop of loadedScenarioObject.drops">
-						<div class="scenario-object-drop-name">{{drop.itemName | urldecode}}</div>
+						<div class="scenario-object-drop-name">
+							<a href="#" (click)="deleteDrop(drop)">x</a>
+							<img [src]="drop.assetUrl">
+							{{drop.itemName | urldecode}}
+						</div>
 						<input type="number" min="1" step="1" name="scenario-object-drop-num" [(ngModel)]="drop.num" placeholder="Cantidad">
 					</div>
 				</div>

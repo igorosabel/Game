@@ -156,6 +156,10 @@ export class ScenarioObjectsComponent implements OnInit {
 		this.animationImage = this.loadedScenarioObject.allFrames[this.animationInd];
 	}
 
+	deleteDrop(drop: ScenarioObjectDrop) {
+		
+	}
+
 	saveScenarioObject() {
 
 	}

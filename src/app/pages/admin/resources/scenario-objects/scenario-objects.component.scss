@@ -328,18 +328,54 @@
 			}
 
 			.scenario-object-drops {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+
 				.scenario-object-add-drop {
+					margin: 16px;
 
 				}
 
 				.scenario-object-drop-list {
-					.scenario-object-drop {
-						.scenario-object-drop-name {
+					border: 1px solid #888;
+					background-color: #ccc;
+					max-height: 100%;
+					overflow-y: scroll;
 
+					.scenario-object-drop {
+						border: 1px solid #888;
+						margin: 4px;
+						padding: 8px;
+						display: flex;
+						background-color: #fff;
+
+						.scenario-object-drop-name {
+							flex: 1;
+
+							a {
+								color: #f00;
+								text-decoration: none;
+								display: inline-block;
+								margin-right: 8px;
+								width: 16px;
+								text-align: block;
+								
+								&:hover {
+									text-decoration: underline;
+								}
+							}
+
+							img {
+								display: inline-block;
+								width: 32px;
+								height: 32px;
+								margin-right: 8px;
+							}
 						}
 
 						input {
-
+							width: 50px;
 						}
 					}
 				}
