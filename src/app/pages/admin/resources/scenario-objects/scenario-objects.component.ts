@@ -97,14 +97,21 @@ export class ScenarioObjectsComponent implements OnInit {
 	}
 
 	selectedItem(selectedItem: ItemInterface) {
-		let drop = new ScenarioObjectDrop(
-			null,
-			selectedItem.id,
-			this.cs.urldecode(selectedItem.name),
-			this.cs.urldecode(selectedItem.assetUrl),
-			1
-		);
-		this.loadedScenarioObject.drops.push(drop);
+		debugger;
+		const ind = this.loadedScenarioObject.drops.findIndex(x => x.itemId==selectedItem.id);
+		if (ind==-1) {
+			let drop = new ScenarioObjectDrop(
+				null,
+				selectedItem.id,
+				this.cs.urldecode(selectedItem.name),
+				this.cs.urldecode(selectedItem.assetUrl),
+				1
+			);
+			this.loadedScenarioObject.drops.push(drop);
+		}
+		else {
+			this.loadedScenarioObject.drops[ind].num++;
+		}
 	}
 
 	openAssetPicker(where: string) {
@@ -157,7 +164,7 @@ export class ScenarioObjectsComponent implements OnInit {
 	}
 
 	deleteDrop(drop: ScenarioObjectDrop) {
-		
+
 	}
 
 	saveScenarioObject() {
