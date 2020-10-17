@@ -56,14 +56,14 @@
 			</div>
 			<div class="row cols">
 				<div class="col">
-					<label>Cruzable</label>
-					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable">
+					<label>Obtener</label>
+					<input type="checkbox" name="scenario-object-pickable" [(ngModel)]="loadedScenarioObject.pickable" (change)="updatePickable()">
 				</div>
 				<div class="col">
 					<label>Activar</label>
-					<input type="checkbox" name="scenario-object-activable" [(ngModel)]="loadedScenarioObject.activable">
+					<input type="checkbox" name="scenario-object-activable" [(ngModel)]="loadedScenarioObject.activable" [disabled]="loadedScenarioObject.pickable">
 				</div>
-				<div class="col">
+				<div class="col" *ngIf="loadedScenarioObject.activable">
 					<label>Tiempo activo</label>
 					<input type="number" min="0" step="1" name="scenario-object-active-time" [(ngModel)]="loadedScenarioObject.activeTime" placeholder="Tiempo activo">
 				</div>
@@ -83,9 +83,13 @@
 					</ng-container>
 					<ng-container *ngIf="loadedScenarioObject.activeTrigger==1">
 						<label>Mundo al que transportar</label>
-						<select name="scenario-object-active-trigger-custom" [(ngModel)]="loadedScenarioObject.activeTriggerCustom">
+						<select name="scenario-object-active-trigger-custom-world" [(ngModel)]="activeTriggerWorld" (change)="loadSelectedWorldScenarios()">
 							<option [ngValue]="null">Elige un mundo</option>
 							<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name | urldecode}}</option>
+						</select>
+						<select name="scenario-object-active-trigger-custom-scenario" [(ngModel)]="loadedScenarioObject.activeTriggerCustom" *ngIf="activeTriggerWorld!=null">
+							<option [ngValue]="null">Elige un escenario</option>
+							<option *ngFor="let scenario of scenarioList" [ngValue]="scenario.id">{{scenario.name | urldecode}}{{scenario.initial ? ' (inicio)' : ''}}</option>
 						</select>
 					</ng-container>
 					<ng-container *ngIf="loadedScenarioObject.activeTrigger==2">
@@ -96,16 +100,16 @@
 			</div>
 			<div class="row cols">
 				<div class="col">
-					<label>Obtener</label>
-					<input type="checkbox" name="scenario-object-pickable" [(ngModel)]="loadedScenarioObject.pickable">
+					<label>Cruzable</label>
+					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable" [disabled]="loadedScenarioObject.pickable">
 				</div>
 				<div class="col">
 					<label>Levantar</label>
-					<input type="checkbox" name="scenario-object-grabbable" [(ngModel)]="loadedScenarioObject.grabbable">
+					<input type="checkbox" name="scenario-object-grabbable" [(ngModel)]="loadedScenarioObject.grabbable" [disabled]="loadedScenarioObject.pickable">
 				</div>
 				<div class="col">
 					<label>Romper</label>
-					<input type="checkbox" name="scenario-object-breakable" [(ngModel)]="loadedScenarioObject.breakable">
+					<input type="checkbox" name="scenario-object-breakable" [(ngModel)]="loadedScenarioObject.breakable" [disabled]="loadedScenarioObject.pickable">
 				</div>
 			</div>
 		</div>
