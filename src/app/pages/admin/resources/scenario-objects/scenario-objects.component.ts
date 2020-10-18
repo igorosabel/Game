@@ -188,9 +188,50 @@ export class ScenarioObjectsComponent implements OnInit {
 		}
 		this.animationImage = this.loadedScenarioObject.allFrames[this.animationInd];
 	}
+	
+	frameDelete(frame: ScenarioObjectFrame) {
+		const conf = confirm('¿Estás seguro de querer borrar este frame?');
+		if (conf) {
+			const ind = this.loadedScenarioObject.frames.findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+			this.loadedScenarioObject.frames.splice(ind, 1);
+			this.updateFrameOrders();
+		}
+	}
+
+	frameLeft(frame: ScenarioObjectFrame) {
+		const ind = this.loadedScenarioObject.frames.findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+		if (ind==0) {
+			return;
+		}
+		const aux = this.loadedScenarioObject.frames[ind];
+		this.loadedScenarioObject.frames[ind] = this.loadedScenarioObject.frames[ind -1];
+		this.loadedScenarioObject.frames[ind -1] = aux;
+		this.updateFrameOrders();
+	}
+
+	frameRight(frame: ScenarioObjectFrame) {
+		const ind = this.loadedScenarioObject.frames.findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+		if (ind==(this.loadedScenarioObject.frames.length-1)) {
+			return;
+		}
+		const aux = this.loadedScenarioObject.frames[ind];
+		this.loadedScenarioObject.frames[ind] = this.loadedScenarioObject.frames[ind +1];
+		this.loadedScenarioObject.frames[ind +1] = aux;
+		this.updateFrameOrders();
+	}
+
+	updateFrameOrders() {
+		for (let frameOrder in this.loadedScenarioObject.frames) {
+			this.loadedScenarioObject.frames[frameOrder].order = parseInt(frameOrder);
+		}
+	}
 
 	deleteDrop(drop: ScenarioObjectDrop) {
-
+		const conf = confirm('¿Estás seguro de querer borrar este item?');
+		if (conf) {
+			const ind = this.loadedScenarioObject.drops.findIndex(x => (x.id+x.idItem.toString())==(drop.id+drop.idItem.toString()));
+			this.loadedScenarioObject.drops.splice(ind, 1);
+		}
 	}
 
 	saveScenarioObject() {
