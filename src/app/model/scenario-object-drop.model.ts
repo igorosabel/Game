@@ -4,7 +4,7 @@ export class ScenarioObjectDrop {
 	constructor(
 		public id: number = null,
 		public idItem: number = null,
-    public itemName: string = null,
+		public itemName: string = null,
 		public assetUrl: string = null,
 		public num: number = null
 	) {}
@@ -13,7 +13,7 @@ export class ScenarioObjectDrop {
 		const scenarioObjectDrop: ScenarioObjectDropInterface = {
 			id: this.id,
 			idItem: this.idItem,
-      itemName: this.itemName,
+			itemName: this.itemName,
 			assetUrl: this.assetUrl,
 			num: this.num
 		};

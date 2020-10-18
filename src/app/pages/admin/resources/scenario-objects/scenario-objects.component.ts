@@ -226,8 +226,9 @@ export class ScenarioObjectsComponent implements OnInit {
 		}
 	}
 
-	deleteDrop(drop: ScenarioObjectDrop) {
-		const conf = confirm('¿Estás seguro de querer borrar este item?');
+	deleteDrop(ev, drop: ScenarioObjectDrop) {
+		ev && ev.preventDefault();
+		const conf = confirm('¿Estás seguro de querer borrar el item "' + this.cs.urldecode(drop.itemName) + '"?');
 		if (conf) {
 			const ind = this.loadedScenarioObject.drops.findIndex(x => (x.id+x.idItem.toString())==(drop.id+drop.idItem.toString()));
 			this.loadedScenarioObject.drops.splice(ind, 1);

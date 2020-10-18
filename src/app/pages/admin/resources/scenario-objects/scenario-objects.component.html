@@ -155,7 +155,7 @@
 				<div class="scenario-object-drop-list">
 					<div class="scenario-object-drop" *ngFor="let drop of loadedScenarioObject.drops">
 						<div class="scenario-object-drop-name">
-							<a href="#" (click)="deleteDrop(drop)">x</a>
+							<a href="#" (click)="deleteDrop($event, drop)">x</a>
 							<img [src]="drop.assetUrl">
 							{{drop.itemName | urldecode}}
 						</div>
