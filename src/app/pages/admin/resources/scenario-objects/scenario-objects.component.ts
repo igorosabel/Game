@@ -243,5 +243,37 @@ export class ScenarioObjectsComponent implements OnInit {
 				}
 			}
 		}
+
+		if (validate && this.loadedScenarioObject.idAsset=null) {
+			alert('¡No has elegido ninguna imagen para el ojeto!');
+			validate = false;
+		}
+
+		if (validate && this.loadedScenarioObject.drops.length>0) {
+			for (let drop of this.loadedScenarioObject.drops) {
+				if (drop.num==null) {
+					alert('¡No puedes dejar en blanco el número de unidades para el item "' + this.cs.urldecode(drop.name) + '"!');
+					validate = false;
+					break;
+				}
+			}
+		}
+		
+		if (validate) {
+			this.savingScenarioObject = true;
+			this.as.saveScenarioObject(this.loadedScenarioObject.toInterface()).subscribe(result => {
+				this.savingScenarioObject = false;
+				if (result.status=='ok') {
+					this.showAddScenarioObject();
+					this.loadScenarioObjects();
+					this.itemPicker.resetSelected();
+					this.assetPicker.resetSelected();
+				}
+				else {
+					alert('¡Ocurrió un error al guardar el objeto de escenario!');
+					this.message = 'ERROR: Ocurrió un error al guardar el objeto de escenario.';
+				}
+			});
+		}
 	}
 }

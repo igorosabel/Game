@@ -299,7 +299,9 @@ export class CharactersComponent implements OnInit {
 		}
 
 		if (validate) {
+			this.savingCharacter = true;
 			this.as.saveCharacter(this.loadedCharacter.toInterface()).subscribe(result => {
+				this.savingCharacter = false;
 				if (result.status=='ok') {
 					this.showAddCharacter();
 					this.loadCharacters();
