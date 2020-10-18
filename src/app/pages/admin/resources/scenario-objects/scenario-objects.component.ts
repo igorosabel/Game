@@ -29,7 +29,8 @@ export class ScenarioObjectsComponent implements OnInit {
 	activeTriggerTypes = [
 		{ id: 0, name: 'Mensaje' },
 		{ id: 1, name: 'Teleportación' },
-		{ id: 2, name: 'Orden personalizada' }
+		{ id: 2, name: 'Orden personalizada' },
+		{ id: 3, name: 'Obtener item' }
 	];
 	activeTriggerWorld: number = null;
 	animationImage: string = '';
@@ -98,6 +99,10 @@ export class ScenarioObjectsComponent implements OnInit {
 	}
 
 	openItemPicker() {
+		if (this.loadedScenarioObject.pickable && this.loadedScenarioObject.drops.length==1) {
+			alert('Si el objeto se puede obtener solo puedes añadir un item.');
+			return;
+		}
 		this.itemPicker.showPicker();
 	}
 
@@ -159,6 +164,7 @@ export class ScenarioObjectsComponent implements OnInit {
 			this.loadedScenarioObject.crossable = false;
 			this.loadedScenarioObject.grabbable = false;
 			this.loadedScenarioObject.breakable = false;
+			this.loadedScenarioObject.drops = [];
 		}
 	}
 
@@ -188,7 +194,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		}
 		this.animationImage = this.loadedScenarioObject.allFrames[this.animationInd];
 	}
-	
+
 	frameDelete(frame: ScenarioObjectFrame) {
 		const conf = confirm('¿Estás seguro de querer borrar este frame?');
 		if (conf) {
@@ -283,6 +289,11 @@ export class ScenarioObjectsComponent implements OnInit {
 					alert('Has elegido orden personalida como tipo de activador, pero no has introducido ninguna orden.');
 					validate = false;
 				}
+
+				if (this.loadedScenarioObject.activeTrigger==3 && this.loadedScenarioObject.drops.length==0) {
+					alert('Has elegido obtener items como tipo de activador, pero no has elegido ningún item.');
+					validate = false;
+				}
 			}
 		}
 
@@ -300,7 +311,7 @@ export class ScenarioObjectsComponent implements OnInit {
 				}
 			}
 		}
-		
+
 		if (validate) {
 			this.savingScenarioObject = true;
 			this.as.saveScenarioObject(this.loadedScenarioObject.toInterface()).subscribe(result => {
@@ -314,6 +325,68 @@ export class ScenarioObjectsComponent implements OnInit {
 				else {
 					alert('¡Ocurrió un error al guardar el objeto de escenario!');
 					this.message = 'ERROR: Ocurrió un error al guardar el objeto de escenario.';
+				}
+			});
+		}
+	}
+
+	editScenarioObject(scenarioObject: ScenarioObject) {
+		this.loadedScenarioObject = new ScenarioObject(
+			scenarioObject.id,
+			this.cs.urldecode(scenarioObject.name),
+			scenarioObject.idAsset,
+			this.cs.urldecode(scenarioObject.assetUrl),
+			scenarioObject.width,
+			scenarioObject.height,
+			scenarioObject.crossable,
+			scenarioObject.activable,
+			scenarioObject.idAssetActive,
+			(scenarioObject.assetActiveUrl!=null) ? this.cs.urldecode(scenarioObject.assetActiveUrl) : null,
+			scenarioObject.activeTime,
+			scenarioObject.activeTrigger,
+			(scenarioObject.activeTriggerCustom!=null) ? this.cs.urldecode(scenarioObject.activeTriggerCustom) : null,
+			scenarioObject.pickable,
+			scenarioObject.grabbable,
+			scenarioObject.breakable,
+			[],
+			[]
+		);
+		for (let frame of scenarioObject.frames) {
+			frame.assetUrl = this.cs.urldecode(frame.assetUrl);
+			this.loadedScenarioObject.frames.push(frame);
+		}
+		for (let drop of scenarioObject.drops) {
+			drop.assetUrl = this.cs.urldecode(drop.assetUrl);
+			drop.itemName = this.cs.urldecode(drop.itemName);
+			this.loadedScenarioObject.drops.push(drop);
+		}
+
+		this.animationImage = (this.loadedScenarioObject.assetUrl!=null) ? this.loadedScenarioObject.assetUrl : '/assets/no-asset.svg';
+		this.animationInd = -1;
+		clearInterval(this.animationTimer);
+		this.animationTimer = null;
+
+		this.assetPickerWhere = null;
+		this.changeTab('data');
+		this.startAnimation();
+
+		this.scenarioObjectDetailHeader = 'Editar objeto de escenario';
+		this.showDetail = true;
+	}
+
+	deleteScenarioObject(scenarioObject: ScenarioObject) {
+		const conf = confirm('¿Estás seguro de querer borrar el objeto "'+this.cs.urldecode(scenarioObject.name)+'"?');
+		if (conf) {
+			this.as.deleteScenarioObject(scenarioObject.id).subscribe(result => {
+				if (result.status=='ok') {
+					this.loadScenarioObjects();
+				}
+				if (result.status=='in-use') {
+					alert("El objeto de escenario está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n"+result.message);
+				}
+				if (status=='error') {
+					alert('¡Ocurrio un error al borrar el objeto de escenario!');
+					this.message = 'ERROR: Ocurrió un error al borrar el objeto de escenario.';
 				}
 			});
 		}

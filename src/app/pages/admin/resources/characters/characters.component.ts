@@ -348,7 +348,7 @@ export class CharactersComponent implements OnInit {
 				frame.assetUrl = this.cs.urldecode(frame.assetUrl);
 				this.loadedCharacter['frames'+sent].push(frame);
 			}
-			
+
 			this.animationImage[sent.toLowerCase()] = (this.loadedCharacter['asset'+sent+'Url']!=null) ? this.loadedCharacter['asset'+sent+'Url'] : '/assets/no-asset.svg';
 			this.animationInd[sent.toLowerCase()] = -1;
 			clearInterval(this.animationTimer[sent.toLowerCase()]);
@@ -358,7 +358,7 @@ export class CharactersComponent implements OnInit {
 		this.assetPickerWhere = null;
 		this.changeTab('data');
 		this.startAnimation();
-		
+
 		if (character.dropIdItem!==null) {
 			const dropItem = this.itemPicker.getItemById(character.dropIdItem);
 			this.dropItemName = this.cs.urldecode(dropItem.name);
@@ -379,7 +379,7 @@ export class CharactersComponent implements OnInit {
 					this.loadCharacters();
 				}
 				if (result.status=='in-use') {
-					alert("El personaje está siendo usado. Cámbialo o bórralo antes de poder borrar este personaje.\n\n"+result.message);
+					alert("El personaje está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n"+result.message);
 				}
 				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el personaje!');

@@ -34,13 +34,13 @@
 		<div class="tabs">
 			<div class="tab" [ngClass]="{'tab-active':detailtTab=='data'}" (click)="changeTab('data')">Datos</div>
 			<div class="tab" [ngClass]="{'tab-active':detailtTab=='animation'}" (click)="changeTab('animation')">Animación</div>
-			<div class="tab" [ngClass]="{'tab-active':detailtTab=='drops'}" (click)="changeTab('drops')">Items</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='drops'}" (click)="changeTab('drops')" *ngIf="loadedScenarioObject.pickable || loadedScenarioObject.activeTrigger==3">Items</div>
 		</div>
 		<!-- Datos -->
 		<div class="body" [ngClass]="{'body-show':detailtTab=='data'}">
 			<div class="row cols">
 				<div class="col">
-					<label>Nombre del personaje</label>
+					<label>Nombre del objeto</label>
 					<input type="text" name="scenario-object-name" [(ngModel)]="loadedScenarioObject.name" placeholder="Nombre del objeto">
 				</div>
 			</div>
@@ -159,7 +159,7 @@
 							<img [src]="drop.assetUrl">
 							{{drop.itemName | urldecode}}
 						</div>
-						<input type="number" min="1" step="1" name="scenario-object-drop-num" [(ngModel)]="drop.num" placeholder="Cantidad">
+						<input type="number" min="1" step="1" name="scenario-object-drop-num" [(ngModel)]="drop.num" placeholder="Cantidad" [readonly]="loadedScenarioObject.pickable">
 					</div>
 				</div>
 			</div>
