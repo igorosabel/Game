@@ -78,7 +78,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		this.scenarioList = [];
 	}
 
-	showAddScenarioObject(ev) {
+	showAddScenarioObject(ev = null) {
 		ev && ev.preventDefault();
 		if (!this.showDetail) {
 			this.resetLoadedScenarioObject();
@@ -244,7 +244,7 @@ export class ScenarioObjectsComponent implements OnInit {
 			}
 		}
 
-		if (validate && this.loadedScenarioObject.idAsset=null) {
+		if (validate && this.loadedScenarioObject.idAsset==null) {
 			alert('¡No has elegido ninguna imagen para el ojeto!');
 			validate = false;
 		}
