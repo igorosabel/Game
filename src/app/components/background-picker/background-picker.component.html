@@ -7,6 +7,7 @@
 					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
 				</select>
 			</div>
+			<a href="#" (click)="closePicker($event)">X</a>
 		</div>
 
 		<div class="background-list">

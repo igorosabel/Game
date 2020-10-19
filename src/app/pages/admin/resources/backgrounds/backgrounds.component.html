@@ -19,7 +19,7 @@
 <div class="background-list" [ngClass]="{'background-list-list': filterListOption=='list'}">
 	<div *ngFor="let background of backgroundListFiltered" [ngClass]="{'background-item': filterListOption=='items', 'background-list-item': filterListOption=='list'}">
 		<img src="{{ background.assetUrl | urldecode }}" alt="{{ background.name | urldecode }}">
-    <img src="/assets/cant-cross.svg" class="cant-cross" *ngIf="!background.crossable">
+		<img src="/assets/cant-cross.svg" class="cant-cross" *ngIf="!background.crossable">
 		<div class="background-info">
 			<span title="{{background.name | urldecode}}">{{ background.name | urldecode }}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="background-edit" (click)="editBackground(background)">

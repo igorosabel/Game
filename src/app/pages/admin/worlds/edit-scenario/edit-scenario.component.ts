@@ -6,7 +6,13 @@ import { ClassMapperService }            from '../../../../services/class-mapper
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
 import { BackgroundPickerComponent }     from '../../../../components/background-picker/background-picker.component';
-import { BackgroundInterface }           from '../../../../interfaces/interfaces';
+import { ScenarioObjectPickerComponent } from '../../../../components/scenario-object-picker/scenario-object-picker.component';
+import { CharacterPickerComponent }      from '../../../../components/character-picker/character-picker.component';
+import {
+	BackgroundInterface,
+	ScenarioObjectInterface,
+	CharacterInterface
+} from '../../../../interfaces/interfaces';
 
 @Component({
 	selector: 'game-edit-scenario',
@@ -29,12 +35,9 @@ export class EditScenarioComponent implements OnInit {
 		left: null,
 		right: null
 	};
-	cellOption = {
-		background: '/assets/no-asset.svg',
-		scenarioObject: '/assets/no-asset.svg',
-		character: '/assets/no-asset.svg'
-	};
 	@ViewChild('backgroundPicker', { static: true }) backgroundPicker: BackgroundPickerComponent;
+	@ViewChild('scenarioObjectPicker', { static: true }) scenarioObjectPicker: ScenarioObjectPickerComponent;
+	@ViewChild('characterPicker', { static: true }) characterPicker: CharacterPickerComponent;
 
 	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private csm: ClassMapperService, private cs: CommonService) {}
 
@@ -75,14 +78,14 @@ export class EditScenarioComponent implements OnInit {
 				cell.x,
 				cell.y,
 				cell.idBackground,
-				this.cs.urldecode(cell.backgroundName),
-				this.cs.urldecode(cell.backgroundAssetUrl),
+				(cell.idBackground!=null) ? this.cs.urldecode(cell.backgroundName) : 'Sin fondo',
+				(cell.idBackground!=null) ? this.cs.urldecode(cell.backgroundAssetUrl) : '/assets/no-asset.svg',
 				cell.idScenarioObject,
-				this.cs.urldecode(cell.scenarioObjectName),
-				this.cs.urldecode(cell.scenarioObjectAssetUrl),
+				(cell.idScenarioObject!=null) ? this.cs.urldecode(cell.scenarioObjectName) : 'Sin objeto',
+				(cell.idScenarioObject!=null) ? this.cs.urldecode(cell.scenarioObjectAssetUrl) : '/assets/no-asset.svg',
 				cell.idCharacter,
-				this.cs.urldecode(cell.characterName),
-				this.cs.urldecode(cell.characterAssetUrl)
+				(cell.idCharacter!=null) ? this.cs.urldecode(cell.characterName) : 'Sin personaje',
+				(cell.idCharacter!=null) ? this.cs.urldecode(cell.characterAssetUrl) : '/assets/no-asset.svg'
 			);
 			this.showCellDetail = true;
 		}
@@ -96,6 +99,57 @@ export class EditScenarioComponent implements OnInit {
 	}
 
 	selectedBackground(background: BackgroundInterface) {
-		console.log(background);
+		this.loadedCell.idBackground = background.id;
+		this.loadedCell.backgroundAssetUrl = this.cs.urldecode(background.assetUrl);
+		this.loadedCell.backgroundName = this.cs.urldecode(background.name);
+	}
+
+	deleteBackground(ev) {
+		ev && ev.preventDefault();
+		this.loadedCell.idBackground = null;
+		this.loadedCell.backgroundAssetUrl = '/assets/no-asset.svg';
+		this.loadedCell.backgroundName = 'Sin fondo';
+	}
+
+	openScenarioObjectPicker() {
+		if (this.loadedCell.idCharacter!=null) {
+			alert('No puedes añadir un objeto y un personaje en la misma casilla. Si quieres añadir un objeto, quita antes el personaje.');
+			return;
+		}
+		this.scenarioObjectPicker.showPicker();
+	}
+
+	selectedScenarioObject(scenarioObject: ScenarioObjectInterface) {
+		this.loadedCell.idScenarioObject = scenarioObject.id;
+		this.loadedCell.scenarioObjectAssetUrl = this.cs.urldecode(scenarioObject.assetUrl);
+		this.loadedCell.scenarioObjectName = this.cs.urldecode(scenarioObject.name);
+	}
+
+	deleteScenarioObject(ev) {
+		ev && ev.preventDefault();
+		this.loadedCell.idScenarioObject = null;
+		this.loadedCell.scenarioObjectAssetUrl = '/assets/no-asset.svg';
+		this.loadedCell.scenarioObjectName = 'Sin objeto';
+	}
+
+	openCharacterPicker() {
+		if (this.loadedCell.idScenarioObject!=null) {
+			alert('No puedes añadir un objeto y un personaje en la misma casilla. Si quieres añadir un personaje, quita antes el objeto.');
+			return;
+		}
+		this.characterPicker.showPicker();
+	}
+
+	selectedCharacter(character: CharacterInterface) {
+		this.loadedCell.idCharacter = character.id;
+		this.loadedCell.characterAssetUrl = this.cs.urldecode(character.assetDownUrl);
+		this.loadedCell.characterName = this.cs.urldecode(character.name);
+	}
+
+	deleteCharacter(ev) {
+		ev && ev.preventDefault();
+		this.loadedCell.idCharacter = null;
+		this.loadedCell.characterAssetUrl = '/assets/no-asset.svg';
+		this.loadedCell.characterName = 'Sin personaje';
 	}
 }

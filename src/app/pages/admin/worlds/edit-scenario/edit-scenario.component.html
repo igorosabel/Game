@@ -25,28 +25,37 @@
 			<div class="cell-option">
 				<header>Fondo</header>
 				<main>
-					<img [src]="cellOption.background">
+					<img [src]="loadedCell.backgroundAssetUrl" (click)="openBackgroundPicker()">
+					<a href="#" *ngIf="loadedCell.idBackground!=null" (click)="deleteBackground($event)">
+						<img src="/assets/cant-cross.svg">
+					</a>
 				</main>
 				<footer>
-					<button (click)="openBackgroundPicker()">Cambiar</button>
+					{{loadedCell.backgroundName}}
 				</footer>
 			</div>
 			<div class="cell-option">
 				<header>Objeto</header>
 				<main>
-					<img [src]="cellOption.scenarioObject">
+					<img [src]="loadedCell.scenarioObjectAssetUrl" (click)="openScenarioObjectPicker()">
+					<a href="#" *ngIf="loadedCell.idScenarioObject!=null" (click)="deleteScenarioObject($event)">
+						<img src="/assets/cant-cross.svg">
+					</a>
 				</main>
 				<footer>
-					<button>Cambiar</button>
+					{{loadedCell.scenarioObjectName}}
 				</footer>
 			</div>
 			<div class="cell-option">
 				<header>Personaje</header>
 				<main>
-					<img [src]="cellOption.character">
+					<img [src]="loadedCell.characterAssetUrl" (click)="openCharacterPicker()">
+					<a href="#" *ngIf="loadedCell.idCharacter!=null" (click)="deleteCharacter($event)">
+						<img src="/assets/cant-cross.svg">
+					</a>
 				</main>
 				<footer>
-					<button>Cambiar</button>
+					{{loadedCell.characterName}}
 				</footer>
 			</div>
 		</div>
@@ -54,3 +63,5 @@
 </div>
 
 <game-background-picker #backgroundPicker (selectBackgroundEvent)="selectedBackground($event)"></game-background-picker>
+<game-scenario-object-picker #scenarioObjectPicker (selectScenarioObjectEvent)="selectedScenarioObject($event)"></game-scenario-object-picker>
+<game-character-picker #characterPicker (selectCharacterEvent)="selectedCharacter($event)"></game-character-picker>

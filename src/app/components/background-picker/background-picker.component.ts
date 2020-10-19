@@ -31,6 +31,11 @@ export class BackgroundPickerComponent implements OnInit {
 		this.show = true;
 	}
 
+	closePicker(ev) {
+		ev && ev.preventDefault();
+		this.show = false;
+	}
+
 	loadBackgroundCategories() {
 		this.as.getBackgroundCategories().subscribe(result => {
 			if (result.status=='ok') {
