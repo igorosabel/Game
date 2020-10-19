@@ -51,7 +51,6 @@ export interface ScenarioResult {
 
 export interface ScenarioDataInterface {
 	id: number;
-	type: number;
 	x: number;
 	y: number;
 	idBackground: number;

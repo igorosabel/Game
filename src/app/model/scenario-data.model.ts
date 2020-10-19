@@ -3,7 +3,6 @@ import { ScenarioDataInterface } from '../interfaces/interfaces';
 export class ScenarioData {
 	constructor(
 		public id: number = null,
-		public type: number = null,
 		public x: number = null,
 		public y: number = null,
 		public idBackground: number = null,
@@ -20,7 +19,6 @@ export class ScenarioData {
 	toInterface(): ScenarioDataInterface {
 		const scenarioData: ScenarioDataInterface = {
 			id: this.id,
-			type: this.type,
 			x: this.x,
 			y: this.y,
 			idBackground: this.idBackground,

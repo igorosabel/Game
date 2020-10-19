@@ -1,2 +1,54 @@
 <game-header [leftUrl]="['/admin', 'world', worldId, 'scenarios']" leftTitle="&lt; Escenarios" title="Editar escenario" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
+<div class="edit-scenario-header">
+	<div>
+		<label for="show-debug">Debug</label>
+		<input type="checkbox" id="show-debug" [(ngModel)]="showDebug">
+	</div>
+</div>
+
+<div class="edit-scenario">
+	<div *ngFor="let row of scenario" class="edit-scenario-row">
+		<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)">
+			<span>{{cell.x}} - {{cell.y}}</span>
+		</div>
+	</div>
+</div>
+
+<div class="cell-detail" [ngClass]="{'cell-detail-show': showCellDetail}">
+	<div class="box">
+		<div class="header">
+			Casilla {{loadedCell.x}} - {{loadedCell.y}}
+			<a href="#" (click)="openCell($event)">X</a>
+		</div>
+		<div class="body">
+			<div class="cell-option">
+				<header>Fondo</header>
+				<main>
+					<img [src]="cellOption.background">
+				</main>
+				<footer>
+					<button>Cambiar</button>
+				</footer>
+			</div>
+			<div class="cell-option">
+				<header>Objeto</header>
+				<main>
+					<img [src]="cellOption.scenarioObject">
+				</main>
+				<footer>
+					<button>Cambiar</button>
+				</footer>
+			</div>
+			<div class="cell-option">
+				<header>Personaje</header>
+				<main>
+					<img [src]="cellOption.character">
+				</main>
+				<footer>
+					<button>Cambiar</button>
+				</footer>
+			</div>
+		</div>
+	</div>
+</div>
