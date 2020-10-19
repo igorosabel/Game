@@ -38,6 +38,9 @@ export interface ScenarioInterface {
 	id: number;
 	idWorld: number;
 	name: string;
+	startX: number;
+	startY: number;
+	initial: boolean;
 	friendly: boolean;
 }
 
@@ -70,7 +73,8 @@ export interface ConnectionInterface {
 
 export interface ScenarioDataResult {
 	status: string;
-	data: ScensrioDataInterface[];
+	scenario: ScenarioInterface;
+	data: ScenarioDataInterface[];
 	connection: ConnectionInterface[];
 }
 

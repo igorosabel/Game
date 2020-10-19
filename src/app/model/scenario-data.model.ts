@@ -17,21 +17,22 @@ export class ScenarioData {
 		public characterAssetUrl: string = null
 	) {}
 
-	toInterface(): ItemInterface {
-		const item: ItemInterface = {
+	toInterface(): ScenarioDataInterface {
+		const scenarioData: ScenarioDataInterface = {
 			id: this.id,
 			type: this.type,
-			idAsset: this.idAsset,
-			assetUrl: this.assetUrl,
-			name: this.name,
-			money: this.money,
-			health: this.health,
-			attack: this.attack,
-			defense: this.defense,
-			speed: this.speed,
-			wearable: this.wearable,
-			frames: []
+			x: this.x,
+			y: this.y,
+			idBackground: this.idBackground,
+			backgroundName: this.backgroundName,
+			backgroundAssetUrl: this.backgroundAssetUrl,
+			idScenarioObject: this.idScenarioObject,
+			scenarioObjectName: this.scenarioObjectName,
+			scenarioObjectAssetUrl: this.scenarioObjectAssetUrl,
+			idCharacter: this.idCharacter,
+			characterName: this.characterName,
+			characterAssetUrl: this.characterAssetUrl
 		};
-		return item;
+		return scenarioData;
 	}
 }

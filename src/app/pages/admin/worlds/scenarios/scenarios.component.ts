@@ -41,7 +41,8 @@ export class ScenariosComponent implements OnInit {
 	}
 	
 	resetLoadedScenario() {
-		this.loadedScenario = new Scenario(null, this.worldId, null, false);
+		this.loadedScenario = new Scenario();
+		this.loadedScenario.idWorld = this.worldId;
 	}
 
 	showAddScenario(ev = null) {
@@ -83,6 +84,9 @@ export class ScenariosComponent implements OnInit {
 			scenario.id,
 			scenario.idWorld,
 			this.cs.urldecode(scenario.name),
+			scenario.startX,
+			scenario.startY,
+			scenario.initial,
 			scenario.friendly
 		);
 

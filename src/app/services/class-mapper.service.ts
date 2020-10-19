@@ -1,6 +1,8 @@
 import { Injectable }          from '@angular/core';
 import { World }               from '../model/world.model';
 import { Scenario }            from '../model/scenario.model';
+import { ScenarioData }        from '../model/scenario-data.model';
+import { Connection }          from '../model/connection.model';
 import { Tag }                 from '../model/tag.model';
 import { Asset }               from '../model/asset.model';
 import { BackgroundCategory }  from '../model/background-category.model';
@@ -15,6 +17,8 @@ import { ScenarioObject }      from '../model/scenario-object.model';
 import {
 	WorldInterface,
 	ScenarioInterface,
+	ScenarioDataInterface,
+	ConnectionInterface,
 	TagInterface,
 	AssetInterface,
 	BackgroundCategoryInterface,
@@ -23,9 +27,9 @@ import {
 	ItemInterface,
 	CharacterFrameInterface,
 	CharacterInterface,
-  ScenarioObjectDropInterface,
-  ScenarioObjectFrameInterface,
-  ScenarioObjectInterface
+	ScenarioObjectDropInterface,
+	ScenarioObjectFrameInterface,
+	ScenarioObjectInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -38,8 +42,7 @@ export class ClassMapperService {
 		const worlds: World[] = [];
 
 		for (let w of response) {
-			let world = this.getWorld(w);
-			worlds.push(world);
+			worlds.push( this.getWorld(w) );
 		}
 
 		return worlds;
@@ -61,8 +64,7 @@ export class ClassMapperService {
 		const scenarios: Scenario[] = [];
 
 		for (let s of response) {
-			let scenario = this.getScenario(s);
-			scenarios.push(scenario);
+			scenarios.push( this.getScenario(s) );
 		}
 
 		return scenarios;
@@ -73,7 +75,56 @@ export class ClassMapperService {
 			s.id,
 			s.idWorld,
 			s.name,
+			s.startX,
+			s.startY,
+			s.initial,
 			s.friendly
+		);
+	}
+
+	getScenarioDatas(response: ScenarioDataInterface[]) {
+		const scenarioDatas: ScenarioData[] = [];
+
+		for (let sd of response) {
+			scenarioDatas.push( this.getScenarioData(sd) );
+		}
+
+		return scenarioDatas;
+	}
+
+	getScenarioData(sd: ScenarioDataInterface) {
+		return new ScenarioData(
+			sd.id,
+			sd.type,
+			sd.x,
+			sd.y,
+			sd.idBackground,
+			sd.backgroundName,
+			sd.backgroundAssetUrl,
+			sd.idScenarioObject,
+			sd.scenarioObjectName,
+			sd.scenarioObjectAssetUrl,
+			sd.idCharacter,
+			sd.characterName,
+			sd.characterAssetUrl
+		);
+	}
+
+	getConnections(response: ConnectionInterface[]) {
+		const connections: Connection[] = [];
+
+		for (let c of response) {
+			connections.push( this.getConnection(c) );
+		}
+
+		return connections;
+	}
+
+	getConnection(c: ConnectionInterface) {
+		return new Connection(
+			c.to,
+			c.toName,
+			c.orientation
 		);
 	}
 
@@ -81,8 +132,7 @@ export class ClassMapperService {
 		const tags: Tag[] = [];
 
 		for (let t of response) {
-			let tag = this.getTag(t);
-			tags.push(tag);
+			tags.push( this.getTag(t) );
 		}
 
 		return tags;
@@ -99,8 +149,7 @@ export class ClassMapperService {
 		const assets: Asset[] = [];
 
 		for (let a of response) {
-			let asset = this.getAsset(a);
-			assets.push(asset);
+			assets.push( this.getAsset(a) );
 		}
 
 		return assets;
@@ -120,8 +169,7 @@ export class ClassMapperService {
 		const backgroundCategories: BackgroundCategory[] = [];
 
 		for (let bc of response) {
-			let backgroundCategory = this.getBackgroundCategory(bc);
-			backgroundCategories.push(backgroundCategory);
+			backgroundCategories.push( this.getBackgroundCategory(bc) );
 		}
 
 		return backgroundCategories;
@@ -138,8 +186,7 @@ export class ClassMapperService {
 		const backgrounds: Background[] = [];
 
 		for (let b of response) {
-			let background = this.getBackground(b);
-			backgrounds.push(background);
+			backgrounds.push( this.getBackground(b) );
 		}
 
 		return backgrounds;
@@ -160,8 +207,7 @@ export class ClassMapperService {
 		const itemFrames: ItemFrame[] = [];
 
 		for (let itf of response) {
-			let itemFrame = this.getItemFrame(itf);
-			itemFrames.push(itemFrame);
+			itemFrames.push( this.getItemFrame(itf) );
 		}
 
 		return itemFrames;
@@ -180,8 +226,7 @@ export class ClassMapperService {
 		const items: Item[] = [];
 
 		for (let i of response) {
-			let item = this.getItem(i);
-			items.push(item);
+			items.push( this.getItem(i) );
 		}
 
 		return items;
@@ -208,8 +253,7 @@ export class ClassMapperService {
 		const characterFrames: CharacterFrame[] = [];
 
 		for (let cf of response) {
-			let characterFrame = this.getCharacterFrame(cf);
-			characterFrames.push(characterFrame);
+			characterFrames.push( this.getCharacterFrame(cf) );
 		}
 
 		return characterFrames;
@@ -229,8 +273,7 @@ export class ClassMapperService {
 		const characters: Character[] = [];
 
 		for (let c of response) {
-			let character = this.getCharacter(c);
-			characters.push(character);
+			characters.push( this.getCharacter(c) );
 		}
 
 		return characters;
@@ -268,8 +311,7 @@ export class ClassMapperService {
 		const scenarioObjectFrames: ScenarioObjectFrame[] = [];
 
 		for (let sof of response) {
-			let scenarioObjectFrame = this.getScenarioObjectFrame(sof);
-			scenarioObjectFrames.push(scenarioObjectFrame);
+			scenarioObjectFrames.push( this.getScenarioObjectFrame(sof) );
 		}
 
 		return scenarioObjectFrames;
@@ -288,8 +330,7 @@ export class ClassMapperService {
 		const scenarioObjectDrops: ScenarioObjectDrop[] = [];
 
 		for (let sod of response) {
-			let scenarioObjectDrop = this.getScenarioObjectDrop(sod);
-			scenarioObjectDrops.push(scenarioObjectDrop);
+			scenarioObjectDrops.push( this.getScenarioObjectDrop(sod) );
 		}
 
 		return scenarioObjectDrops;
@@ -299,7 +340,7 @@ export class ClassMapperService {
 		return new ScenarioObjectDrop(
 			sod.id,
 			sod.idItem,
-      sod.itemName,
+			sod.itemName,
 			sod.assetUrl,
 			sod.num
 		);
@@ -309,8 +350,7 @@ export class ClassMapperService {
 		const scenarioObjects: ScenarioObject[] = [];
 
 		for (let so of response) {
-			let scenarioObject = this.getScenarioObject(so);
-			scenarioObjects.push(scenarioObject);
+			scenarioObjects.push( this.getScenarioObject(so) );
 		}
 
 		return scenarioObjects;

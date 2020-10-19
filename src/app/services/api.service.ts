@@ -12,6 +12,7 @@ import {
 	StatusMessageResult,
 	ScenarioResult,
 	ScenarioInterface,
+	ScenarioDataResult,
 	TagResult,
 	AssetResult,
 	AssetInterface,
@@ -65,6 +66,10 @@ export class ApiService {
 
 	deleteScenario(id: number): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-scenario', {id});
+	}
+	
+	getScenario(id: number): Observable<ScenarioDataResult> {
+		return this.http.post<ScenarioDataResult>(this.url + 'admin/get-scenario', {id});
 	}
 
 	getTags(): Observable<TagResult> {
