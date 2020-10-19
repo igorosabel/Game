@@ -1,1 +1,21 @@
-<p>background-picker works!</p>
+<div class="background-picker" [ngClass]="{'background-picker-show': show}">
+	<div class="background-picker-box">
+		<div class="background-picker-header">
+			<div>
+				<select name="background-filter" [(ngModel)]="backgroundFilter" (change)="updateFilteredList()">
+					<option [ngValue]="null">Tipo</option>
+					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="background-list">
+			<div class="background-item" *ngFor="let background of backgroundListFiltered" [ngClass]="{'background-item-selected': background.id==selected}" (click)="selectBackground(background)">
+				<img src="{{ background.assetUrl | urldecode }}" alt="{{ background.name | urldecode }}">
+				<div class="background-info">
+					<span title="{{background.name | urldecode}}">{{ background.name | urldecode }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
