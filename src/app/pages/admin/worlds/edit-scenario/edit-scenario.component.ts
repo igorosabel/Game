@@ -1,10 +1,12 @@
-import { Component, OnInit }             from '@angular/core';
+import { Component, OnInit, ViewChild }  from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
 import { ApiService }                    from '../../../../services/api.service';
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
+import { BackgroundPickerComponent }     from '../../../../components/background-picker/background-picker.component';
+import { BackgroundInterface }           from '../../../../interfaces/interfaces';
 
 @Component({
 	selector: 'game-edit-scenario',
@@ -32,6 +34,7 @@ export class EditScenarioComponent implements OnInit {
 		scenarioObject: '/assets/no-asset.svg',
 		character: '/assets/no-asset.svg'
 	};
+	@ViewChild('backgroundPicker', { static: true }) backgroundPicker: BackgroundPickerComponent;
 
 	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private csm: ClassMapperService, private cs: CommonService) {}
 
@@ -42,7 +45,7 @@ export class EditScenarioComponent implements OnInit {
 			this.loadScenario();
 		});
 	}
-	
+
 	loadScenario() {
 		this.as.getScenario(this.scenarioId).subscribe(result => {
 			this.loadedScenario = this.csm.getScenario(result.scenario);
@@ -86,5 +89,13 @@ export class EditScenarioComponent implements OnInit {
 		else {
 			this.showCellDetail = false;
 		}
+	}
+
+	openBackgroundPicker() {
+		this.backgroundPicker.showPicker();
+	}
+
+	selectedBackground(background: BackgroundInterface) {
+		console.log(background);
 	}
 }

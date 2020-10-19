@@ -32,7 +32,7 @@ X Admin ( /admin/main )
 				filtro por nombre / npc-monstruo
 			añadir nuevo
 
-		Objetos de escenario ( /admin/resources/scenario-objects )
+		X Objetos de escenario ( /admin/resources/scenario-objects )
 			listado completo (editar / borrar)
 			añadir nuevo
 

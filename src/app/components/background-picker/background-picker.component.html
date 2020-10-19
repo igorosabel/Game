@@ -4,7 +4,7 @@
 			<div>
 				<select name="background-filter" [(ngModel)]="backgroundFilter" (change)="updateFilteredList()">
 					<option [ngValue]="null">Tipo</option>
-					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
+					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
 				</select>
 			</div>
 		</div>

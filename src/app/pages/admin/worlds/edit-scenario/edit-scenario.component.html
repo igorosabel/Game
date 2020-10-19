@@ -28,7 +28,7 @@
 					<img [src]="cellOption.background">
 				</main>
 				<footer>
-					<button>Cambiar</button>
+					<button (click)="openBackgroundPicker()">Cambiar</button>
 				</footer>
 			</div>
 			<div class="cell-option">
@@ -52,3 +52,5 @@
 		</div>
 	</div>
 </div>
+
+<game-background-picker #backgroundPicker (selectBackgroundEvent)="selectedBackground($event)"></game-background-picker>
