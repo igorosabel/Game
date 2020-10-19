@@ -9,7 +9,7 @@
 
 <div class="edit-scenario">
 	<div *ngFor="let row of scenario" class="edit-scenario-row">
-		<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)">
+		<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)" [ngStyle]="{'background': cell.backgroundStyle}">
 			<span>{{cell.x}} - {{cell.y}}</span>
 		</div>
 	</div>

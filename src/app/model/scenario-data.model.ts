@@ -15,6 +15,13 @@ export class ScenarioData {
 		public characterName: string = null,
 		public characterAssetUrl: string = null
 	) {}
+	
+	get backgroundStyle() {
+		if (this.backgroundAssetUrl != null) {
+		return `url(${this.backgroundAssetUrl}) no-repeat scroll center center / 100% 100% transparent`;
+		}
+		return `none`;
+	}
 
 	toInterface(): ScenarioDataInterface {
 		const scenarioData: ScenarioDataInterface = {
