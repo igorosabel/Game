@@ -46,6 +46,34 @@ export interface ScenarioResult {
 	list: ScenarioInterface[];
 }
 
+export interface ScenarioDataInterface {
+	id: number;
+	type: number;
+	x: number;
+	y: number;
+	idBackground: number;
+	backgroundName: string;
+	backgroundAssetUrl: string;
+	idScenarioObject: number;
+	scenarioObjectName: string;
+	scenarioObjectAssetUrl: string;
+	idCharacter: number;
+	characterName: string;
+	characterAssetUrl: string;
+}
+
+export interface ConnectionInterface {
+	to: number;
+	toName: string;
+	orientation: string;
+}
+
+export interface ScenarioDataResult {
+	status: string;
+	data: ScensrioDataInterface[];
+	connection: ConnectionInterface[];
+}
+
 export interface TagInterface {
 	id: number;
 	name: string;
