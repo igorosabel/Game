@@ -1,10 +1,15 @@
 .edit-scenario-header {
-	padding: 50px 16px 0 16px;
-	height: 100px;
+	padding: 0 16px;
+	height: 50px;
 	display: flex;
 	justify-content: flex-end;
 	border-bottom: 1px solid #ccc;
-	margin-bottom: 16px;
+	position: fixed;
+	top: 50px;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+	background-color: #000;
 
 	div {
 		display: flex;
@@ -13,46 +18,52 @@
 	}
 }
 
-.edit-scenario {
-	width: 800px;
-	height: 600px;
-	background-color: #fff;
-	border: 1px solid #ccc;
-	display: flex;
-	flex-direction: column;
-	margin-left: calc(50% - 400px);
-	position: relative;
-	transition: all .3s ease-in-out;
+.edit-scenario-container {
+	width: 100%;
+	margin-top: 120px;
+	overflow: auto;
 
-	.edit-scenario-row {
-		flex: 1;
+	.edit-scenario {
+		width: 800px;
+		height: 600px;
+		background-color: #fff;
+		border: 1px solid #ccc;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+		position: relative;
+		margin: 0 auto;
+		transition: all .3s ease-in-out;
 
-		.edit-scenario-cell {
+		.edit-scenario-row {
 			flex: 1;
-			position: relative;
-			
-			span {
-				display: none;
+			display: flex;
+			flex-direction: row;
+
+			.edit-scenario-cell {
+				flex: 1;
+				position: relative;
+
+				span {
+					display: none;
+				}
+
+				&:hover {
+					cursor: pointer;
+					border: 1px dotted #f00;
+				}
 			}
-			
-			&:hover {
-				cursor: pointer;
-				border: 1px dotted #f00;
-			}
-		}
-		
-		.debug {
-			border: 1px dotted #ccc;
-			
-			span {
-				font-size: 0.4em;
-				color: #000;
-				display: block;
-				position: absolute;
-				top: 0;
-				left: 0;
+
+			.debug {
+				border: 1px dotted #ccc;
+
+				span {
+					font-size: 0.4em;
+					color: #000;
+					display: block;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
 			}
 		}
 	}
@@ -101,7 +112,7 @@
 		.body {
 			padding: 16px;
 			display: flex;
-			flex-direction: row;
+			flex-direction: column;
 			justify-content: space-around;
 
 			.cell-option {
@@ -113,7 +124,7 @@
 					align-items: center;
 					justify-content: center;
 				}
-				
+
 				main {
 					text-align: center;
 					position: relative;
@@ -123,7 +134,7 @@
 						height: 128px;
 						cursor: pointer;
 					}
-					
+
 					a {
 						position: absolute;
 						width: 24px;
@@ -138,7 +149,7 @@
 						}
 					}
 				}
-				
+
 				footer {
 					display: flex;
 					height: 50px;
@@ -147,9 +158,55 @@
 				}
 			}
 		}
+
+		.footer {
+			border-top: 1px solid #ccc;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			padding: 0 16px;
+
+			button {
+				font-family: 'GraphicPixel', Helvetica, sans-serif;
+				cursor: pointer;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				background-color: #fff;
+				display: block;
+				padding: 0 16px;
+				font-size: 1.2em;
+				color: #000;
+				height: 30px;
+				outline: 0;
+
+				&:hover {
+					box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+				}
+
+				&:disabled {
+					background-color: #eee;
+				}
+
+				&:disabled:hover {
+					box-shadow: none;
+					cursor: default;
+				}
+			}
+		}
 	}
 }
 
 .cell-detail-show {
 	display: flex;
+}
+
+@media screen and (min-width: 900px) {
+	.cell-detail {
+		.box {
+			.body {
+				flex-direction: row;
+			}
+		}
+	}
 }

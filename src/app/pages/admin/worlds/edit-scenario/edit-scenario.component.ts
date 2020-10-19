@@ -29,6 +29,7 @@ export class EditScenarioComponent implements OnInit {
 	loadedScenario: Scenario = null;
 	loadedCell: ScenarioData = new ScenarioData();
 	showCellDetail: boolean = false;
+	savingCell: boolean = false;
 	connections = {
 		up: null,
 		down: null,
@@ -151,5 +152,14 @@ export class EditScenarioComponent implements OnInit {
 		this.loadedCell.idCharacter = null;
 		this.loadedCell.characterAssetUrl = '/assets/no-asset.svg';
 		this.loadedCell.characterName = 'Sin personaje';
+	}
+
+	saveCell() {
+		this.savingCell = true;
+		this.as.saveScenarioData(this.loadedCell.toInterface()).subscribe(result => {
+			if (result.status=='ok') {
+				this.scenario[scenarioData.x][scenarioData.y] = scenarioData;
+			}
+		});
 	}
 }

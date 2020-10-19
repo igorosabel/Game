@@ -67,9 +67,13 @@ export class ApiService {
 	deleteScenario(id: number): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-scenario', {id});
 	}
-	
+
 	getScenario(id: number): Observable<ScenarioDataResult> {
 		return this.http.post<ScenarioDataResult>(this.url + 'admin/get-scenario', {id});
+	}
+
+	saveScenarioData(scenarioData: ScenarioDataInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-scenario-data', scenarioData);
 	}
 
 	getTags(): Observable<TagResult> {

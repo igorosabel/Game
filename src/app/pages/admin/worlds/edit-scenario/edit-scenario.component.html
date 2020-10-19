@@ -7,10 +7,12 @@
 	</div>
 </div>
 
-<div class="edit-scenario">
-	<div *ngFor="let row of scenario" class="edit-scenario-row">
-		<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)" [ngStyle]="{'background': cell.backgroundStyle}">
-			<span>{{cell.x}} - {{cell.y}}</span>
+<div class="edit-scenario-container">
+	<div class="edit-scenario">
+		<div *ngFor="let row of scenario" class="edit-scenario-row">
+			<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)" [ngStyle]="{'background': cell.backgroundStyle}">
+				<span>{{cell.x}} - {{cell.y}}</span>
+			</div>
 		</div>
 	</div>
 </div>
@@ -58,6 +60,10 @@
 					{{loadedCell.characterName}}
 				</footer>
 			</div>
+		</div>
+		<div class="footer">
+			<button (click)="saveCell()" *ngIf="!savingCell">Continuar</button>
+			<button disabled="disabled" *ngIf="savingCell">Guardando...</button>
 		</div>
 	</div>
 </div>
