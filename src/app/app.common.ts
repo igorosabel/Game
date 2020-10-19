@@ -40,14 +40,20 @@ export const PAGES: any[] = [
 /*
  * Componentes
  */
-import { HeaderComponent }      from './components/header/header.component';
-import { AssetPickerComponent } from './components/asset-picker/asset-picker.component';
-import { ItemPickerComponent }  from './components/item-picker/item-picker.component';
+import { HeaderComponent }               from './components/header/header.component';
+import { AssetPickerComponent }          from './components/asset-picker/asset-picker.component';
+import { ItemPickerComponent }           from './components/item-picker/item-picker.component';
+import { BackgroundPickerComponent }     from './components/background-picker/background-picker.component';
+import { ScenarioObjectPickerComponent } from './components/scenario-object-picker/scenario-object-picker.component';
+import { CharacterPickerComponent }      from './components/character-picker/character-picker.component';
  
 export const COMPONENTS: any[] = [
 	HeaderComponent,
 	AssetPickerComponent,
-	ItemPickerComponent
+	ItemPickerComponent,
+	BackgroundPickerComponent,
+	ScenarioObjectPickerComponent,
+	CharacterPickerComponent
 ];
 
 /*
