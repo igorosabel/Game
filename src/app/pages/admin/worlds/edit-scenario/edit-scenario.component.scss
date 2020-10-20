@@ -149,8 +149,8 @@
 					position: relative;
 
 					img {
-						width: 128px;
-						height: 128px;
+						width: 84px;
+						height: 84px;
 						cursor: pointer;
 					}
 
@@ -225,6 +225,15 @@
 		.box {
 			.body {
 				flex-direction: row;
+
+				.cell-option {
+					main {
+						img {
+							width: 128px;
+							height: 128px;
+						}
+					}
+				}
 			}
 		}
 	}
