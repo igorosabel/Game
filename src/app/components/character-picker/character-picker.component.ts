@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Character }                               from '../../model/character.model';
 import { ApiService }                              from '../../services/api.service';
-import { CommonService }                           from '../../services/common.service';
 import { ClassMapperService }                      from '../../services/class-mapper.service';
 import { CharacterInterface }                      from '../../interfaces/interfaces';
 
@@ -23,7 +22,7 @@ export class CharacterPickerComponent implements OnInit {
 
 	@Output() selectCharacterEvent = new EventEmitter<CharacterInterface>();
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(private as: ApiService, private cms: ClassMapperService) {}
 	ngOnInit(): void {
 		this.loadCharacters();
 	}

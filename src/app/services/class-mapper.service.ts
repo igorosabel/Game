@@ -14,6 +14,7 @@ import { Character }           from '../model/character.model';
 import { ScenarioObjectDrop }  from '../model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
 import { ScenarioObject }      from '../model/scenario-object.model';
+import { CommonService }       from './common.service';
 import {
 	WorldInterface,
 	ScenarioInterface,
@@ -36,7 +37,7 @@ import {
 	providedIn: 'root'
 })
 export class ClassMapperService {
-	constructor() {}
+	constructor(private cs: CommonService) {}
 
 	getWorlds(response: WorldInterface[]) {
 		const worlds: World[] = [];
@@ -51,11 +52,11 @@ export class ClassMapperService {
 	getWorld(w: WorldInterface) {
 		return new World(
 			w.id,
-			w.name,
-			w.description,
-			w.wordOne,
-			w.wordTwo,
-			w.wordThree,
+			this.cs.urldecode(w.name),
+			this.cs.urldecode(w.description),
+			this.cs.urldecode(w.wordOne),
+			this.cs.urldecode(w.wordTwo),
+			this.cs.urldecode(w.wordThree),
 			w.friendly
 		);
 	}
@@ -74,7 +75,7 @@ export class ClassMapperService {
 		return new Scenario(
 			s.id,
 			s.idWorld,
-			s.name,
+			this.cs.urldecode(s.name),
 			s.startX,
 			s.startY,
 			s.initial,
@@ -98,14 +99,14 @@ export class ClassMapperService {
 			sd.x,
 			sd.y,
 			sd.idBackground,
-			sd.backgroundName,
-			sd.backgroundAssetUrl,
+			this.cs.urldecode(sd.backgroundName),
+			this.cs.urldecode(sd.backgroundAssetUrl),
 			sd.idScenarioObject,
-			sd.scenarioObjectName,
-			sd.scenarioObjectAssetUrl,
+			this.cs.urldecode(sd.scenarioObjectName),
+			this.cs.urldecode(sd.scenarioObjectAssetUrl),
 			sd.idCharacter,
-			sd.characterName,
-			sd.characterAssetUrl
+			this.cs.urldecode(sd.characterName),
+			this.cs.urldecode(sd.characterAssetUrl)
 		);
 	}
 
@@ -140,7 +141,7 @@ export class ClassMapperService {
 	getTag(t: TagInterface) {
 		return new Tag(
 			t.id,
-			t.name
+			this.cs.urldecode(t.name)
 		);
 	}
 
@@ -158,8 +159,8 @@ export class ClassMapperService {
 		return new Asset(
 			a.id,
 			a.idWorld,
-			a.name,
-			a.url,
+			this.cs.urldecode(a.name),
+			this.cs.urldecode(a.url),
 			this.getTags(a.tags)
 		);
 	}
@@ -177,7 +178,7 @@ export class ClassMapperService {
 	getBackgroundCategory(bc: BackgroundCategoryInterface) {
 		return new BackgroundCategory(
 			bc.id,
-			bc.name
+			this.cs.urldecode(bc.name)
 		);
 	}
 
@@ -196,8 +197,8 @@ export class ClassMapperService {
 			b.id,
 			b.idBackgroundCategory,
 			b.idAsset,
-			b.assetUrl,
-			b.name,
+			this.cs.urldecode(b.assetUrl),
+			this.cs.urldecode(b.name),
 			b.crossable
 		);
 	}
@@ -216,7 +217,7 @@ export class ClassMapperService {
 		return new ItemFrame(
 			itf.id,
 			itf.idAsset,
-			itf.assetUrl,
+			this.cs.urldecode(itf.assetUrl),
 			itf.order
 		);
 	}
@@ -236,8 +237,8 @@ export class ClassMapperService {
 			i.id,
 			i.type,
 			i.idAsset,
-			i.assetUrl,
-			i.name,
+			this.cs.urldecode(i.assetUrl),
+			this.cs.urldecode(i.name),
 			i.money,
 			i.health,
 			i.attack,
@@ -262,7 +263,7 @@ export class ClassMapperService {
 		return new CharacterFrame(
 			cf.id,
 			cf.idAsset,
-			cf.assetUrl,
+			this.cs.urldecode(cf.assetUrl),
 			cf.orientation,
 			cf.order
 		);
@@ -281,22 +282,22 @@ export class ClassMapperService {
 	getCharacter(c: CharacterInterface) {
 		return new Character(
 			c.id,
-			c.name,
+			this.cs.urldecode(c.name),
 			c.idAssetUp,
-			c.assetUpUrl,
+			this.cs.urldecode(c.assetUpUrl),
 			c.idAssetDown,
-			c.assetDownUrl,
+			this.cs.urldecode(c.assetDownUrl),
 			c.idAssetLeft,
-			c.assetLeftUrl,
+			this.cs.urldecode(c.assetLeftUrl),
 			c.idAssetRight,
-			c.assetRightUrl,
+			this.cs.urldecode(c.assetRightUrl),
 			c.type,
 			c.health,
 			c.attack,
 			c.defense,
 			c.speed,
 			c.dropIdItem,
-			c.dropAssetUrl,
+			this.cs.urldecode(c.dropAssetUrl),
 			c.dropChance,
 			c.respawn,
 			this.getCharacterFrames(c.framesUp),
@@ -320,7 +321,7 @@ export class ClassMapperService {
 		return new ScenarioObjectFrame(
 			sof.id,
 			sof.idAsset,
-			sof.assetUrl,
+			this.cs.urldecode(sof.assetUrl),
 			sof.order
 		);
 	}
@@ -339,8 +340,8 @@ export class ClassMapperService {
 		return new ScenarioObjectDrop(
 			sod.id,
 			sod.idItem,
-			sod.itemName,
-			sod.assetUrl,
+			this.cs.urldecode(sod.itemName),
+			this.cs.urldecode(sod.assetUrl),
 			sod.num
 		);
 	}
@@ -358,18 +359,18 @@ export class ClassMapperService {
 	getScenarioObject(so: ScenarioObjectInterface) {
 		return new ScenarioObject(
 			so.id,
-			so.name,
+			this.cs.urldecode(so.name),
 			so.idAsset,
-			so.assetUrl,
+			this.cs.urldecode(so.assetUrl),
 			so.width,
 			so.height,
 			so.crossable,
 			so.activable,
 			so.idAssetActive,
-			so.assetActiveUrl,
+			this.cs.urldecode(so.assetActiveUrl),
 			so.activeTime,
 			so.activeTrigger,
-			so.activeTriggerCustom,
+			this.cs.urldecode(so.activeTriggerCustom),
 			so.pickable,
 			so.grabbable,
 			so.breakable,

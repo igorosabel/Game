@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BackgroundCategory } from '../../../../model/background-category.model';
-import { Background } from '../../../../model/background.model';
-import { ApiService } from '../../../../services/api.service';
-import { CommonService } from '../../../../services/common.service';
-import { ClassMapperService } from '../../../../services/class-mapper.service';
-import { AssetInterface } from '../../../../interfaces/interfaces';
-import { AssetPickerComponent } from '../../../../components/asset-picker/asset-picker.component';
+import { BackgroundCategory }           from '../../../../model/background-category.model';
+import { Background }                   from '../../../../model/background.model';
+import { ApiService }                   from '../../../../services/api.service';
+import { CommonService }                from '../../../../services/common.service';
+import { ClassMapperService }           from '../../../../services/class-mapper.service';
+import { AssetInterface }               from '../../../../interfaces/interfaces';
+import { AssetPickerComponent }         from '../../../../components/asset-picker/asset-picker.component';
 
 @Component({
 	selector: 'game-backgrounds',
@@ -89,9 +89,9 @@ export class BackgroundsComponent implements OnInit {
 
 	selectedAsset(selectedAsset: AssetInterface) {
 		this.loadedBackground.idAsset = selectedAsset.id;
-		this.loadedBackground.assetUrl = this.cs.urldecode(selectedAsset.url);
+		this.loadedBackground.assetUrl = selectedAsset.url;
 		if (selectedAsset.name!='') {
-			this.loadedBackground.name = this.cs.urldecode(selectedAsset.name);
+			this.loadedBackground.name = selectedAsset.name;
 		}
 	}
 
@@ -132,8 +132,8 @@ export class BackgroundsComponent implements OnInit {
 			background.id,
 			background.idBackgroundCategory,
 			background.idAsset,
-			this.cs.urldecode(background.assetUrl),
-			this.cs.urldecode(background.name),
+			background.assetUrl,
+			background.name,
 			background.crossable
 		);
 
@@ -142,14 +142,14 @@ export class BackgroundsComponent implements OnInit {
 	}
 
 	deleteBackground(background: Background) {
-		const conf = confirm('¿Estás seguro de querer borrar el fondo "'+this.cs.urldecode(background.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el fondo "'+background.name+'"?');
 		if (conf) {
 			this.as.deleteBackground(background.id).subscribe(result => {
 				if (result.status=='ok') {
 					this.loadBackgrounds();
 				}
 				if (result.status=='in-use') {
-					alert('El fondo está siendo usado en un escenario. Cámbialo o bórralo antes de poder borrar este fondo');
+					alert("El fondo está siendo usado en un escenario. Cámbialo o bórralo antes de poder borrar este fondo\n\n"+this.cs.urldecode(result.message));
 				}
 				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el fondo!');

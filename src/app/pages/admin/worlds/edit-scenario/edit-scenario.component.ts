@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild }  from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
 import { ApiService }                    from '../../../../services/api.service';
-import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
@@ -40,7 +39,7 @@ export class EditScenarioComponent implements OnInit {
 	@ViewChild('scenarioObjectPicker', { static: true }) scenarioObjectPicker: ScenarioObjectPickerComponent;
 	@ViewChild('characterPicker', { static: true }) characterPicker: CharacterPickerComponent;
 
-	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private csm: ClassMapperService, private cs: CommonService) {}
+	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private csm: ClassMapperService) {}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((params: Params) => {
@@ -79,14 +78,14 @@ export class EditScenarioComponent implements OnInit {
 				cell.x,
 				cell.y,
 				cell.idBackground,
-				(cell.idBackground!=null) ? this.cs.urldecode(cell.backgroundName) : 'Sin fondo',
-				(cell.idBackground!=null) ? this.cs.urldecode(cell.backgroundAssetUrl) : '/assets/no-asset.svg',
+				(cell.idBackground!=null) ? cell.backgroundName : 'Sin fondo',
+				(cell.idBackground!=null) ? cell.backgroundAssetUrl : '/assets/no-asset.svg',
 				cell.idScenarioObject,
-				(cell.idScenarioObject!=null) ? this.cs.urldecode(cell.scenarioObjectName) : 'Sin objeto',
-				(cell.idScenarioObject!=null) ? this.cs.urldecode(cell.scenarioObjectAssetUrl) : '/assets/no-asset.svg',
+				(cell.idScenarioObject!=null) ? cell.scenarioObjectName : 'Sin objeto',
+				(cell.idScenarioObject!=null) ? cell.scenarioObjectAssetUrl : '/assets/no-asset.svg',
 				cell.idCharacter,
-				(cell.idCharacter!=null) ? this.cs.urldecode(cell.characterName) : 'Sin personaje',
-				(cell.idCharacter!=null) ? this.cs.urldecode(cell.characterAssetUrl) : '/assets/no-asset.svg'
+				(cell.idCharacter!=null) ? cell.characterName : 'Sin personaje',
+				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/no-asset.svg'
 			);
 			this.showCellDetail = true;
 		}
@@ -101,8 +100,8 @@ export class EditScenarioComponent implements OnInit {
 
 	selectedBackground(background: BackgroundInterface) {
 		this.loadedCell.idBackground = background.id;
-		this.loadedCell.backgroundAssetUrl = this.cs.urldecode(background.assetUrl);
-		this.loadedCell.backgroundName = this.cs.urldecode(background.name);
+		this.loadedCell.backgroundAssetUrl = background.assetUrl;
+		this.loadedCell.backgroundName = background.name;
 	}
 
 	deleteBackground(ev) {
@@ -122,8 +121,8 @@ export class EditScenarioComponent implements OnInit {
 
 	selectedScenarioObject(scenarioObject: ScenarioObjectInterface) {
 		this.loadedCell.idScenarioObject = scenarioObject.id;
-		this.loadedCell.scenarioObjectAssetUrl = this.cs.urldecode(scenarioObject.assetUrl);
-		this.loadedCell.scenarioObjectName = this.cs.urldecode(scenarioObject.name);
+		this.loadedCell.scenarioObjectAssetUrl = scenarioObject.assetUrl;
+		this.loadedCell.scenarioObjectName = scenarioObject.name;
 	}
 
 	deleteScenarioObject(ev) {
@@ -143,8 +142,8 @@ export class EditScenarioComponent implements OnInit {
 
 	selectedCharacter(character: CharacterInterface) {
 		this.loadedCell.idCharacter = character.id;
-		this.loadedCell.characterAssetUrl = this.cs.urldecode(character.assetDownUrl);
-		this.loadedCell.characterName = this.cs.urldecode(character.name);
+		this.loadedCell.characterAssetUrl = character.assetDownUrl;
+		this.loadedCell.characterName = character.name;
 	}
 
 	deleteCharacter(ev) {
@@ -158,7 +157,7 @@ export class EditScenarioComponent implements OnInit {
 		this.savingCell = true;
 		this.as.saveScenarioData(this.loadedCell.toInterface()).subscribe(result => {
 			if (result.status=='ok') {
-				this.scenario[scenarioData.x][scenarioData.y] = scenarioData;
+				this.scenario[this.loadedCell.x][this.loadedCell.y] = this.loadedCell;
 			}
 		});
 	}

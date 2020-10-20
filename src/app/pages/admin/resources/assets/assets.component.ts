@@ -154,15 +154,15 @@ export class AssetsComponent implements OnInit {
 		this.loadedAsset = new Asset(
 			asset.id,
 			asset.idWorld,
-			this.cs.urldecode(asset.name),
-			this.cs.urldecode(asset.url),
+			asset.name,
+			asset.url,
 			[]
 		);
 		for (let t of asset.tags) {
 			this.loadedAsset.tags.push(
 				new Tag(
 					t.id,
-					this.cs.urldecode(t.name)
+					t.name
 				)
 			);
 		}
@@ -172,7 +172,7 @@ export class AssetsComponent implements OnInit {
 	}
 
 	deleteAsset(asset: Asset) {
-		const conf = confirm('¿Estás seguro de querer borrar el recurso "'+this.cs.urldecode(asset.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el recurso "'+asset.name+'"?');
 		if (conf) {
 			this.as.deleteAsset(asset.id).subscribe(result => {
 				if (result.status=='ok') {

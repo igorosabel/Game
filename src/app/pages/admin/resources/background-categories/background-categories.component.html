@@ -4,7 +4,7 @@
 	<div class="header">Categorías de fondos</div>
 	<div>
 		<div class="row" *ngFor="let backgroundCategory of backgroundCategoryList">
-			<span>{{backgroundCategory.name | urldecode}}</span>
+			<span>{{backgroundCategory.name}}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="background-category-edit" (click)="editBackgroundCategory(backgroundCategory)">
 			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="background-category-delete" (click)="deleteBackgroundCategory(backgroundCategory)">
 		</div>

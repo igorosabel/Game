@@ -4,7 +4,7 @@
 	<div class="header">Mundos</div>
 	<div>
 		<div class="row" *ngFor="let world of worldList">
-			<a [routerLink]="['/admin', 'world', world.id, 'scenarios']">{{world.name | urldecode}}</a>
+			<a [routerLink]="['/admin', 'world', world.id, 'scenarios']">{{world.name}}</a>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="world-edit" (click)="editWorld(world)">
 			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="world-delete" (click)="deleteWorld(world)">
 		</div>

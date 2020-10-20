@@ -125,8 +125,8 @@ export class CharactersComponent implements OnInit {
 
 	selectedItem(selectedItem: ItemInterface) {
 		this.loadedCharacter.dropIdItem = selectedItem.id;
-		this.loadedCharacter.dropAssetUrl = this.cs.urldecode(selectedItem.assetUrl);
-		this.dropItemName = this.cs.urldecode(selectedItem.name);
+		this.loadedCharacter.dropAssetUrl = selectedItem.assetUrl;
+		this.dropItemName = selectedItem.name;
 	}
 
 	removeSelectedDropItem(ev) {
@@ -155,7 +155,7 @@ export class CharactersComponent implements OnInit {
 			let frame = new CharacterFrame(
 				null,
 				selectedAsset.id,
-				this.cs.urldecode(selectedAsset.url),
+				selectedAsset.url,
 				orientation,
 				this.loadedCharacter[this.assetPickerWhere].length
 			);
@@ -164,7 +164,7 @@ export class CharactersComponent implements OnInit {
 		else {
 			const where = this.assetPickerWhere.substring(0,1).toUpperCase() + this.assetPickerWhere.substring(1);
 			this.loadedCharacter['idAsset'+where] = selectedAsset.id;
-			this.loadedCharacter['asset'+where+'Url'] = this.cs.urldecode(selectedAsset.url);
+			this.loadedCharacter['asset'+where+'Url'] = selectedAsset.url;
 		}
 		this.startAnimation();
 	}
@@ -319,22 +319,22 @@ export class CharactersComponent implements OnInit {
 	editCharacter(character: Character) {
 		this.loadedCharacter = new Character(
 			character.id,
-			this.cs.urldecode(character.name),
+			character.name,
 			character.idAssetUp,
-			(character.assetUpUrl!=null) ? this.cs.urldecode(character.assetUpUrl) : '/assets/no-asset.svg',
+			(character.assetUpUrl!=null) ? character.assetUpUrl : '/assets/no-asset.svg',
 			character.idAssetDown,
-			this.cs.urldecode(character.assetDownUrl),
+			character.assetDownUrl,
 			character.idAssetLeft,
-			(character.assetLeftUrl!=null) ? this.cs.urldecode(character.assetLeftUrl) : '/assets/no-asset.svg',
+			(character.assetLeftUrl!=null) ? character.assetLeftUrl : '/assets/no-asset.svg',
 			character.idAssetRight,
-			(character.assetRightUrl!=null) ? this.cs.urldecode(character.assetRightUrl) : '/assets/no-asset.svg',
+			(character.assetRightUrl!=null) ? character.assetRightUrl : '/assets/no-asset.svg',
 			character.type,
 			character.health,
 			character.attack,
 			character.defense,
 			character.speed,
 			character.dropIdItem,
-			(character.dropAssetUrl!=null) ? this.cs.urldecode(character.dropAssetUrl) : '/assets/no-asset.svg',
+			(character.dropAssetUrl!=null) ? character.dropAssetUrl : '/assets/no-asset.svg',
 			character.dropChance,
 			character.respawn,
 			[],
@@ -345,7 +345,7 @@ export class CharactersComponent implements OnInit {
 		let sentList = ['Up', 'Down', 'Left', 'Right'];
 		for (let sent of sentList) {
 			for (let frame of character['frames'+sent]) {
-				frame.assetUrl = this.cs.urldecode(frame.assetUrl);
+				frame.assetUrl = frame.assetUrl;
 				this.loadedCharacter['frames'+sent].push(frame);
 			}
 
@@ -361,7 +361,7 @@ export class CharactersComponent implements OnInit {
 
 		if (character.dropIdItem!==null) {
 			const dropItem = this.itemPicker.getItemById(character.dropIdItem);
-			this.dropItemName = this.cs.urldecode(dropItem.name);
+			this.dropItemName = dropItem.name;
 		}
 		else {
 			this.dropItemName = 'Elige un item';
@@ -372,14 +372,14 @@ export class CharactersComponent implements OnInit {
 	}
 
 	deleteCharacter(character: Character) {
-		const conf = confirm('¿Estás seguro de querer borrar el personaje "'+this.cs.urldecode(character.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el personaje "'+character.name+'"?');
 		if (conf) {
 			this.as.deleteCharacter(character.id).subscribe(result => {
 				if (result.status=='ok') {
 					this.loadCharacters();
 				}
 				if (result.status=='in-use') {
-					alert("El personaje está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n"+result.message);
+					alert("El personaje está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n"+this.cs.urldecode(result.message));
 				}
 				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el personaje!');

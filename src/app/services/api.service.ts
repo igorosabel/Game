@@ -13,6 +13,7 @@ import {
 	ScenarioResult,
 	ScenarioInterface,
 	ScenarioDataResult,
+	ScenarioDataInterface,
 	TagResult,
 	AssetResult,
 	AssetInterface,
@@ -100,8 +101,8 @@ export class ApiService {
 		return this.http.post<StatusResult>(this.url + 'admin/save-background-category', backgroundCategory);
 	}
 
-	deleteBackgroundCategory(id: number): Observable<StatusResult> {
-		return this.http.post<StatusResult>(this.url + 'admin/delete-background-category', {id});
+	deleteBackgroundCategory(id: number): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-background-category', {id});
 	}
 
 	getBackgrounds(): Observable<BackgroundResult> {
@@ -112,8 +113,8 @@ export class ApiService {
 		return this.http.post<StatusResult>(this.url + 'admin/save-background', background);
 	}
 
-	deleteBackground(id: number): Observable<StatusResult> {
-		return this.http.post<StatusResult>(this.url + 'admin/delete-background', {id});
+	deleteBackground(id: number): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/delete-background', {id});
 	}
 
 	getItems(): Observable<ItemResult> {

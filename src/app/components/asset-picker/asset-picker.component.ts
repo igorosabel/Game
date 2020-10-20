@@ -3,7 +3,6 @@ import { Tag }                                     from '../../model/tag.model';
 import { World }                                   from '../../model/world.model';
 import { Asset }                                   from '../../model/asset.model';
 import { ApiService }                              from '../../services/api.service';
-import { CommonService }                           from '../../services/common.service';
 import { ClassMapperService }                      from '../../services/class-mapper.service';
 import { AssetInterface }                          from '../../interfaces/interfaces';
 
@@ -25,7 +24,7 @@ export class AssetPickerComponent implements OnInit {
 
 	@Output() selectAssetEvent = new EventEmitter<AssetInterface>();
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(private as: ApiService, private cms: ClassMapperService) {}
 	ngOnInit(): void {
 		this.loadTags();
 		this.loadWorlds();

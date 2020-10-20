@@ -1,5 +1,4 @@
 import { Component, OnInit }  from '@angular/core';
-import { CommonService }      from '../../../../services/common.service';
 import { ApiService }         from '../../../../services/api.service';
 import { ClassMapperService } from '../../../../services/class-mapper.service';
 import { World }              from '../../../../model/world.model';
@@ -16,7 +15,7 @@ export class WorldsComponent implements OnInit {
 	showDetail: boolean = false;
 	worldDetailHeader: string = '';
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(private as: ApiService, private cms: ClassMapperService) {}
 
 	ngOnInit(): void {
 		this.message = 'Cargando...';
@@ -92,11 +91,11 @@ export class WorldsComponent implements OnInit {
 	editWorld(world: World) {
 		this.loadedWorld = new World(
 			world.id,
-			this.cs.urldecode(world.name),
-			this.cs.urldecode(world.description),
-			this.cs.urldecode(world.wordOne),
-			this.cs.urldecode(world.wordTwo),
-			this.cs.urldecode(world.wordThree),
+			world.name,
+			world.description,
+			world.wordOne,
+			world.wordTwo,
+			world.wordThree,
 			world.friendly
 		);
 
@@ -105,7 +104,7 @@ export class WorldsComponent implements OnInit {
 	}
 
 	deleteWorld(world: World) {
-		const conf = confirm('¿Estás seguro de querer borrar el mundo "'+this.cs.urldecode(world.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el mundo "'+world.name+'"?');
 		if (conf) {
 			this.as.deleteWorld(world.id).subscribe(result => {
 				if (result.status=='ok') {

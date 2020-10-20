@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit }             from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
-import { CommonService }         from '../../../../services/common.service';
-import { ApiService }         from '../../../../services/api.service';
-import { ClassMapperService } from '../../../../services/class-mapper.service';
-import { Scenario }              from '../../../../model/scenario.model';
+import { ApiService }                    from '../../../../services/api.service';
+import { ClassMapperService }            from '../../../../services/class-mapper.service';
+import { Scenario }                      from '../../../../model/scenario.model';
 
 @Component({
 	selector: 'game-scenarios',
@@ -18,7 +17,7 @@ export class ScenariosComponent implements OnInit {
 	showDetail: boolean = false;
 	scenarioDetailHeader: string = '';
 
-	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cms: ClassMapperService) {}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((params: Params) => {
@@ -83,7 +82,7 @@ export class ScenariosComponent implements OnInit {
 		this.loadedScenario = new Scenario(
 			scenario.id,
 			scenario.idWorld,
-			this.cs.urldecode(scenario.name),
+			scenario.name,
 			scenario.startX,
 			scenario.startY,
 			scenario.initial,
@@ -95,7 +94,7 @@ export class ScenariosComponent implements OnInit {
 	}
 
 	deleteScenario(scenario: Scenario) {
-		const conf = confirm('¿Estás seguro de querer borrar el escenario "'+this.cs.urldecode(scenario.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el escenario "'+scenario.name+'"?');
 		if (conf) {
 			this.as.deleteScenario(scenario.id).subscribe(result => {
 				if (result.status=='ok') {

@@ -116,13 +116,13 @@ export class ItemsComponent implements OnInit {
 	selectedAsset(selectedAsset: AssetInterface) {
 		if (this.assetPickerWhere=='item') {
 			this.loadedItem.idAsset = selectedAsset.id;
-			this.loadedItem.assetUrl = this.cs.urldecode(selectedAsset.url);
+			this.loadedItem.assetUrl = selectedAsset.url;
 			if (selectedAsset.name!='') {
-				this.loadedItem.name = this.cs.urldecode(selectedAsset.name);
+				this.loadedItem.name = selectedAsset.name;
 			}
 		}
 		if (this.assetPickerWhere=='frame') {
-			let frame = new ItemFrame(null, selectedAsset.id, this.cs.urldecode(selectedAsset.url), this.loadedItem.frames.length);
+			let frame = new ItemFrame(null, selectedAsset.id, selectedAsset.url, this.loadedItem.frames.length);
 			this.loadedItem.frames.push(frame);
 		}
 
@@ -269,8 +269,8 @@ export class ItemsComponent implements OnInit {
 			item.id,
 			item.type,
 			item.idAsset,
-			this.cs.urldecode(item.assetUrl),
-			this.cs.urldecode(item.name),
+			item.assetUrl,
+			item.name,
 			item.money,
 			item.health,
 			item.attack,
@@ -280,7 +280,7 @@ export class ItemsComponent implements OnInit {
 			[]
 		);
 		for (let frame of item.frames) {
-			frame.assetUrl = this.cs.urldecode(frame.assetUrl);
+			frame.assetUrl = frame.assetUrl;
 			this.loadedItem.frames.push(frame);
 		}
 
@@ -301,14 +301,14 @@ export class ItemsComponent implements OnInit {
 	}
 
 	deleteItem(item: Item) {
-		const conf = confirm('¿Estás seguro de querer borrar el item "'+this.cs.urldecode(item.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el item "'+item.name+'"?');
 		if (conf) {
 			this.as.deleteItem(item.id).subscribe(result => {
 				if (result.status=='ok') {
 					this.loadItems();
 				}
 				if (result.status=='in-use') {
-					alert("El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n"+result.message);
+					alert("El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n"+this.cs.urldecode(result.message));
 				}
 				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el item!');

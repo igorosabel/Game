@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Background }                              from '../../model/background.model';
 import { BackgroundCategory }                      from '../../model/background-category.model';
 import { ApiService }                              from '../../services/api.service';
-import { CommonService }                           from '../../services/common.service';
 import { ClassMapperService }                      from '../../services/class-mapper.service';
 import { BackgroundInterface }                     from '../../interfaces/interfaces';
 
@@ -21,7 +20,7 @@ export class BackgroundPickerComponent implements OnInit {
 
 	@Output() selectBackgroundEvent = new EventEmitter<BackgroundInterface>();
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(private as: ApiService, private cms: ClassMapperService) {}
 	ngOnInit(): void {
 		this.loadBackgroundCategories();
 		this.loadBackgrounds();

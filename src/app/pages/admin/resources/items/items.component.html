@@ -17,9 +17,9 @@
 
 <div class="item-list" [ngClass]="{'item-list-list': filterListOption=='list'}">
 	<div *ngFor="let item of itemListFiltered" [ngClass]="{'item-item': filterListOption=='items', 'item-list-item': filterListOption=='list'}">
-		<img src="{{ item.assetUrl | urldecode }}" alt="{{ item.name | urldecode }}">
+		<img src="{{ item.assetUrl }}" alt="{{ item.name }}">
 		<div class="item-info">
-			<span title="{{item.name | urldecode}}">{{ item.name | urldecode }}</span>
+			<span title="{{item.name}}">{{ item.name }}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="item-edit" (click)="editItem(item)">
 			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="item-delete" (click)="deleteItem(item)">
 		</div>

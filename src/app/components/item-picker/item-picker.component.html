@@ -11,9 +11,9 @@
 
 		<div class="item-list">
 			<div class="item-item" *ngFor="let item of itemListFiltered" [ngClass]="{'item-item-selected': item.id==selected}" (click)="selectItem(item)">
-				<img src="{{ item.assetUrl | urldecode }}" alt="{{ item.name | urldecode }}">
+				<img src="{{ item.assetUrl }}" alt="{{ item.name }}">
 				<div class="item-info">
-					<span title="{{item.name | urldecode}}">{{ item.name | urldecode }}</span>
+					<span title="{{item.name}}">{{ item.name }}</span>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
 			<div>
 				<select name="character-filter" [(ngModel)]="characterFilter" (change)="updateFilteredList()">
 					<option [ngValue]="null">Tipo</option>
-					<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name | urldecode}}</option>
+					<option *ngFor="let type of typeList" [ngValue]="type.id">{{type.name}}</option>
 				</select>
 			</div>
 			<a href="#" (click)="closePicker($event)">X</a>
@@ -12,9 +12,9 @@
 
 		<div class="character-list">
 			<div class="character-item" *ngFor="let character of characterListFiltered" [ngClass]="{'character-item-selected': character.id==selected}" (click)="selectCharacter(character)">
-				<img src="{{ character.assetDownUrl | urldecode }}" alt="{{ character.name | urldecode }}">
+				<img src="{{ character.assetDownUrl }}" alt="{{ character.name }}">
 				<div class="character-info">
-					<span title="{{character.name | urldecode}}">{{ character.name | urldecode }}</span>
+					<span title="{{character.name}}">{{ character.name }}</span>
 				</div>
 			</div>
 		</div>

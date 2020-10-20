@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ScenarioObject }                          from '../../model/scenario-object.model';
 import { ApiService }                              from '../../services/api.service';
-import { CommonService }                           from '../../services/common.service';
 import { ClassMapperService }                      from '../../services/class-mapper.service';
 import { ScenarioObjectInterface }                 from '../../interfaces/interfaces';
 
@@ -17,7 +16,7 @@ export class ScenarioObjectPickerComponent implements OnInit {
 
 	@Output() selectScenarioObjectEvent = new EventEmitter<ScenarioObjectInterface>();
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(private as: ApiService, private cms: ClassMapperService) {}
 	ngOnInit(): void {
 		this.loadScenarioObjects();
 	}

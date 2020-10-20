@@ -4,7 +4,7 @@
 	<div>
 		<select name="backgrounds-filter-category" [(ngModel)]="backgroundCategoryFilter" (change)="updateFilteredList()">
 			<option [ngValue]="null">Elige una categoría</option>
-			<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
+			<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
 		</select>
 	</div>
   <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
@@ -18,10 +18,10 @@
 
 <div class="background-list" [ngClass]="{'background-list-list': filterListOption=='list'}">
 	<div *ngFor="let background of backgroundListFiltered" [ngClass]="{'background-item': filterListOption=='items', 'background-list-item': filterListOption=='list'}">
-		<img src="{{ background.assetUrl | urldecode }}" alt="{{ background.name | urldecode }}">
+		<img src="{{ background.assetUrl }}" alt="{{ background.name }}">
 		<img src="/assets/cant-cross.svg" class="cant-cross" *ngIf="!background.crossable">
 		<div class="background-info">
-			<span title="{{background.name | urldecode}}">{{ background.name | urldecode }}</span>
+			<span title="{{background.name}}">{{ background.name }}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="background-edit" (click)="editBackground(background)">
 			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="background-delete" (click)="deleteBackground(background)">
 		</div>
@@ -44,7 +44,7 @@
 				<label>Tipo de fondo</label>
 				<select [(ngModel)]="loadedBackground.idBackgroundCategory">
 					<option [value]="null">Sin categoría</option>
-					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name | urldecode}}</option>
+					<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
 				</select>
 			</div>
 			<div class="col col-wide">

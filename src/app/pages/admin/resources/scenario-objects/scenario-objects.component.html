@@ -11,9 +11,9 @@
 
 <div class="scenario-object-list" [ngClass]="{'scenario-object-list-list': filterListOption=='list'}">
 	<div *ngFor="let scenarioObject of scenarioObjectList" [ngClass]="{'scenario-object-item': filterListOption=='items', 'scenario-object-list-item': filterListOption=='list'}">
-		<img src="{{ scenarioObject.assetUrl | urldecode }}" alt="{{ scenarioObject.name | urldecode }}">
+		<img src="{{ scenarioObject.assetUrl }}" alt="{{ scenarioObject.name }}">
 		<div class="scenario-object-info">
-			<span title="{{scenarioObject.name | urldecode}}">{{ scenarioObject.name | urldecode }}</span>
+			<span title="{{scenarioObject.name}}">{{ scenarioObject.name }}</span>
 			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-object-edit" (click)="editScenarioObject(scenarioObject)">
 			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-object-delete" (click)="deleteScenarioObject(scenarioObject)">
 		</div>
@@ -85,11 +85,11 @@
 						<label>Mundo al que transportar</label>
 						<select name="scenario-object-active-trigger-custom-world" [(ngModel)]="activeTriggerWorld" (change)="loadSelectedWorldScenarios()">
 							<option [ngValue]="null">Elige un mundo</option>
-							<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name | urldecode}}</option>
+							<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name}}</option>
 						</select>
 						<select name="scenario-object-active-trigger-custom-scenario" [(ngModel)]="loadedScenarioObject.activeTriggerCustom" *ngIf="activeTriggerWorld!=null">
 							<option [ngValue]="null">Elige un escenario</option>
-							<option *ngFor="let scenario of scenarioList" [ngValue]="scenario.id">{{scenario.name | urldecode}}{{scenario.initial ? ' (inicio)' : ''}}</option>
+							<option *ngFor="let scenario of scenarioList" [ngValue]="scenario.id">{{scenario.name}}{{scenario.initial ? ' (inicio)' : ''}}</option>
 						</select>
 					</ng-container>
 					<ng-container *ngIf="loadedScenarioObject.activeTrigger==2">
@@ -157,7 +157,7 @@
 						<div class="scenario-object-drop-name">
 							<a href="#" (click)="deleteDrop($event, drop)">x</a>
 							<img [src]="drop.assetUrl">
-							{{drop.itemName | urldecode}}
+							{{drop.itemName}}
 						</div>
 						<input type="number" min="1" step="1" name="scenario-object-drop-num" [(ngModel)]="drop.num" placeholder="Cantidad" [readonly]="loadedScenarioObject.pickable">
 					</div>

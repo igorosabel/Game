@@ -112,8 +112,8 @@ export class ScenarioObjectsComponent implements OnInit {
 			let drop = new ScenarioObjectDrop(
 				null,
 				selectedItem.id,
-				this.cs.urldecode(selectedItem.name),
-				this.cs.urldecode(selectedItem.assetUrl),
+				selectedItem.name,
+				selectedItem.assetUrl,
 				1
 			);
 			this.loadedScenarioObject.drops.push(drop);
@@ -137,18 +137,18 @@ export class ScenarioObjectsComponent implements OnInit {
 			let frame = new ScenarioObjectFrame(
 				null,
 				selectedAsset.id,
-				this.cs.urldecode(selectedAsset.url),
+				selectedAsset.url,
 				this.loadedScenarioObject.frames.length
 			);
 			this.loadedScenarioObject.frames.push(frame);
 		}
 		if (this.assetPickerWhere=='main') {
 			this.loadedScenarioObject.idAsset = selectedAsset.id;
-			this.loadedScenarioObject.assetUrl = this.cs.urldecode(selectedAsset.url);
+			this.loadedScenarioObject.assetUrl = selectedAsset.url;
 		}
 		if (this.assetPickerWhere=='active') {
 			this.loadedScenarioObject.idAssetActive = selectedAsset.id;
-			this.loadedScenarioObject.assetActiveUrl = this.cs.urldecode(selectedAsset.url);
+			this.loadedScenarioObject.assetActiveUrl = selectedAsset.url;
 		}
 		this.startAnimation();
 	}
@@ -234,7 +234,7 @@ export class ScenarioObjectsComponent implements OnInit {
 
 	deleteDrop(ev, drop: ScenarioObjectDrop) {
 		ev && ev.preventDefault();
-		const conf = confirm('¿Estás seguro de querer borrar el item "' + this.cs.urldecode(drop.itemName) + '"?');
+		const conf = confirm('¿Estás seguro de querer borrar el item "' + drop.itemName + '"?');
 		if (conf) {
 			const ind = this.loadedScenarioObject.drops.findIndex(x => (x.id+x.idItem.toString())==(drop.id+drop.idItem.toString()));
 			this.loadedScenarioObject.drops.splice(ind, 1);
@@ -305,7 +305,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		if (validate && this.loadedScenarioObject.drops.length>0) {
 			for (let drop of this.loadedScenarioObject.drops) {
 				if (drop.num==null) {
-					alert('¡No puedes dejar en blanco el número de unidades para el item "' + this.cs.urldecode(drop.name) + '"!');
+					alert('¡No puedes dejar en blanco el número de unidades para el item "' + drop.name + '"!');
 					validate = false;
 					break;
 				}
@@ -333,18 +333,18 @@ export class ScenarioObjectsComponent implements OnInit {
 	editScenarioObject(scenarioObject: ScenarioObject) {
 		this.loadedScenarioObject = new ScenarioObject(
 			scenarioObject.id,
-			this.cs.urldecode(scenarioObject.name),
+			scenarioObject.name,
 			scenarioObject.idAsset,
-			this.cs.urldecode(scenarioObject.assetUrl),
+			scenarioObject.assetUrl,
 			scenarioObject.width,
 			scenarioObject.height,
 			scenarioObject.crossable,
 			scenarioObject.activable,
 			scenarioObject.idAssetActive,
-			(scenarioObject.assetActiveUrl!=null) ? this.cs.urldecode(scenarioObject.assetActiveUrl) : null,
+			(scenarioObject.assetActiveUrl!=null) ? scenarioObject.assetActiveUrl : null,
 			scenarioObject.activeTime,
 			scenarioObject.activeTrigger,
-			(scenarioObject.activeTriggerCustom!=null) ? this.cs.urldecode(scenarioObject.activeTriggerCustom) : null,
+			(scenarioObject.activeTriggerCustom!=null) ? scenarioObject.activeTriggerCustom : null,
 			scenarioObject.pickable,
 			scenarioObject.grabbable,
 			scenarioObject.breakable,
@@ -352,12 +352,12 @@ export class ScenarioObjectsComponent implements OnInit {
 			[]
 		);
 		for (let frame of scenarioObject.frames) {
-			frame.assetUrl = this.cs.urldecode(frame.assetUrl);
+			frame.assetUrl = frame.assetUrl;
 			this.loadedScenarioObject.frames.push(frame);
 		}
 		for (let drop of scenarioObject.drops) {
-			drop.assetUrl = this.cs.urldecode(drop.assetUrl);
-			drop.itemName = this.cs.urldecode(drop.itemName);
+			drop.assetUrl = drop.assetUrl;
+			drop.itemName = drop.itemName;
 			this.loadedScenarioObject.drops.push(drop);
 		}
 
@@ -375,14 +375,14 @@ export class ScenarioObjectsComponent implements OnInit {
 	}
 
 	deleteScenarioObject(scenarioObject: ScenarioObject) {
-		const conf = confirm('¿Estás seguro de querer borrar el objeto "'+this.cs.urldecode(scenarioObject.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar el objeto "'+scenarioObject.name+'"?');
 		if (conf) {
 			this.as.deleteScenarioObject(scenarioObject.id).subscribe(result => {
 				if (result.status=='ok') {
 					this.loadScenarioObjects();
 				}
 				if (result.status=='in-use') {
-					alert("El objeto de escenario está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n"+result.message);
+					alert("El objeto de escenario está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n"+this.cs.urldecode(result.message));
 				}
 				if (status=='error') {
 					alert('¡Ocurrio un error al borrar el objeto de escenario!');

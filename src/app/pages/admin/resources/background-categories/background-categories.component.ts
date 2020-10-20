@@ -1,9 +1,8 @@
 import { Component, OnInit }  from '@angular/core';
-import { CommonService }      from '../../../../services/common.service';
 import { ApiService }         from '../../../../services/api.service';
+import { CommonService }      from '../../../../services/common.service';
 import { ClassMapperService } from '../../../../services/class-mapper.service';
 import { BackgroundCategory } from '../../../../model/background-category.model';
-
 
 @Component({
 	selector: 'game-background-categories',
@@ -78,7 +77,7 @@ export class BackgroundCategoriesComponent implements OnInit {
 	editBackgroundCategory(backgroundCategory: BackgroundCategory) {
 		this.loadedBackgroundCategory = new BackgroundCategory(
 			backgroundCategory.id,
-			this.cs.urldecode(backgroundCategory.name)
+			backgroundCategory.name
 		);
 
 		this.backgroundCategoryDetailHeader = 'Editar categoría de fondo';
@@ -86,14 +85,14 @@ export class BackgroundCategoriesComponent implements OnInit {
 	}
 
 	deleteBackgroundCategory(backgroundCategory: BackgroundCategory) {
-		const conf = confirm('¿Estás seguro de querer borrar la categoría de fondo "'+this.cs.urldecode(backgroundCategory.name)+'"?');
+		const conf = confirm('¿Estás seguro de querer borrar la categoría de fondo "'+backgroundCategory.name+'"?');
 		if (conf) {
 			this.as.deleteBackgroundCategory(backgroundCategory.id).subscribe(result => {
 				if (result.status=='ok') {
 					this.loadBackgroundCategories();
 				}
 				if (result.status=='in-use') {
-					alert('¡Atención! La categoría está asignada a algún fondo. Cambia la categoría a esos fondos antes de borrarla');
+					alert("¡Atención! La categoría está asignada a algún fondo. Cambia la categoría a esos fondos antes de borrarla\n\n"+this.cs.urldecode(result.message));
 				}
 				if (result.status=='error') {
 					alert('¡Ocurrio un error al borrar la categoría de fondo!');
