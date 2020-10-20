@@ -1,6 +1,23 @@
 <game-header [leftUrl]="['/admin', 'world', worldId, 'scenarios']" leftTitle="&lt; Escenarios" title="Editar escenario" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
 <div class="edit-scenario-header">
+	<div class="header-picker">
+		<div>
+			<label>Seleccionar fondo</label>
+			<img [src]="selected.backgroundAssetUrl" [ngClass]="{'selecting': selected.selecting=='background'}" (click)="copyCell('background')">
+			<a href="#" *ngIf="selected.idBackground!=null" (click)="cancelCopyCell($event, 'background')">X</a>
+		</div>
+		<div>
+			<label>Seleccionar objeto</label>
+			<img [src]="selected.scenarioObjectAssetUrl" [ngClass]="{'selecting': selected.selecting=='scenarioObject'}" (click)="copyCell('scenarioObject')">
+			<a href="#" *ngIf="selected.idScenarioObject!=null" (click)="cancelCopyCell($event, 'scenarioObject')">X</a>
+		</div>
+		<div>
+			<label>Seleccionar personaje</label>
+			<img [src]="selected.characterAssetUrl" [ngClass]="{'selecting': selected.selecting=='character'}" (click)="copyCell('character')">
+			<a href="#" *ngIf="selected.idCharacter!=null" (click)="cancelCopyCell($event, 'character')">X</a>
+		</div>
+	</div>
 	<div>
 		<label for="show-debug">Debug</label>
 		<input type="checkbox" id="show-debug" [(ngModel)]="showDebug">

@@ -19,6 +19,15 @@ import {
 	styleUrls: ['./edit-scenario.component.scss']
 })
 export class EditScenarioComponent implements OnInit {
+	selected = {
+		selecting: null,
+		idBackground: null,
+		backgroundAssetUrl: '/assets/color-picker.svg',
+		idScenarioObject: null,
+		scenarioObjectAssetUrl: '/assets/color-picker.svg',
+		idCharacter: null,
+		characterAssetUrl: '/assets/color-picker.svg'
+	};
 	showDebug: boolean = true;
 	worldId: number = null;
 	scenarioId: number = null;
@@ -62,7 +71,6 @@ export class EditScenarioComponent implements OnInit {
 			for (let scenarioData of scenarioDataList) {
 				this.scenario[scenarioData.x][scenarioData.y] = scenarioData;
 			}
-			console.log(this.scenario);
 			let connections = this.csm.getConnections(result.connection);
 			for (let connection of connections) {
 				this.connections[connection.orientation] = connection;
@@ -70,9 +78,36 @@ export class EditScenarioComponent implements OnInit {
 		});
 	}
 
+	copyCell(mode: string) {
+		if (this.selected.selecting==mode) {
+			this.selected.selecting = null;
+		}
+		else {
+			this.selected.selecting = mode;
+		}
+	}
+
+	cancelCopyCell(ev, mode: string) {
+		ev && ev.preventDefault();
+		const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);
+		this.selected['id'+firstUpper] = null;
+		this.selected[mode+'AssetUrl'] = '/assets/color-picker.svg';
+	}
+
 	openCell(ev = null, cell: ScenarioData = null) {
 		ev && ev.preventDefault();
 		if (cell!=null) {
+			if (this.selected.selecting!=null) {
+				const mode = this.selected.selecting;
+				const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);
+				if (cell['id'+firstUpper]!=null) {
+					this.selected['id'+firstUpper] = cell['id'+firstUpper];
+					this.selected[mode+'AssetUrl'] = cell[mode+'AssetUrl'];
+					this.selected.selecting = null;
+				}
+				return false;
+			}
+			
 			this.loadedCell = new ScenarioData(
 				cell.id,
 				cell.idScenario,
@@ -88,7 +123,30 @@ export class EditScenarioComponent implements OnInit {
 				(cell.idCharacter!=null) ? cell.characterName : 'Sin personaje',
 				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/no-asset.svg'
 			);
-			this.showCellDetail = true;
+
+			let saveDirectly = false;
+			if (this.selected.idBackground!=null) {
+				this.loadedCell.idBackground = this.selected.idBackground;
+				this.loadedCell.backgroundAssetUrl = this.selected.backgroundAssetUrl;
+				saveDirectly = true;
+			}
+			if (this.selected.idScenarioObject!=null) {
+				this.loadedCell.idScenarioObject = this.selected.idScenarioObject;
+				this.loadedCell.scenarioObjectAssetUrl = this.selected.scenarioObjectAssetUrl;
+				saveDirectly = true;
+			}
+			if (this.selected.idCharacter!=null) {
+				this.loadedCell.idCharacter = this.selected.idCharacter;
+				this.loadedCell.characterAssetUrl = this.selected.characterAssetUrl;
+				saveDirectly = true;
+			}
+
+			if (!saveDirectly) {
+				this.showCellDetail = true;
+			}
+			else {
+				this.saveCell();
+			}
 		}
 		else {
 			this.showCellDetail = false;
