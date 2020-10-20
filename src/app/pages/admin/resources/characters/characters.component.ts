@@ -245,6 +245,16 @@ export class CharactersComponent implements OnInit {
 			validate = false;
 		}
 
+		if (validate && this.loadedCharacter.width==null) {
+			alert('¡No puedes dejar la anchura del personaje en blanco!');
+			validate = false;
+		}
+
+		if (validate && this.loadedCharacter.height==null) {
+			alert('¡No puedes dejar la altura del personaje en blanco!');
+			validate = false;
+		}
+
 		if (this.loadedCharacter.type==1) {
 			if (validate && this.loadedCharacter.health==null) {
 				alert('¡No puedes dejar la salud del enemigo en blanco!');
@@ -320,6 +330,8 @@ export class CharactersComponent implements OnInit {
 		this.loadedCharacter = new Character(
 			character.id,
 			character.name,
+			character.width,
+			character.height,
 			character.idAssetUp,
 			(character.assetUpUrl!=null) ? character.assetUpUrl : '/assets/no-asset.svg',
 			character.idAssetDown,

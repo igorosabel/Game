@@ -284,6 +284,8 @@ export class ClassMapperService {
 		return new Character(
 			c.id,
 			this.cs.urldecode(c.name),
+			c.width,
+			c.height,
 			c.idAssetUp,
 			this.cs.urldecode(c.assetUpUrl),
 			c.idAssetDown,

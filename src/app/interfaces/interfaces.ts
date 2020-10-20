@@ -169,6 +169,8 @@ export interface CharacterFrameInterface {
 export interface CharacterInterface {
 	id: number;
 	name: string;
+	width: number;
+	height: number;
 	idAssetUp: number;
 	assetUpUrl: string;
 	idAssetDown: number;

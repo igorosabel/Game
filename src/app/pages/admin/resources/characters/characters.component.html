@@ -59,6 +59,16 @@
 					<input type="text" name="character-name" [(ngModel)]="loadedCharacter.name" placeholder="Nombre del personaje">
 				</div>
 			</div>
+			<div class="row cols">
+				<div class="col">
+					<label>Anchura</label>
+					<input type="number" min="1" step="1" name="character-width" [(ngModel)]="loadedCharacter.width" placeholder="Anchura del personaje">
+				</div>
+				<div class="col">
+					<label>Altura</label>
+					<input type="number" min="1" step="1" name="character-height" [(ngModel)]="loadedCharacter.height" placeholder="Altura del personaje">
+				</div>
+			</div>
 			<div class="row cols" *ngIf="loadedCharacter.type==1">
 				<div class="col">
 					<label>Salud del personaje</label>

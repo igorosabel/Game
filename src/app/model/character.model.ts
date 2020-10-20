@@ -5,6 +5,8 @@ export class Character {
 	constructor(
 		public id: number = null,
 		public name: string = null,
+		public width: number = null,
+		public height: number = null,
 		public idAssetUp: number = null,
 		public assetUpUrl: string = null,
 		public idAssetDown: number = null,
@@ -57,6 +59,8 @@ export class Character {
 		const character: CharacterInterface = {
 			id: this.id,
 			name: this.name,
+			width: this.width,
+			height: this.height,
 			idAssetUp: this.idAssetUp,
 			assetUpUrl: this.assetUpUrl,
 			idAssetDown: this.idAssetDown,
