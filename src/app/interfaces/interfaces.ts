@@ -65,9 +65,13 @@ export interface ScenarioDataInterface {
 	idScenarioObject: number;
 	scenarioObjectName: string;
 	scenarioObjectAssetUrl: string;
+	scenarioObjectWidth: number;
+	scenarioObjectHeight: number;
 	idCharacter: number;
 	characterName: string;
 	characterAssetUrl: string;
+	characterWidth: number;
+	characterHeight: number;
 }
 
 export interface ConnectionInterface {

@@ -107,7 +107,7 @@ export class EditScenarioComponent implements OnInit {
 				}
 				return false;
 			}
-			
+
 			this.loadedCell = new ScenarioData(
 				cell.id,
 				cell.idScenario,
@@ -119,9 +119,13 @@ export class EditScenarioComponent implements OnInit {
 				cell.idScenarioObject,
 				(cell.idScenarioObject!=null) ? cell.scenarioObjectName : 'Sin objeto',
 				(cell.idScenarioObject!=null) ? cell.scenarioObjectAssetUrl : '/assets/no-asset.svg',
+				cell.scenarioObjectWidth,
+				cell.scenarioObjectHeight,
 				cell.idCharacter,
 				(cell.idCharacter!=null) ? cell.characterName : 'Sin personaje',
-				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/no-asset.svg'
+				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/no-asset.svg',
+				cell.characterWidth,
+				cell.characterHeight
 			);
 
 			let saveDirectly = false;

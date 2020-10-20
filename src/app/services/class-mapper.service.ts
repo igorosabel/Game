@@ -105,9 +105,13 @@ export class ClassMapperService {
 			sd.idScenarioObject,
 			this.cs.urldecode(sd.scenarioObjectName),
 			this.cs.urldecode(sd.scenarioObjectAssetUrl),
+      sd.scenarioObjectWidth,
+      sd.scenarioObjectHeight,
 			sd.idCharacter,
 			this.cs.urldecode(sd.characterName),
-			this.cs.urldecode(sd.characterAssetUrl)
+			this.cs.urldecode(sd.characterAssetUrl),
+      sd.characterWidth,
+      sd.characterHeight
 		);
 	}
 

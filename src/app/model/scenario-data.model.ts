@@ -12,11 +12,15 @@ export class ScenarioData {
 		public idScenarioObject: number = null,
 		public scenarioObjectName: string = null,
 		public scenarioObjectAssetUrl: string = null,
+		public scenarioObjectWidth: number = null,
+		public scenarioObjectHeight: number = null,
 		public idCharacter: number = null,
 		public characterName: string = null,
-		public characterAssetUrl: string = null
+		public characterAssetUrl: string = null,
+		public characterWidth: number = null,
+		public characterHeight: number = null
 	) {}
-	
+
 	toInterface(): ScenarioDataInterface {
 		const scenarioData: ScenarioDataInterface = {
 			id: this.id,
@@ -29,9 +33,13 @@ export class ScenarioData {
 			idScenarioObject: this.idScenarioObject,
 			scenarioObjectName: this.scenarioObjectName,
 			scenarioObjectAssetUrl: this.scenarioObjectAssetUrl,
+			scenarioObjectWidth: this.scenarioObjectWidth,
+			scenarioObjectHeight: this.scenarioObjectHeight,
 			idCharacter: this.idCharacter,
 			characterName: this.characterName,
-			characterAssetUrl: this.characterAssetUrl
+			characterAssetUrl: this.characterAssetUrl,
+			characterWidth: this.characterWidth,
+			characterHeight: this.characterHeight
 		};
 		return scenarioData;
 	}
