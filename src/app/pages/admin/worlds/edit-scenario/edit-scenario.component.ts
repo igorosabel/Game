@@ -55,7 +55,7 @@ export class EditScenarioComponent implements OnInit {
 			for (let i=0; i<this.scenarioHeight; i++) {
 				this.scenario[i] = [];
 				for (let j=0; j<this.scenarioWidth; j++) {
-					this.scenario[i][j] = new ScenarioData(null, i, j);
+					this.scenario[i][j] = new ScenarioData(null, this.scenarioId, i, j);
 				}
 			}
 			let scenarioDataList = this.csm.getScenarioDatas(result.data);
@@ -75,6 +75,7 @@ export class EditScenarioComponent implements OnInit {
 		if (cell!=null) {
 			this.loadedCell = new ScenarioData(
 				cell.id,
+				cell.idScenario,
 				cell.x,
 				cell.y,
 				cell.idBackground,
@@ -157,7 +158,10 @@ export class EditScenarioComponent implements OnInit {
 		this.savingCell = true;
 		this.as.saveScenarioData(this.loadedCell.toInterface()).subscribe(result => {
 			if (result.status=='ok') {
+				this.loadedCell.id = result.id;
 				this.scenario[this.loadedCell.x][this.loadedCell.y] = this.loadedCell;
+				this.savingCell = false;
+				this.openCell();
 			}
 		});
 	}

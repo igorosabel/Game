@@ -9,6 +9,7 @@ import {
 	WorldResult,
 	WorldInterface,
 	StatusResult,
+	StatusIdResult,
 	StatusMessageResult,
 	ScenarioResult,
 	ScenarioInterface,
@@ -73,8 +74,8 @@ export class ApiService {
 		return this.http.post<ScenarioDataResult>(this.url + 'admin/get-scenario', {id});
 	}
 
-	saveScenarioData(scenarioData: ScenarioDataInterface): Observable<StatusResult> {
-		return this.http.post<StatusResult>(this.url + 'admin/save-scenario-data', scenarioData);
+	saveScenarioData(scenarioData: ScenarioDataInterface): Observable<StatusIdResult> {
+		return this.http.post<StatusIdResult>(this.url + 'admin/save-scenario-data', scenarioData);
 	}
 
 	getTags(): Observable<TagResult> {

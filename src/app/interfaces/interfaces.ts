@@ -7,6 +7,11 @@ export interface StatusMessageResult {
 	message: string;
 }
 
+export interface StatusIdResult {
+	status: string;
+	id: number;
+}
+
 export interface LoginData {
 	name: string;
 	pass: string;
@@ -51,6 +56,7 @@ export interface ScenarioResult {
 
 export interface ScenarioDataInterface {
 	id: number;
+	idScenario: number;
 	x: number;
 	y: number;
 	idBackground: number;

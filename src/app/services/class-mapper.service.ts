@@ -96,6 +96,7 @@ export class ClassMapperService {
 	getScenarioData(sd: ScenarioDataInterface) {
 		return new ScenarioData(
 			sd.id,
+			sd.idScenario,
 			sd.x,
 			sd.y,
 			sd.idBackground,
