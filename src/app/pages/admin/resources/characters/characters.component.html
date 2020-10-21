@@ -69,6 +69,10 @@
 					<label>Altura</label>
 					<input type="number" min="1" step="1" name="character-height" [(ngModel)]="loadedCharacter.height" placeholder="Altura del personaje">
 				</div>
+				<div class="col">
+					<label>Posición fija</label>
+					<input type="checkbox" name="character-fixed-position" [(ngModel)]="loadedCharacter.fixedPosition">
+				</div>
 			</div>
 			<div class="row cols" *ngIf="loadedCharacter.type==1">
 				<div class="col">

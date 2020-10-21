@@ -183,6 +183,7 @@ export interface CharacterInterface {
 	name: string;
 	width: number;
 	height: number;
+	fixedPosition: boolean;
 	idAssetUp: number;
 	assetUpUrl: string;
 	idAssetDown: number;

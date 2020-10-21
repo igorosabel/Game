@@ -376,6 +376,7 @@ export class CharactersComponent implements OnInit {
 			character.name,
 			character.width,
 			character.height,
+			character.fixedPosition,
 			character.idAssetUp,
 			(character.assetUpUrl!=null) ? character.assetUpUrl : '/assets/no-asset.svg',
 			character.idAssetDown,

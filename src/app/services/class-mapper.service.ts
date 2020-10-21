@@ -312,6 +312,7 @@ export class ClassMapperService {
 			this.cs.urldecode(c.name),
 			c.width,
 			c.height,
+			c.fixedPosition,
 			c.idAssetUp,
 			this.cs.urldecode(c.assetUpUrl),
 			c.idAssetDown,
