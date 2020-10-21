@@ -263,7 +263,12 @@ export class CharactersComponent implements OnInit {
 	}
 
 	deleteNarrative(narrative: Narrative) {
-
+		const conf = confirm('¿Estás seguro de querer borrar este diálogo?');
+		if (conf) {
+			const ind = this.loadedCharacter.narratives.findIndex(x => x.order==narrative.order);
+			this.loadedCharacter.narratives.splice(ind, 1);
+			this.updateNarrativeOrders();
+		}
 	}
 
 	updateNarrativeOrders() {
