@@ -226,7 +226,23 @@
 		</div>
 		<!-- Narrativas -->
 		<div class="body" [ngClass]="{'body-show':detailtTab=='narratives'}">
-			Narrativas
+			<div class="narratives-header">
+				Narrativas
+				<button (click)="addNarrative()">Añadir</button>
+			</div>
+			<div class="narratives-list">
+				<div *ngFor="let narrative of loadedCharacter.narratives" class="narratives-item">
+					<div class="narratives-item-header">
+						<label>{{narrative.order}}</label>
+						<span>
+							<img src="/assets/move-down.svg" title="Mover abajo el diálogo" (click)="moveNarrative(narrative, 'down')">
+							<img src="/assets/move-up.svg" title="Mover arriba el diálogo" (click)="moveNarrative(narrative, 'up')">
+							<img src="/assets/delete.svg" title="Borrar el diálogo" (click)="deleteNarrative(narrative)">
+						</span>
+					</div>
+					<textarea name="narrative-item" class="narrative-dialog" [(ngModel)]="narrative.dialog"></textarea>
+				</div>
+			</div>
 		</div>
 		<div class="footer">
 			<button (click)="saveCharacter()" *ngIf="!savingCharacter">Continuar</button>

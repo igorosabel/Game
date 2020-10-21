@@ -234,6 +234,44 @@ export class CharactersComponent implements OnInit {
 		}
 	}
 
+	addNarrative() {
+		this.loadedCharacter.narratives.push( new Narrative(
+			null,
+			'',
+			(this.loadedCharacter.narratives.length +1)
+		) );
+	}
+
+	moveNarrative(narrative: Narrative, sent: string) {
+		const ind = this.loadedCharacter.narratives.findIndex(x => x.order==narrative.order);
+		const aux = this.loadedCharacter.narratives[ind];
+		if (sent=='up') {
+			if (ind==0) {
+				return;
+			}
+			this.loadedCharacter.narratives[ind] = this.loadedCharacter.narratives[ind -1];
+			this.loadedCharacter.narratives[ind -1] = aux;
+		}
+		if (sent=='down') {
+			if (ind==this.loadedCharacter.narratives.length-1) {
+				return;
+			}
+			this.loadedCharacter.narratives[ind] = this.loadedCharacter.narratives[ind +1];
+			this.loadedCharacter.narratives[ind +1] = aux;
+		}
+		this.updateNarrativeOrders();
+	}
+
+	deleteNarrative(narrative: Narrative) {
+
+	}
+
+	updateNarrativeOrders() {
+		for (let narrativeOrder in this.loadedCharacter.narratives) {
+			this.loadedCharacter.narratives[narrativeOrder].order = parseInt(narrativeOrder) +1;
+		}
+	}
+
 	saveCharacter() {
 		let validate = true;
 		if (this.loadedCharacter.type==null) {

@@ -341,6 +341,51 @@
 					cursor: pointer;
 				}
 			}
+
+			.narratives-header {
+				display: flex;
+				justify-content: space-between;
+				padding: 16px;
+				font-size: 1.2em;
+			}
+
+			.narratives-list {
+				margin: 16px;
+				border: 1px solid #ccc;
+				background-color: #ddd;
+				height: 300px;
+				overflow-y: scroll;
+
+				.narratives-item {
+					margin: 16px;
+					border: 1px solid #ccc;
+					padding: 16px;
+					background-color: #fff;
+
+					.narratives-item-header {
+						padding-bottom: 8px;
+						margin-bottom: 8px;
+						display: flex;
+						justify-content: space-between;
+
+						label {
+							font-size: 1.5em;
+						}
+
+						span {
+							img {
+								display: inline-block;
+								margin: 0 8px;
+								cursor: pointer;
+							}
+						}
+					}
+
+					textarea {
+						border: 1px solid #ccc;
+					}
+				}
+			}
 		}
 
 		.body-show {
