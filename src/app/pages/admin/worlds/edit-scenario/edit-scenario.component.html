@@ -25,6 +25,13 @@
 </div>
 
 <div class="edit-scenario-container">
+	<div class="edit-scenario-up">
+		<img src="/assets/go-up.svg" (click)="connect('up')">
+		<span *ngIf="connections.up!=null">
+			{{connections.up.toName}}
+			<a href="#" (click)="deleteConnection($event, 'up')">X</a>
+		</span>
+	</div>
 	<div class="edit-scenario">
 		<div *ngFor="let row of scenario" class="edit-scenario-row">
 			<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)">
@@ -34,6 +41,13 @@
 				<span>{{cell.x}} - {{cell.y}}</span>
 			</div>
 		</div>
+	</div>
+	<div class="edit-scenario-down">
+		<img src="/assets/go-down.svg" (click)="connect('down')">
+		<span *ngIf="connections.down!=null">
+			{{connections.down.toName}}
+			<a href="#" (click)="deleteConnection($event, 'down')">X</a>
+		</span>
 	</div>
 </div>
 
