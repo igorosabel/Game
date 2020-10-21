@@ -26,8 +26,12 @@ export class EditScenarioComponent implements OnInit {
 		backgroundAssetUrl: '/assets/color-picker.svg',
 		idScenarioObject: null,
 		scenarioObjectAssetUrl: '/assets/color-picker.svg',
+		scenarioObjectWidth: null,
+		scenarioObjectHeight: null,
 		idCharacter: null,
-		characterAssetUrl: '/assets/color-picker.svg'
+		characterAssetUrl: '/assets/color-picker.svg',
+		characterWidth: null,
+		characterHeight: null
 	};
 	showDebug: boolean = true;
 	worldId: number = null;
@@ -110,6 +114,10 @@ export class EditScenarioComponent implements OnInit {
 		const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);
 		this.selected['id'+firstUpper] = null;
 		this.selected[mode+'AssetUrl'] = '/assets/color-picker.svg';
+		if (mode=='scenarioObject' || mode=='character') {
+			this.selected[mode+'Width'] = null;
+			this.selected[mode+'Height'] = null;
+		}
 	}
 
 	openCell(ev = null, cell: ScenarioData = null) {
@@ -121,9 +129,13 @@ export class EditScenarioComponent implements OnInit {
 				if (cell['id'+firstUpper]!=null) {
 					this.selected['id'+firstUpper] = cell['id'+firstUpper];
 					this.selected[mode+'AssetUrl'] = cell[mode+'AssetUrl'];
+					if (mode=='scenarioObject' || mode=='character') {
+						this.selected[mode+'Width'] = cell[mode+'Width'];
+						this.selected[mode+'Height'] = cell[mode+'Height'];
+					}
 					this.selected.selecting = null;
 				}
-				return false;
+				return;
 			}
 
 			this.loadedCell = new ScenarioData(
@@ -155,11 +167,15 @@ export class EditScenarioComponent implements OnInit {
 			if (this.selected.idScenarioObject!=null) {
 				this.loadedCell.idScenarioObject = this.selected.idScenarioObject;
 				this.loadedCell.scenarioObjectAssetUrl = this.selected.scenarioObjectAssetUrl;
+				this.loadedCell.scenarioObjectWidth = this.selected.scenarioObjectWidth;
+				this.loadedCell.scenarioObjectHeight = this.selected.scenarioObjectHeight;
 				saveDirectly = true;
 			}
 			if (this.selected.idCharacter!=null) {
 				this.loadedCell.idCharacter = this.selected.idCharacter;
 				this.loadedCell.characterAssetUrl = this.selected.characterAssetUrl;
+				this.loadedCell.characterWidth = this.selected.characterWidth;
+				this.loadedCell.characterHeight = this.selected.characterHeight;
 				saveDirectly = true;
 			}
 
@@ -204,6 +220,8 @@ export class EditScenarioComponent implements OnInit {
 		this.loadedCell.idScenarioObject = scenarioObject.id;
 		this.loadedCell.scenarioObjectAssetUrl = scenarioObject.assetUrl;
 		this.loadedCell.scenarioObjectName = scenarioObject.name;
+		this.loadedCell.scenarioObjectWidth = scenarioObject.width;
+		this.loadedCell.scenarioObjectHeight = scenarioObject.height;
 	}
 
 	deleteScenarioObject(ev) {
@@ -225,6 +243,8 @@ export class EditScenarioComponent implements OnInit {
 		this.loadedCell.idCharacter = character.id;
 		this.loadedCell.characterAssetUrl = character.assetDownUrl;
 		this.loadedCell.characterName = character.name;
+		this.loadedCell.characterWidth = character.width;
+		this.loadedCell.characterHeight = character.height;
 	}
 
 	deleteCharacter(ev) {
