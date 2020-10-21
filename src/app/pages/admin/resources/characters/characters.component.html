@@ -43,6 +43,7 @@
 			<div class="tab" [ngClass]="{'tab-active':detailtTab=='up'}" (click)="changeTab('up')">Arriba</div>
 			<div class="tab" [ngClass]="{'tab-active':detailtTab=='left'}" (click)="changeTab('left')">Izquierda</div>
 			<div class="tab" [ngClass]="{'tab-active':detailtTab=='right'}" (click)="changeTab('right')">Derecha</div>
+			<div class="tab" [ngClass]="{'tab-active':detailtTab=='narratives'}" (click)="changeTab('narratives')" *ngIf="loadedCharacter.type==0">Narrativas</div>
 		</div>
 		<!-- Datos -->
 		<div class="body" [ngClass]="{'body-show':detailtTab=='data'}">
@@ -222,6 +223,10 @@
 					<img src="/assets/add-frame.svg" (click)="openAssetPicker('framesRight')">
 				</div>
 			</div>
+		</div>
+		<!-- Narrativas -->
+		<div class="body" [ngClass]="{'body-show':detailtTab=='narratives'}">
+			Narrativas
 		</div>
 		<div class="footer">
 			<button (click)="saveCharacter()" *ngIf="!savingCharacter">Continuar</button>
