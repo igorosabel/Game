@@ -105,13 +105,13 @@ export class ClassMapperService {
 			sd.idScenarioObject,
 			this.cs.urldecode(sd.scenarioObjectName),
 			this.cs.urldecode(sd.scenarioObjectAssetUrl),
-      sd.scenarioObjectWidth,
-      sd.scenarioObjectHeight,
+			sd.scenarioObjectWidth,
+			sd.scenarioObjectHeight,
 			sd.idCharacter,
 			this.cs.urldecode(sd.characterName),
 			this.cs.urldecode(sd.characterAssetUrl),
-      sd.characterWidth,
-      sd.characterHeight
+			sd.characterWidth,
+			sd.characterHeight
 		);
 	}
 
@@ -127,8 +127,10 @@ export class ClassMapperService {
 
 	getConnection(c: ConnectionInterface) {
 		return new Connection(
+			c.from,
+			this.cs.urldecode(c.fromName),
 			c.to,
-			c.toName,
+			this.cs.urldecode(c.toName),
 			c.orientation
 		);
 	}

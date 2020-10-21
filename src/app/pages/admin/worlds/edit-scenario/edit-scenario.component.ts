@@ -4,6 +4,7 @@ import { ApiService }                    from '../../../../services/api.service'
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
+import { Connection }                    from '../../../../model/connection.model';
 import { BackgroundPickerComponent }     from '../../../../components/background-picker/background-picker.component';
 import { ScenarioObjectPickerComponent } from '../../../../components/scenario-object-picker/scenario-object-picker.component';
 import { CharacterPickerComponent }      from '../../../../components/character-picker/character-picker.component';
@@ -44,37 +45,54 @@ export class EditScenarioComponent implements OnInit {
 		left: null,
 		right: null
 	};
+	scenarioList: Scenario[] = [];
+	showConnectionsDetail: boolean = false;
+	connectWhere: string = null;
 	@ViewChild('backgroundPicker', { static: true }) backgroundPicker: BackgroundPickerComponent;
 	@ViewChild('scenarioObjectPicker', { static: true }) scenarioObjectPicker: ScenarioObjectPickerComponent;
 	@ViewChild('characterPicker', { static: true }) characterPicker: CharacterPickerComponent;
 
-	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private csm: ClassMapperService) {}
+	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cms: ClassMapperService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((params: Params) => {
 			this.worldId = params.id_world;
 			this.scenarioId = params.id_scenario;
 			this.loadScenario();
+			this.loadScenarioList();
 		});
 	}
 
 	loadScenario() {
 		this.as.getScenario(this.scenarioId).subscribe(result => {
-			this.loadedScenario = this.csm.getScenario(result.scenario);
+			this.loadedScenario = this.cms.getScenario(result.scenario);
 			for (let i=0; i<this.scenarioHeight; i++) {
 				this.scenario[i] = [];
 				for (let j=0; j<this.scenarioWidth; j++) {
 					this.scenario[i][j] = new ScenarioData(null, this.scenarioId, i, j);
 				}
 			}
-			let scenarioDataList = this.csm.getScenarioDatas(result.data);
+			let scenarioDataList = this.cms.getScenarioDatas(result.data);
 			for (let scenarioData of scenarioDataList) {
 				this.scenario[scenarioData.x][scenarioData.y] = scenarioData;
 			}
-			let connections = this.csm.getConnections(result.connection);
+			this.connections = {
+				up: null,
+				down: null,
+				left: null,
+				right: null
+			};
+			let connections = this.cms.getConnections(result.connection);
 			for (let connection of connections) {
 				this.connections[connection.orientation] = connection;
 			}
+		});
+	}
+
+	loadScenarioList() {
+		this.as.getScenarios(this.worldId).subscribe(result => {
+			let scenarios = this.cms.getScenarios(result.list);
+			this.scenarioList = scenarios.filter(x => x.id != this.scenarioId);
 		});
 	}
 
@@ -225,6 +243,50 @@ export class EditScenarioComponent implements OnInit {
 				this.savingCell = false;
 				this.openCell();
 			}
+		});
+	}
+
+	connect(sent: string) {
+		if (this.connections[sent]!=null) {
+			this.router.navigate(['/admin', 'world', this.worldId, 'scenario', this.connections[sent].to]);
+			return;
+		}
+		else {
+			this.connectWhere = sent;
+			this.showConnectionDetail(null, true);
+		}
+	}
+
+	deleteConnection(ev, sent: string) {
+		ev && ev.preventDefault();
+		this.as.deleteConnection(this.connections[sent].toInterface()).subscribe(result => {
+			this.connections[sent] = null;
+		});
+	}
+
+	showConnectionDetail(ev = null, mode = false) {
+		ev && ev.preventDefault();
+		this.showConnectionsDetail = mode;
+	}
+
+	selectScenarioConnection(scenario: Scenario) {
+		const connectionCheck = (this.connections.up!=null && this.connections.up.to==scenario.id) || (this.connections.down!=null && this.connections.down.to==scenario.id) || (this.connections.left!=null && this.connections.left.to==scenario.id) || (this.connections.right!=null && this.connections.right.to==scenario.id);
+		if (connectionCheck) {
+			alert('¡Atención! Ya hay una conexión al escenario elegido.');
+			return;
+		}
+		const connection = new Connection(
+			this.loadedScenario.id,
+			this.loadedScenario.name,
+			scenario.id,
+			scenario.name,
+			this.connectWhere
+		);
+
+		this.as.saveConnection(connection.toInterface()).subscribe(result => {
+			this.connections[this.connectWhere] = connection;
+			this.connectWhere = null;
+			this.showConnectionDetail(null, false);
 		});
 	}
 }

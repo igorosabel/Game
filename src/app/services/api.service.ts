@@ -15,6 +15,7 @@ import {
 	ScenarioInterface,
 	ScenarioDataResult,
 	ScenarioDataInterface,
+	ConnectionInterface,
 	TagResult,
 	AssetResult,
 	AssetInterface,
@@ -76,6 +77,14 @@ export class ApiService {
 
 	saveScenarioData(scenarioData: ScenarioDataInterface): Observable<StatusIdResult> {
 		return this.http.post<StatusIdResult>(this.url + 'admin/save-scenario-data', scenarioData);
+	}
+
+	saveConnection(connection: ConnectionInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/save-connection', connection);
+	}
+
+	deleteConnection(connection: ConnectionInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/delete-connection', connection);
 	}
 
 	getTags(): Observable<TagResult> {

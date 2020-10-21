@@ -75,6 +75,8 @@ export interface ScenarioDataInterface {
 }
 
 export interface ConnectionInterface {
+	from: number;
+	fromName: string;
 	to: number;
 	toName: string;
 	orientation: string;
