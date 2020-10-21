@@ -10,6 +10,7 @@ import { Background }          from '../model/background.model';
 import { ItemFrame }           from '../model/item-frame.model';
 import { Item }                from '../model/item.model';
 import { CharacterFrame }      from '../model/character-frame.model';
+import { Narrative }           from '../model/narrative.model';
 import { Character }           from '../model/character.model';
 import { ScenarioObjectDrop }  from '../model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
@@ -27,6 +28,7 @@ import {
 	ItemFrameInterface,
 	ItemInterface,
 	CharacterFrameInterface,
+	NarrativeInterface,
 	CharacterInterface,
 	ScenarioObjectDropInterface,
 	ScenarioObjectFrameInterface,
@@ -276,6 +278,24 @@ export class ClassMapperService {
 		);
 	}
 
+	getNarratives(response: NarrativeInterface[]) {
+		const narratives: Narrative[] = [];
+
+		for (let n of response) {
+			narratives.push( this.getNarrative(n) );
+		}
+
+		return narratives;
+	}
+
+	getNarrative(n: NarrativeInterface) {
+		return new Narrative(
+			n.id,
+			this.cs.urldecode(n.dialog),
+			n.order
+		);
+	}
+
 	getCharacters(response: CharacterInterface[]) {
 		const characters: Character[] = [];
 
@@ -312,7 +332,8 @@ export class ClassMapperService {
 			this.getCharacterFrames(c.framesUp),
 			this.getCharacterFrames(c.framesDown),
 			this.getCharacterFrames(c.framesLeft),
-			this.getCharacterFrames(c.framesRight)
+			this.getCharacterFrames(c.framesRight),
+			this.getNarratives(c.narratives)
 		);
 	}
 

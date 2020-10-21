@@ -172,6 +172,12 @@ export interface CharacterFrameInterface {
 	order: number;
 }
 
+export interface NarrativeInterface {
+	id: number;
+	dialog: string;
+	order: number;
+}
+
 export interface CharacterInterface {
 	id: number;
 	name: string;
@@ -198,6 +204,7 @@ export interface CharacterInterface {
 	framesDown: CharacterFrameInterface[];
 	framesLeft: CharacterFrameInterface[];
 	framesRight: CharacterFrameInterface[];
+	narratives: NarrativeInterface[];
 }
 
 export interface CharacterResult {

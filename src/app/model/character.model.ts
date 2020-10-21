@@ -1,5 +1,6 @@
-import { CharacterInterface, CharacterFrameInterface } from '../interfaces/interfaces';
+import { CharacterInterface, CharacterFrameInterface, NarrativeInterface } from '../interfaces/interfaces';
 import { CharacterFrame } from './character-frame.model';
+import { Narrative } from './narrative.model';
 
 export class Character {
 	constructor(
@@ -27,7 +28,8 @@ export class Character {
 		public framesUp: CharacterFrame[] = [],
 		public framesDown: CharacterFrame[] = [],
 		public framesLeft: CharacterFrame[] = [],
-		public framesRight: CharacterFrame[] = []
+		public framesRight: CharacterFrame[] = [],
+		public narratives: Narrative[] = []
 	) {}
 
 	getAllFrames(sent: string) {
@@ -81,7 +83,8 @@ export class Character {
 			framesUp: [],
 			framesDown: [],
 			framesLeft: [],
-			framesRight: []
+			framesRight: [],
+			narratives: []
 		};
 		for (let characterFrame of this.framesUp) {
 			character.framesUp.push(characterFrame.toInterface());
@@ -94,6 +97,9 @@ export class Character {
 		}
 		for (let characterFrame of this.framesRight) {
 			character.framesRight.push(characterFrame.toInterface());
+		}
+		for (let narrative of this.narratives) {
+			character.narratives.push(narrative.toInterface());
 		}
 		return character;
 	}

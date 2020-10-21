@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild }  from '@angular/core';
 import { Character }                     from '../../../../model/character.model';
 import { CharacterFrame }                from '../../../../model/character-frame.model';
+import { Narrative }                     from '../../../../model/narrative.model';
 import { ApiService }                    from '../../../../services/api.service';
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
@@ -352,12 +353,12 @@ export class CharactersComponent implements OnInit {
 			[],
 			[],
 			[],
-			[]
+			[],
+			character.narratives
 		);
 		let sentList = ['Up', 'Down', 'Left', 'Right'];
 		for (let sent of sentList) {
 			for (let frame of character['frames'+sent]) {
-				frame.assetUrl = frame.assetUrl;
 				this.loadedCharacter['frames'+sent].push(frame);
 			}
 
