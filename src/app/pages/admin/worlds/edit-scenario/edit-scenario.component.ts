@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild }  from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
 import { ApiService }                    from '../../../../services/api.service';
+import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
@@ -11,7 +12,8 @@ import { CharacterPickerComponent }      from '../../../../components/character-
 import {
 	BackgroundInterface,
 	ScenarioObjectInterface,
-	CharacterInterface
+	CharacterInterface,
+	WorldStartInterface
 } from '../../../../interfaces/interfaces';
 
 @Component({
@@ -33,6 +35,7 @@ export class EditScenarioComponent implements OnInit {
 		characterWidth: null,
 		characterHeight: null
 	};
+	startSelecting: boolean = false;
 	showDebug: boolean = true;
 	worldId: number = null;
 	scenarioId: number = null;
@@ -56,7 +59,7 @@ export class EditScenarioComponent implements OnInit {
 	@ViewChild('scenarioObjectPicker', { static: true }) scenarioObjectPicker: ScenarioObjectPickerComponent;
 	@ViewChild('characterPicker', { static: true }) characterPicker: CharacterPickerComponent;
 
-	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cms: ClassMapperService, private router: Router) {}
+	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cs: CommonService, private cms: ClassMapperService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((params: Params) => {
@@ -70,6 +73,7 @@ export class EditScenarioComponent implements OnInit {
 	loadScenario() {
 		this.as.getScenario(this.scenarioId).subscribe(result => {
 			this.loadedScenario = this.cms.getScenario(result.scenario);
+			console.log(this.loadedScenario);
 			for (let i=0; i<this.scenarioHeight; i++) {
 				this.scenario[i] = [];
 				for (let j=0; j<this.scenarioWidth; j++) {
@@ -120,9 +124,43 @@ export class EditScenarioComponent implements OnInit {
 		}
 	}
 
+	selectStart() {
+		this.startSelecting = !this.startSelecting;
+	}
+
+	selectWorldStart(cell: ScenarioData, check: boolean = true) {
+		const params: WorldStartInterface = {
+			idScenario: this.scenarioId,
+			x: cell.x,
+			y: cell.y,
+			check: check
+		};
+		this.as.selectWorldStart(params).subscribe(result => {
+			if (result.status=='in-use') {
+				const conf = confirm('¡Atención! Este mundo tiene ya un punto de inicio en otro escenario ("' + this.cs.urldecode(result.message) + '"). ¿Estás seguro de querer marcar este punto como inicio?');
+				if (conf) {
+					this.selectWorldStart(cell, false);
+				}
+			}
+			if (result.status=='ok') {
+				this.loadedScenario.startX = cell.x;
+				this.loadedScenario.startY = cell.y;
+				this.startSelecting = false;
+			}
+			if (result.status=='error') {
+				alert('ERROR: Ocurrió un error al marcar el punto de inicio.');
+			}
+		});
+	}
+
 	openCell(ev = null, cell: ScenarioData = null) {
 		ev && ev.preventDefault();
 		if (cell!=null) {
+			if (this.startSelecting) {
+				this.selectWorldStart(cell);
+				return;
+			}
+			
 			if (this.selected.selecting!=null) {
 				const mode = this.selected.selecting;
 				const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);

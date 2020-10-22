@@ -89,6 +89,13 @@ export interface ScenarioDataResult {
 	connection: ConnectionInterface[];
 }
 
+export interface WorldStartInterface {
+	idScenario: number;
+	x: number;
+	y: number;
+	check: boolean;
+}
+
 export interface TagInterface {
 	id: number;
 	name: string;

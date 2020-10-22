@@ -16,6 +16,7 @@ import {
 	ScenarioDataResult,
 	ScenarioDataInterface,
 	ConnectionInterface,
+	WorldStartInterface,
 	TagResult,
 	AssetResult,
 	AssetInterface,
@@ -85,6 +86,10 @@ export class ApiService {
 
 	deleteConnection(connection: ConnectionInterface): Observable<StatusResult> {
 		return this.http.post<StatusResult>(this.url + 'admin/delete-connection', connection);
+	}
+
+	selectWorldStart(data: WorldStartInterface): Observable<StatusMessageResult> {
+		return this.http.post<StatusMessageResult>(this.url + 'admin/select-world-start', data);
 	}
 
 	getTags(): Observable<TagResult> {

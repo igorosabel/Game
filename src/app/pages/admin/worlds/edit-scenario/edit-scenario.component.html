@@ -18,6 +18,10 @@
 			<a href="#" *ngIf="selected.idCharacter!=null" (click)="cancelCopyCell($event, 'character')">X</a>
 		</div>
 	</div>
+	<div class="start-picker">
+		<label>Inicio</label>
+		<img src="/assets/start-location.svg" [ngClass]="{'start-selecting': startSelecting}" (click)="selectStart()">
+	</div>
 	<div>
 		<label for="show-debug">Debug</label>
 		<input type="checkbox" id="show-debug" [(ngModel)]="showDebug">
@@ -43,7 +47,7 @@
 			</div>
 			<div class="edit-scenario">
 				<div *ngFor="let row of scenario" class="edit-scenario-row">
-					<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug}" (click)="openCell(null, cell)">
+					<div *ngFor="let cell of row" class="edit-scenario-cell" [ngClass]="{'debug': showDebug, 'start-cell': cell.x==loadedScenario.startX && cell.y==loadedScenario.startY}" (click)="openCell(null, cell)">
 						<img *ngIf="cell.idBackground!=null" [src]="cell.backgroundAssetUrl" class="edit-scenario-cell-background">
 						<img *ngIf="cell.idScenarioObject!=null" [src]="cell.scenarioObjectAssetUrl" class="edit-scenario-cell-over" [ngStyle]="{'width': (100*cell.scenarioObjectWidth)+'%', 'height': (100*cell.scenarioObjectHeight)+'%'}">
 						<img *ngIf="cell.idCharacter!=null" [src]="cell.characterAssetUrl" class="edit-scenario-cell-over" [ngStyle]="{'width': (100*cell.characterWidth)+'%', 'height': (100*cell.characterHeight)+'%'}">

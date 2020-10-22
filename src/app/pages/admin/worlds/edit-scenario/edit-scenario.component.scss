@@ -38,6 +38,18 @@
 			}
 		}
 	}
+
+	.start-picker {
+		img {
+			display: inline-block;
+			margin: 0 16px;
+			cursor: pointer;
+		}
+
+		.start-selecting {
+			border: 1px solid #fff;
+		}
+	}
 }
 
 .edit-scenario-container {
@@ -165,6 +177,10 @@
 							left: 0;
 							z-index: 3;
 						}
+					}
+
+					.start-cell {
+						border: 3px solid #f00;
 					}
 				}
 			}
