@@ -12,7 +12,8 @@
 			</div>
 		</div>
 		<div class="footer">
-			<input type="submit" value="Continuar">
+			<input type="submit" value="Continuar" *ngIf="!loading">
+			<button disabled="disabled" *ngIf="loading">Iniciando sesión...</button>
 		</div>
 		<div class="error" *ngIf="loginError">Nombre de usuario o contraseña incorrecto</div>
 	</div>

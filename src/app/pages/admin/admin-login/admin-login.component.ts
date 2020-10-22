@@ -17,6 +17,7 @@ export class AdminLoginComponent implements OnInit {
 		name: null,
 		pass: null
 	};
+	loading: boolean = false;
 	loginError: boolean = false;
 
 	constructor(private as: ApiService,
@@ -26,7 +27,7 @@ export class AdminLoginComponent implements OnInit {
 				private auth: AuthService) { }
 
 	ngOnInit(): void {}
-	
+
 	doLogin(ev) {
 		ev.preventDefault();
 		this.loginError = false;
@@ -35,7 +36,8 @@ export class AdminLoginComponent implements OnInit {
 			this.loginError = true;
 			return false;
 		}
-		
+
+		this.loading = true;
 		this.as.adminLogin(this.loginData).subscribe(result => {
 			if (result.status==='ok'){
 				this.user.logged = true;
@@ -47,6 +49,7 @@ export class AdminLoginComponent implements OnInit {
 				this.router.navigate(['/admin/main']);
 			}
 			else{
+				this.loading = false;
 				this.loginError = true;
 			}
 		});

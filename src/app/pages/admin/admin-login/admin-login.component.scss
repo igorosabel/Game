@@ -41,7 +41,7 @@
 			justify-content: flex-end;
 			padding: 8px;
 
-			input {
+			input, button {
 				font-family: 'GraphicPixel', Helvetica, sans-serif;
 				cursor: pointer;
 				border: 1px solid #ccc;
@@ -57,6 +57,16 @@
 
 				&:hover {
 					box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+				}
+				
+				&:disabled {
+					background-color: #eee;
+					color: #888;
+				}
+
+				&:disabled:hover {
+					box-shadow: none;
+					cursor: default;
 				}
 			}
 		}
