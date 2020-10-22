@@ -7,6 +7,8 @@ import {
 	LoginData,
 	RegisterData,
 	LoginResult,
+	GameResult,
+	NewGameInterface,
 	WorldResult,
 	WorldInterface,
 	StatusResult,
@@ -47,6 +49,14 @@ export class ApiService {
 
 	register(data: RegisterData): Observable<LoginResult> {
 		return this.http.post<LoginResult>(this.url + 'api/register', data);
+	}
+
+	getGames(): Observable<GameResult> {
+		return this.http.post<GameResult>(this.url + 'api/get-games', {});
+	}
+
+	newGame(data: NewGameInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'api/new-game', data);
 	}
 
 	adminLogin(data: LoginData): Observable<LoginResult> {

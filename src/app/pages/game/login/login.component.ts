@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
 				this.user.token  = this.cs.urldecode(result.token);
 				this.user.saveLogin();
 
-				this.router.navigate(['/game/main']);
+				this.router.navigate(['/game/hall']);
 			}
 			else{
 				this.loading = false;
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	checkRegister(ev) {
 		ev && ev.preventDefault();
 		this.registerError = null;
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit {
 				this.user.token  = this.cs.urldecode(result.token);
 				this.user.saveLogin();
 
-				this.router.navigate(['/game/main']);
+				this.router.navigate(['/game/hall']);
 			}
 			else{
 				this.loading = false;

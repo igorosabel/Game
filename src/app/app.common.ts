@@ -2,7 +2,8 @@
  * Páginas
  */
 import { LoginComponent }                from './pages/game/login/login.component';
-import { GameMainComponent }             from './pages/game/game-main/game-main.component';
+import { HallComponent }                 from './pages/game/hall/hall.component';
+import { PlayComponent }                 from './pages/game/play/play.component';
 import { AdminLoginComponent }           from './pages/admin/admin-login/admin-login.component';
 import { AdminLogoutComponent }          from './pages/admin/admin-logout/admin-logout.component';
 import { AdminMainComponent }            from './pages/admin/admin-main/admin-main.component';
@@ -21,7 +22,8 @@ import { WorldsComponent }               from './pages/admin/worlds/worlds/world
 
 export const PAGES: any[] = [
   LoginComponent,
-  GameMainComponent,
+  HallComponent,
+  PlayComponent,
   AdminLoginComponent,
   AdminLogoutComponent,
   AdminMainComponent,
@@ -48,7 +50,7 @@ import { ItemPickerComponent }           from './components/item-picker/item-pic
 import { BackgroundPickerComponent }     from './components/background-picker/background-picker.component';
 import { ScenarioObjectPickerComponent } from './components/scenario-object-picker/scenario-object-picker.component';
 import { CharacterPickerComponent }      from './components/character-picker/character-picker.component';
- 
+
 export const COMPONENTS: any[] = [
 	HeaderComponent,
 	AssetPickerComponent,

@@ -2,7 +2,8 @@ import { NgModule }                      from '@angular/core';
 import { Routes, RouterModule }          from '@angular/router';
 import { AuthGuard }                     from './guard/auth.guard';
 import { LoginComponent }                from './pages/game/login/login.component';
-import { GameMainComponent }             from './pages/game/game-main/game-main.component';
+import { HallComponent }                 from './pages/game/hall/hall.component';
+import { PlayComponent }                 from './pages/game/play/play.component';
 import { AdminLoginComponent }           from './pages/admin/admin-login/admin-login.component';
 import { AdminLogoutComponent }          from './pages/admin/admin-logout/admin-logout.component';
 import { AdminMainComponent }            from './pages/admin/admin-main/admin-main.component';
@@ -21,7 +22,8 @@ import { WorldsComponent }               from './pages/admin/worlds/worlds/world
 
 const routes: Routes = [
 	{ path: '',                                            component: LoginComponent },
-	{ path: 'game/main',                                   component: GameMainComponent,             canActivate: [AuthGuard] },
+	{ path: 'game/hall',                                   component: HallComponent,                 canActivate: [AuthGuard] },
+	{ path: 'game/play',                                   component: PlayComponent,                 canActivate: [AuthGuard] },
 	{ path: 'admin',                                       component: AdminLoginComponent },
 	{ path: 'admin/logout',                                component: AdminLogoutComponent,          canActivate: [AuthGuard] },
 	{ path: 'admin/main',                                  component: AdminMainComponent,            canActivate: [AuthGuard] },
@@ -40,7 +42,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule { }

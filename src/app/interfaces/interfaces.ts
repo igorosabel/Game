@@ -44,6 +44,16 @@ export interface GameInterface {
 	speed: number;
 }
 
+export interface GameResult {
+	status: string;
+	list: GameInterface[];
+}
+
+export interface NewGameInterface {
+	idGame: number;
+	name: string;
+}
+
 export interface WorldInterface {
 	id: number;
 	name: string;
