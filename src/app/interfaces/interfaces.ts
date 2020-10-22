@@ -13,15 +13,35 @@ export interface StatusIdResult {
 }
 
 export interface LoginData {
-	name: string;
+	email: string;
+	pass: string;
+}
+
+export interface RegisterData {
+	email: string;
+	conf: string;
 	pass: string;
 }
 
 export interface LoginResult {
 	status: string;
 	id: number;
-	name: string;
+	email: string;
 	token: string;
+}
+
+export interface GameInterface {
+	id: number;
+	name: string;
+	idScenario: number;
+	positionX: number;
+	positionY: number;
+	money: number;
+	health: number;
+	maxHealth: number;
+	attack: number;
+	defense: number;
+	speed: number;
 }
 
 export interface WorldInterface {

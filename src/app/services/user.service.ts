@@ -6,7 +6,7 @@ import { LoginResult }      from '../interfaces/interfaces';
 export class UserService {
 	logged: boolean = false;
 	id: number      = null;
-	name: string    = null;
+	email: string   = null;
 	token: string   = null;
 
 	constructor(private dss: DataShareService) {}
@@ -19,7 +19,7 @@ export class UserService {
 		else{
 			this.logged = true;
 			this.id     = loginObj.id;
-			this.name   = loginObj.name;
+			this.email  = loginObj.email;
 			this.token  = loginObj.token;
 		}
 	}
@@ -28,7 +28,7 @@ export class UserService {
 		const loginObj: LoginResult = {
 			status: 'ok',
 			id: this.id,
-			name: this.name,
+			email: this.email,
 			token: this.token
 		} ;
 		this.dss.setGlobal('login', loginObj);
@@ -37,7 +37,7 @@ export class UserService {
 	logout() {
 		this.logged = false;
 		this.id = null;
-		this.name = null;
+		this.email = null;
 		this.token = null;
 		this.dss.removeGlobal('login');
 	}

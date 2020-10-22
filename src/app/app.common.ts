@@ -2,9 +2,10 @@
  * Páginas
  */
 import { LoginComponent }                from './pages/game/login/login.component';
+import { GameMainComponent }             from './pages/game/game-main/game-main.component';
 import { AdminLoginComponent }           from './pages/admin/admin-login/admin-login.component';
 import { AdminLogoutComponent }          from './pages/admin/admin-logout/admin-logout.component';
-import { MainComponent }                 from './pages/admin/main/main.component';
+import { AdminMainComponent }            from './pages/admin/admin-main/admin-main.component';
 import { AssetsComponent }               from './pages/admin/resources/assets/assets.component';
 import { BackgroundCategoriesComponent } from './pages/admin/resources/background-categories/background-categories.component';
 import { BackgroundsComponent }          from './pages/admin/resources/backgrounds/backgrounds.component';
@@ -20,9 +21,10 @@ import { WorldsComponent }               from './pages/admin/worlds/worlds/world
 
 export const PAGES: any[] = [
   LoginComponent,
+  GameMainComponent,
   AdminLoginComponent,
   AdminLogoutComponent,
-  MainComponent,
+  AdminMainComponent,
   AssetsComponent,
   BackgroundCategoriesComponent,
   BackgroundsComponent,

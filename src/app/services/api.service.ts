@@ -5,6 +5,7 @@ import { environment }             from '../../environments/environment';
 
 import {
 	LoginData,
+	RegisterData,
 	LoginResult,
 	WorldResult,
 	WorldInterface,
@@ -41,7 +42,11 @@ export class ApiService {
 	constructor(private http : HttpClient){}
 
 	login(data: LoginData): Observable<LoginResult> {
-		return this.http.post<LoginResult>(this.url + 'login', data);
+		return this.http.post<LoginResult>(this.url + 'api/login', data);
+	}
+
+	register(data: RegisterData): Observable<LoginResult> {
+		return this.http.post<LoginResult>(this.url + 'api/register', data);
 	}
 
 	adminLogin(data: LoginData): Observable<LoginResult> {

@@ -6,7 +6,6 @@ import { UserService }       from '../../../services/user.service';
 import { CommonService }     from '../../../services/common.service';
 import { AuthService }       from '../../../services/auth.service';
 
-
 @Component({
 	selector: 'game-admin-login',
 	templateUrl: './admin-login.component.html',
@@ -14,7 +13,7 @@ import { AuthService }       from '../../../services/auth.service';
 })
 export class AdminLoginComponent implements OnInit {
 	loginData: LoginData = {
-		name: null,
+		email: null,
 		pass: null
 	};
 	loading: boolean = false;
@@ -24,7 +23,7 @@ export class AdminLoginComponent implements OnInit {
 				private user: UserService,
 				private cs: CommonService,
 				private router: Router,
-				private auth: AuthService) { }
+				private auth: AuthService) {}
 
 	ngOnInit(): void {}
 
@@ -32,7 +31,7 @@ export class AdminLoginComponent implements OnInit {
 		ev.preventDefault();
 		this.loginError = false;
 
-		if (this.loginData.name==='' || this.loginData.pass===''){
+		if (this.loginData.email==='' || this.loginData.pass===''){
 			this.loginError = true;
 			return false;
 		}
@@ -42,7 +41,7 @@ export class AdminLoginComponent implements OnInit {
 			if (result.status==='ok'){
 				this.user.logged = true;
 				this.user.id     = result.id;
-				this.user.name   = this.cs.urldecode(result.name);
+				this.user.email  = this.cs.urldecode(result.email);
 				this.user.token  = this.cs.urldecode(result.token);
 				this.user.saveLogin();
 

@@ -8,7 +8,7 @@ X Admin ( /admin/main )
 			listado -> va a Editar Escenario
 			añadir nuevo
 
-			Editar Escenario ( /admin/world/:id_world/scenario/:id_scenario )
+			X Editar Escenario ( /admin/world/:id_world/scenario/:id_scenario )
 				editor del escenario
 					indicar si es el escenario inicial y marcar punto de salida
 					al pinchar en cada casilla poder modificar:

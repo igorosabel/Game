@@ -5,7 +5,7 @@
 		<div class="header">Iniciar sesión</div>
 		<div class="body">
 			<div class="row">
-				<input type="text" [(ngModel)]="loginData.name" name="login-name" placeholder="Usuario">
+				<input type="email" [(ngModel)]="loginData.email" name="login-email" placeholder="E-mail">
 			</div>
 			<div class="row">
 				<input type="password" [(ngModel)]="loginData.pass" name="login-password" placeholder="Contraseña">
@@ -15,6 +15,6 @@
 			<input type="submit" value="Continuar" *ngIf="!loading">
 			<button disabled="disabled" *ngIf="loading">Iniciando sesión...</button>
 		</div>
-		<div class="error" *ngIf="loginError">Nombre de usuario o contraseña incorrecto</div>
+		<div class="error" *ngIf="loginError">Email o contraseña incorrecto</div>
 	</div>
 </form>

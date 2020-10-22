@@ -1,4 +1,5 @@
 import { Injectable }          from '@angular/core';
+import { Game }                from '../model/game.model';
 import { World }               from '../model/world.model';
 import { Scenario }            from '../model/scenario.model';
 import { ScenarioData }        from '../model/scenario-data.model';
@@ -17,6 +18,7 @@ import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
 import { ScenarioObject }      from '../model/scenario-object.model';
 import { CommonService }       from './common.service';
 import {
+	GameInterface,
 	WorldInterface,
 	ScenarioInterface,
 	ScenarioDataInterface,
@@ -40,6 +42,32 @@ import {
 })
 export class ClassMapperService {
 	constructor(private cs: CommonService) {}
+
+	getGames(response: GameInterface[]) {
+		const games: Game[] = [];
+
+		for (let g of response) {
+			games.push( this.getGame(g) );
+		}
+
+		return games;
+	}
+
+	getGame(g: GameInterface) {
+		return new Game(
+			g.id,
+			this.cs.urldecode(g.name),
+			g.idScenario,
+			g.positionX,
+			g.positionY,
+			g.money,
+			g.health,
+			g.maxHealth,
+			g.attack,
+			g.defense,
+			g.speed
+		);
+	}
 
 	getWorlds(response: WorldInterface[]) {
 		const worlds: World[] = [];
