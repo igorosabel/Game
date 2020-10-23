@@ -55,8 +55,8 @@ export class ApiService {
 		return this.http.post<GameResult>(this.url + 'api/get-games', {});
 	}
 
-	newGame(data: NewGameInterface): Observable<StatusResult> {
-		return this.http.post<StatusResult>(this.url + 'api/new-game', data);
+	newGame(data: NewGameInterface): Observable<StatusIdResult> {
+		return this.http.post<StatusIdResult>(this.url + 'api/new-game', data);
 	}
 
 	adminLogin(data: LoginData): Observable<LoginResult> {

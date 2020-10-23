@@ -1,7 +1,9 @@
 import { Component, OnInit }  from '@angular/core';
+import { Router }             from '@angular/router';
 import { Game }               from '../../../model/game.model';
 import { ApiService }         from '../../../services/api.service';
 import { ClassMapperService } from '../../../services/class-mapper.service';
+import { DataShareService }   from '../../../services/data-share.service';
 import { NewGameInterface }   from '../../../interfaces/interfaces';
 
 @Component({
@@ -15,7 +17,7 @@ export class HallComponent implements OnInit {
 	showNewGame: boolean = false;
 	newGameName: string = null;
 
-	constructor(private as: ApiService, private cms: ClassMapperService) {}
+	constructor(private as: ApiService, private cms: ClassMapperService, private dss: DataShareService, private router: Router) {}
 	ngOnInit(): void {
 		this.loadGames();
 	}
@@ -36,11 +38,12 @@ export class HallComponent implements OnInit {
 			this.showNewGame = true;
 		}
 		else {
-
+			this.dss.setGlobal('id_game', game.id);
+			this.router.navigate(['/game/play']);
 		}
 	}
 
-	closeNewGame(ev) {
+	closeNewGame(ev = null) {
 		ev && ev.preventDefault();
 		this.showNewGame = false;
 	}
@@ -57,7 +60,15 @@ export class HallComponent implements OnInit {
 		};
 
 		this.as.newGame(params).subscribe(result => {
-
+			if (result.status=='ok') {
+				this.games[this.gameSelected].idScenario = result.id;
+				this.games[this.gameSelected].name = params.name;
+				
+				this.selectGame(this.games[this.gameSelected]);
+			}
+			else {
+				alert('¡Ocurrión un error!');
+			}
 		});
 	}
 }
