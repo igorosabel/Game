@@ -38,7 +38,7 @@ export class HallComponent implements OnInit {
 			this.showNewGame = true;
 		}
 		else {
-			this.dss.setGlobal('id_game', game.id);
+			this.dss.setGlobal('idGame', game.id);
 			this.router.navigate(['/game/play']);
 		}
 	}
@@ -63,7 +63,7 @@ export class HallComponent implements OnInit {
 			if (result.status=='ok') {
 				this.games[this.gameSelected].idScenario = result.id;
 				this.games[this.gameSelected].name = params.name;
-				
+
 				this.selectGame(this.games[this.gameSelected]);
 			}
 			else {

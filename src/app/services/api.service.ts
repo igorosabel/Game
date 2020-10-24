@@ -9,6 +9,7 @@ import {
 	LoginResult,
 	GameResult,
 	NewGameInterface,
+	PlayResult,
 	WorldResult,
 	WorldInterface,
 	StatusResult,
@@ -57,6 +58,10 @@ export class ApiService {
 
 	newGame(data: NewGameInterface): Observable<StatusIdResult> {
 		return this.http.post<StatusIdResult>(this.url + 'api/new-game', data);
+	}
+
+	getPlayData(id: number): Observable<PlayResult> {
+		return this.http.post<PlayResult>(this.url + 'api/get-play-data', {id});
 	}
 
 	adminLogin(data: LoginData): Observable<LoginResult> {

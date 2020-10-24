@@ -119,6 +119,18 @@ export interface ScenarioDataResult {
 	connection: ConnectionInterface[];
 }
 
+export interface PlayResult {
+	status: string;
+	idWorld: number;
+	worldName: string;
+	worldDescription: string;
+	idScenario: number;
+	scenarioName: string;
+	mapBackground: string;
+	scenarioObjects: ScenarioObjectInterface[];
+	characters: CharacterInterface[];
+}
+
 export interface WorldStartInterface {
 	idScenario: number;
 	x: number;
