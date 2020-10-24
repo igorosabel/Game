@@ -107,6 +107,10 @@ export class ApiService {
 		return this.http.post<StatusMessageResult>(this.url + 'admin/select-world-start', data);
 	}
 
+	generateMap(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'admin/generate-map', {id});
+	}
+
 	getTags(): Observable<TagResult> {
 		return this.http.post<TagResult>(this.url + 'admin/tag-list', {});
 	}

@@ -22,6 +22,10 @@
 		<label>Inicio</label>
 		<img src="/assets/start-location.svg" [ngClass]="{'start-selecting': startSelecting}" (click)="selectStart()">
 	</div>
+	<div class="map-generate">
+		<a href="https://apigame.osumi.es/maps/{{worldId}}-{{scenarioId}}.png" target="_blank">Mapa</a>
+		<img [src]="mapGenerating" (click)="createMap()">
+	</div>
 	<div>
 		<label for="show-debug">Debug</label>
 		<input type="checkbox" id="show-debug" [(ngModel)]="showDebug">

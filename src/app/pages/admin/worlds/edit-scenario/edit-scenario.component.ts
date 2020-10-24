@@ -36,7 +36,8 @@ export class EditScenarioComponent implements OnInit {
 		characterHeight: null
 	};
 	startSelecting: boolean = false;
-	showDebug: boolean = true;
+	mapGenerating: string = '/assets/create-map.svg';
+	showDebug: boolean = false;
 	worldId: number = null;
 	scenarioId: number = null;
 	scenarioWidth: number = 25;
@@ -153,6 +154,19 @@ export class EditScenarioComponent implements OnInit {
 		});
 	}
 
+	createMap() {
+		this.mapGenerating = '/assets/loading.svg';
+		this.as.generateMap(this.scenarioId).subscribe(result => {
+			this.mapGenerating = '/assets/create-map.svg';
+			if (result.status=='ok') {
+				alert('¡Mapa creado!');
+			}
+			else {
+				alert('¡Ocurrió un error al crear el mapa!');
+			}
+		});
+	}
+
 	openCell(ev = null, cell: ScenarioData = null) {
 		ev && ev.preventDefault();
 		if (cell!=null) {
@@ -160,7 +174,7 @@ export class EditScenarioComponent implements OnInit {
 				this.selectWorldStart(cell);
 				return;
 			}
-			
+
 			if (this.selected.selecting!=null) {
 				const mode = this.selected.selecting;
 				const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);

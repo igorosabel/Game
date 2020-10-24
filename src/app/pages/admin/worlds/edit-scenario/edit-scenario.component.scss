@@ -50,6 +50,20 @@
 			border: 1px solid #fff;
 		}
 	}
+
+	.map-generate {
+		a {
+			color: #fff;
+		}
+
+		img {
+			display: inline-block;
+			margin: 0 16px;
+			cursor: pointer;
+			width: 24px;
+			height: 24px;
+		}
+	}
 }
 
 .edit-scenario-container {
@@ -66,7 +80,7 @@
 			justify-content: center;
 			height: 50px;
 			align-items: center;
-			
+
 			img {
 				cursor: pointer;
 			}
@@ -99,7 +113,7 @@
 				img {
 					cursor: pointer;
 				}
-				
+
 				span {
 					display: block;
 					margin-top: 16px;
@@ -122,7 +136,6 @@
 				width: 800px;
 				height: 640px;
 				background-color: #fff;
-				border: 1px solid #ccc;
 				display: flex;
 				flex-direction: column;
 				position: relative;
@@ -373,7 +386,7 @@
 					background-color: #ddd;
 				}
 			}
-			
+
 			.no-result {
 				padding: 8px;
 				text-align: center;
