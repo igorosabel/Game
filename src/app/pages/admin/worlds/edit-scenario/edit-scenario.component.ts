@@ -40,7 +40,7 @@ export class EditScenarioComponent implements OnInit {
 	worldId: number = null;
 	scenarioId: number = null;
 	scenarioWidth: number = 25;
-	scenarioHeight: number = 16;
+	scenarioHeight: number = 20;
 	scenario = [];
 	loadedScenario: Scenario = null;
 	loadedCell: ScenarioData = new ScenarioData();
