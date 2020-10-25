@@ -19,11 +19,12 @@ export class PlayCharacter {
 	currentFrame: number;
 	playing: boolean;
 	interval: number;
+	name: string;
 	isNPC: boolean;
 	health: number;
 	currentHealth: number;
 	money: number;
-	spedd: number;
+	speed: number;
 	items;
 
 	constructor(pos, size) {
@@ -223,13 +224,27 @@ export class PlayCharacter {
 		}
 	}
 
+	collission(obj1, obj2) {
+		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
+		let rect2 = {x: obj2.pos.x, y: obj2.pos.y, width: obj2.size.width, height: obj2.size.height};
+
+		if (rect1.x < rect2.x + rect2.width &&
+			rect1.x + rect1.width > rect2.x &&
+			rect1.y < rect2.y + rect2.height &&
+			rect1.height + rect1.y > rect2.y) {
+			return true;
+		}
+
+		return false;
+	}
+
 	move() {
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
 			let newPosX = this.pos.x + this.vx;
 			let newPosY = this.pos.y + this.vy;
 
 			// Colisión con los bordes de la pantalla
-			if (newPosX<0 || newPosY<0 || (newPosX + this.size.width) > scenario.width || (newPosY + this.size.height) > scenario.height) {
+			if (newPosX<0 || newPosY<0 || (newPosX + this.size.width) > this.scenario.width || (newPosY + this.size.height) > this.scenario.height) {
 				return false;
 			}
 
@@ -239,8 +254,8 @@ export class PlayCharacter {
 				pos: {x: newPosX, y: newPosY},
 				size: this.size
 			};
-			scenario.blockers.forEach(tile => {
-				if (collission(newPos, tile)) {
+			this.scenario.blockers.forEach(tile => {
+				if (this.collission(newPos, tile)) {
 					hit = true;
 				}
 			});
@@ -258,6 +273,6 @@ export class PlayCharacter {
 	}
 
 	render() {
-		scenario.ctx.drawImage(this.sprites[this.orientation][this.currentFrame].img, this.pos.x, this.pos.y, this.size.w, this.size.h);
+		this.scenario.ctx.drawImage(this.sprites[this.orientation][this.currentFrame].img, this.pos.x, this.pos.y, this.size.w, this.size.h);
 	}
 }

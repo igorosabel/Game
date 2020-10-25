@@ -1,11 +1,13 @@
 import { Component, OnInit }  from '@angular/core';
+import { Game }               from '../../../model/game.model';
 import { AssetCache }         from '../../../play/asset-cache.class';
+import { PlayCanvas }         from '../../../play/play-canvas.class';
+import { PlayScenario }       from '../../../play/play-scenario.class';
 import { ApiService }         from '../../../services/api.service';
 import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
 import { ClassMapperService } from '../../../services/class-mapper.service';
-import { PlayService } from '../../../services/play.service';
-import { PlayScenario } from '../../../play/play-scenario.class';
+import { PlayService }        from '../../../services/play.service';
 
 @Component({
 	selector: 'game-play',
@@ -16,7 +18,6 @@ export class PlayComponent implements OnInit {
 	gameId: number = null;
 	game: Game = null;
 	assetCache: AssetCache = new AssetCache();
-
 	scenario: PlayScenario = null;
 	player = null;
 	hud = null;
@@ -25,7 +26,6 @@ export class PlayComponent implements OnInit {
 	fps: number = 30;
 	start: number = 0;
 	frameDuration: number = null;
-
 
 	constructor(
 		private as: ApiService,
@@ -51,7 +51,7 @@ export class PlayComponent implements OnInit {
 	}
 
 	setup() {
-		const canvas = this.play.makeCanvas();
+		const canvas: PlayCanvas = this.play.makeCanvas();
 		this.scenario = this.play.makeScenario(canvas);
 		this.player = this.play.makePlayer(
 			{
@@ -63,8 +63,8 @@ export class PlayComponent implements OnInit {
 			},
 			{
 				name: this.game.name,
-				health: this.game.health,
-				currentHealth: this.game.currentHealth,
+				health: this.game.maxHealth,
+				currentHealth: this.game.health,
 				money: this.game.money,
 				speed: this.game.speed,
 				items: this.game.items
@@ -76,29 +76,7 @@ export class PlayComponent implements OnInit {
 				defaultVY: this.defaultVY
 			}
 		);
-		hud = makeHud(player.health, player.currentHealth, player.money);
-
-		// Cargo assets en el escenario
-		assets.list.forEach(asset => {
-			if (asset.type==='bck') {
-				let bck = makeSprite(asset.image, asset.crossable);
-				scenario.addBck({x: asset.x, y: asset.y}, bck);
-			}
-			if (asset.type==='spr') {
-				let spr = makeSprite(asset.image, asset.crossable);
-				scenario.addSpr({x: asset.x, y: asset.y}, spr);
-			}
-			if (asset.type==='player') {
-				let fr = makeSprite(asset.image);
-				let ind = asset.id.replace('player_', '');
-				ind = ind.split('_').shift();
-				player.setSprite(ind, fr);
-			}
-			if (asset.type==='hud') {
-				let item = makeSprite(asset.image);
-				hud.addSprite(asset.id, item);
-			}
-		});
+		this.hud = this.play.makeHud(this.player.health, this.player.currentHealth, this.player.money, canvas);
 
 		// Pinto escenario
 		this.scenario.render();
@@ -108,48 +86,48 @@ export class PlayComponent implements OnInit {
 		// Eventos de teclado
 
 		// W - Arriba
-		let up = keyboard(87);
-		up.press = () => player.up();
-		up.release = () => player.stopUp();
+		let up = this.play.keyboard(87);
+		up.press = () => this.player.up();
+		up.release = () => this.player.stopUp();
 
 		// S - Abajo
-		let down = keyboard(83);
-		down.press = () => player.down();
-		down.release = () => player.stopDown();
+		let down = this.play.keyboard(83);
+		down.press = () => this.player.down();
+		down.release = () => this.player.stopDown();
 
 		// D - Derecha
-		let right = keyboard(68);
-		right.press = () => player.right();
-		right.release = () => player.stopRight();
+		let right = this.play.keyboard(68);
+		right.press = () => this.player.right();
+		right.release = () => this.player.stopRight();
 
 		// A - Izquierda
-		let left = keyboard(65);
-		left.press = () => player.left();
-		left.release = () => player.stopLeft();
+		let left = this.play.keyboard(65);
+		left.press = () => this.player.left();
+		left.release = () => this.player.stopLeft();
 
 		// E - Acción
-		let doAction = keyboard(69);
-		doAction.press = () => player.doAction();
-		doAction.release = () => player.stopAction();
+		let doAction = this.play.keyboard(69);
+		doAction.press = () => this.player.doAction();
+		doAction.release = () => this.player.stopAction();
 
 		// Espacio - Golpe
-		let hit = keyboard(32);
-		hit.press = () => player.hit();
-		hit.release = () => player.stopHit();
+		let hit = this.play.keyboard(32);
+		hit.press = () => this.player.hit();
+		hit.release = () => this.player.stopHit();
 
 		// Bucle del juego
 		this.gameLoop();
 	}
 
-	gameLoop(timestamp) {
+	gameLoop(timestamp: number = 0) {
 		requestAnimationFrame(this.gameLoop);
-		if (timestamp >= start) {
-			scenario.render();
-			player.move();
-			player.render();
-			hud.render();
+		if (timestamp >= this.start) {
+			this.scenario.render();
+			this.player.move();
+			this.player.render();
+			this.hud.render();
 
-			start = timestamp + frameDuration;
+			this.start = timestamp + this.frameDuration;
 		}
 	}
 }

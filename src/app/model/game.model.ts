@@ -1,4 +1,5 @@
 import { GameInterface } from '../interfaces/interfaces';
+import { Inventory } from './inventory.model';
 
 export class Game {
 	constructor(
@@ -12,7 +13,8 @@ export class Game {
 		public maxHealth: number = null,
 		public attack: number = null,
 		public defense: number = null,
-		public speed: number = null
+		public speed: number = null,
+		public items: Inventory[] = []
 	) {}
 
 	toInterface(): GameInterface {
@@ -27,8 +29,12 @@ export class Game {
 			maxHealth: this.maxHealth,
 			attack: this.attack,
 			defense: this.defense,
-			speed: this.speed
+			speed: this.speed,
+			items: []
 		};
+		for (let item of this.items) {
+			game.items.push(item.toInterface());
+		}
 		return game;
 	}
 }

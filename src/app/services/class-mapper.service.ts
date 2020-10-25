@@ -1,4 +1,5 @@
 import { Injectable }          from '@angular/core';
+import { Inventory }           from '../model/inventory.model';
 import { Game }                from '../model/game.model';
 import { World }               from '../model/world.model';
 import { Scenario }            from '../model/scenario.model';
@@ -18,6 +19,7 @@ import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
 import { ScenarioObject }      from '../model/scenario-object.model';
 import { CommonService }       from './common.service';
 import {
+	InventoryInterface,
 	GameInterface,
 	WorldInterface,
 	ScenarioInterface,
@@ -42,6 +44,27 @@ import {
 })
 export class ClassMapperService {
 	constructor(private cs: CommonService) {}
+
+	getInventories(response: InventoryInterface[]) {
+		const inventories: Inventory[] = [];
+
+		for (let i of response) {
+			inventories.push( this.getInventory(i) );
+		}
+
+		return inventories;
+	}
+
+	getInventory(i: InventoryInterface) {
+		return new Inventory(
+			i.id,
+			i.idGame,
+			i.idItem,
+			this.getItem(i.item),
+			i.order,
+			i.num
+		);
+	}
 
 	getGames(response: GameInterface[]) {
 		const games: Game[] = [];

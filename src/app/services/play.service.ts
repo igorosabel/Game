@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable }   from '@angular/core';
+import { PlayCanvas }   from '../play/play-canvas.class';
 import { PlayScenario } from '../play/play-scenario.class';
-import { PlayTile } from '../play/play-tile.class';
-import { PlayPlayer } from '../play/play-player.class';
+import { PlayTile }     from '../play/play-tile.class';
+import { PlayPlayer }   from '../play/play-player.class';
+import { PlayHud }      from '../play/play-hud.class';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,27 +12,16 @@ export class PlayService {
 	constructor() {}
 
 	makeCanvas(
-		width = 800,
-		height = 600,
-		border = '1px dashed black',
-		backgroundColor = 'white'
+		width: number = 800,
+		height: number = 600,
+		border: string = '1px dashed black',
+		backgroundColor: string = 'white'
 	) {
-		const canvas = document.createElement('canvas');
-		canvas.id = 'board';
-		canvas.className = 'board';
-		canvas.width = width;
-		canvas.height = height;
-		canvas.style.border = border;
-		canvas.style.backgroundColor = backgroundColor;
-		document.querySelector('.game').appendChild(canvas);
-
-		canvas.ctx = canvas.getContext('2d');
-
-		return canvas;
+		return new PlayCanvas(width, height, border, backgroundColor);
 	}
 
-	makeScenario(canvas, width = 800, height = 600, rows = 18, cols = 24) {
-		return new PlayScenario(width, height, rows, cols);
+	makeScenario(canvas: PlayCanvas, width: number = 800, height: number = 600, rows: number = 18, cols: number = 24) {
+		return new PlayScenario(canvas, width, height, rows, cols);
 	}
 
 	makeTile(ind, pos, size) {
@@ -39,5 +30,42 @@ export class PlayService {
 
 	makePlayer(pos, size, options, scenario) {
 		return new PlayPlayer(pos, size, options, scenario);
+	}
+
+	makeHud(health: number, currentHealth: number, money: number, canvas) {
+		return new PlayHud(health, currentHealth, money, canvas);
+	}
+
+	keyboard(keyCode) {
+		const key = {
+			code: keyCode,
+			isDown: false,
+			isUp: true,
+			press: undefined,
+			release: undefined,
+			downHandler: undefined,
+			upHandler: undefined
+		};
+
+		key.downHandler = function(event) {
+			if (event.keyCode === key.code) {
+				if (key.isUp && key.press) { key.press(); }
+				key.isDown = true;
+				key.isUp = false;
+			}
+			event.preventDefault();
+		};
+		key.upHandler = function(event) {
+			if (event.keyCode === key.code) {
+				if (key.isDown && key.release) { key.release(); }
+				key.isDown = false;
+				key.isUp = true;
+			}
+			event.preventDefault();
+		};
+
+		window.addEventListener('keydown', key.downHandler.bind(key), false);
+		window.addEventListener('keyup',   key.upHandler.bind(key),   false);
+		return key;
 	}
 }

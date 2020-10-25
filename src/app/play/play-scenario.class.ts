@@ -1,8 +1,9 @@
-import { PlayTile } from './play-tile.class';
+import { PlayCanvas } from './play-canvas.class';
+import { PlayTile }   from './play-tile.class';
 
 export class PlayScenario {
 	debug: boolean;
-	canvas;
+	canvas: PlayCanvas;
 	_width: number;
 	_height: number;
 	tileWidth: number;
@@ -10,7 +11,7 @@ export class PlayScenario {
 	tiles;
 	blockers;
 
-	constructor(canvas, width = 800, height = 600, rows = 18, cols = 24) {
+	constructor(canvas: PlayCanvas, width = 800, height = 600, rows = 18, cols = 24) {
 		// Modo debug
 		this.debug = false;
 

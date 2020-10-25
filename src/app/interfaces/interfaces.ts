@@ -30,6 +30,15 @@ export interface LoginResult {
 	token: string;
 }
 
+export interface InventoryInterface {
+	id: number;
+	idGame: number;
+	idItem: number;
+	item: ItemInterface;
+	order: number;
+	num: number;
+}
+
 export interface GameInterface {
 	id: number;
 	name: string;
@@ -42,6 +51,7 @@ export interface GameInterface {
 	attack: number;
 	defense: number;
 	speed: number;
+	items: InventoryInterface[];
 }
 
 export interface GameResult {
