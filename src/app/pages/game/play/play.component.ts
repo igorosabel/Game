@@ -14,6 +14,7 @@ import { PlayScenario } from '../../../play/play-scenario.class';
 })
 export class PlayComponent implements OnInit {
 	gameId: number = null;
+	game: Game = null;
 	assetCache: AssetCache = new AssetCache();
 
 	scenario: PlayScenario = null;
@@ -24,6 +25,7 @@ export class PlayComponent implements OnInit {
 	fps: number = 30;
 	start: number = 0;
 	frameDuration: number = null;
+	
 
 	constructor(
 		private as: ApiService,
@@ -41,7 +43,7 @@ export class PlayComponent implements OnInit {
 	getPlayData() {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
-			console.log(result);
+			this.game = this.cms.getGame(result.name);
 			this.assetCache.addScenarioObjects(this.cms.getScenarioObjects(result.scenarioObjects));
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
 			this.assetCache.load().then(() => this.setup());
@@ -53,8 +55,8 @@ export class PlayComponent implements OnInit {
 		this.scenario = this.play.makeScenario(canvas);
 		this.player = this.play.makePlayer(
 			{
-				x: startPos.x * this.scenario.tileWidth,
-				y: startPos.y * this.scenario.tileHeight
+				x: this.game.positionX * this.scenario.tileWidth,
+				y: this.game.positionY * this.scenario.tileHeight
 			}, {
 				width: this.scenario.tileWidth,
 				height: (this.scenario.tileHeight * 1.5)
@@ -85,9 +87,9 @@ export class PlayComponent implements OnInit {
 		});
 	
 		// Pinto escenario
-		scenario.render();
-		player.render();
-		hud.render();
+		this.scenario.render();
+		this.player.render();
+		this.hud.render();
 	
 		// Eventos de teclado
 	

@@ -15,7 +15,7 @@ export class PlayService {
 		border = '1px dashed black',
 		backgroundColor = 'white'
 	) {
-		let canvas = document.createElement('canvas');
+		const canvas = document.createElement('canvas');
 		canvas.id = 'board';
 		canvas.className = 'board';
 		canvas.width = width;

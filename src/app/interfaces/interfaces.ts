@@ -127,6 +127,7 @@ export interface PlayResult {
 	idScenario: number;
 	scenarioName: string;
 	mapBackground: string;
+	game: GameInterface;
 	scenarioObjects: ScenarioObjectInterface[];
 	characters: CharacterInterface[];
 }

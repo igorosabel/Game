@@ -1,3 +1,5 @@
+import { Item } from '../model/item.model';
+
 export class PlayCharacter {
 	constructor(pos, size) {
 		this.orientation = 'down';
@@ -11,6 +13,10 @@ export class PlayCharacter {
 			down: [],
 			left: []
 		};
+		this.scenario = null;
+		this.frameDuration = 0;
+		this.defaultVX = 3;
+		this.defaultVY = 3;
 		this.vx = 0;
 		this.vy = 0;
 		this.moving = {
@@ -38,6 +44,36 @@ export class PlayCharacter {
 		this.speed = 3;
 		this.items = [];
 	}
+	
+	setDetail(
+		name: string,
+		isNPC: boolean,
+		health: number,
+		currentHealth: number,
+		money: number,
+		speed: number,
+		items: Item[]
+	) {
+		this.name = name;
+		this.isNPC = isNPC;
+		this.health;
+		this.currentHealth = currentHealth;
+		this.money = money;
+		this.speed = speed;
+		this.items = items;
+	}
+	
+	setScenario(
+		scenario: PlayScenario,
+		frameDuration: number,
+		defaultVX: number,
+		defaultVY: number
+	) {
+		this.scenario = scenario;
+		this.frameDuration = frameDuration;
+		this.defaultVX = defaultVX;
+		this.defaultVY = defaultVY;
+	}
 
 	setSprite(ind, sprite) {
 		this.sprites[ind].push(sprite);
@@ -52,7 +88,7 @@ export class PlayCharacter {
 
 	up() {
 		if (!this.moving.up) {
-			this.vy = -1 * defaultVY * this.speed;
+			this.vy = -1 * this.defaultVY * this.speed;
 			this.moving.up = true;
 			this.orientationList.push('up');
 			this.playAnimation();
@@ -69,7 +105,7 @@ export class PlayCharacter {
 
 	down() {
 		if (!this.moving.down) {
-			this.vy = defaultVY * this.speed;
+			this.vy = this.defaultVY * this.speed;
 			this.moving.down = true;
 			this.orientationList.push('down');
 			this.playAnimation();
@@ -86,7 +122,7 @@ export class PlayCharacter {
 
 	right() {
 		if (!this.moving.right) {
-			this.vx = defaultVX * this.speed;
+			this.vx = this.defaultVX * this.speed;
 			this.moving.right = true;
 			this.orientationList.push('right');
 			this.playAnimation();
@@ -103,7 +139,7 @@ export class PlayCharacter {
 
 	left() {
 		if (!this.moving.left) {
-			this.vx = -1 * defaultVX * this.speed;
+			this.vx = -1 * this.defaultVX * this.speed;
 			this.moving.left = true;
 			this.orientationList.push('left');
 			this.playAnimation();
@@ -137,7 +173,7 @@ export class PlayCharacter {
 	playAnimation() {
 		if (!this.playing) {
 			this.playing = true;
-			this.interval = setInterval(this.updateAnimation.bind(this), frameDuration);
+			this.interval = setInterval(this.updateAnimation.bind(this), this.frameDuration);
 		}
 	}
 
