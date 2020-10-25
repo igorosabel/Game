@@ -28,16 +28,16 @@ export class PlayService {
 
 		return canvas;
 	}
-	
+
 	makeScenario(canvas, width = 800, height = 600, rows = 18, cols = 24) {
 		return new PlayScenario(width, height, rows, cols);
 	}
-	
+
 	makeTile(ind, pos, size) {
 		return new PlayTile(ind, pos, size);
 	}
-	
-	makePlayer(pos, size) {
-		return new PlayPlayer(pos, size);
+
+	makePlayer(pos, size, options, scenario) {
+		return new PlayPlayer(pos, size, options, scenario);
 	}
 }

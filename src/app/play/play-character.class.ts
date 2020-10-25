@@ -1,6 +1,31 @@
-import { Item } from '../model/item.model';
+import { Item }         from '../model/item.model';
+import { PlayScenario } from './play-scenario.class';
 
 export class PlayCharacter {
+	orientation: string;
+	orientationList;
+	pos;
+	size;
+	center;
+	sprites;
+	scenario: PlayScenario;
+	frameDuration: number;
+	defaultVX: number;
+	defaultVY: number;
+	vx: number;
+	vy: number;
+	moving;
+	frames;
+	currentFrame: number;
+	playing: boolean;
+	interval: number;
+	isNPC: boolean;
+	health: number;
+	currentHealth: number;
+	money: number;
+	spedd: number;
+	items;
+
 	constructor(pos, size) {
 		this.orientation = 'down';
 		this.orientationList = [];
@@ -44,7 +69,7 @@ export class PlayCharacter {
 		this.speed = 3;
 		this.items = [];
 	}
-	
+
 	setDetail(
 		name: string,
 		isNPC: boolean,
@@ -62,7 +87,7 @@ export class PlayCharacter {
 		this.speed = speed;
 		this.items = items;
 	}
-	
+
 	setScenario(
 		scenario: PlayScenario,
 		frameDuration: number,

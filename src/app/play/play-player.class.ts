@@ -1,7 +1,22 @@
-import { PlayCharacter } from './play-character.class.ts';
+import { PlayCharacter } from './play-character.class';
 
 export class PlayPlayer extends PlayCharacter {
-	constructor(pos, size) {
+	constructor(pos, size, options, scenario) {
 		super(pos, size);
+		this.setDetail(
+			options.name,
+			false,
+			options.health,
+			options.currentHealth,
+			options.money,
+			options.speed,
+			options.items
+		);
+		this.setScenario(
+			scenario.scenario,
+			scenario.frameDuration,
+			scenario.defaultVX,
+			scenario.defaultVY
+		);
 	}
 }

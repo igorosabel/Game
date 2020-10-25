@@ -1,4 +1,14 @@
+import { PlayScenario } from './play-scenario.class';
 export class PlayTile {
+	ind: number;
+	pos;
+	size;
+	center;
+	bck;
+	spr;
+	crossable: boolean;
+	scenario: PlayScenario;
+
 	constructor(ind, pos, size) {
 		this.ind = ind;
 		this.pos = pos;
@@ -30,9 +40,13 @@ export class PlayTile {
 		this.spr = null;
 	}
 
+	setScenario(scenario: PlayScenario) {
+		this.scenario = scenario;
+	}
+
 	render() {
-		let ctx = scenario.ctx;
-		if (scenario.debug) {
+		let ctx = this.scenario.ctx;
+		if (this.scenario.debug) {
 			ctx.strokeStyle = 'black';
 			ctx.lineWidth = 1;
 			ctx.fillStyle = 'white';

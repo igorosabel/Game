@@ -25,7 +25,7 @@ export class PlayComponent implements OnInit {
 	fps: number = 30;
 	start: number = 0;
 	frameDuration: number = null;
-	
+
 
 	constructor(
 		private as: ApiService,
@@ -43,7 +43,7 @@ export class PlayComponent implements OnInit {
 	getPlayData() {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
-			this.game = this.cms.getGame(result.name);
+			this.game = this.cms.getGame(result.game);
 			this.assetCache.addScenarioObjects(this.cms.getScenarioObjects(result.scenarioObjects));
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
 			this.assetCache.load().then(() => this.setup());
@@ -60,10 +60,24 @@ export class PlayComponent implements OnInit {
 			}, {
 				width: this.scenario.tileWidth,
 				height: (this.scenario.tileHeight * 1.5)
+			},
+			{
+				name: this.game.name,
+				health: this.game.health,
+				currentHealth: this.game.currentHealth,
+				money: this.game.money,
+				speed: this.game.speed,
+				items: this.game.items
+			},
+			{
+				scenario: this.scenario,
+				frameDuration: this.frameDuration,
+				defaultVX: this.defaultVX,
+				defaultVY: this.defaultVY
 			}
 		);
 		hud = makeHud(player.health, player.currentHealth, player.money);
-	
+
 		// Cargo assets en el escenario
 		assets.list.forEach(asset => {
 			if (asset.type==='bck') {
@@ -85,56 +99,56 @@ export class PlayComponent implements OnInit {
 				hud.addSprite(asset.id, item);
 			}
 		});
-	
+
 		// Pinto escenario
 		this.scenario.render();
 		this.player.render();
 		this.hud.render();
-	
+
 		// Eventos de teclado
-	
+
 		// W - Arriba
 		let up = keyboard(87);
 		up.press = () => player.up();
 		up.release = () => player.stopUp();
-	
+
 		// S - Abajo
 		let down = keyboard(83);
 		down.press = () => player.down();
 		down.release = () => player.stopDown();
-	
+
 		// D - Derecha
 		let right = keyboard(68);
 		right.press = () => player.right();
 		right.release = () => player.stopRight();
-	
+
 		// A - Izquierda
 		let left = keyboard(65);
 		left.press = () => player.left();
 		left.release = () => player.stopLeft();
-		
+
 		// E - Acción
 		let doAction = keyboard(69);
 		doAction.press = () => player.doAction();
 		doAction.release = () => player.stopAction();
-		
+
 		// Espacio - Golpe
 		let hit = keyboard(32);
 		hit.press = () => player.hit();
 		hit.release = () => player.stopHit();
-	
+
 		// Bucle del juego
-		gameLoop();
+		this.gameLoop();
 	}
-	
-	function gameLoop(timestamp) {
-		requestAnimationFrame(gameLoop);
+
+	gameLoop(timestamp) {
+		requestAnimationFrame(this.gameLoop);
 		if (timestamp >= start) {
 			scenario.render();
 			player.move();
 			player.render();
 			hud.render();
-	
+
 			start = timestamp + frameDuration;
 		}
 	}

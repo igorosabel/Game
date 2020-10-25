@@ -8,6 +8,7 @@ export class PlayScenario {
 	tileWidth: number;
 	tileHeight: number;
 	tiles;
+	blockers;
 
 	constructor(canvas, width = 800, height = 600, rows = 18, cols = 24) {
 		// Modo debug
