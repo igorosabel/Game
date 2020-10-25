@@ -24,8 +24,8 @@ export class PlayService {
 		return new PlayScenario(canvas, width, height, rows, cols);
 	}
 
-	makeTile(ind, pos, size) {
-		return new PlayTile(ind, pos, size);
+	makeTile(ind, pos, size, canvas) {
+		return new PlayTile(ind, pos, size, canvas);
 	}
 
 	makePlayer(pos, size, options, scenario) {

@@ -1,4 +1,5 @@
-import { PlayScenario } from './play-scenario.class';
+import { PlayCanvas } from './play-canvas.class';
+
 export class PlayTile {
 	ind: number;
 	pos;
@@ -7,12 +8,14 @@ export class PlayTile {
 	bck;
 	spr;
 	crossable: boolean;
-	scenario: PlayScenario;
+	canvas: PlayCanvas;
+	debug: boolean = false;
 
-	constructor(ind, pos, size) {
+	constructor(ind, pos, size, canvas) {
 		this.ind = ind;
 		this.pos = pos;
 		this.size = size;
+		this.canvas = canvas;
 		this.center = {
 			x: this.pos.x + (this.size.width / 2),
 			y: this.pos.y + (this.size.height / 2)
@@ -40,13 +43,9 @@ export class PlayTile {
 		this.spr = null;
 	}
 
-	setScenario(scenario: PlayScenario) {
-		this.scenario = scenario;
-	}
-
 	render() {
-		let ctx = this.scenario.ctx;
-		if (this.scenario.debug) {
+		let ctx = this.canvas.ctx;
+		if (this.debug) {
 			ctx.strokeStyle = 'black';
 			ctx.lineWidth = 1;
 			ctx.fillStyle = 'white';

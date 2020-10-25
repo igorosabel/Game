@@ -32,7 +32,8 @@ export class PlayScenario {
 					x: (x-1) * this.tileWidth,
 					y: (y-1) * this.tileHeight
 				};
-				this.tiles[x + '-' + y] = new PlayTile({x, y}, pos, {width: this.tileWidth, height: this.tileHeight});
+				this.tiles[x + '-' + y] = new PlayTile({x, y}, pos, {width: this.tileWidth, height: this.tileHeight}, this.canvas);
+				this.tiles[x + '-' + y].debug = this.debug;
 			}
 		}
 
