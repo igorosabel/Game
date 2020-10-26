@@ -17,7 +17,10 @@ import { Character }           from '../model/character.model';
 import { ScenarioObjectDrop }  from '../model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
 import { ScenarioObject }      from '../model/scenario-object.model';
+import { PlayScenario }        from '../play/play-scenario.class';
 import { PlayObject }          from '../play/play-object.class';
+import { PlayNPC }             from '../play/play-npc.class';
+import { PlayEnemy }           from '../play/play-enemy.class';
 import { AssetCache }          from '../play/asset-cache.class';
 import { CommonService }       from './common.service';
 import {
@@ -105,8 +108,94 @@ export class ClassMapperService {
 		);
 		po.assets = assets;
 		po.frameDuration = frameDuration;
-		
+
 		return po;
+	}
+
+	getPlayNPC(character: Character, datas: ScenarioData[], assets: AssetCache, frameDuration: number, scenario: PlayScenario, defaultVX: number, defaultVY: number) {
+		const ind = datas.findIndex(x => x.idCharacter===character.id);
+		const npc = new PlayNPC(
+			{
+				x: datas[ind].x * scenario.tileWidth,
+				y: datas[ind].y * scenario.tileHeight
+			},
+			{
+				width: (scenario.tileWidth * datas[ind].characterWidth),
+				height: (scenario.tileHeight * datas[ind].characterHeight)
+			},
+			{
+				name: character.name,
+				health: character.health,
+				currentHealth: character.health,
+				money: 0,
+				speed: character.speed,
+				items: []
+			},
+			{
+				scenario: scenario,
+				frameDuration: frameDuration,
+				defaultVX: defaultVX,
+				defaultVY: defaultVY
+			}
+		);
+		npc.frameDuration = frameDuration;
+		for (let frame of character.allFramesUp) {
+			npc.sprites['up'].push(assets.get(frame));
+		}
+		for (let frame of character.allFramesDown) {
+			npc.sprites['down'].push(assets.get(frame));
+		}
+		for (let frame of character.allFramesLeft) {
+			npc.sprites['left'].push(assets.get(frame));
+		}
+		for (let frame of character.allFramesRight) {
+			npc.sprites['right'].push(assets.get(frame));
+		}
+
+		return npc;
+	}
+
+	getPlayEnemy(character: Character, datas: ScenarioData[], assets: AssetCache, frameDuration: number, scenario: PlayScenario, defaultVX: number, defaultVY: number) {
+		const ind = datas.findIndex(x => x.idCharacter===character.id);
+		const enemy = new PlayEnemy(
+			{
+				x: datas[ind].x * scenario.tileWidth,
+				y: datas[ind].y * scenario.tileHeight
+			},
+			{
+				width: (scenario.tileWidth * datas[ind].characterWidth),
+				height: (scenario.tileHeight * datas[ind].characterHeight)
+			},
+			{
+				name: character.name,
+				health: character.health,
+				currentHealth: character.health,
+				money: 0,
+				speed: character.speed,
+				items: []
+			},
+			{
+				scenario: scenario,
+				frameDuration: frameDuration,
+				defaultVX: defaultVX,
+				defaultVY: defaultVY
+			}
+		);
+		enemy.frameDuration = frameDuration;
+		for (let frame of character.allFramesUp) {
+			enemy.sprites['up'].push(assets.get(frame));
+		}
+		for (let frame of character.allFramesDown) {
+			enemy.sprites['down'].push(assets.get(frame));
+		}
+		for (let frame of character.allFramesLeft) {
+			enemy.sprites['left'].push(assets.get(frame));
+		}
+		for (let frame of character.allFramesRight) {
+			enemy.sprites['right'].push(assets.get(frame));
+		}
+
+		return enemy;
 	}
 
 	getWorlds(response: WorldInterface[]) {

@@ -60,7 +60,6 @@ export class PlayComponent implements OnInit {
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
 			this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
 			this.characters = this.cms.getCharacters(result.characters);
-			console.log(this.characters);
 
 			// Background
 			this.assetCache.add(this.mapBackground);
@@ -166,6 +165,15 @@ export class PlayComponent implements OnInit {
 			this.scenario.addObject( this.cms.getPlayObject(object, this.scenarioDatas, this.assetCache, this.frameDuration) );
 		});
 
+		this.characters.forEach(character => {
+			if (character.type==0) {
+				this.scenario.addNPC( this.cms.getPlayNPC(character, this.scenarioDatas, this.assetCache, this.frameDuration, this.scenario, this.defaultVX, this.defaultVY) );
+			}
+			else {
+				this.scenario.addEnemy( this.cms.getPlayEnemy(character, this.scenarioDatas, this.assetCache, this.frameDuration, this.scenario, this.defaultVX, this.defaultVY) );
+			}
+		});
+
 		this.player = this.play.makePlayer(
 			{
 				x: this.game.positionX * this.scenario.tileWidth,
@@ -198,6 +206,7 @@ export class PlayComponent implements OnInit {
 		this.scenario.render();
 		this.player.render();
 		this.scenario.renderObjects();
+		this.scenario.renderCharacters();
 		this.hud.render();
 
 		// Eventos de teclado
@@ -243,6 +252,7 @@ export class PlayComponent implements OnInit {
 			this.player.move();
 			this.player.render();
 			this.scenario.renderObjects();
+			this.scenario.renderCharacters();
 			this.hud.render();
 
 			this.start = timestamp + this.frameDuration;

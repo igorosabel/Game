@@ -53,13 +53,30 @@ export class PlayScenario {
 		this.objects.push(object);
 	}
 
+	addNPC(npc: PlayNPC) {
+		this.npcs.push(npc);
+	}
+
+	addEnemy(enemy: PlayEnemy) {
+		this.enemies.push(enemy);
+	}
+
 	render() {
 		this.canvas.ctx.drawImage(this.mapBackground, 0, 0, this._width, this._height);
 	}
-	
+
 	renderObjects() {
 		this.objects.forEach(object => {
 			object.render(this.canvas.ctx, this.tileWidth, this.tileHeight);
+		});
+	}
+
+	renderCharacters() {
+		this.npcs.forEach(npc => {
+			npc.render();
+		});
+		this.enemies.forEach(enemy => {
+			enemy.render();
 		});
 	}
 }
