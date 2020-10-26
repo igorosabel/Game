@@ -2,6 +2,7 @@ import { Component, OnInit }  from '@angular/core';
 import { Game }               from '../../../model/game.model';
 import { ScenarioData }       from '../../../model/scenario-data.model';
 import { ScenarioObject }     from '../../../model/scenario-object.model';
+import { Character }          from '../../../model/character.model';
 import { AssetCache }         from '../../../play/asset-cache.class';
 import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
@@ -28,6 +29,7 @@ export class PlayComponent implements OnInit {
 	mapBackground: string = null;
 	scenarioDatas: ScenarioData[] = [];
 	scenarioObjects: ScenarioObject[] = [];
+	characters: Character[] = [];
 	player: PlayPlayer = null;
 	hud = null;
 	defaultVX: number = 3;
@@ -57,6 +59,8 @@ export class PlayComponent implements OnInit {
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
 			this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
+			this.characters = this.cms.getCharacters(result.characters);
+			console.log(this.characters);
 
 			// Background
 			this.assetCache.add(this.mapBackground);

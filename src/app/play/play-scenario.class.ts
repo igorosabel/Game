@@ -1,5 +1,7 @@
 import { PlayCanvas }       from './play-canvas.class';
 import { PlayObject }       from './play-object.class';
+import { PlayNPC }          from './play-npc.class';
+import { PlayEnemy }        from './play-enemy.class';
 import { BlockerInterface } from '../interfaces/interfaces';
 
 export class PlayScenario {
@@ -11,6 +13,8 @@ export class PlayScenario {
 	tileWidth: number;
 	tileHeight: number;
 	objects: PlayObject[];
+	npcs: PlayNPC[];
+	enemies: PlayEnemy[];
 	blockers: BlockerInterface[];
 
 	constructor(canvas: PlayCanvas, width: number = 800, height: number = 600, rows: number = 20, cols: number = 25, mapBackground) {
@@ -27,8 +31,10 @@ export class PlayScenario {
 		this.tileWidth = width / cols;
 		this.tileHeight = height / rows;
 
-		// Inicializo objetos
+		// Inicializo objetos y personajes
 		this.objects = [];
+		this.npcs = [];
+		this.enemies = [];
 	}
 
 	get width() {

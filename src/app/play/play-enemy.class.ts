@@ -1,7 +1,7 @@
 import { PlayCharacter } from './play-character.class';
 
 export class PlayEnemy extends PlayCharacter {
-	constructor(pos, size) {
+	constructor(pos, size, options, scenario) {
 		super(pos, size);
 		this.setDetail(
 			options.name,
