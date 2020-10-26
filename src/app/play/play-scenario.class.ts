@@ -1,5 +1,5 @@
-import { PlayCanvas } from './play-canvas.class';
-import { PlayTile }   from './play-tile.class';
+import { PlayCanvas }    from './play-canvas.class';
+import { PlayObject }  from './play-object.class';
 
 export class PlayScenario {
 	debug: boolean;
@@ -9,8 +9,7 @@ export class PlayScenario {
 	_height: number;
 	tileWidth: number;
 	tileHeight: number;
-	tiles;
-	blockers;
+	objects: PlayObject[];
 
 	constructor(canvas: PlayCanvas, width: number = 800, height: number = 600, rows: number = 20, cols: number = 25, mapBackground) {
 		// Modo debug
@@ -25,22 +24,9 @@ export class PlayScenario {
 		// Calculo tamaño de cada tile
 		this.tileWidth = width / cols;
 		this.tileHeight = height / rows;
-
-		// Creo los tiles
-		this.tiles = {};
-		for (let y=1; y<=rows; y++) {
-			for (let x=1; x<=cols; x++) {
-				let pos = {
-					x: (x-1) * this.tileWidth,
-					y: (y-1) * this.tileHeight
-				};
-				this.tiles[x + '-' + y] = new PlayTile({x, y}, pos, {width: this.tileWidth, height: this.tileHeight}, this.canvas);
-				this.tiles[x + '-' + y].debug = this.debug;
-			}
-		}
-
-		// Tiles con colision
-		this.blockers = [];
+		
+		// Inicializo objetos
+		this.objects = [];
 	}
 
 	get width() {
@@ -55,30 +41,14 @@ export class PlayScenario {
 		return this.canvas.ctx;
 	}
 
-	addBck(pos, bck) {
-		this.tiles[pos.x + '-' + pos.y].addBck(bck);
-		if (this.tiles[pos.x + '-' + pos.y].crossable===false) {
-			this.addBlocker(this.tiles[pos.x + '-' + pos.y]);
-		}
+	addObject(object: PlayObject) {
+		this.objects.push(object);
 	}
-	addSpr(pos, spr) {
-		this.tiles[pos.x + '-' + pos.y].addSpr(spr);
-		if (this.tiles[pos.x + '-' + pos.y].crossable===false) {
-			this.addBlocker(this.tiles[pos.x + '-' + pos.y]);
-		}
-	}
-	removeTile(pos) {
-		let tile = this.tiles[pos.x + '-' + pos.y];
-		this.blockers.splice(this.blockers.indexOf(tile), 1);
-		delete this.tiles[pos.x + '-' + pos.y];
-	}
-	addBlocker(tile) {
-		this.blockers.push(tile);
-	}
+
 	render() {
 		this.canvas.ctx.drawImage(this.mapBackground, 0, 0, this._width, this._height);
-		for (let i in this.tiles) {
-			this.tiles[i].render(this.ctx);
-		}
+		this.objects.forEach(object => {
+			object.render(this.canvas.ctx, this.tileWidth, this.tileHeight);
+		});
 	}
 }

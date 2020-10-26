@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params} from '@angular/router';
 import { ApiService }                    from '../../../../services/api.service';
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
+import { PlayService }                   from '../../../../services/play.service';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
 import { Connection }                    from '../../../../model/connection.model';
@@ -60,7 +61,14 @@ export class EditScenarioComponent implements OnInit {
 	@ViewChild('scenarioObjectPicker', { static: true }) scenarioObjectPicker: ScenarioObjectPickerComponent;
 	@ViewChild('characterPicker', { static: true }) characterPicker: CharacterPickerComponent;
 
-	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cs: CommonService, private cms: ClassMapperService, private router: Router) {}
+	constructor(
+		private activatedRoute: ActivatedRoute,
+		private router: Router,
+		private as: ApiService,
+		private cs: CommonService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((params: Params) => {
@@ -68,6 +76,9 @@ export class EditScenarioComponent implements OnInit {
 			this.scenarioId = params.id_scenario;
 			this.loadScenario();
 			this.loadScenarioList();
+			
+			let esc = this.play.keyboard(27);
+			esc.press = () => { this.openCell() }; 
 		});
 	}
 
@@ -75,15 +86,15 @@ export class EditScenarioComponent implements OnInit {
 		this.as.getScenario(this.scenarioId).subscribe(result => {
 			this.loadedScenario = this.cms.getScenario(result.scenario);
 			console.log(this.loadedScenario);
-			for (let i=0; i<this.scenarioHeight; i++) {
-				this.scenario[i] = [];
-				for (let j=0; j<this.scenarioWidth; j++) {
-					this.scenario[i][j] = new ScenarioData(null, this.scenarioId, i, j);
+			for (let y=0; y<this.scenarioHeight; y++) {
+				this.scenario[y] = [];
+				for (let x=0; x<this.scenarioWidth; x++) {
+					this.scenario[y][x] = new ScenarioData(null, this.scenarioId, x, y);
 				}
 			}
 			let scenarioDataList = this.cms.getScenarioDatas(result.data);
 			for (let scenarioData of scenarioDataList) {
-				this.scenario[scenarioData.x][scenarioData.y] = scenarioData;
+				this.scenario[scenarioData.y][scenarioData.x] = scenarioData;
 			}
 			this.connections = {
 				up: null,

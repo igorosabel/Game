@@ -1,9 +1,9 @@
 import { Injectable }   from '@angular/core';
 import { PlayCanvas }   from '../play/play-canvas.class';
 import { PlayScenario } from '../play/play-scenario.class';
-import { PlayTile }     from '../play/play-tile.class';
 import { PlayPlayer }   from '../play/play-player.class';
 import { PlayHud }      from '../play/play-hud.class';
+import { AssetCache }   from '../play/asset-cache.class';
 
 @Injectable({
 	providedIn: 'root'
@@ -24,16 +24,12 @@ export class PlayService {
 		return new PlayScenario(canvas, width, height, rows, cols, mapBackground);
 	}
 
-	makeTile(ind, pos, size, canvas) {
-		return new PlayTile(ind, pos, size, canvas);
-	}
-
 	makePlayer(pos, size, options, scenario) {
 		return new PlayPlayer(pos, size, options, scenario);
 	}
 
-	makeHud(health: number, currentHealth: number, money: number, canvas) {
-		return new PlayHud(health, currentHealth, money, canvas);
+	makeHud(health: number, currentHealth: number, money: number, canvas, assets: AssetCache) {
+		return new PlayHud(health, currentHealth, money, canvas, assets);
 	}
 
 	keyboard(keyCode) {

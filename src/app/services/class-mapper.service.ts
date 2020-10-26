@@ -17,6 +17,8 @@ import { Character }           from '../model/character.model';
 import { ScenarioObjectDrop }  from '../model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
 import { ScenarioObject }      from '../model/scenario-object.model';
+import { PlayObject }          from '../play/play-object.class';
+import { AssetCache }          from '../play/asset-cache.class';
 import { CommonService }       from './common.service';
 import {
 	InventoryInterface,
@@ -90,6 +92,21 @@ export class ClassMapperService {
 			g.defense,
 			g.speed
 		);
+	}
+
+	getPlayObject(object: ScenarioObject, datas: ScenarioData[], assets: AssetCache, frameDuration: number) {
+		const ind = datas.findIndex(x => x.idScenarioObject===object.id);
+		const po = new PlayObject(
+			datas[ind].x,
+			datas[ind].y,
+			datas[ind].scenarioObjectWidth,
+			datas[ind].scenarioObjectHeight,
+			object
+		);
+		po.assets = assets;
+		po.frameDuration = frameDuration;
+		
+		return po;
 	}
 
 	getWorlds(response: WorldInterface[]) {

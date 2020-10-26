@@ -138,6 +138,7 @@ export interface PlayResult {
 	scenarioName: string;
 	mapBackground: string;
 	game: GameInterface;
+	scenarioDatas: ScenarioDataInterface[];
 	scenarioObjects: ScenarioObjectInterface[];
 	characters: CharacterInterface[];
 }

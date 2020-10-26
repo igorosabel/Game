@@ -1,5 +1,7 @@
 import { Item }         from '../model/item.model';
+import { PlayObject }   from './play-object.class';
 import { PlayScenario } from './play-scenario.class';
+import { AssetCache }   from './asset-cache.class';
 
 export class PlayCharacter {
 	orientation: string;
@@ -224,9 +226,9 @@ export class PlayCharacter {
 		}
 	}
 
-	collission(obj1, obj2) {
+	collission(obj1, obj2: PlayObject) {
 		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
-		let rect2 = {x: obj2.pos.x, y: obj2.pos.y, width: obj2.size.width, height: obj2.size.height};
+		let rect2 = {x: obj2.x, y: obj2.y, width: obj2.width, height: obj2.height};
 
 		if (rect1.x < rect2.x + rect2.width &&
 			rect1.x + rect1.width > rect2.x &&
@@ -254,8 +256,8 @@ export class PlayCharacter {
 				pos: {x: newPosX, y: newPosY},
 				size: this.size
 			};
-			this.scenario.blockers.forEach(tile => {
-				if (this.collission(newPos, tile)) {
+			this.scenario.objects.forEach(object => {
+				if (this.collission(newPos, object)) {
 					hit = true;
 				}
 			});
@@ -273,6 +275,6 @@ export class PlayCharacter {
 	}
 
 	render() {
-		this.scenario.ctx.drawImage(this.sprites[this.orientation][this.currentFrame].img, this.pos.x, this.pos.y, this.size.w, this.size.h);
+		this.scenario.ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, this.pos.y, this.size.width, this.size.height);
 	}
 }
