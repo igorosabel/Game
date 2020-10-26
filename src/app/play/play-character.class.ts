@@ -228,7 +228,7 @@ export class PlayCharacter {
 
 	collission(obj1, obj2: BlockerInterface) {
 		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
-		let rect2 = {x: obj2.x, y: obj2.y, width: this.scenario.tileWidth, height: this.scenario.tileHeight};
+		let rect2 = {x: (obj2.x * this.scenario.tileWidth), y: (obj2.y * this.scenario.tileHeight), width: this.scenario.tileWidth, height: this.scenario.tileHeight};
 
 		if (rect1.x < rect2.x + rect2.width &&
 			rect1.x + rect1.width > rect2.x &&

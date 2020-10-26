@@ -49,6 +49,9 @@ export class PlayScenario {
 
 	render() {
 		this.canvas.ctx.drawImage(this.mapBackground, 0, 0, this._width, this._height);
+	}
+	
+	renderObjects() {
 		this.objects.forEach(object => {
 			object.render(this.canvas.ctx, this.tileWidth, this.tileHeight);
 		});

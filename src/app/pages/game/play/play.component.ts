@@ -193,6 +193,7 @@ export class PlayComponent implements OnInit {
 		// Pinto escenario
 		this.scenario.render();
 		this.player.render();
+		this.scenario.renderObjects();
 		this.hud.render();
 
 		// Eventos de teclado
@@ -237,6 +238,7 @@ export class PlayComponent implements OnInit {
 			this.scenario.render();
 			this.player.move();
 			this.player.render();
+			this.scenario.renderObjects();
 			this.hud.render();
 
 			this.start = timestamp + this.frameDuration;
