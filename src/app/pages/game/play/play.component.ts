@@ -12,6 +12,7 @@ import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
 import { ClassMapperService } from '../../../services/class-mapper.service';
 import { PlayService }        from '../../../services/play.service';
+import { BlockerInterface }   from '../../../interfaces/interfaces';
 
 @Component({
 	selector: 'game-play',
@@ -23,6 +24,7 @@ export class PlayComponent implements OnInit {
 	game: Game = null;
 	assetCache: AssetCache = new AssetCache();
 	scenario: PlayScenario = null;
+	blockers: BlockerInterface[] = [];
 	mapBackground: string = null;
 	scenarioDatas: ScenarioData[] = [];
 	scenarioObjects: ScenarioObject[] = [];
@@ -51,6 +53,7 @@ export class PlayComponent implements OnInit {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
 			this.game = this.cms.getGame(result.game);
+			this.blockers = result.blockers;
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
 			this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
@@ -153,6 +156,7 @@ export class PlayComponent implements OnInit {
 	setup() {
 		const canvas: PlayCanvas = this.play.makeCanvas();
 		this.scenario = this.play.makeScenario(canvas, this.assetCache.get(this.mapBackground));
+		this.scenario.blockers = this.blockers;
 
 		this.scenarioObjects.forEach(object => {
 			this.scenario.addObject( this.cms.getPlayObject(object, this.scenarioDatas, this.assetCache, this.frameDuration) );

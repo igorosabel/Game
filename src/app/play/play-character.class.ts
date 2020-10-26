@@ -1,7 +1,7 @@
-import { Item }         from '../model/item.model';
-import { PlayObject }   from './play-object.class';
-import { PlayScenario } from './play-scenario.class';
-import { AssetCache }   from './asset-cache.class';
+import { Item }             from '../model/item.model';
+import { PlayScenario }     from './play-scenario.class';
+import { AssetCache }       from './asset-cache.class';
+import { BlockerInterface } from '../interfaces/interfaces';
 
 export class PlayCharacter {
 	orientation: string;
@@ -226,9 +226,9 @@ export class PlayCharacter {
 		}
 	}
 
-	collission(obj1, obj2: PlayObject) {
+	collission(obj1, obj2: BlockerInterface) {
 		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
-		let rect2 = {x: obj2.x, y: obj2.y, width: obj2.width, height: obj2.height};
+		let rect2 = {x: obj2.x, y: obj2.y, width: this.scenario.tileWidth, height: this.scenario.tileHeight};
 
 		if (rect1.x < rect2.x + rect2.width &&
 			rect1.x + rect1.width > rect2.x &&
@@ -256,7 +256,7 @@ export class PlayCharacter {
 				pos: {x: newPosX, y: newPosY},
 				size: this.size
 			};
-			this.scenario.objects.forEach(object => {
+			this.scenario.blockers.forEach(object => {
 				if (this.collission(newPos, object)) {
 					hit = true;
 				}

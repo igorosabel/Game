@@ -1,5 +1,6 @@
-import { PlayCanvas }    from './play-canvas.class';
-import { PlayObject }  from './play-object.class';
+import { PlayCanvas }       from './play-canvas.class';
+import { PlayObject }       from './play-object.class';
+import { BlockerInterface } from '../interfaces/interfaces';
 
 export class PlayScenario {
 	debug: boolean;
@@ -10,6 +11,7 @@ export class PlayScenario {
 	tileWidth: number;
 	tileHeight: number;
 	objects: PlayObject[];
+	blockers: BlockerInterface[];
 
 	constructor(canvas: PlayCanvas, width: number = 800, height: number = 600, rows: number = 20, cols: number = 25, mapBackground) {
 		// Modo debug
@@ -24,7 +26,7 @@ export class PlayScenario {
 		// Calculo tamaño de cada tile
 		this.tileWidth = width / cols;
 		this.tileHeight = height / rows;
-		
+
 		// Inicializo objetos
 		this.objects = [];
 	}
