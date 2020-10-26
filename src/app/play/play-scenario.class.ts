@@ -4,6 +4,7 @@ import { PlayTile }   from './play-tile.class';
 export class PlayScenario {
 	debug: boolean;
 	canvas: PlayCanvas;
+	mapBackground;
 	_width: number;
 	_height: number;
 	tileWidth: number;
@@ -11,7 +12,7 @@ export class PlayScenario {
 	tiles;
 	blockers;
 
-	constructor(canvas: PlayCanvas, width = 800, height = 600, rows = 18, cols = 24) {
+	constructor(canvas: PlayCanvas, width: number = 800, height: number = 600, rows: number = 20, cols: number = 25, mapBackground) {
 		// Modo debug
 		this.debug = false;
 
@@ -19,6 +20,7 @@ export class PlayScenario {
 		this.canvas = canvas;
 		this._width = width;
 		this._height = height;
+		this.mapBackground = mapBackground;
 
 		// Calculo tamaño de cada tile
 		this.tileWidth = width / cols;
@@ -74,6 +76,7 @@ export class PlayScenario {
 		this.blockers.push(tile);
 	}
 	render() {
+		this.canvas.ctx.drawImage(this.mapBackground, 0, 0, this._width, this._height);
 		for (let i in this.tiles) {
 			this.tiles[i].render(this.ctx);
 		}

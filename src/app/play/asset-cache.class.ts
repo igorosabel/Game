@@ -88,4 +88,8 @@ export class AssetCache {
 			});
 		});
 	}
+
+	get(item: string) {
+		return this._list[item] ? this._list[item] : null;
+	}
 }

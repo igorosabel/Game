@@ -20,8 +20,8 @@ export class PlayService {
 		return new PlayCanvas(width, height, border, backgroundColor);
 	}
 
-	makeScenario(canvas: PlayCanvas, width: number = 800, height: number = 600, rows: number = 18, cols: number = 24) {
-		return new PlayScenario(canvas, width, height, rows, cols);
+	makeScenario(canvas: PlayCanvas, mapBackground, width: number = 800, height: number = 600, rows: number = 20, cols: number = 25) {
+		return new PlayScenario(canvas, width, height, rows, cols, mapBackground);
 	}
 
 	makeTile(ind, pos, size, canvas) {

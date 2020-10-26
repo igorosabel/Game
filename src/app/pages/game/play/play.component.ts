@@ -19,6 +19,7 @@ export class PlayComponent implements OnInit {
 	game: Game = null;
 	assetCache: AssetCache = new AssetCache();
 	scenario: PlayScenario = null;
+	mapBackground: string = null;
 	player = null;
 	hud = null;
 	defaultVX: number = 3;
@@ -44,6 +45,8 @@ export class PlayComponent implements OnInit {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
 			this.game = this.cms.getGame(result.game);
+			this.mapBackground = this.cs.urldecode(result.mapBackground);
+			this.assetCache.add(this.mapBackground);
 			this.assetCache.addScenarioObjects(this.cms.getScenarioObjects(result.scenarioObjects));
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
 			this.assetCache.load().then(() => this.setup());
@@ -52,7 +55,7 @@ export class PlayComponent implements OnInit {
 
 	setup() {
 		const canvas: PlayCanvas = this.play.makeCanvas();
-		this.scenario = this.play.makeScenario(canvas);
+		this.scenario = this.play.makeScenario(canvas, this.assetCache.get(this.mapBackground));
 		this.player = this.play.makePlayer(
 			{
 				x: this.game.positionX * this.scenario.tileWidth,
