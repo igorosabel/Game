@@ -160,11 +160,15 @@ export class ClassMapperService {
 			this.cs.urldecode(sd.scenarioObjectAssetUrl),
 			sd.scenarioObjectWidth,
 			sd.scenarioObjectHeight,
+			sd.scenarioObjectBlockWidth,
+			sd.scenarioObjectBlockHeight,
 			sd.idCharacter,
 			this.cs.urldecode(sd.characterName),
 			this.cs.urldecode(sd.characterAssetUrl),
 			sd.characterWidth,
-			sd.characterHeight
+			sd.characterHeight,
+			sd.characterBlockWidth,
+			sd.characterBlockHeight
 		);
 	}
 

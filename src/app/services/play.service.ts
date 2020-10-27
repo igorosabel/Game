@@ -24,10 +24,10 @@ export class PlayService {
 		return new PlayScenario(canvas, mapBackground, blockers);
 	}
 
-	makePlayer(x, y, width, height, options, scenario) {
-		return new PlayCharacter(x, y, width, height, options, scenario);
+	makePlayer(x, y, width, height, blockWidth, blockHeight, options, scenario) {
+		return new PlayCharacter(x, y, width, height, blockWidth, blockHeight, options, scenario);
 	}
-	
+
 	makePlayObject(object: ScenarioObject, datas: ScenarioData[], assets: AssetCache) {
 		const ind = datas.findIndex(x => x.idScenarioObject===object.id);
 		const po = new PlayObject(
@@ -49,6 +49,8 @@ export class PlayService {
 			datas[ind].y,
 			datas[ind].characterWidth,
 			datas[ind].characterHeight,
+			datas[ind].characterBlockWidth,
+			datas[ind].characterBlockHeight,
 			{
 				name: character.name,
 				isNPC: true,

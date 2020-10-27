@@ -9,6 +9,7 @@ export class PlayCharacter {
 	orientationList;
 	pos;
 	size;
+	blockSize;
 	originalSize;
 	center;
 	sprites;
@@ -28,7 +29,16 @@ export class PlayCharacter {
 	speed: number;
 	items;
 
-	constructor(x: number, y: number, width: number, height: number, options, scenario: PlayScenario) {
+	constructor(
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		blockWidth:number,
+		blockHeight: number,
+		options,
+		scenario: PlayScenario
+	) {
 		this.orientation = 'down';
 		this.orientationList = [];
 		this.pos = {
@@ -40,6 +50,10 @@ export class PlayCharacter {
 			height: height * Constants.TILE_HEIGHT
 		};
 		this.originalSize = {width, height};
+		this.blockSize = {
+			width: blockWidth * Constants.TILE_WIDTH,
+			height: blockHeight * Constants.TILE_HEIGHT
+		};
 		this.scenario = scenario;
 		this.center = {};
 		this.sprites = {

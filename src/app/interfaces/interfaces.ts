@@ -107,11 +107,15 @@ export interface ScenarioDataInterface {
 	scenarioObjectAssetUrl: string;
 	scenarioObjectWidth: number;
 	scenarioObjectHeight: number;
+	scenarioObjectBlockWidth: number;
+	scenarioObjectBlockHeight: number;
 	idCharacter: number;
 	characterName: string;
 	characterAssetUrl: string;
 	characterWidth: number;
 	characterHeight: number;
+	characterBlockWidth: number;
+	characterBlockHeight: number;
 }
 
 export interface ConnectionInterface {

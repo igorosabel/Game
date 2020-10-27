@@ -14,11 +14,15 @@ export class ScenarioData {
 		public scenarioObjectAssetUrl: string = null,
 		public scenarioObjectWidth: number = null,
 		public scenarioObjectHeight: number = null,
+		public scenarioObjectBlockWidth: number = null,
+		public scenarioObjectBlockHeight: number = null,
 		public idCharacter: number = null,
 		public characterName: string = null,
 		public characterAssetUrl: string = null,
 		public characterWidth: number = null,
-		public characterHeight: number = null
+		public characterHeight: number = null,
+		public characterBlockWidth: number = null,
+		public characterBlockHeight: number = null
 	) {}
 
 	toInterface(): ScenarioDataInterface {
@@ -35,11 +39,15 @@ export class ScenarioData {
 			scenarioObjectAssetUrl: this.scenarioObjectAssetUrl,
 			scenarioObjectWidth: this.scenarioObjectWidth,
 			scenarioObjectHeight: this.scenarioObjectHeight,
+			scenarioObjectBlockWidth: this.scenarioObjectBlockWidth,
+			scenarioObjectBlockHeight: this.scenarioObjectBlockHeight,
 			idCharacter: this.idCharacter,
 			characterName: this.characterName,
 			characterAssetUrl: this.characterAssetUrl,
 			characterWidth: this.characterWidth,
-			characterHeight: this.characterHeight
+			characterHeight: this.characterHeight,
+			characterBlockWidth: this.characterBlockWidth,
+			characterBlockHeight: this.characterBlockHeight
 		};
 		return scenarioData;
 	}

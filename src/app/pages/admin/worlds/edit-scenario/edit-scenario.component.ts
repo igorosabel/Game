@@ -77,9 +77,9 @@ export class EditScenarioComponent implements OnInit {
 			this.scenarioId = params.id_scenario;
 			this.loadScenario();
 			this.loadScenarioList();
-			
+
 			let esc = this.play.keyboard(27);
-			esc.press = () => { this.openCell() }; 
+			esc.press = () => { this.openCell() };
 		});
 	}
 
@@ -215,11 +215,15 @@ export class EditScenarioComponent implements OnInit {
 				(cell.idScenarioObject!=null) ? cell.scenarioObjectAssetUrl : '/assets/no-asset.svg',
 				cell.scenarioObjectWidth,
 				cell.scenarioObjectHeight,
+				cell.scenarioObjectBlockWidth,
+				cell.scenarioObjectBlockHeight,
 				cell.idCharacter,
 				(cell.idCharacter!=null) ? cell.characterName : 'Sin personaje',
 				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/no-asset.svg',
 				cell.characterWidth,
-				cell.characterHeight
+				cell.characterHeight,
+				cell.characterBlockWidth,
+				cell.characterBlockHeight
 			);
 
 			let saveDirectly = false;

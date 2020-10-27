@@ -174,6 +174,8 @@ export class PlayComponent implements OnInit {
 			this.game.positionY,
 			1,
 			1.5,
+			1,
+			1,
 			{
 				name: this.game.name,
 				isNPC: false,
