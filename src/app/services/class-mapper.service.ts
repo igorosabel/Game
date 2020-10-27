@@ -17,6 +17,7 @@ import { Character }           from '../model/character.model';
 import { ScenarioObjectDrop }  from '../model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from '../model/scenario-object-frame.model';
 import { ScenarioObject }      from '../model/scenario-object.model';
+import { Position }            from '../model/position.model';
 import { CommonService }       from './common.service';
 import {
 	InventoryInterface,
@@ -36,7 +37,8 @@ import {
 	CharacterInterface,
 	ScenarioObjectDropInterface,
 	ScenarioObjectFrameInterface,
-	ScenarioObjectInterface
+	ScenarioObjectInterface,
+	PositionInterface
 } from '../interfaces/interfaces';
 
 @Injectable({
@@ -466,6 +468,23 @@ export class ClassMapperService {
 			so.breakable,
 			this.getScenarioObjectDrops(so.drops),
 			this.getScenarioObjectFrames(so.frames)
+		);
+	}
+
+	getPositions(response: PositionInterface[]) {
+		const positions: Position[] = [];
+
+		for (let p of response) {
+			positions.push( this.getPosition(p) );
+		}
+
+		return positions;
+	}
+
+	getPosition(p: PositionInterface) {
+		return new Position(
+			p.x,
+			p.y
 		);
 	}
 }

@@ -1,9 +1,9 @@
-import { EventDispatcher }       from 'strongly-typed-events';
-import { Constants }             from '../model/constants';
-import { Item }                  from '../model/item.model';
-import { PlayScenario }          from './play-scenario.class';
-import { AssetCache }            from './asset-cache.class';
-import { BlockerInterface }      from '../interfaces/interfaces';
+import { EventDispatcher } from 'strongly-typed-events';
+import { Constants }       from '../model/constants';
+import { Item }            from '../model/item.model';
+import { Position }        from '../model/position.model';
+import { PlayScenario }    from './play-scenario.class';
+import { AssetCache }      from './asset-cache.class';
 
 export class PlayCharacter {
 	orientation: string;
@@ -247,7 +247,7 @@ export class PlayCharacter {
 		}
 	}
 
-	collission(obj1, obj2: BlockerInterface) {
+	collission(obj1, obj2: Position) {
 		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
 		let rect2 = {x: (obj2.x * Constants.TILE_WIDTH), y: (obj2.y * Constants.TILE_HEIGHT), width: Constants.TILE_WIDTH, height: Constants.TILE_HEIGHT};
 

@@ -1,8 +1,8 @@
-import { Constants }        from '../model/constants';
-import { PlayCanvas }       from './play-canvas.class';
-import { PlayObject }       from './play-object.class';
-import { PlayCharacter }    from './play-character.class';
-import { BlockerInterface } from '../interfaces/interfaces';
+import { Constants }     from '../model/constants';
+import { Position }      from '../model/position.model';
+import { PlayCanvas }    from './play-canvas.class';
+import { PlayObject }    from './play-object.class';
+import { PlayCharacter } from './play-character.class';
 
 export class PlayScenario {
 	debug: boolean;
@@ -11,9 +11,9 @@ export class PlayScenario {
 	player: PlayCharacter;
 	objects: PlayObject[];
 	characters: PlayCharacter[];
-	blockers: BlockerInterface[];
+	blockers: Position[];
 
-	constructor(canvas: PlayCanvas, mapBackground, blockers: BlockerInterface[]) {
+	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
 		// Creo el canvas
 		this.canvas = canvas;
 		this.mapBackground = mapBackground;

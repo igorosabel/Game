@@ -133,7 +133,7 @@ export interface ScenarioDataResult {
 	connection: ConnectionInterface[];
 }
 
-export interface BlockerInterface {
+export interface PositionInterface {
 	x: number;
 	y: number;
 }
@@ -147,7 +147,7 @@ export interface PlayResult {
 	scenarioName: string;
 	mapBackground: string;
 	game: GameInterface;
-	blockers: BlockerInterface[];
+	blockers: PositionInterface[];
 	scenarioDatas: ScenarioDataInterface[];
 	scenarioObjects: ScenarioObjectInterface[];
 	characters: CharacterInterface[];

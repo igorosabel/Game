@@ -4,6 +4,7 @@ import { Game }               from '../../../model/game.model';
 import { ScenarioData }       from '../../../model/scenario-data.model';
 import { ScenarioObject }     from '../../../model/scenario-object.model';
 import { Character }          from '../../../model/character.model';
+import { Position }           from '../../../model/position.model';
 import { AssetCache }         from '../../../play/asset-cache.class';
 import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
@@ -15,7 +16,6 @@ import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
 import { ClassMapperService } from '../../../services/class-mapper.service';
 import { PlayService }        from '../../../services/play.service';
-import { BlockerInterface }   from '../../../interfaces/interfaces';
 
 @Component({
 	selector: 'game-play',
@@ -28,7 +28,7 @@ export class PlayComponent implements OnInit {
 
 	game: Game = null;
 	scenario: PlayScenario = null;
-	blockers: BlockerInterface[] = [];
+	blockers: Position[] = [];
 	mapBackground: string = null;
 	scenarioDatas: ScenarioData[] = [];
 	scenarioObjects: ScenarioObject[] = [];
@@ -53,7 +53,7 @@ export class PlayComponent implements OnInit {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
 			this.game = this.cms.getGame(result.game);
-			this.blockers = result.blockers;
+			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
 			this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
