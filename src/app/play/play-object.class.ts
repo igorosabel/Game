@@ -41,11 +41,11 @@ export class PlayObject {
 		}
 	}
 
-	render(ctx, tileWidth: number, tileHeight: number) {
+	render(ctx) {
 		this.playAnimation();
 		const frameImg = this.assets.get(this.object.allFrames[this.currentFrame]);
-		const posX = (this.x * tileWidth);
-		const posY = (this.y * tileHeight) - ((this.height-1) * tileHeight);
-		ctx.drawImage(frameImg, posX, posY, (this.width * tileWidth), (this.height * tileHeight));
+		const posX = (this.x * Constants.TILE_WIDTH);
+		const posY = (this.y * Constants.TILE_HEIGHT) - ((this.height-1) * Constants.TILE_HEIGHT);
+		ctx.drawImage(frameImg, posX, posY, (this.width * Constants.TILE_WIDTH), (this.height * Constants.TILE_HEIGHT));
 	}
 }

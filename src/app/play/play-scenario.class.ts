@@ -1,19 +1,15 @@
 import { Constants }        from '../model/constants';
 import { PlayCanvas }       from './play-canvas.class';
 import { PlayObject }       from './play-object.class';
-import { PlayNPC }          from './play-npc.class';
-import { PlayEnemy }        from './play-enemy.class';
+import { PlayCharacter }    from './play-character.class';
 import { BlockerInterface } from '../interfaces/interfaces';
 
 export class PlayScenario {
 	debug: boolean;
 	canvas: PlayCanvas;
 	mapBackground;
-	tileWidth: number;
-	tileHeight: number;
 	objects: PlayObject[];
-	npcs: PlayNPC[];
-	enemies: PlayEnemy[];
+	characters: PlayCharacter[];
 	blockers: BlockerInterface[];
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: BlockerInterface[]) {
@@ -24,15 +20,10 @@ export class PlayScenario {
 		this.canvas = canvas;
 		this.mapBackground = mapBackground;
 
-		// Calculo tamaño de cada tile
-		this.tileWidth = Constants.SCENARIO_WIDTH / Constants.SCENARIO_COLS;
-		this.tileHeight = Constants.SCENARIO_HEIGHT / Constants.SCENARIO_ROWS;
-
 		// Inicializo objetos y personajes
 		this.blockers = blockers;
 		this.objects = [];
-		this.npcs = [];
-		this.enemies = [];
+		this.characters = [];
 	}
 
 	get ctx() {
@@ -43,12 +34,8 @@ export class PlayScenario {
 		this.objects.push(object);
 	}
 
-	addNPC(npc: PlayNPC) {
-		this.npcs.push(npc);
-	}
-
-	addEnemy(enemy: PlayEnemy) {
-		this.enemies.push(enemy);
+	addCharacter(character: PlayCharacter) {
+		this.characters.push(character);
 	}
 
 	render() {
@@ -57,16 +44,13 @@ export class PlayScenario {
 
 	renderObjects() {
 		this.objects.forEach(object => {
-			object.render(this.canvas.ctx, this.tileWidth, this.tileHeight);
+			object.render(this.canvas.ctx);
 		});
 	}
 
 	renderCharacters() {
-		this.npcs.forEach(npc => {
-			npc.render();
-		});
-		this.enemies.forEach(enemy => {
-			enemy.render();
+		this.characters.forEach(character => {
+			character.render();
 		});
 	}
 }

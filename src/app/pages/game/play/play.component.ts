@@ -7,7 +7,7 @@ import { Character }          from '../../../model/character.model';
 import { AssetCache }         from '../../../play/asset-cache.class';
 import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
-import { PlayPlayer }         from '../../../play/play-player.class';
+import { PlayCharacter }      from '../../../play/play-character.class';
 import { PlayObject }         from '../../../play/play-object.class';
 import { PlayHud }            from '../../../play/play-hud.class';
 import { ApiService }         from '../../../services/api.service';
@@ -34,7 +34,7 @@ export class PlayComponent implements OnInit {
 	scenarioObjects: ScenarioObject[] = [];
 	characters: Character[] = [];
 
-	player: PlayPlayer = null;
+	player: PlayCharacter = null;
 	hud: PlayHud = null;
 	start: number = 0;
 
@@ -161,29 +161,21 @@ export class PlayComponent implements OnInit {
 		this.scenario.blockers = this.blockers;
 
 		this.scenarioObjects.forEach(object => {
-			this.scenario.addObject( this.cms.getPlayObject(object, this.scenarioDatas, this.assetCache) );
+			this.scenario.addObject( this.play.makePlayObject(object, this.scenarioDatas, this.assetCache) );
 		});
 
 		this.characters.forEach(character => {
-			if (character.type==0) {
-				this.scenario.addNPC( this.cms.getPlayNPC(character, this.scenarioDatas, this.assetCache, this.scenario) );
-			}
-			else {
-				this.scenario.addEnemy( this.cms.getPlayEnemy(character, this.scenarioDatas, this.assetCache, this.scenario) );
-			}
+			this.scenario.addCharacter( this.play.makePlayCharacter(character, this.scenarioDatas, this.scenario, this.assetCache) );
 		});
 
 		this.player = this.play.makePlayer(
-			{
-				x: this.game.positionX * this.scenario.tileWidth,
-				y: this.game.positionY * this.scenario.tileHeight
-			},
-			{
-				width: this.scenario.tileWidth,
-				height: (this.scenario.tileHeight * 1.5)
-			},
+			this.game.positionX,
+			this.game.positionY,
+			1,
+			1.5,
 			{
 				name: this.game.name,
+				isNPC: false,
 				health: this.game.maxHealth,
 				currentHealth: this.game.health,
 				money: this.game.money,

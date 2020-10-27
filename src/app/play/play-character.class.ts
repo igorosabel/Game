@@ -27,11 +27,18 @@ export class PlayCharacter {
 	speed: number;
 	items;
 
-	constructor(pos, size) {
+	constructor(x: number, y: number, width: number, height: number, options, scenario: PlayScenario) {
 		this.orientation = 'down';
 		this.orientationList = [];
-		this.pos = pos;
-		this.size = size;
+		this.pos = {
+			x: x * Constants.TILE_WIDTH,
+			y: y * Constants.TILE_HEIGHT
+		};
+		this.size = {
+			width: width * Constants.TILE_WIDTH,
+			height: height * Constants.TILE_HEIGHT
+		};
+		this.scenario = scenario;
 		this.center = {};
 		this.sprites = {
 			up: [],
@@ -39,7 +46,6 @@ export class PlayCharacter {
 			down: [],
 			left: []
 		};
-		this.scenario = null;
 		this.vx = 0;
 		this.vy = 0;
 		this.moving = {
@@ -60,30 +66,13 @@ export class PlayCharacter {
 		this.updateCenter();
 
 		// Detalles del personaje
-		this.isNPC = false;
-		this.health = 100;
-		this.currentHealth = 100;
-		this.money = 100;
-		this.speed = 3;
-		this.items = [];
-	}
-
-	setDetail(
-		name: string,
-		isNPC: boolean,
-		health: number,
-		currentHealth: number,
-		money: number,
-		speed: number,
-		items: Item[]
-	) {
-		this.name = name;
-		this.isNPC = isNPC;
-		this.health;
-		this.currentHealth = currentHealth;
-		this.money = money;
-		this.speed = speed;
-		this.items = items;
+		this.name = options.name;
+		this.isNPC = options.isNPC;
+		this.health = options.health;
+		this.currentHealth = options.currentHealth;
+		this.money = options.money;
+		this.speed = options.speed;
+		this.items = options.items;
 	}
 
 	setSprite(ind, sprite) {
@@ -211,7 +200,7 @@ export class PlayCharacter {
 
 	collission(obj1, obj2: BlockerInterface) {
 		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
-		let rect2 = {x: (obj2.x * this.scenario.tileWidth), y: (obj2.y * this.scenario.tileHeight), width: this.scenario.tileWidth, height: this.scenario.tileHeight};
+		let rect2 = {x: (obj2.x * Constants.TILE_WIDTH), y: (obj2.y * Constants.TILE_HEIGHT), width: Constants.TILE_WIDTH, height: Constants.TILE_HEIGHT};
 
 		if (rect1.x < rect2.x + rect2.width &&
 			rect1.x + rect1.width > rect2.x &&
@@ -258,6 +247,6 @@ export class PlayCharacter {
 	}
 
 	render() {
-		this.scenario.ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, this.pos.y, this.size.width, this.size.height);
+		this.scenario.canvas.ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, this.pos.y, this.size.width, this.size.height);
 	}
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Páginas
  */
 import { LoginComponent }                from './pages/game/login/login.component';
@@ -21,27 +21,27 @@ import { ScenariosComponent }            from './pages/admin/worlds/scenarios/sc
 import { WorldsComponent }               from './pages/admin/worlds/worlds/worlds.component';
 
 export const PAGES: any[] = [
-  LoginComponent,
-  HallComponent,
-  PlayComponent,
-  AdminLoginComponent,
-  AdminLogoutComponent,
-  AdminMainComponent,
-  AssetsComponent,
-  BackgroundCategoriesComponent,
-  BackgroundsComponent,
-  CharactersComponent,
-  ItemsComponent,
-  ResourcesComponent,
-  ScenarioObjectsComponent,
-  GamesComponent,
-  UsersComponent,
-  EditScenarioComponent,
-  ScenariosComponent,
-  WorldsComponent
+	LoginComponent,
+	HallComponent,
+	PlayComponent,
+	AdminLoginComponent,
+	AdminLogoutComponent,
+	AdminMainComponent,
+	AssetsComponent,
+	BackgroundCategoriesComponent,
+	BackgroundsComponent,
+	CharactersComponent,
+	ItemsComponent,
+	ResourcesComponent,
+	ScenarioObjectsComponent,
+	GamesComponent,
+	UsersComponent,
+	EditScenarioComponent,
+	ScenariosComponent,
+	WorldsComponent
 ];
 
-/*
+/**
  * Componentes
  */
 import { HeaderComponent }               from './components/header/header.component';
@@ -60,7 +60,7 @@ export const COMPONENTS: any[] = [
 	CharacterPickerComponent
 ];
 
-/*
+/**
  * Pipes
  */
 import { UrldecodePipe }  from './pipes/urldecode.pipe';
@@ -69,7 +69,7 @@ export const PIPES: any[] = [
   UrldecodePipe
 ];
 
-/*
+/**
  * Servicios
  */
 import { CommonService }      from './services/common.service';
@@ -78,12 +78,14 @@ import { DataShareService }   from './services/data-share.service';
 import { UserService }        from './services/user.service';
 import { AuthService }        from './services/auth.service';
 import { ClassMapperService } from './services/class-mapper.service';
+import { PlayService }        from './services/play.service';
 
 export const SERVICES: any[] = [
-  CommonService,
-  ApiService,
-  DataShareService,
-  UserService,
-  AuthService,
-  ClassMapperService
+	CommonService,
+	ApiService,
+	DataShareService,
+	UserService,
+	AuthService,
+	ClassMapperService,
+	PlayService
 ];
