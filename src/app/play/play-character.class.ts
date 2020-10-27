@@ -9,6 +9,7 @@ export class PlayCharacter {
 	orientationList;
 	pos;
 	size;
+	originalSize;
 	center;
 	sprites;
 	scenario: PlayScenario;
@@ -38,6 +39,7 @@ export class PlayCharacter {
 			width: width * Constants.TILE_WIDTH,
 			height: height * Constants.TILE_HEIGHT
 		};
+		this.originalSize = {width, height};
 		this.scenario = scenario;
 		this.center = {};
 		this.sprites = {
@@ -246,7 +248,13 @@ export class PlayCharacter {
 		}
 	}
 
-	render() {
-		this.scenario.canvas.ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, this.pos.y, this.size.width, this.size.height);
+	render(ctx) {
+		const posY = this.pos.y - ((this.originalSize.height-1) * Constants.TILE_HEIGHT);
+		ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, posY, this.size.width, this.size.height);
+		if (Constants.DEBUG) {
+			ctx.strokeStyle = '#f00';
+			ctx.lineWidth = 1;
+			ctx.strokeRect(this.pos.x, posY, this.size.width, this.size.height);
+		}
 	}
 }

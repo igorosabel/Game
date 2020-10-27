@@ -13,9 +13,6 @@ export class PlayScenario {
 	blockers: BlockerInterface[];
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: BlockerInterface[]) {
-		// Modo debug
-		this.debug = false;
-
 		// Creo el canvas
 		this.canvas = canvas;
 		this.mapBackground = mapBackground;
@@ -50,7 +47,7 @@ export class PlayScenario {
 
 	renderCharacters() {
 		this.characters.forEach(character => {
-			character.render();
+			character.render(this.canvas.ctx);
 		});
 	}
 }

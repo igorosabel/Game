@@ -47,5 +47,10 @@ export class PlayObject {
 		const posX = (this.x * Constants.TILE_WIDTH);
 		const posY = (this.y * Constants.TILE_HEIGHT) - ((this.height-1) * Constants.TILE_HEIGHT);
 		ctx.drawImage(frameImg, posX, posY, (this.width * Constants.TILE_WIDTH), (this.height * Constants.TILE_HEIGHT));
+		if (Constants.DEBUG) {
+			ctx.strokeStyle = '#f00';
+			ctx.lineWidth = 1;
+			ctx.strokeRect(posX, posY, (this.width * Constants.TILE_WIDTH), (this.height * Constants.TILE_HEIGHT));
+		}
 	}
 }

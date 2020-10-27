@@ -190,7 +190,7 @@ export class PlayComponent implements OnInit {
 
 		// Pinto escenario
 		this.scenario.render();
-		this.player.render();
+		this.player.render(this.scenario.canvas.ctx);
 		this.scenario.renderObjects();
 		this.scenario.renderCharacters();
 		this.hud.render();
@@ -236,7 +236,7 @@ export class PlayComponent implements OnInit {
 		if (timestamp >= this.start) {
 			this.scenario.render();
 			this.player.move();
-			this.player.render();
+			this.player.render(this.scenario.canvas.ctx);
 			this.scenario.renderObjects();
 			this.scenario.renderCharacters();
 			this.hud.render();
