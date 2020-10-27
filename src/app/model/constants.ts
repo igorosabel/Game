@@ -10,4 +10,5 @@ export class Constants {
 	public static FRAME_DURATION: number = (1000 / Constants.FPS);
 	public static DEFAULT_VX: number = 3;
 	public static DEFAULT_VY: number = 3;
+	public static NEXT_POS: number = 5;
 }

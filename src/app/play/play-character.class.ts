@@ -101,6 +101,29 @@ export class PlayCharacter {
 			y: this.pos.y + (this.size.height / 2)
 		}
 	}
+	
+	getNextPos() {
+		const newPos = {x: this.pos.x, y: this.pos.y};
+		switch(this.orientation) {
+			case 'up': {
+				newPos.y -= Constants.NEXT_POS;
+			}
+			break;
+			case 'down': {
+				newPos.y += Constants.NEXT_POS;
+			}
+			break;
+			case 'left': {
+				newPos.x -= Constants.NEXT_POS;
+			}
+			break;
+			case 'right': {
+				newPos.x += Constants.NEXT_POS;
+			}
+			break;
+		}
+		return newPos;
+	}
 
 	up() {
 		if (!this.moving.up) {
@@ -172,6 +195,8 @@ export class PlayCharacter {
 
 	doAction() {
 		console.log('doAction');
+		console.log(this.pos);
+		console.log(this.getNextPos());
 	}
 
 	stopAction() {
