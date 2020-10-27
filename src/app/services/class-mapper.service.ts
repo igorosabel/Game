@@ -97,7 +97,7 @@ export class ClassMapperService {
 		);
 	}
 
-	getPlayObject(object: ScenarioObject, datas: ScenarioData[], assets: AssetCache, frameDuration: number) {
+	getPlayObject(object: ScenarioObject, datas: ScenarioData[], assets: AssetCache) {
 		const ind = datas.findIndex(x => x.idScenarioObject===object.id);
 		const po = new PlayObject(
 			datas[ind].x,
@@ -107,12 +107,11 @@ export class ClassMapperService {
 			object
 		);
 		po.assets = assets;
-		po.frameDuration = frameDuration;
 
 		return po;
 	}
 
-	getPlayNPC(character: Character, datas: ScenarioData[], assets: AssetCache, frameDuration: number, scenario: PlayScenario, defaultVX: number, defaultVY: number) {
+	getPlayNPC(character: Character, datas: ScenarioData[], assets: AssetCache, scenario: PlayScenario) {
 		const ind = datas.findIndex(x => x.idCharacter===character.id);
 		const npc = new PlayNPC(
 			{
@@ -131,14 +130,8 @@ export class ClassMapperService {
 				speed: character.speed,
 				items: []
 			},
-			{
-				scenario: scenario,
-				frameDuration: frameDuration,
-				defaultVX: defaultVX,
-				defaultVY: defaultVY
-			}
+			scenario
 		);
-		npc.frameDuration = frameDuration;
 		for (let frame of character.allFramesUp) {
 			npc.sprites['up'].push(assets.get(frame));
 		}
@@ -155,7 +148,7 @@ export class ClassMapperService {
 		return npc;
 	}
 
-	getPlayEnemy(character: Character, datas: ScenarioData[], assets: AssetCache, frameDuration: number, scenario: PlayScenario, defaultVX: number, defaultVY: number) {
+	getPlayEnemy(character: Character, datas: ScenarioData[], assets: AssetCache, scenario: PlayScenario) {
 		const ind = datas.findIndex(x => x.idCharacter===character.id);
 		const enemy = new PlayEnemy(
 			{
@@ -174,14 +167,8 @@ export class ClassMapperService {
 				speed: character.speed,
 				items: []
 			},
-			{
-				scenario: scenario,
-				frameDuration: frameDuration,
-				defaultVX: defaultVX,
-				defaultVY: defaultVY
-			}
+			scenario
 		);
-		enemy.frameDuration = frameDuration;
 		for (let frame of character.allFramesUp) {
 			enemy.sprites['up'].push(assets.get(frame));
 		}

@@ -1,3 +1,4 @@
+import { Constants }        from '../model/constants';
 import { Item }             from '../model/item.model';
 import { PlayScenario }     from './play-scenario.class';
 import { AssetCache }       from './asset-cache.class';
@@ -11,9 +12,6 @@ export class PlayCharacter {
 	center;
 	sprites;
 	scenario: PlayScenario;
-	frameDuration: number;
-	defaultVX: number;
-	defaultVY: number;
 	vx: number;
 	vy: number;
 	moving;
@@ -42,9 +40,6 @@ export class PlayCharacter {
 			left: []
 		};
 		this.scenario = null;
-		this.frameDuration = 0;
-		this.defaultVX = 3;
-		this.defaultVY = 3;
 		this.vx = 0;
 		this.vy = 0;
 		this.moving = {
@@ -91,18 +86,6 @@ export class PlayCharacter {
 		this.items = items;
 	}
 
-	setScenario(
-		scenario: PlayScenario,
-		frameDuration: number,
-		defaultVX: number,
-		defaultVY: number
-	) {
-		this.scenario = scenario;
-		this.frameDuration = frameDuration;
-		this.defaultVX = defaultVX;
-		this.defaultVY = defaultVY;
-	}
-
 	setSprite(ind, sprite) {
 		this.sprites[ind].push(sprite);
 	}
@@ -116,7 +99,7 @@ export class PlayCharacter {
 
 	up() {
 		if (!this.moving.up) {
-			this.vy = -1 * this.defaultVY * this.speed;
+			this.vy = -1 * Constants.DEFAULT_VY * this.speed;
 			this.moving.up = true;
 			this.orientationList.push('up');
 			this.playAnimation();
@@ -133,7 +116,7 @@ export class PlayCharacter {
 
 	down() {
 		if (!this.moving.down) {
-			this.vy = this.defaultVY * this.speed;
+			this.vy = Constants.DEFAULT_VY * this.speed;
 			this.moving.down = true;
 			this.orientationList.push('down');
 			this.playAnimation();
@@ -150,7 +133,7 @@ export class PlayCharacter {
 
 	right() {
 		if (!this.moving.right) {
-			this.vx = this.defaultVX * this.speed;
+			this.vx = Constants.DEFAULT_VX * this.speed;
 			this.moving.right = true;
 			this.orientationList.push('right');
 			this.playAnimation();
@@ -167,7 +150,7 @@ export class PlayCharacter {
 
 	left() {
 		if (!this.moving.left) {
-			this.vx = -1 * this.defaultVX * this.speed;
+			this.vx = -1 * Constants.DEFAULT_VX * this.speed;
 			this.moving.left = true;
 			this.orientationList.push('left');
 			this.playAnimation();
@@ -201,7 +184,7 @@ export class PlayCharacter {
 	playAnimation() {
 		if (!this.playing) {
 			this.playing = true;
-			this.interval = setInterval(this.updateAnimation.bind(this), this.frameDuration);
+			this.interval = setInterval(this.updateAnimation.bind(this), Constants.FRAME_DURATION);
 		}
 	}
 
@@ -246,7 +229,7 @@ export class PlayCharacter {
 			let newPosY = this.pos.y + this.vy;
 
 			// Colisión con los bordes de la pantalla
-			if (newPosX<0 || newPosY<0 || (newPosX + this.size.width) > this.scenario.width || (newPosY + this.size.height) > this.scenario.height) {
+			if (newPosX<0 || newPosY<0 || (newPosX + this.size.width) > Constants.SCENARIO_WIDTH || (newPosY + this.size.height) > Constants.SCENARIO_HEIGHT) {
 				return false;
 			}
 

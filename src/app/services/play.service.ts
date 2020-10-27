@@ -1,9 +1,10 @@
-import { Injectable }   from '@angular/core';
-import { PlayCanvas }   from '../play/play-canvas.class';
-import { PlayScenario } from '../play/play-scenario.class';
-import { PlayPlayer }   from '../play/play-player.class';
-import { PlayHud }      from '../play/play-hud.class';
-import { AssetCache }   from '../play/asset-cache.class';
+import { Injectable }       from '@angular/core';
+import { PlayCanvas }       from '../play/play-canvas.class';
+import { PlayScenario }     from '../play/play-scenario.class';
+import { PlayPlayer }       from '../play/play-player.class';
+import { PlayHud }          from '../play/play-hud.class';
+import { AssetCache }       from '../play/asset-cache.class';
+import { BlockerInterface } from '../interfaces/interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,17 +12,12 @@ import { AssetCache }   from '../play/asset-cache.class';
 export class PlayService {
 	constructor() {}
 
-	makeCanvas(
-		width: number = 800,
-		height: number = 600,
-		border: string = '1px dashed black',
-		backgroundColor: string = 'white'
-	) {
-		return new PlayCanvas(width, height, border, backgroundColor);
+	makeCanvas() {
+		return new PlayCanvas();
 	}
 
-	makeScenario(canvas: PlayCanvas, mapBackground, width: number = 800, height: number = 600, rows: number = 20, cols: number = 25) {
-		return new PlayScenario(canvas, width, height, rows, cols, mapBackground);
+	makeScenario(canvas: PlayCanvas, mapBackground, blockers: BlockerInterface[]) {
+		return new PlayScenario(canvas, mapBackground, blockers);
 	}
 
 	makePlayer(pos, size, options, scenario) {

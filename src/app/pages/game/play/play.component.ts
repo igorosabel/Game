@@ -1,4 +1,5 @@
 import { Component, OnInit }  from '@angular/core';
+import { Constants }          from '../../../model/constants';
 import { Game }               from '../../../model/game.model';
 import { ScenarioData }       from '../../../model/scenario-data.model';
 import { ScenarioObject }     from '../../../model/scenario-object.model';
@@ -8,6 +9,7 @@ import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
 import { PlayPlayer }         from '../../../play/play-player.class';
 import { PlayObject }         from '../../../play/play-object.class';
+import { PlayHud }            from '../../../play/play-hud.class';
 import { ApiService }         from '../../../services/api.service';
 import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
@@ -22,21 +24,19 @@ import { BlockerInterface }   from '../../../interfaces/interfaces';
 })
 export class PlayComponent implements OnInit {
 	gameId: number = null;
-	game: Game = null;
 	assetCache: AssetCache = new AssetCache();
+
+	game: Game = null;
 	scenario: PlayScenario = null;
 	blockers: BlockerInterface[] = [];
 	mapBackground: string = null;
 	scenarioDatas: ScenarioData[] = [];
 	scenarioObjects: ScenarioObject[] = [];
 	characters: Character[] = [];
+
 	player: PlayPlayer = null;
-	hud = null;
-	defaultVX: number = 3;
-	defaultVY: number = 3;
-	fps: number = 30;
+	hud: PlayHud = null;
 	start: number = 0;
-	frameDuration: number = null;
 
 	constructor(
 		private as: ApiService,
@@ -47,7 +47,6 @@ export class PlayComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.frameDuration = 1000 / this.fps;
 		this.getPlayData();
 	}
 
@@ -158,19 +157,19 @@ export class PlayComponent implements OnInit {
 
 	setup() {
 		const canvas: PlayCanvas = this.play.makeCanvas();
-		this.scenario = this.play.makeScenario(canvas, this.assetCache.get(this.mapBackground));
+		this.scenario = this.play.makeScenario(canvas, this.assetCache.get(this.mapBackground), this.blockers);
 		this.scenario.blockers = this.blockers;
 
 		this.scenarioObjects.forEach(object => {
-			this.scenario.addObject( this.cms.getPlayObject(object, this.scenarioDatas, this.assetCache, this.frameDuration) );
+			this.scenario.addObject( this.cms.getPlayObject(object, this.scenarioDatas, this.assetCache) );
 		});
 
 		this.characters.forEach(character => {
 			if (character.type==0) {
-				this.scenario.addNPC( this.cms.getPlayNPC(character, this.scenarioDatas, this.assetCache, this.frameDuration, this.scenario, this.defaultVX, this.defaultVY) );
+				this.scenario.addNPC( this.cms.getPlayNPC(character, this.scenarioDatas, this.assetCache, this.scenario) );
 			}
 			else {
-				this.scenario.addEnemy( this.cms.getPlayEnemy(character, this.scenarioDatas, this.assetCache, this.frameDuration, this.scenario, this.defaultVX, this.defaultVY) );
+				this.scenario.addEnemy( this.cms.getPlayEnemy(character, this.scenarioDatas, this.assetCache, this.scenario) );
 			}
 		});
 
@@ -191,12 +190,7 @@ export class PlayComponent implements OnInit {
 				speed: this.game.speed,
 				items: this.game.items
 			},
-			{
-				scenario: this.scenario,
-				frameDuration: this.frameDuration,
-				defaultVX: this.defaultVX,
-				defaultVY: this.defaultVY
-			}
+			this.scenario
 		);
 		this.updatePlayerAssets();
 
@@ -255,7 +249,7 @@ export class PlayComponent implements OnInit {
 			this.scenario.renderCharacters();
 			this.hud.render();
 
-			this.start = timestamp + this.frameDuration;
+			this.start = timestamp + Constants.FRAME_DURATION;
 		}
 	}
 }

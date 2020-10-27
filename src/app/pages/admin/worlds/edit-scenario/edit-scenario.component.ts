@@ -4,6 +4,7 @@ import { ApiService }                    from '../../../../services/api.service'
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
 import { PlayService }                   from '../../../../services/play.service';
+import { Constants }                     from '../../../../model/constants';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
 import { Connection }                    from '../../../../model/connection.model';
@@ -41,8 +42,8 @@ export class EditScenarioComponent implements OnInit {
 	showDebug: boolean = false;
 	worldId: number = null;
 	scenarioId: number = null;
-	scenarioWidth: number = 25;
-	scenarioHeight: number = 20;
+	scenarioWidth: number = Constants.SCENARIO_COLS;
+	scenarioHeight: number = Constants.SCENARIO_ROWS;
 	scenario = [];
 	loadedScenario: Scenario = null;
 	loadedCell: ScenarioData = new ScenarioData();

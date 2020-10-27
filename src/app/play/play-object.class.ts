@@ -1,3 +1,4 @@
+import { Constants }      from '../model/constants';
 import { ScenarioObject } from '../model/scenario-object.model';
 import { AssetCache }     from './asset-cache.class';
 
@@ -10,7 +11,6 @@ export class PlayObject {
 	currentFrame: number;
 	interval: number;
 	assets: AssetCache;
-	frameDuration: number;
 	playing: boolean;
 
 	constructor(x: number, y: number, width: number, height: number, object: ScenarioObject) {
@@ -21,7 +21,6 @@ export class PlayObject {
 		this.object = object;
 
 		this.currentFrame = 0;
-		this.frameDuration = 0;
 		this.playing = false;
 		this.assets = null;
 	}
@@ -29,7 +28,7 @@ export class PlayObject {
 	playAnimation() {
 		if (!this.playing) {
 			this.playing = true;
-			this.interval = setInterval(this.updateAnimation.bind(this), this.frameDuration * 2);
+			this.interval = setInterval(this.updateAnimation.bind(this), Constants.FRAME_DURATION * 2);
 		}
 	}
 

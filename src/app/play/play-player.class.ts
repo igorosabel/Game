@@ -12,11 +12,6 @@ export class PlayPlayer extends PlayCharacter {
 			options.speed,
 			options.items
 		);
-		this.setScenario(
-			scenario.scenario,
-			scenario.frameDuration,
-			scenario.defaultVX,
-			scenario.defaultVY
-		);
+		this.scenario = scenario;
 	}
 }
