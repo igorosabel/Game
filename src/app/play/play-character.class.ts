@@ -242,7 +242,7 @@ export class PlayCharacter {
 			let hit = false;
 			let newPos = {
 				pos: {x: newPosX, y: newPosY},
-				size: this.size
+				size: this.blockSize
 			};
 			this.scenario.blockers.forEach(object => {
 				if (this.collission(newPos, object)) {
