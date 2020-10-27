@@ -1,4 +1,4 @@
-import { SimpleEventDispatcher } from 'strongly-typed-events';
+import { EventDispatcher } from 'strongly-typed-events';
 import { Constants }             from '../model/constants';
 import { Item }                  from '../model/item.model';
 import { PlayScenario }          from './play-scenario.class';
@@ -29,6 +29,8 @@ export class PlayCharacter {
 	money: number;
 	speed: number;
 	items;
+	
+	private _onAction = new EventDispatcher<PlayCharacter, number>();
 
 	constructor(
 		x: number,
