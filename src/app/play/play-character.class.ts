@@ -30,7 +30,7 @@ export class PlayCharacter {
 	speed: number;
 	items;
 
-	private _onAction = new EventDispatcher<PlayCharacter, number>();
+	private _onAction = new EventDispatcher<PlayCharacter, Position>();
 
 	constructor(
 		x: number,
@@ -106,7 +106,7 @@ export class PlayCharacter {
 	}
 
 	getNextPos() {
-		const newPos = {x: this.pos.x, y: this.pos.y};
+		const newPos = new Position(this.pos.x, this.pos.y);
 		switch(this.orientation) {
 			case 'up': {
 				newPos.y -= Constants.NEXT_POS;
@@ -198,9 +198,7 @@ export class PlayCharacter {
 
 	doAction() {
 		console.log('doAction');
-		console.log(this.pos);
-		console.log(this.getNextPos());
-		this._onAction.dispatch(this, 1);
+		this._onAction.dispatch(this, this.getNextPos());
 	}
 
 	stopAction() {

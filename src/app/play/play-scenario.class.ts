@@ -29,6 +29,14 @@ export class PlayScenario {
 		return this.canvas.ctx;
 	}
 
+	addPlayer(player: PlayCharacter) {
+		player.onAction.subscribe((c, n) => {
+			console.log(c);
+			console.log(n);
+		})
+		this.player = player;
+	}
+
 	addObject(object: PlayObject) {
 		this.objects.push(object);
 	}

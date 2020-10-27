@@ -188,11 +188,7 @@ export class PlayComponent implements OnInit {
 			this.scenario
 		);
 		player = this.updatePlayerAssets(player);
-		player.onAction.subscribe((c, n) => {
-			console.log(c);
-			console.log(n);
-		})
-		this.scenario.player = player;
+		this.scenario.addPlayer(player);
 
 		this.hud = this.play.makeHud(player.health, player.currentHealth, player.money, canvas, this.assetCache);
 
