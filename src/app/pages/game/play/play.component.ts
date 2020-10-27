@@ -34,7 +34,6 @@ export class PlayComponent implements OnInit {
 	scenarioObjects: ScenarioObject[] = [];
 	characters: Character[] = [];
 
-	player: PlayCharacter = null;
 	hud: PlayHud = null;
 	start: number = 0;
 
@@ -112,8 +111,8 @@ export class PlayComponent implements OnInit {
 		this.assetCache.add('/assets/player/link-up.png');
 	}
 
-	updatePlayerAssets() {
-		this.player.sprites['up'] = [
+	updatePlayerAssets(player: PlayCharacter) {
+		player.sprites['up'] = [
 			this.assetCache.get('/assets/player/link-up.png'),
 			this.assetCache.get('/assets/player/up-walking-1.png'),
 			this.assetCache.get('/assets/player/up-walking-2.png'),
@@ -123,7 +122,7 @@ export class PlayComponent implements OnInit {
 			this.assetCache.get('/assets/player/up-walking-6.png'),
 			this.assetCache.get('/assets/player/up-walking-7.png')
 		];
-		this.player.sprites['down'] = [
+		player.sprites['down'] = [
 			this.assetCache.get('/assets/player/link-down.png'),
 			this.assetCache.get('/assets/player/down-walking-1.png'),
 			this.assetCache.get('/assets/player/down-walking-2.png'),
@@ -133,7 +132,7 @@ export class PlayComponent implements OnInit {
 			this.assetCache.get('/assets/player/down-walking-6.png'),
 			this.assetCache.get('/assets/player/down-walking-7.png')
 		];
-		this.player.sprites['left'] = [
+		player.sprites['left'] = [
 			this.assetCache.get('/assets/player/link-left.png'),
 			this.assetCache.get('/assets/player/left-walking-1.png'),
 			this.assetCache.get('/assets/player/left-walking-2.png'),
@@ -143,7 +142,7 @@ export class PlayComponent implements OnInit {
 			this.assetCache.get('/assets/player/left-walking-6.png'),
 			this.assetCache.get('/assets/player/left-walking-7.png')
 		];
-		this.player.sprites['right'] = [
+		player.sprites['right'] = [
 			this.assetCache.get('/assets/player/link-right.png'),
 			this.assetCache.get('/assets/player/right-walking-1.png'),
 			this.assetCache.get('/assets/player/right-walking-2.png'),
@@ -153,6 +152,8 @@ export class PlayComponent implements OnInit {
 			this.assetCache.get('/assets/player/right-walking-6.png'),
 			this.assetCache.get('/assets/player/right-walking-7.png')
 		];
+
+		return player;
 	}
 
 	setup() {
@@ -168,7 +169,7 @@ export class PlayComponent implements OnInit {
 			this.scenario.addCharacter( this.play.makePlayCharacter(character, this.scenarioDatas, this.scenario, this.assetCache) );
 		});
 
-		this.player = this.play.makePlayer(
+		let player: PlayCharacter = this.play.makePlayer(
 			this.game.positionX,
 			this.game.positionY,
 			1,
@@ -184,13 +185,14 @@ export class PlayComponent implements OnInit {
 			},
 			this.scenario
 		);
-		this.updatePlayerAssets();
+		player = this.updatePlayerAssets(player);
+		this.scenario.player = player;
 
-		this.hud = this.play.makeHud(this.player.health, this.player.currentHealth, this.player.money, canvas, this.assetCache);
+		this.hud = this.play.makeHud(player.health, player.currentHealth, player.money, canvas, this.assetCache);
 
 		// Pinto escenario
 		this.scenario.render();
-		this.player.render(this.scenario.canvas.ctx);
+		this.scenario.renderPlayer();
 		this.scenario.renderObjects();
 		this.scenario.renderCharacters();
 		this.hud.render();
@@ -199,33 +201,33 @@ export class PlayComponent implements OnInit {
 
 		// W - Arriba
 		let up = this.play.keyboard(87);
-		up.press = () => { this.player.up() };
-		up.release = () => { this.player.stopUp() };
+		up.press = () => { player.up() };
+		up.release = () => { player.stopUp() };
 
 		// S - Abajo
 		let down = this.play.keyboard(83);
-		down.press = () => { this.player.down() };
-		down.release = () => { this.player.stopDown() };
+		down.press = () => { player.down() };
+		down.release = () => { player.stopDown() };
 
 		// D - Derecha
 		let right = this.play.keyboard(68);
-		right.press = () => { this.player.right() };
-		right.release = () => { this.player.stopRight() };
+		right.press = () => { player.right() };
+		right.release = () => { player.stopRight() };
 
 		// A - Izquierda
 		let left = this.play.keyboard(65);
-		left.press = () => { this.player.left() };
-		left.release = () => { this.player.stopLeft() };
+		left.press = () => { player.left() };
+		left.release = () => { player.stopLeft() };
 
 		// E - Acción
 		let doAction = this.play.keyboard(69);
-		doAction.press = () => { this.player.doAction() };
-		doAction.release = () => { this.player.stopAction() };
+		doAction.press = () => { player.doAction() };
+		doAction.release = () => { player.stopAction() };
 
 		// Espacio - Golpe
 		let hit = this.play.keyboard(32);
-		hit.press = () => { this.player.hit() };
-		hit.release = () => { this.player.stopHit() };
+		hit.press = () => { player.hit() };
+		hit.release = () => { player.stopHit() };
 
 		// Bucle del juego
 		this.gameLoop();
@@ -235,8 +237,8 @@ export class PlayComponent implements OnInit {
 		requestAnimationFrame(this.gameLoop.bind(this));
 		if (timestamp >= this.start) {
 			this.scenario.render();
-			this.player.move();
-			this.player.render(this.scenario.canvas.ctx);
+			this.scenario.player.move();
+			this.scenario.renderPlayer();
 			this.scenario.renderObjects();
 			this.scenario.renderCharacters();
 			this.hud.render();

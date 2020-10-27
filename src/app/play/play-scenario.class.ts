@@ -8,6 +8,7 @@ export class PlayScenario {
 	debug: boolean;
 	canvas: PlayCanvas;
 	mapBackground;
+	player: PlayCharacter;
 	objects: PlayObject[];
 	characters: PlayCharacter[];
 	blockers: BlockerInterface[];
@@ -19,6 +20,7 @@ export class PlayScenario {
 
 		// Inicializo objetos y personajes
 		this.blockers = blockers;
+		this.player = null;
 		this.objects = [];
 		this.characters = [];
 	}
@@ -37,6 +39,10 @@ export class PlayScenario {
 
 	render() {
 		this.canvas.ctx.drawImage(this.mapBackground, 0, 0, Constants.SCENARIO_WIDTH, Constants.SCENARIO_HEIGHT);
+	}
+
+	renderPlayer() {
+		this.player.render(this.canvas.ctx);
 	}
 
 	renderObjects() {
