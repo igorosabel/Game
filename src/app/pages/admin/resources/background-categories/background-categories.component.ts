@@ -2,6 +2,7 @@ import { Component, OnInit }  from '@angular/core';
 import { ApiService }         from '../../../../services/api.service';
 import { CommonService }      from '../../../../services/common.service';
 import { ClassMapperService } from '../../../../services/class-mapper.service';
+import { PlayService }        from '../../../../services/play.service';
 import { BackgroundCategory } from '../../../../model/background-category.model';
 
 @Component({
@@ -16,13 +17,21 @@ export class BackgroundCategoriesComponent implements OnInit {
 	showDetail: boolean = false;
 	backgroundCategoryDetailHeader: string = '';
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(
+		private as: ApiService,
+		private cs: CommonService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.message = 'Cargando...';
 		this.loadBackgroundCategories();
+
+		let esc = this.play.keyboard(27);
+		esc.press = () => { this.showAddBackgroundCategory() };
 	}
-	
+
 	loadBackgroundCategories() {
 		this.message = 'Cargando...';
 		this.as.getBackgroundCategories().subscribe(result => {
@@ -52,7 +61,7 @@ export class BackgroundCategoriesComponent implements OnInit {
 			this.showDetail = false;
 		}
 	}
-	
+
 	saveBackgroundCategory() {
 		let validate = true;
 		if (this.loadedBackgroundCategory.name=='') {

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Tag } from '../../../../model/tag.model';
-import { World } from '../../../../model/world.model';
-import { Asset } from '../../../../model/asset.model';
-import { ApiService } from '../../../../services/api.service';
-import { CommonService } from '../../../../services/common.service';
+import { Component, OnInit }  from '@angular/core';
+import { Tag }                from '../../../../model/tag.model';
+import { World }              from '../../../../model/world.model';
+import { Asset }              from '../../../../model/asset.model';
+import { ApiService }         from '../../../../services/api.service';
+import { CommonService }      from '../../../../services/common.service';
+import { PlayService }        from '../../../../services/play.service';
 import { ClassMapperService } from '../../../../services/class-mapper.service';
 
 @Component({
@@ -26,12 +27,20 @@ export class AssetsComponent implements OnInit {
 	loadingFile: boolean = false;
 	savingAsset: boolean = false;
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(
+		private as: ApiService,
+		private cs: CommonService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.loadTags();
 		this.loadWorlds();
 		this.loadAssets();
+
+		let esc = this.play.keyboard(27);
+		esc.press = () => { this.showAddAsset() };
 	}
 
 	loadTags() {

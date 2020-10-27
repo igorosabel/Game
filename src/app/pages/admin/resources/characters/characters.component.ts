@@ -5,6 +5,7 @@ import { Narrative }                     from '../../../../model/narrative.model
 import { ApiService }                    from '../../../../services/api.service';
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
+import { PlayService }                   from '../../../../services/play.service';
 import { AssetInterface, ItemInterface } from '../../../../interfaces/interfaces';
 import { AssetPickerComponent }          from '../../../../components/asset-picker/asset-picker.component';
 import { ItemPickerComponent }           from '../../../../components/item-picker/item-picker.component';
@@ -52,10 +53,18 @@ export class CharactersComponent implements OnInit {
 		right: null
 	};
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(
+		private as: ApiService,
+		private cs: CommonService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.loadCharacters();
+
+		let esc = this.play.keyboard(27);
+		esc.press = () => { this.showAddCharacter() };
 	}
 
 	loadCharacters() {
@@ -375,7 +384,9 @@ export class CharactersComponent implements OnInit {
 			character.id,
 			character.name,
 			character.width,
+			character.blockWidth,
 			character.height,
+			character.blockHeight,
 			character.fixedPosition,
 			character.idAssetUp,
 			(character.assetUpUrl!=null) ? character.assetUpUrl : '/assets/no-asset.svg',

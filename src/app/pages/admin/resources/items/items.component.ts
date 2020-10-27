@@ -4,6 +4,7 @@ import { ItemFrame }                    from '../../../../model/item-frame.model
 import { ApiService }                   from '../../../../services/api.service';
 import { CommonService }                from '../../../../services/common.service';
 import { ClassMapperService }           from '../../../../services/class-mapper.service';
+import { PlayService }                  from '../../../../services/play.service';
 import { AssetInterface }               from '../../../../interfaces/interfaces';
 import { AssetPickerComponent }         from '../../../../components/asset-picker/asset-picker.component';
 
@@ -42,10 +43,18 @@ export class ItemsComponent implements OnInit {
 	animationInd: number = -1;
 	animationTimer: number = null;
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(
+		private as: ApiService,
+		private cs: CommonService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.loadItems();
+
+		let esc = this.play.keyboard(27);
+		esc.press = () => { this.showAddItem() };
 	}
 
 	loadItems() {

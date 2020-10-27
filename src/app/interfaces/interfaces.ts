@@ -249,7 +249,9 @@ export interface CharacterInterface {
 	id: number;
 	name: string;
 	width: number;
+	blockWidth: number;
 	height: number;
+	blockHeight: number;
 	fixedPosition: boolean;
 	idAssetUp: number;
 	assetUpUrl: string;
@@ -301,7 +303,9 @@ export interface ScenarioObjectInterface {
 	idAsset: number;
 	assetUrl: string;
 	width: number;
+	blockWidth: number;
 	height: number;
+	blockHeight: number;
 	crossable: boolean;
 	activable: boolean;
 	idAssetActive: number;

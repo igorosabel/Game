@@ -2,6 +2,7 @@ import { Component, OnInit }             from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
 import { ApiService }                    from '../../../../services/api.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
+import { PlayService }                   from '../../../../services/play.service';
 import { Scenario }                      from '../../../../model/scenario.model';
 
 @Component({
@@ -17,12 +18,20 @@ export class ScenariosComponent implements OnInit {
 	showDetail: boolean = false;
 	scenarioDetailHeader: string = '';
 
-	constructor(private activatedRoute: ActivatedRoute, private as: ApiService, private cms: ClassMapperService) {}
+	constructor(
+		private activatedRoute: ActivatedRoute,
+		private as: ApiService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((params: Params) => {
 			this.worldId = params.id_world;
 			this.loadScenarios();
+
+			let esc = this.play.keyboard(27);
+			esc.press = () => { this.showAddScenario() };
 		});
 	}
 
@@ -38,7 +47,7 @@ export class ScenariosComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	resetLoadedScenario() {
 		this.loadedScenario = new Scenario();
 		this.loadedScenario.idWorld = this.worldId;
@@ -56,7 +65,7 @@ export class ScenariosComponent implements OnInit {
 			this.showDetail = false;
 		}
 	}
-	
+
 	saveScenario() {
 		let validate = true;
 		if (this.loadedScenario.name=='') {

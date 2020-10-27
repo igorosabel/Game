@@ -7,6 +7,7 @@ import { ScenarioObjectDrop }            from '../../../../model/scenario-object
 import { ApiService }                    from '../../../../services/api.service';
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
+import { PlayService }                   from '../../../../services/play.service';
 import { AssetInterface, ItemInterface } from '../../../../interfaces/interfaces';
 import { AssetPickerComponent }          from '../../../../components/asset-picker/asset-picker.component';
 import { ItemPickerComponent }           from '../../../../components/item-picker/item-picker.component';
@@ -41,11 +42,19 @@ export class ScenarioObjectsComponent implements OnInit {
 	@ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
 	@ViewChild('itemPicker', { static: true }) itemPicker: ItemPickerComponent;
 
-	constructor(private as: ApiService, private cs: CommonService, private cms: ClassMapperService) {}
+	constructor(
+		private as: ApiService,
+		private cs: CommonService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.loadWorlds();
 		this.loadScenarioObjects();
+
+		let esc = this.play.keyboard(27);
+		esc.press = () => { this.showAddScenarioObject() };
 	}
 
 	loadWorlds() {
@@ -337,7 +346,9 @@ export class ScenarioObjectsComponent implements OnInit {
 			scenarioObject.idAsset,
 			scenarioObject.assetUrl,
 			scenarioObject.width,
+			scenarioObject.blockWidth,
 			scenarioObject.height,
+			scenarioObject.blockHeight,
 			scenarioObject.crossable,
 			scenarioObject.activable,
 			scenarioObject.idAssetActive,

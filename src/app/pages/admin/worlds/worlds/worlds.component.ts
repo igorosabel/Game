@@ -1,6 +1,7 @@
 import { Component, OnInit }  from '@angular/core';
 import { ApiService }         from '../../../../services/api.service';
 import { ClassMapperService } from '../../../../services/class-mapper.service';
+import { PlayService }        from '../../../../services/play.service';
 import { World }              from '../../../../model/world.model';
 
 @Component({
@@ -15,13 +16,20 @@ export class WorldsComponent implements OnInit {
 	showDetail: boolean = false;
 	worldDetailHeader: string = '';
 
-	constructor(private as: ApiService, private cms: ClassMapperService) {}
+	constructor(
+		private as: ApiService,
+		private cms: ClassMapperService,
+		private play: PlayService
+	) {}
 
 	ngOnInit(): void {
 		this.message = 'Cargando...';
 		this.loadWorlds();
+
+		let esc = this.play.keyboard(27);
+		esc.press = () => { this.showAddWorld() };
 	}
-	
+
 	loadWorlds() {
 		this.message = 'Cargando...';
 		this.as.getWorlds().subscribe(result => {
@@ -51,7 +59,7 @@ export class WorldsComponent implements OnInit {
 			this.showDetail = false;
 		}
 	}
-	
+
 	saveWorld() {
 		let validate = true;
 		if (this.loadedWorld.name=='') {
