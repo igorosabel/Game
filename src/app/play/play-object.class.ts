@@ -3,10 +3,8 @@ import { ScenarioObject } from '../model/scenario-object.model';
 import { AssetCache }     from './asset-cache.class';
 
 export class PlayObject {
-	x: number;
-	y: number;
-	width: number;
-	height: number;
+	pos;
+	size;
 	object: ScenarioObject;
 	currentFrame: number;
 	interval: number;
@@ -14,10 +12,14 @@ export class PlayObject {
 	playing: boolean;
 
 	constructor(x: number, y: number, width: number, height: number, object: ScenarioObject) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.pos = {
+			x: x * Constants.TILE_WIDTH,
+			y: (y * Constants.TILE_HEIGHT) - ((height-1) * Constants.TILE_HEIGHT)
+		};
+		this.size = {
+			width: width * Constants.TILE_WIDTH,
+			height: height * Constants.TILE_HEIGHT
+		};
 		this.object = object;
 
 		this.currentFrame = 0;
@@ -44,13 +46,11 @@ export class PlayObject {
 	render(ctx) {
 		this.playAnimation();
 		const frameImg = this.assets.get(this.object.allFrames[this.currentFrame]);
-		const posX = (this.x * Constants.TILE_WIDTH);
-		const posY = (this.y * Constants.TILE_HEIGHT) - ((this.height-1) * Constants.TILE_HEIGHT);
-		ctx.drawImage(frameImg, posX, posY, (this.width * Constants.TILE_WIDTH), (this.height * Constants.TILE_HEIGHT));
+		ctx.drawImage(frameImg, this.pos.x, this.pos.y, this.size.width, this.size.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';
 			ctx.lineWidth = 1;
-			ctx.strokeRect(posX, posY, (this.width * Constants.TILE_WIDTH), (this.height * Constants.TILE_HEIGHT));
+			ctx.strokeRect(this.pos.x, this.pos.y, this.size.width, this.size.height);
 		}
 	}
 }

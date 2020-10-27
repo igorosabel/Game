@@ -194,9 +194,7 @@ export class PlayComponent implements OnInit {
 
 		// Pinto escenario
 		this.scenario.render();
-		this.scenario.renderPlayer();
-		this.scenario.renderObjects();
-		this.scenario.renderCharacters();
+		this.scenario.renderItems();
 		this.hud.render();
 
 		// Eventos de teclado
@@ -240,9 +238,7 @@ export class PlayComponent implements OnInit {
 		if (timestamp >= this.start) {
 			this.scenario.render();
 			this.scenario.player.move();
-			this.scenario.renderPlayer();
-			this.scenario.renderObjects();
-			this.scenario.renderCharacters();
+			this.scenario.renderItems();
 			this.hud.render();
 
 			this.start = timestamp + Constants.FRAME_DURATION;

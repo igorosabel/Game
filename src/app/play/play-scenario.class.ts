@@ -41,19 +41,15 @@ export class PlayScenario {
 		this.canvas.ctx.drawImage(this.mapBackground, 0, 0, Constants.SCENARIO_WIDTH, Constants.SCENARIO_HEIGHT);
 	}
 
-	renderPlayer() {
-		this.player.render(this.canvas.ctx);
-	}
+	renderItems() {
+		let list = [];
+		list.push(this.player);
+		list = list.concat(this.objects);
+		list = list.concat(this.characters);
+		list.sort((a, b) => a.pos.y - b.pos.y);
 
-	renderObjects() {
-		this.objects.forEach(object => {
-			object.render(this.canvas.ctx);
-		});
-	}
-
-	renderCharacters() {
-		this.characters.forEach(character => {
-			character.render(this.canvas.ctx);
+		list.forEach(item => {
+			item.render(this.canvas.ctx);
 		});
 	}
 }

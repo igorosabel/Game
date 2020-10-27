@@ -1,5 +1,5 @@
 export class Constants {
-	public static DEBUG: boolean = true;
+	public static DEBUG: boolean = false;
 	public static SCENARIO_WIDTH: number = 800;
 	public static SCENARIO_HEIGHT: number = 600;
 	public static SCENARIO_ROWS: number = 20;
