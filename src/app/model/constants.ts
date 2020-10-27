@@ -4,7 +4,7 @@ export class Constants {
 	public static SCENARIO_ROWS: number = 20;
 	public static SCENARIO_COLS: number = 25;
 	public static FPS: number = 30;
-	public static FRAME_DURATION: number = 33.3;
+	public static FRAME_DURATION: number = (1000 / Constants.FPS);
 	public static DEFAULT_VX: number = 3;
 	public static DEFAULT_VY: number = 3;
 }
