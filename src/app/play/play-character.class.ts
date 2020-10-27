@@ -1,4 +1,4 @@
-import { EventDispatcher } from 'strongly-typed-events';
+import { EventDispatcher }       from 'strongly-typed-events';
 import { Constants }             from '../model/constants';
 import { Item }                  from '../model/item.model';
 import { PlayScenario }          from './play-scenario.class';
@@ -29,7 +29,7 @@ export class PlayCharacter {
 	money: number;
 	speed: number;
 	items;
-	
+
 	private _onAction = new EventDispatcher<PlayCharacter, number>();
 
 	constructor(
@@ -104,7 +104,7 @@ export class PlayCharacter {
 			y: this.pos.y + (this.size.height / 2)
 		}
 	}
-	
+
 	getNextPos() {
 		const newPos = {x: this.pos.x, y: this.pos.y};
 		switch(this.orientation) {
@@ -200,10 +200,15 @@ export class PlayCharacter {
 		console.log('doAction');
 		console.log(this.pos);
 		console.log(this.getNextPos());
+		this._onAction.dispatch(this, 1);
 	}
 
 	stopAction() {
 		console.log('stopAction');
+	}
+
+	public get onAction() {
+		return this._onAction.asEvent();
 	}
 
 	hit() {
