@@ -1,8 +1,9 @@
-import { Constants }        from '../model/constants';
-import { Item }             from '../model/item.model';
-import { PlayScenario }     from './play-scenario.class';
-import { AssetCache }       from './asset-cache.class';
-import { BlockerInterface } from '../interfaces/interfaces';
+import { SimpleEventDispatcher } from 'strongly-typed-events';
+import { Constants }             from '../model/constants';
+import { Item }                  from '../model/item.model';
+import { PlayScenario }          from './play-scenario.class';
+import { AssetCache }            from './asset-cache.class';
+import { BlockerInterface }      from '../interfaces/interfaces';
 
 export class PlayCharacter {
 	orientation: string;
