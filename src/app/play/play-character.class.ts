@@ -130,6 +130,14 @@ export class PlayCharacter {
 		}
 		return newPos;
 	}
+	
+	stop() {
+		this.moving.up = false;
+		this.moving.down = false;
+		this.moving.right = false;
+		this.moving.left = false;
+		this.stopAnimation();
+	}
 
 	up() {
 		if (!this.moving.up) {

@@ -56,11 +56,13 @@ export class PlayScenario {
 		player.onAction.subscribe((c, pos) => {
 			const character = this.findOnPosition(pos, this.characters);
 			if (character!==null) {
+				this.player.stop();
 				this._onCharacterAction.dispatch(this, character);
 			}
 			else {
 				const object = this.findOnPosition(pos, this.objects);
 				if (object!==null) {
+					this.player.stop();
 					this._onObjectAction.dispatch(this, object);
 				}
 			}
