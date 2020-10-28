@@ -1,3 +1,10 @@
 <game-header title="The Game" [rightUrl]="['/game','logout']" rightTitle="Salir"></game-header>
 
 <div class="game"></div>
+
+<div class="narratives" *ngIf="showNarratives">
+	<div class="narratives-box">
+		<div class="narrative-character-name">{{currentCharacter.name}}</div>
+		<div class="narrative-dialog">{{currentCharacter.narratives[currentNarrative].dialog}}</div>
+	</div>
+</div>

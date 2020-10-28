@@ -74,6 +74,7 @@ export class PlayService {
 		for (let frame of character.allFramesRight) {
 			playCharacter.sprites['right'].push(assets.get(frame));
 		}
+		playCharacter.narratives = character.narratives;
 
 		return playCharacter;
 	}

@@ -1,8 +1,9 @@
-import { Constants }     from '../model/constants';
-import { Position }      from '../model/position.model';
-import { PlayCanvas }    from './play-canvas.class';
-import { PlayObject }    from './play-object.class';
-import { PlayCharacter } from './play-character.class';
+import { EventDispatcher } from 'strongly-typed-events';
+import { Constants }       from '../model/constants';
+import { Position }        from '../model/position.model';
+import { PlayCanvas }      from './play-canvas.class';
+import { PlayObject }      from './play-object.class';
+import { PlayCharacter }   from './play-character.class';
 
 export class PlayScenario {
 	debug: boolean;
@@ -12,6 +13,9 @@ export class PlayScenario {
 	objects: PlayObject[];
 	characters: PlayCharacter[];
 	blockers: Position[];
+	
+	private _onCharacterAction = new EventDispatcher<PlayScenario, PlayCharacter>();
+	private _onObjectAction = new EventDispatcher<PlayScenario, PlayObject>();
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
 		// Creo el canvas
@@ -28,13 +32,49 @@ export class PlayScenario {
 	get ctx() {
 		return this.canvas.ctx;
 	}
+	
+	findOnPosition(pos: Position, list) {
+		for (let item of list) {
+			let startPosX = (item.pos.x - Constants.NEXT_POS);
+			let endPosX = startPosX + item.size.width + Constants.NEXT_POS;
+			let startPosY = (item.pos.y - Constants.NEXT_POS);
+			let endPosY = startPosY + item.size.height + Constants.NEXT_POS;
+			if (
+				(pos.x > startPosX) &&
+				(pos.x < endPosX) &&
+				(pos.y > startPosY) &&
+				(pos.y < endPosY)
+			) {
+				return item;
+			}
+		}
+
+		return null;
+	}
 
 	addPlayer(player: PlayCharacter) {
-		player.onAction.subscribe((c, n) => {
-			console.log(c);
-			console.log(n);
-		})
+		player.onAction.subscribe((c, pos) => {
+			const character = this.findOnPosition(pos, this.characters);
+			if (character!==null) {
+				this._onCharacterAction.dispatch(this, character);
+			}
+			else {
+				const object = this.findOnPosition(pos, this.objects);
+				if (object!==null) {
+					this._onObjectAction.dispatch(this, object);
+				}
+			}
+			
+		});
 		this.player = player;
+	}
+	
+	public get onCharacterAction() {
+		return this._onCharacterAction.asEvent();
+	}
+	
+	public get onObjectAction() {
+		return this._onObjectAction.asEvent();
 	}
 
 	addObject(object: PlayObject) {

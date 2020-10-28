@@ -2,6 +2,7 @@ import { EventDispatcher } from 'strongly-typed-events';
 import { Constants }       from '../model/constants';
 import { Item }            from '../model/item.model';
 import { Position }        from '../model/position.model';
+import { Narrative }       from '../model/narrative.model';
 import { PlayScenario }    from './play-scenario.class';
 import { AssetCache }      from './asset-cache.class';
 
@@ -29,6 +30,7 @@ export class PlayCharacter {
 	money: number;
 	speed: number;
 	items;
+	narratives: Narrative[] = [];
 
 	private _onAction = new EventDispatcher<PlayCharacter, Position>();
 
@@ -106,22 +108,23 @@ export class PlayCharacter {
 	}
 
 	getNextPos() {
-		const newPos = new Position(this.pos.x, this.pos.y);
+		this.updateCenter();
+		const newPos = new Position(this.center.x, this.center.y);
 		switch(this.orientation) {
 			case 'up': {
-				newPos.y -= Constants.NEXT_POS;
+				newPos.y -= this.size.height;
 			}
 			break;
 			case 'down': {
-				newPos.y += Constants.NEXT_POS;
+				newPos.y += this.size.height;
 			}
 			break;
 			case 'left': {
-				newPos.x -= Constants.NEXT_POS;
+				newPos.x -= this.size.width;
 			}
 			break;
 			case 'right': {
-				newPos.x += Constants.NEXT_POS;
+				newPos.x += this.size.width;
 			}
 			break;
 		}
@@ -197,12 +200,11 @@ export class PlayCharacter {
 	}
 
 	doAction() {
-		console.log('doAction');
 		this._onAction.dispatch(this, this.getNextPos());
 	}
 
 	stopAction() {
-		console.log('stopAction');
+
 	}
 
 	public get onAction() {

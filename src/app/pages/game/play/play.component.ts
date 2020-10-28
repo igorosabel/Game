@@ -37,6 +37,10 @@ export class PlayComponent implements OnInit {
 	hud: PlayHud = null;
 	start: number = 0;
 
+	showNarratives: boolean = false;
+	currentCharacter: PlayCharacter = null;
+	currentNarrative: number = 0;
+
 	constructor(
 		private as: ApiService,
 		private cms: ClassMapperService,
@@ -189,6 +193,10 @@ export class PlayComponent implements OnInit {
 		);
 		player = this.updatePlayerAssets(player);
 		this.scenario.addPlayer(player);
+		
+		// Eventos de personajes y objetos
+		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
+		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 
 		this.hud = this.play.makeHud(player.health, player.currentHealth, player.money, canvas, this.assetCache);
 
@@ -201,33 +209,73 @@ export class PlayComponent implements OnInit {
 
 		// W - Arriba
 		let up = this.play.keyboard(87);
-		up.press = () => { player.up() };
-		up.release = () => { player.stopUp() };
+		up.press = () => {
+			if (!this.showNarratives) { player.up(); }
+		};
+		up.release = () => {
+			if (!this.showNarratives) { player.stopUp(); }
+		};
 
 		// S - Abajo
 		let down = this.play.keyboard(83);
-		down.press = () => { player.down() };
-		down.release = () => { player.stopDown() };
+		down.press = () => {
+			if (!this.showNarratives) { player.down(); }
+		};
+		down.release = () => {
+			if (!this.showNarratives) { player.stopDown(); }
+		};
 
 		// D - Derecha
 		let right = this.play.keyboard(68);
-		right.press = () => { player.right() };
-		right.release = () => { player.stopRight() };
+		right.press = () => {
+			if (!this.showNarratives) { player.right(); }
+		};
+		right.release = () => {
+			if (!this.showNarratives) { player.stopRight(); }
+		};
 
 		// A - Izquierda
 		let left = this.play.keyboard(65);
-		left.press = () => { player.left() };
-		left.release = () => { player.stopLeft() };
+		left.press = () => {
+			if (!this.showNarratives) { player.left(); }
+		};
+		left.release = () => {
+			if (!this.showNarratives) { player.stopLeft(); }
+		};
 
 		// E - Acción
 		let doAction = this.play.keyboard(69);
-		doAction.press = () => { player.doAction() };
-		doAction.release = () => { player.stopAction() };
+		doAction.press = () => {
+			if (!this.showNarratives) {
+				player.doAction();
+			}
+			else {
+				this.nextNarrative();
+			}
+		};
+		doAction.release = () => {
+			if (!this.showNarratives) { player.stopAction(); }
+		};
 
 		// Espacio - Golpe
 		let hit = this.play.keyboard(32);
-		hit.press = () => { player.hit() };
-		hit.release = () => { player.stopHit() };
+		hit.press = () => {
+			if (!this.showNarratives) {
+				player.hit();
+			}
+			else {
+				this.nextNarrative();
+			}
+		};
+		hit.release = () => {
+			if (!this.showNarratives) { player.stopHit(); }
+		};
+		
+		// Escape - Cancelar
+		let esc = this.play.keyboard(27);
+		esc.press = () => {
+			this.showNarratives = false;
+		};
 
 		// Bucle del juego
 		this.gameLoop();
@@ -243,5 +291,24 @@ export class PlayComponent implements OnInit {
 
 			this.start = timestamp + Constants.FRAME_DURATION;
 		}
+	}
+
+	openNarratives(character: PlayCharacter) {
+		this.showNarratives = true;
+		this.currentNarrative = 0;
+		this.currentCharacter = character;
+	}
+
+	nextNarrative() {
+		if (this.currentCharacter.narratives.length==(this.currentNarrative+1)) {
+			this.showNarratives = false;
+		}
+		else {
+			this.currentNarrative++;
+		}
+	}
+
+	activateObject(object: PlayObject) {
+		console.log(object);
 	}
 }
