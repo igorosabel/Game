@@ -372,7 +372,7 @@ export class PlayComponent implements OnInit {
 			return;
 		}
 		this.travelling = true;
-		this.as.travel(this.portalWorld.toInterface()).subscribe(result => {
+		this.as.travel(this.gameId, world.id, world.wordOne, world.wordTwo, world.wordThree).subscribe(result => {
 			
 		});
 	}
