@@ -67,6 +67,10 @@ export class ApiService {
 	getUnlockedWorlds(id: number): Observable<WorldResult> {
 		return this.http.post<WorldResult>(this.url + 'api/get-unlocked-worlds', {id});
 	}
+	
+	travel(world: WorldInterface): Observable<StatusIdResult> {
+		return this.http.post<StatusIdResult>(this.url + 'api/travel', world);
+	}
 
 	adminLogin(data: LoginData): Observable<LoginResult> {
 		return this.http.post<LoginResult>(this.url + 'admin/login', data);

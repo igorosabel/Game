@@ -38,6 +38,16 @@ export class PlayComponent implements OnInit {
 
 	hud: PlayHud = null;
 	start: number = 0;
+	
+	keyboard = {
+		down: null,
+		up: null,
+		left: null,
+		right: null,
+		doAction: null,
+		hit: null,
+		esc: null
+	};
 
 	showNarratives: boolean = false;
 	currentCharacter: PlayCharacter = null;
@@ -88,7 +98,6 @@ export class PlayComponent implements OnInit {
 
 			this.as.getUnlockedWorlds(this.gameId).subscribe(result => {
 				this.unlockedWorlds = this.cms.getWorlds(result.list);
-				console.log(this.unlockedWorlds);
 			});
 		});
 	}
@@ -239,44 +248,44 @@ export class PlayComponent implements OnInit {
 
 	setupKeyboard() {
 		// W - Arriba
-		let up = this.play.keyboard(87);
-		up.press = () => {
+		this.keyboard.up = this.play.keyboard(87);
+		this.keyboard.up.press = () => {
 			if (!this.showNarratives) { this.scenario.player.up(); }
 		};
-		up.release = () => {
+		this.keyboard.up.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopUp(); }
 		};
 
 		// S - Abajo
-		let down = this.play.keyboard(83);
-		down.press = () => {
+		this.keyboard.down = this.play.keyboard(83);
+		this.keyboard.down.press = () => {
 			if (!this.showNarratives) { this.scenario.player.down(); }
 		};
-		down.release = () => {
+		this.keyboard.down.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopDown(); }
 		};
 
 		// D - Derecha
-		let right = this.play.keyboard(68);
-		right.press = () => {
+		this.keyboard.right = this.play.keyboard(68);
+		this.keyboard.right.press = () => {
 			if (!this.showNarratives) { this.scenario.player.right(); }
 		};
-		right.release = () => {
+		this.keyboard.right.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopRight(); }
 		};
 
 		// A - Izquierda
-		let left = this.play.keyboard(65);
-		left.press = () => {
+		this.keyboard.left = this.play.keyboard(65);
+		this.keyboard.left.press = () => {
 			if (!this.showNarratives) { this.scenario.player.left(); }
 		};
-		left.release = () => {
+		this.keyboard.left.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopLeft(); }
 		};
 
 		// E - Acción
-		let doAction = this.play.keyboard(69);
-		doAction.press = () => {
+		this.keyboard.doAction = this.play.keyboard(69);
+		this.keyboard.doAction.press = () => {
 			if (!this.showNarratives) {
 				this.scenario.player.doAction();
 			}
@@ -284,13 +293,13 @@ export class PlayComponent implements OnInit {
 				this.nextNarrative();
 			}
 		};
-		doAction.release = () => {
+		this.keyboard.doAction.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopAction(); }
 		};
 
 		// Espacio - Golpe
-		let hit = this.play.keyboard(32);
-		hit.press = () => {
+		this.keyboard.hit = this.play.keyboard(32);
+		this.keyboard.hit.press = () => {
 			if (!this.showNarratives) {
 				this.scenario.player.hit();
 			}
@@ -298,13 +307,13 @@ export class PlayComponent implements OnInit {
 				this.nextNarrative();
 			}
 		};
-		hit.release = () => {
+		this.keyboard.hit.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopHit(); }
 		};
 
 		// Escape - Cancelar
-		let esc = this.play.keyboard(27);
-		esc.press = () => {
+		this.keyboard.esc = this.play.keyboard(27);
+		this.keyboard.esc.press = () => {
 			this.showNarratives = false;
 			this.showPortal = false;
 		};
@@ -326,7 +335,6 @@ export class PlayComponent implements OnInit {
 	}
 
 	activateObject(playObject: PlayObject) {
-		console.log(playObject);
 		if (playObject.object.activable) {
 			if (playObject.object.activeTrigger==1 && playObject.object.activeTriggerCustom===null) {
 				this.portalWorld = new World();
@@ -336,7 +344,11 @@ export class PlayComponent implements OnInit {
 	}
 
 	portalActivate() {
-		if (this.portalWorld.wordOne==null || this.portalWorld.wordTwo==null || this.portalWorld.wordThree==null) {
+		if (
+			(this.portalWorld.wordOne==null || this.portalWorld.wordOne=='') ||
+			(this.portalWorld.wordTwo==null || this.portalWorld.wordTwo=='') ||
+			(this.portalWorld.wordThree==null || this.portalWorld.wordThree=='')
+		) {
 			alert('Tienes que introducir las tres palabras del mundo al que quieres viajar.');
 			return;
 		}
@@ -351,6 +363,17 @@ export class PlayComponent implements OnInit {
 			return;
 		}
 
-
+		this.portalTravel(this.portalWorld);
+	}
+	
+	portalTravel(world: World) {
+		if (world.id===this.worldId){
+			console.log('return');
+			return;
+		}
+		this.travelling = true;
+		this.as.travel(this.portalWorld.toInterface()).subscribe(result => {
+			
+		});
 	}
 }

@@ -95,6 +95,7 @@ export class PlayService {
 		};
 
 		key.downHandler = function(event) {
+			if (event.target.nodeName.toLowerCase()=='input' && event.keyCode!=27) { return; }
 			if (event.keyCode === key.code) {
 				if (key.isUp && key.press) { key.press(); }
 				key.isDown = true;

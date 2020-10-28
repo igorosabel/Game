@@ -42,7 +42,7 @@
 				</div>
 			</div>
 			<div class="portal-list">
-				<div class="item" *ngFor="let world of unlockedWorlds" [ngClass]="{'current': world.id==worldId}">
+				<div class="item" *ngFor="let world of unlockedWorlds" [ngClass]="{'current': world.id==worldId}" (click)="portalTravel(world)">
 					<div class="header">{{world.name}}</div>
 					<div class="description">{{world.description}}</div>
 					<div class="word-list">
