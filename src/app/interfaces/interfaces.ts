@@ -126,6 +126,17 @@ export interface ConnectionInterface {
 	orientation: string;
 }
 
+export interface ConnectionResult {
+	status: string;
+	list: ConnectionInterface[];
+}
+
+export interface PlayConnectionInterface {
+	to: number;
+	x: number;
+	y: number;
+}
+
 export interface ScenarioDataResult {
 	status: string;
 	scenario: ScenarioInterface;

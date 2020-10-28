@@ -20,6 +20,7 @@ import {
 	ScenarioDataResult,
 	ScenarioDataInterface,
 	ConnectionInterface,
+	ConnectionResult,
 	WorldStartInterface,
 	TagResult,
 	AssetResult,
@@ -67,7 +68,11 @@ export class ApiService {
 	getUnlockedWorlds(id: number): Observable<WorldResult> {
 		return this.http.post<WorldResult>(this.url + 'api/get-unlocked-worlds', {id});
 	}
-	
+
+	getScenarioConnections(id: number): Observable<ConnectionResult> {
+		return this.http.post<ConnectionResult>(this.url + 'api/get-scenario-connections', {id});
+	}
+
 	travel(idGame: number, idWorld: number, wordOne: string, wordTwo: string, wordThree: string): Observable<StatusIdResult> {
 		return this.http.post<StatusIdResult>(this.url + 'api/travel', {idGame, idWorld, wordOne, wordTwo, wordThree});
 	}

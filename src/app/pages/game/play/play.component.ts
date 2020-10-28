@@ -26,6 +26,7 @@ import { PlayService }        from '../../../services/play.service';
 export class PlayComponent implements OnInit {
 	gameId: number = null;
 	worldId: number = null;
+	scenarioId: number = null;
 	assetCache: AssetCache = new AssetCache();
 
 	game: Game = null;
@@ -35,10 +36,16 @@ export class PlayComponent implements OnInit {
 	scenarioDatas: ScenarioData[] = [];
 	scenarioObjects: ScenarioObject[] = [];
 	characters: Character[] = [];
+	connections = {
+		up: null,
+		down: null,
+		left: null,
+		right: null
+	};
 
 	hud: PlayHud = null;
 	start: number = 0;
-	
+
 	keyboard = {
 		down: null,
 		up: null,
@@ -74,6 +81,7 @@ export class PlayComponent implements OnInit {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
 			this.worldId = result.idWorld;
+			this.scenarioId = result.idScenario;
 			this.game = this.cms.getGame(result.game);
 			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
@@ -98,6 +106,12 @@ export class PlayComponent implements OnInit {
 
 			this.as.getUnlockedWorlds(this.gameId).subscribe(result => {
 				this.unlockedWorlds = this.cms.getWorlds(result.list);
+			});
+			this.as.getScenarioConnections(this.scenarioId).subscribe(result => {
+				let connections = this.cms.getConnections(result.list);
+				for (let connection of connections) {
+					this.connections[connection.orientation] = connection;
+				}
 			});
 		});
 	}
@@ -214,6 +228,7 @@ export class PlayComponent implements OnInit {
 			this.scenario
 		);
 		player = this.updatePlayerAssets(player);
+		player.connections = this.connections;
 		this.scenario.addPlayer(player);
 
 		// Eventos de personajes y objetos
@@ -365,7 +380,7 @@ export class PlayComponent implements OnInit {
 
 		this.portalTravel(this.portalWorld);
 	}
-	
+
 	portalTravel(world: World) {
 		if (world.id===this.worldId){
 			console.log('return');
@@ -373,7 +388,12 @@ export class PlayComponent implements OnInit {
 		}
 		this.travelling = true;
 		this.as.travel(this.gameId, world.id, world.wordOne, world.wordTwo, world.wordThree).subscribe(result => {
-			
+			if  (result.status=='ok') {
+
+			}
+			else {
+				alert('¡No existe ningún mundo con las palabras indicadas!');
+			}
 		});
 	}
 }

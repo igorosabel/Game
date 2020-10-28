@@ -5,6 +5,7 @@ import { Position }        from '../model/position.model';
 import { Narrative }       from '../model/narrative.model';
 import { PlayScenario }    from './play-scenario.class';
 import { AssetCache }      from './asset-cache.class';
+import { PlayConnection }  from './play-connection.class';
 
 export class PlayCharacter {
 	orientation: string;
@@ -31,8 +32,10 @@ export class PlayCharacter {
 	speed: number;
 	items;
 	narratives: Narrative[] = [];
+	connections;
 
 	private _onAction = new EventDispatcher<PlayCharacter, Position>();
+	private _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
 
 	constructor(
 		x: number,
@@ -109,7 +112,7 @@ export class PlayCharacter {
 
 	getNextPos() {
 		this.updateCenter();
-		const newPos = new Position(this.center.x, this.center.y);
+		const newPos: Position = new Position(this.center.x, this.center.y);
 		switch(this.orientation) {
 			case 'up': {
 				newPos.y -= this.size.height;
@@ -130,7 +133,16 @@ export class PlayCharacter {
 		}
 		return newPos;
 	}
-	
+
+	getNextTile() {
+		const newPos: Position = this.getNextPos();
+		const nextTile: Position = new Position(
+			Math.floor(newPos.x / Constants.TILE_WIDTH),
+			Math.floor(newPos.y / Constants.TILE_HEIGHT)
+		);
+		return nextTile;
+	}
+
 	stop() {
 		this.moving.up = false;
 		this.moving.down = false;
@@ -269,6 +281,10 @@ export class PlayCharacter {
 		return false;
 	}
 
+	public get onConnection() {
+		return this._onConnection.asEvent();
+	}
+
 	move() {
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
 			let newPosX = this.pos.x + this.vx;
@@ -276,6 +292,34 @@ export class PlayCharacter {
 
 			// Colisión con los bordes de la pantalla
 			if (newPosX<0 || newPosY<0 || (newPosX + this.size.width) > Constants.SCENARIO_WIDTH || (newPosY + this.size.height) > Constants.SCENARIO_HEIGHT) {
+				const next = this.getNextTile();
+				const playConnection = new PlayConnection();
+				// Izquierda
+				if (next.x < 0 && this.connections.left!==null) {
+					playConnection.to = this.connections.left.to;
+					playConnection.x = 0;
+					playConnection.y = next.y;
+				}
+				// Arriba
+				if (next.y < 0 && this.connections.up!==null) {
+					playConnection.to = this.connections.up.to;
+					playConnection.x = next.x;
+					playConnection.y = 0;
+				}
+				// Derecha
+				if (next.x > Constants.SCENARIO_COLS && this.connections.right!==null) {
+					playConnection.to = this.connections.right.to;
+					playConnection.x = Constants.SCENARIO_COLS;
+					playConnection.y = next.y;
+				}
+				// Abajo
+				if (next.y > Constants.SCENARIO_ROWS && this.connections.down!==null) {
+					console.log('down');
+					playConnection.to = this.connections.down.to;
+					playConnection.x = next.x;
+					playConnection.y = Constants.SCENARIO_HEIGHT;
+				}
+				this._onConnection.dispatch(this, playConnection);
 				return false;
 			}
 
