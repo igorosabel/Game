@@ -59,7 +59,7 @@
 					opacity: 1;
 					animation: animatedMore 2s linear infinite;
 				}
-				
+
 				@keyframes animatedMore {
 					0% { opacity: 1;}
 					50% { opacity: 0; }
@@ -92,35 +92,105 @@
 			padding: 16px;
 			font-size: 2em;
 			border-bottom: 1px solid #ccc;
+			height: 80px;
+			display: flex;
+			align-items: center;
 		}
-		
+
 		.portal-body {
+			display: flex;
+			flex-direction: row;
+			height: calc(100% - 80px);
+
 			.portal-words {
+				flex: 1;
+				padding: 16px;
+
 				.portal-description {
-				
+					margin-bottom: 16px;
+					font-size: 1.2em;
 				}
 
 				.portal-word {
+					display: flex;
+					flex-direction: row;
+					margin-bottom: 8px;
+
 					label {
-					
+						display: flex;
+						width: 180px;
+						align-items: center;
 					}
 
 					input {
-					
+						width: 50%;
 					}
 				}
 
 				.portal-go {
+					display: flex;
+					justify-content: center;
+					height: 80px;
+					align-items: center;
+
 					button {
+						font-family: GraphicPixel,Helvetica,sans-serif;
+						cursor: pointer;
+						border: 1px solid #ccc;
+						border-radius: 4px;
+						background-color: #fff;
+						display: block;
+						padding: 0 16px;
+						margin-bottom: 16px;
+						font-size: 1.2em;
+						color: #000;
+						height: 50px;
+						outline: 0;
+
 						&:hover {
-						
+							box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
 						}
 					}
 				}
 			}
 
 			.portal-list {
-			
+				width: 200px;
+				height: 100%;
+				overflow-y: scroll;
+				border-left: 1px solid #ccc;
+
+				.item {
+					border-bottom: 1px solid #ccc;
+					padding: 16px;
+					cursor: pointer;
+
+					.header {
+						font-size: 1.2em;
+						margin-bottom: 8px;
+					}
+
+					.description {
+						font-size: 0.8em;
+						margin-bottom: 16px;
+					}
+
+					.word-list {
+						.word {
+							margin-bottom: 8px;
+							color: #444;
+						}
+					}
+
+					&:hover {
+						background-color: #eee;
+					}
+				}
+
+				.current {
+					background-color: #eee;
+					cursor: default;
+				}
 			}
 		}
 	}

@@ -38,11 +38,19 @@
 					<input type="text" [(ngModel)]="portalWorld.wordThree">
 				</div>
 				<div class="portal-go">
-					<button>Viajar</button>
+					<button (click)="portalActivate()">Viajar</button>
 				</div>
 			</div>
 			<div class="portal-list">
-				
+				<div class="item" *ngFor="let world of unlockedWorlds" [ngClass]="{'current': world.id==worldId}">
+					<div class="header">{{world.name}}</div>
+					<div class="description">{{world.description}}</div>
+					<div class="word-list">
+						<div class="word">{{world.wordOne}}</div>
+						<div class="word">{{world.wordTwo}}</div>
+						<div class="word">{{world.wordThree}}</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

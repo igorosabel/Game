@@ -25,6 +25,7 @@ import { PlayService }        from '../../../services/play.service';
 })
 export class PlayComponent implements OnInit {
 	gameId: number = null;
+	worldId: number = null;
 	assetCache: AssetCache = new AssetCache();
 
 	game: Game = null;
@@ -44,6 +45,8 @@ export class PlayComponent implements OnInit {
 
 	showPortal: boolean = false;
 	portalWorld: World = new World();
+	unlockedWorlds: World[] = [];
+	travelling: boolean = false;
 
 	constructor(
 		private as: ApiService,
@@ -60,6 +63,7 @@ export class PlayComponent implements OnInit {
 	getPlayData() {
 		this.gameId = this.dss.getGlobal('idGame');
 		this.as.getPlayData(this.gameId).subscribe(result => {
+			this.worldId = result.idWorld;
 			this.game = this.cms.getGame(result.game);
 			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
@@ -81,6 +85,11 @@ export class PlayComponent implements OnInit {
 			// Characters
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
 			this.assetCache.load().then(() => this.setup());
+
+			this.as.getUnlockedWorlds(this.gameId).subscribe(result => {
+				this.unlockedWorlds = this.cms.getWorlds(result.list);
+				console.log(this.unlockedWorlds);
+			});
 		});
 	}
 
@@ -197,7 +206,7 @@ export class PlayComponent implements OnInit {
 		);
 		player = this.updatePlayerAssets(player);
 		this.scenario.addPlayer(player);
-		
+
 		// Eventos de personajes y objetos
 		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
@@ -292,7 +301,7 @@ export class PlayComponent implements OnInit {
 		hit.release = () => {
 			if (!this.showNarratives) { this.scenario.player.stopHit(); }
 		};
-		
+
 		// Escape - Cancelar
 		let esc = this.play.keyboard(27);
 		esc.press = () => {
@@ -324,5 +333,24 @@ export class PlayComponent implements OnInit {
 				this.showPortal = true;
 			}
 		}
+	}
+
+	portalActivate() {
+		if (this.portalWorld.wordOne==null || this.portalWorld.wordTwo==null || this.portalWorld.wordThree==null) {
+			alert('Tienes que introducir las tres palabras del mundo al que quieres viajar.');
+			return;
+		}
+
+		let currentWorldInd = this.unlockedWorlds.findIndex(x => x.id===this.worldId);
+		if (
+			this.portalWorld.wordOne==this.unlockedWorlds[currentWorldInd].wordOne ||
+			this.portalWorld.wordTwo==this.unlockedWorlds[currentWorldInd].wordTwo ||
+			this.portalWorld.wordThree==this.unlockedWorlds[currentWorldInd].wordThree)
+		{
+			alert('Las palabras introducidas corresponden al mundo en el que te encuentras ahora.');
+			return;
+		}
+
+
 	}
 }

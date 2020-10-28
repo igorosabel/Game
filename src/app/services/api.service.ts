@@ -64,6 +64,10 @@ export class ApiService {
 		return this.http.post<PlayResult>(this.url + 'api/get-play-data', {id});
 	}
 
+	getUnlockedWorlds(id: number): Observable<WorldResult> {
+		return this.http.post<WorldResult>(this.url + 'api/get-unlocked-worlds', {id});
+	}
+
 	adminLogin(data: LoginData): Observable<LoginResult> {
 		return this.http.post<LoginResult>(this.url + 'admin/login', data);
 	}
