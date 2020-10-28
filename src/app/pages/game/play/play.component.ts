@@ -5,6 +5,7 @@ import { ScenarioData }       from '../../../model/scenario-data.model';
 import { ScenarioObject }     from '../../../model/scenario-object.model';
 import { Character }          from '../../../model/character.model';
 import { Position }           from '../../../model/position.model';
+import { World }              from '../../../model/world.model';
 import { AssetCache }         from '../../../play/asset-cache.class';
 import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
@@ -42,6 +43,7 @@ export class PlayComponent implements OnInit {
 	currentNarrative: number = 0;
 
 	showPortal: boolean = false;
+	portalWorld: World = new World();
 
 	constructor(
 		private as: ApiService,
@@ -318,6 +320,7 @@ export class PlayComponent implements OnInit {
 		console.log(playObject);
 		if (playObject.object.activable) {
 			if (playObject.object.activeTrigger==1 && playObject.object.activeTriggerCustom===null) {
+				this.portalWorld = new World();
 				this.showPortal = true;
 			}
 		}

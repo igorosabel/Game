@@ -23,15 +23,105 @@
 		color: #000;
 		width: calc(100% - 40px);
 		padding: 16px;
+		display: flex;
+		flex-direction: row;
 
-		.narrative-character-name {
+		.narrative-picture {
+			display: flex;
+			width: 100px;
+			justify-content: center;
+			align-items: center;
+
+			img {
+				height: 100%;
+			}
+		}
+
+		.narrative-text {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+
+			.narrative-character-name {
+				font-size: 2em;
+				border-bottom: 1px solid #ccc;
+				margin-bottom: 16px;
+			}
+
+			.narrative-dialog {
+				font-size: 1.5em;
+				position: relative;
+
+				img {
+					position: absolute;
+					bottom: 0;
+					right: 20px;
+					opacity: 1;
+					animation: animatedMore 2s linear infinite;
+				}
+				
+				@keyframes animatedMore {
+					0% { opacity: 1;}
+					50% { opacity: 0; }
+					100%{ opacity: 1;}
+				}
+			}
+		}
+	}
+}
+
+.portal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.portal-box {
+		width: 50%;
+		height: 400px;
+		background-color: #fff;
+		color: #000;
+
+		.portal-header {
+			padding: 16px;
 			font-size: 2em;
 			border-bottom: 1px solid #ccc;
-			margin-bottom: 16px;
 		}
 		
-		.narrative-dialog {
-			font-size: 1.5em;
+		.portal-body {
+			.portal-words {
+				.portal-description {
+				
+				}
+
+				.portal-word {
+					label {
+					
+					}
+
+					input {
+					
+					}
+				}
+
+				.portal-go {
+					button {
+						&:hover {
+						
+						}
+					}
+				}
+			}
+
+			.portal-list {
+			
+			}
 		}
 	}
 }

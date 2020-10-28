@@ -4,8 +4,16 @@
 
 <div class="narratives" *ngIf="showNarratives">
 	<div class="narratives-box">
-		<div class="narrative-character-name">{{currentCharacter.name}}</div>
-		<div class="narrative-dialog">{{currentCharacter.narratives[currentNarrative].dialog}}</div>
+		<div class="narrative-picture">
+			<img [src]="currentCharacter.sprites['down'][0].src">
+		</div>
+		<div class="narrative-text">
+			<div class="narrative-character-name">{{currentCharacter.name}}</div>
+			<div class="narrative-dialog">
+				{{currentCharacter.narratives[currentNarrative].dialog}}
+				<img src="/assets/narratives-more.svg" *ngIf="currentNarrative<currentCharacter.narratives.length-1">
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -16,12 +24,25 @@
 		</div>
 		<div class="portal-body">
 			<div class="portal-words">
+				<div class="portal-description">Introduce las tres palabras del mundo al que quieres ir:</div>
 				<div class="portal-word">
-					
+					<label>Primera palabra</label>
+					<input type="text" [(ngModel)]="portalWorld.wordOne">
+				</div>
+				<div class="portal-word">
+					<label>Segunda palabra</label>
+					<input type="text" [(ngModel)]="portalWorld.wordTwo">
+				</div>
+				<div class="portal-word">
+					<label>Tercera palabra</label>
+					<input type="text" [(ngModel)]="portalWorld.wordThree">
+				</div>
+				<div class="portal-go">
+					<button>Viajar</button>
 				</div>
 			</div>
 			<div class="portal-list">
-			
+				
 			</div>
 		</div>
 	</div>
