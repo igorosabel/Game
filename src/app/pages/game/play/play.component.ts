@@ -41,6 +41,8 @@ export class PlayComponent implements OnInit {
 	currentCharacter: PlayCharacter = null;
 	currentNarrative: number = 0;
 
+	showPortal: boolean = false;
+
 	constructor(
 		private as: ApiService,
 		private cms: ClassMapperService,
@@ -206,76 +208,7 @@ export class PlayComponent implements OnInit {
 		this.hud.render();
 
 		// Eventos de teclado
-
-		// W - Arriba
-		let up = this.play.keyboard(87);
-		up.press = () => {
-			if (!this.showNarratives) { player.up(); }
-		};
-		up.release = () => {
-			if (!this.showNarratives) { player.stopUp(); }
-		};
-
-		// S - Abajo
-		let down = this.play.keyboard(83);
-		down.press = () => {
-			if (!this.showNarratives) { player.down(); }
-		};
-		down.release = () => {
-			if (!this.showNarratives) { player.stopDown(); }
-		};
-
-		// D - Derecha
-		let right = this.play.keyboard(68);
-		right.press = () => {
-			if (!this.showNarratives) { player.right(); }
-		};
-		right.release = () => {
-			if (!this.showNarratives) { player.stopRight(); }
-		};
-
-		// A - Izquierda
-		let left = this.play.keyboard(65);
-		left.press = () => {
-			if (!this.showNarratives) { player.left(); }
-		};
-		left.release = () => {
-			if (!this.showNarratives) { player.stopLeft(); }
-		};
-
-		// E - Acción
-		let doAction = this.play.keyboard(69);
-		doAction.press = () => {
-			if (!this.showNarratives) {
-				player.doAction();
-			}
-			else {
-				this.nextNarrative();
-			}
-		};
-		doAction.release = () => {
-			if (!this.showNarratives) { player.stopAction(); }
-		};
-
-		// Espacio - Golpe
-		let hit = this.play.keyboard(32);
-		hit.press = () => {
-			if (!this.showNarratives) {
-				player.hit();
-			}
-			else {
-				this.nextNarrative();
-			}
-		};
-		hit.release = () => {
-			if (!this.showNarratives) { player.stopHit(); }
-		};
-		
-		// Escape - Cancelar
-		let esc = this.play.keyboard(27);
-		esc.press = () => {
-			this.showNarratives = false;
-		};
+		this.setupKeyboard();
 
 		// Bucle del juego
 		this.gameLoop();
@@ -293,6 +226,79 @@ export class PlayComponent implements OnInit {
 		}
 	}
 
+	setupKeyboard() {
+		// W - Arriba
+		let up = this.play.keyboard(87);
+		up.press = () => {
+			if (!this.showNarratives) { this.scenario.player.up(); }
+		};
+		up.release = () => {
+			if (!this.showNarratives) { this.scenario.player.stopUp(); }
+		};
+
+		// S - Abajo
+		let down = this.play.keyboard(83);
+		down.press = () => {
+			if (!this.showNarratives) { this.scenario.player.down(); }
+		};
+		down.release = () => {
+			if (!this.showNarratives) { this.scenario.player.stopDown(); }
+		};
+
+		// D - Derecha
+		let right = this.play.keyboard(68);
+		right.press = () => {
+			if (!this.showNarratives) { this.scenario.player.right(); }
+		};
+		right.release = () => {
+			if (!this.showNarratives) { this.scenario.player.stopRight(); }
+		};
+
+		// A - Izquierda
+		let left = this.play.keyboard(65);
+		left.press = () => {
+			if (!this.showNarratives) { this.scenario.player.left(); }
+		};
+		left.release = () => {
+			if (!this.showNarratives) { this.scenario.player.stopLeft(); }
+		};
+
+		// E - Acción
+		let doAction = this.play.keyboard(69);
+		doAction.press = () => {
+			if (!this.showNarratives) {
+				this.scenario.player.doAction();
+			}
+			else {
+				this.nextNarrative();
+			}
+		};
+		doAction.release = () => {
+			if (!this.showNarratives) { this.scenario.player.stopAction(); }
+		};
+
+		// Espacio - Golpe
+		let hit = this.play.keyboard(32);
+		hit.press = () => {
+			if (!this.showNarratives) {
+				this.scenario.player.hit();
+			}
+			else {
+				this.nextNarrative();
+			}
+		};
+		hit.release = () => {
+			if (!this.showNarratives) { this.scenario.player.stopHit(); }
+		};
+		
+		// Escape - Cancelar
+		let esc = this.play.keyboard(27);
+		esc.press = () => {
+			this.showNarratives = false;
+			this.showPortal = false;
+		};
+	}
+
 	openNarratives(character: PlayCharacter) {
 		this.showNarratives = true;
 		this.currentNarrative = 0;
@@ -308,7 +314,12 @@ export class PlayComponent implements OnInit {
 		}
 	}
 
-	activateObject(object: PlayObject) {
-		console.log(object);
+	activateObject(playObject: PlayObject) {
+		console.log(playObject);
+		if (playObject.object.activable) {
+			if (playObject.object.activeTrigger==1 && playObject.object.activeTriggerCustom===null) {
+				this.showPortal = true;
+			}
+		}
 	}
 }

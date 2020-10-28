@@ -462,7 +462,7 @@ export class ClassMapperService {
 			this.cs.urldecode(so.assetActiveUrl),
 			so.activeTime,
 			so.activeTrigger,
-			this.cs.urldecode(so.activeTriggerCustom),
+			(so.activeTriggerCustom!=null) ? this.cs.urldecode(so.activeTriggerCustom) : null,
 			so.pickable,
 			so.grabbable,
 			so.breakable,
