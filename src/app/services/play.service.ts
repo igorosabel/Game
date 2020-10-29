@@ -91,11 +91,12 @@ export class PlayService {
 			press: undefined,
 			release: undefined,
 			downHandler: undefined,
-			upHandler: undefined
+			upHandler: undefined,
+			disabled: false
 		};
 
 		key.downHandler = function(event) {
-			if (event.target.nodeName.toLowerCase()=='input' && event.keyCode!=27) { return; }
+			if (this.disabled) { return; }
 			if (event.keyCode === key.code) {
 				if (key.isUp && key.press) { key.press(); }
 				key.isDown = true;
@@ -104,6 +105,7 @@ export class PlayService {
 			event.preventDefault();
 		};
 		key.upHandler = function(event) {
+			if (this.disabled) { return; }
 			if (event.keyCode === key.code) {
 				if (key.isDown && key.release) { key.release(); }
 				key.isDown = false;

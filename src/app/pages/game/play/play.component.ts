@@ -11,6 +11,7 @@ import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
 import { PlayCharacter }      from '../../../play/play-character.class';
 import { PlayObject }         from '../../../play/play-object.class';
+import { PlayConnection }     from '../../../play/play-connection.class';
 import { PlayHud }            from '../../../play/play-hud.class';
 import { ApiService }         from '../../../services/api.service';
 import { CommonService }      from '../../../services/common.service';
@@ -24,6 +25,7 @@ import { PlayService }        from '../../../services/play.service';
 	styleUrls: ['./play.component.scss']
 })
 export class PlayComponent implements OnInit {
+	loading: boolean = true;
 	gameId: number = null;
 	worldId: number = null;
 	scenarioId: number = null;
@@ -108,6 +110,12 @@ export class PlayComponent implements OnInit {
 				this.unlockedWorlds = this.cms.getWorlds(result.list);
 			});
 			this.as.getScenarioConnections(this.scenarioId).subscribe(result => {
+				this.connections = {
+					up: null,
+					down: null,
+					left: null,
+					right: null
+				};
 				let connections = this.cms.getConnections(result.list);
 				for (let connection of connections) {
 					this.connections[connection.orientation] = connection;
@@ -234,6 +242,7 @@ export class PlayComponent implements OnInit {
 		// Eventos de personajes y objetos
 		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
+		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
 
 		this.hud = this.play.makeHud(player.health, player.currentHealth, player.money, canvas, this.assetCache);
 
@@ -247,6 +256,7 @@ export class PlayComponent implements OnInit {
 
 		// Bucle del juego
 		this.gameLoop();
+		this.loading = false;
 	}
 
 	gameLoop(timestamp: number = 0) {
@@ -333,6 +343,16 @@ export class PlayComponent implements OnInit {
 			this.showPortal = false;
 		};
 	}
+	
+	disableKeyboard(mode: boolean) {
+		this.keyboard.up.disabled = mode;
+		this.keyboard.down.disabled = mode;
+		this.keyboard.right.disabled = mode;
+		this.keyboard.left.disabled = mode;
+		this.keyboard.doAction.disabled = mode;
+		this.keyboard.hit.disabled = mode;
+		this.keyboard.esc.disabled = mode;
+	}
 
 	openNarratives(character: PlayCharacter) {
 		this.showNarratives = true;
@@ -354,6 +374,7 @@ export class PlayComponent implements OnInit {
 			if (playObject.object.activeTrigger==1 && playObject.object.activeTriggerCustom===null) {
 				this.portalWorld = new World();
 				this.showPortal = true;
+				this.disableKeyboard(true);
 			}
 		}
 	}
@@ -393,6 +414,20 @@ export class PlayComponent implements OnInit {
 			}
 			else {
 				alert('¡No existe ningún mundo con las palabras indicadas!');
+			}
+		});
+	}
+
+	changeScenario(connection: PlayConnection) {
+		connection.idGame = this.gameId;
+		this.loading = false;
+		this.as.changeScenario(connection.toInterface()).subscribe(result => {
+			if (result.status=='ok') {
+				this.getPlayData();
+			}
+			else {
+				this.loading = false;
+				alert('¡Ocurrió un error!');
 			}
 		});
 	}

@@ -86,7 +86,6 @@ export class EditScenarioComponent implements OnInit {
 	loadScenario() {
 		this.as.getScenario(this.scenarioId).subscribe(result => {
 			this.loadedScenario = this.cms.getScenario(result.scenario);
-			console.log(this.loadedScenario);
 			for (let y=0; y<this.scenarioHeight; y++) {
 				this.scenario[y] = [];
 				for (let x=0; x<this.scenarioWidth; x++) {
@@ -327,7 +326,7 @@ export class EditScenarioComponent implements OnInit {
 		this.as.saveScenarioData(this.loadedCell.toInterface()).subscribe(result => {
 			if (result.status=='ok') {
 				this.loadedCell.id = result.id;
-				this.scenario[this.loadedCell.x][this.loadedCell.y] = this.loadedCell;
+				this.scenario[this.loadedCell.y][this.loadedCell.x] = this.loadedCell;
 				this.savingCell = false;
 				this.openCell();
 			}

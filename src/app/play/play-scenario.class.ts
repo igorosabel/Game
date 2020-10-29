@@ -4,6 +4,7 @@ import { Position }        from '../model/position.model';
 import { PlayCanvas }      from './play-canvas.class';
 import { PlayObject }      from './play-object.class';
 import { PlayCharacter }   from './play-character.class';
+import { PlayConnection }  from './play-connection.class';
 
 export class PlayScenario {
 	debug: boolean;
@@ -16,6 +17,7 @@ export class PlayScenario {
 	
 	private _onCharacterAction = new EventDispatcher<PlayScenario, PlayCharacter>();
 	private _onObjectAction = new EventDispatcher<PlayScenario, PlayObject>();
+	private _onPlayerConnection = new EventDispatcher<PlayScenario, PlayConnection>();
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
 		// Creo el canvas
@@ -53,20 +55,23 @@ export class PlayScenario {
 	}
 
 	addPlayer(player: PlayCharacter) {
-		player.onAction.subscribe((c, pos) => {
-			const character = this.findOnPosition(pos, this.characters);
+		player.onAction.subscribe((c, position) => {
+			const character = this.findOnPosition(position, this.characters);
 			if (character!==null) {
 				this.player.stop();
 				this._onCharacterAction.dispatch(this, character);
 			}
 			else {
-				const object = this.findOnPosition(pos, this.objects);
+				const object = this.findOnPosition(position, this.objects);
 				if (object!==null) {
 					this.player.stop();
 					this._onObjectAction.dispatch(this, object);
 				}
 			}
 			
+		});
+		player.onConnection.subscribe((c, connection) => {
+			this._onPlayerConnection.dispatch(this, connection);
 		});
 		this.player = player;
 	}
@@ -77,6 +82,10 @@ export class PlayScenario {
 	
 	public get onObjectAction() {
 		return this._onObjectAction.asEvent();
+	}
+
+	public get onPlayerConnection() {
+		return this._onPlayerConnection.asEvent();
 	}
 
 	addObject(object: PlayObject) {

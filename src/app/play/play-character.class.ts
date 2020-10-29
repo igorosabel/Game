@@ -291,35 +291,36 @@ export class PlayCharacter {
 			let newPosY = this.pos.y + this.vy;
 
 			// Colisión con los bordes de la pantalla
-			if (newPosX<0 || newPosY<0 || (newPosX + this.size.width) > Constants.SCENARIO_WIDTH || (newPosY + this.size.height) > Constants.SCENARIO_HEIGHT) {
+			if ((newPosX < 0) || (newPosY < 0) || ((newPosX + this.size.width) > Constants.SCENARIO_WIDTH) || ((newPosY + this.size.height) > Constants.SCENARIO_HEIGHT)) {
 				const next = this.getNextTile();
 				const playConnection = new PlayConnection();
 				// Izquierda
-				if (next.x < 0 && this.connections.left!==null) {
+				if ((newPosX < 0) && this.connections.left!==null) {
 					playConnection.to = this.connections.left.to;
 					playConnection.x = 0;
 					playConnection.y = next.y;
 				}
 				// Arriba
-				if (next.y < 0 && this.connections.up!==null) {
+				if ((newPosY < 0) && this.connections.up!==null) {
 					playConnection.to = this.connections.up.to;
 					playConnection.x = next.x;
 					playConnection.y = 0;
 				}
 				// Derecha
-				if (next.x > Constants.SCENARIO_COLS && this.connections.right!==null) {
+				if (((newPosX + this.size.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
 					playConnection.to = this.connections.right.to;
 					playConnection.x = Constants.SCENARIO_COLS;
 					playConnection.y = next.y;
 				}
 				// Abajo
-				if (next.y > Constants.SCENARIO_ROWS && this.connections.down!==null) {
-					console.log('down');
+				if (((newPosY + this.size.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
 					playConnection.to = this.connections.down.to;
 					playConnection.x = next.x;
-					playConnection.y = Constants.SCENARIO_HEIGHT;
+					playConnection.y = Constants.SCENARIO_ROWS;
 				}
-				this._onConnection.dispatch(this, playConnection);
+				if (playConnection.to!==null) {
+					this._onConnection.dispatch(this, playConnection);
+				}
 				return false;
 			}
 

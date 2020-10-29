@@ -10,6 +10,7 @@ import {
 	GameResult,
 	NewGameInterface,
 	PlayResult,
+	PlayConnectionInterface,
 	WorldResult,
 	WorldInterface,
 	StatusResult,
@@ -75,6 +76,10 @@ export class ApiService {
 
 	travel(idGame: number, idWorld: number, wordOne: string, wordTwo: string, wordThree: string): Observable<StatusIdResult> {
 		return this.http.post<StatusIdResult>(this.url + 'api/travel', {idGame, idWorld, wordOne, wordTwo, wordThree});
+	}
+
+	changeScenario(connection: PlayConnectionInterface): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'api/change-scenario', connection);
 	}
 
 	adminLogin(data: LoginData): Observable<LoginResult> {

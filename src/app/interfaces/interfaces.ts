@@ -135,6 +135,7 @@ export interface PlayConnectionInterface {
 	to: number;
 	x: number;
 	y: number;
+	idGame: number;
 }
 
 export interface ScenarioDataResult {
