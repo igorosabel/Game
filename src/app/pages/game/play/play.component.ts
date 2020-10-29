@@ -26,6 +26,11 @@ import { PlayService }        from '../../../services/play.service';
 })
 export class PlayComponent implements OnInit {
 	loading: boolean = true;
+	allLoaded = {
+		assets: false,
+		unlockedWorlds: false,
+		connections: false
+	};
 	gameId: number = null;
 	worldId: number = null;
 	scenarioId: number = null;
@@ -104,10 +109,15 @@ export class PlayComponent implements OnInit {
 			this.assetCache.addScenarioObjects(this.scenarioObjects);
 			// Characters
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
-			this.assetCache.load().then(() => this.setup());
+			this.assetCache.load().then(() => {
+				this.allLoaded.assets = true;
+				this.checkAllLoaded();
+			});
 
 			this.as.getUnlockedWorlds(this.gameId).subscribe(result => {
 				this.unlockedWorlds = this.cms.getWorlds(result.list);
+				this.allLoaded.unlockedWorlds = true;
+				this.checkAllLoaded();
 			});
 			this.as.getScenarioConnections(this.scenarioId).subscribe(result => {
 				this.connections = {
@@ -120,8 +130,16 @@ export class PlayComponent implements OnInit {
 				for (let connection of connections) {
 					this.connections[connection.orientation] = connection;
 				}
+				this.allLoaded.connections = true;
+				this.checkAllLoaded();
 			});
 		});
+	}
+	
+	checkAllLoaded() {
+		if (this.allLoaded.assets && this.allLoaded.unlockedWorlds && this.allLoaded.connections) {
+			this.setup();
+		}
 	}
 
 	loadPlayerAssets() {
@@ -353,6 +371,25 @@ export class PlayComponent implements OnInit {
 				this.showPortal = false;
 			};
 		}
+		else {
+			this.play.removeKeyboard(this.keyboard.up);
+			this.play.removeKeyboard(this.keyboard.down);
+			this.play.removeKeyboard(this.keyboard.right);
+			this.play.removeKeyboard(this.keyboard.left);
+			this.play.removeKeyboard(this.keyboard.doAction);
+			this.play.removeKeyboard(this.keyboard.hit);
+			this.play.removeKeyboard(this.keyboard.esc);
+
+			this.keyboard.up = null;
+			this.keyboard.down = null;
+			this.keyboard.right = null;
+			this.keyboard.left = null;
+			this.keyboard.doAction = null;
+			this.keyboard.hit = null;
+			this.keyboard.esc = null;
+
+			this.setupKeyboard();
+		}
 	}
 
 	disableKeyboard(mode: boolean) {
@@ -442,7 +479,7 @@ export class PlayComponent implements OnInit {
 	changeScenario(connection: PlayConnection) {
 		console.log(connection);
 		connection.idGame = this.gameId;
-		this.loading = false;
+		this.loading = true;
 		this.disableKeyboard(true);
 		this.as.changeScenario(connection.toInterface()).subscribe(result => {
 			if (result.status=='ok') {

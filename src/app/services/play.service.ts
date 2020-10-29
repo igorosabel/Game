@@ -118,4 +118,9 @@ export class PlayService {
 		window.addEventListener('keyup',   key.upHandler.bind(key),   false);
 		return key;
 	}
+	
+	removeKeyboard(key) {
+		window.removeEventListener('keydown', key.downHandler, false);
+		window.removeEventListener('keyup',   key.upHandler,   false);
+	}
 }

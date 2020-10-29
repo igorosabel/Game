@@ -71,6 +71,7 @@ export class PlayScenario {
 			
 		});
 		player.onConnection.subscribe((c, connection) => {
+			this.player.stop();
 			this._onPlayerConnection.dispatch(this, connection);
 		});
 		this.player = player;

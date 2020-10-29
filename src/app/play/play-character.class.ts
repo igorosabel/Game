@@ -49,14 +49,16 @@ export class PlayCharacter {
 	) {
 		this.orientation = 'down';
 		this.orientationList = [];
-		this.pos = {
-			x: x * Constants.TILE_WIDTH,
-			y: y * Constants.TILE_HEIGHT
-		};
 		this.size = {
 			width: width * Constants.TILE_WIDTH,
 			height: height * Constants.TILE_HEIGHT
 		};
+		this.pos = {
+			x: x * Constants.TILE_WIDTH,
+			y: ((y * Constants.TILE_HEIGHT) - (this.size.height - Constants.TILE_HEIGHT))
+		};
+		if (this.pos.y<0) { this.pos.y = 0; }
+		
 		this.originalSize = {width, height};
 		this.blockSize = {
 			width: blockWidth * Constants.TILE_WIDTH,
@@ -289,9 +291,8 @@ export class PlayCharacter {
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
 			let newPosX = this.pos.x + this.vx;
 			let newPosY = this.pos.y + this.vy;
-
 			// Colisión con los bordes de la pantalla
-			if ((newPosX < 0) || (newPosY < 0) || ((newPosX + this.size.width) > Constants.SCENARIO_WIDTH) || ((newPosY + this.size.height) > Constants.SCENARIO_HEIGHT)) {
+			if ((newPosX < 0) || (newPosY < 0) || ((newPosX + this.blockSize.width) > Constants.SCENARIO_WIDTH) || ((newPosY + this.blockSize.height) > Constants.SCENARIO_HEIGHT)) {
 				const next = this.getNextTile();
 				const playConnection = new PlayConnection();
 				// Izquierda
@@ -307,13 +308,13 @@ export class PlayCharacter {
 					playConnection.y = 0;
 				}
 				// Derecha
-				if (((newPosX + this.size.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
+				if (((newPosX + this.blockSize.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
 					playConnection.to = this.connections.right.to;
 					playConnection.x = Constants.SCENARIO_COLS;
 					playConnection.y = next.y;
 				}
 				// Abajo
-				if (((newPosY + this.size.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
+				if (((newPosY + this.blockSize.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
 					playConnection.to = this.connections.down.to;
 					playConnection.x = next.x;
 					playConnection.y = Constants.SCENARIO_ROWS;
@@ -349,7 +350,10 @@ export class PlayCharacter {
 	}
 
 	render(ctx) {
-		const posY = this.pos.y - ((this.originalSize.height-1) * Constants.TILE_HEIGHT);
+		let posY = this.pos.y - ((this.originalSize.height-1) * Constants.TILE_HEIGHT);
+		if (posY + Constants.TILE_HEIGHT > Constants.SCENARIO_HEIGHT) {
+			posY = Constants.SCENARIO_HEIGHT - Constants.TILE_HEIGHT;
+		}
 		ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, posY, this.size.width, this.size.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';

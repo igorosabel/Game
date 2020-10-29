@@ -5,6 +5,7 @@ export class PlayCanvas {
 	ctx;
 
 	constructor() {
+		document.querySelector('.game').innerHTML = '';
 		this.canvas = document.createElement('canvas');
 		this.canvas.id = 'board';
 		this.canvas.className = 'board';
