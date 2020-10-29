@@ -252,6 +252,7 @@ export class PlayComponent implements OnInit {
 		this.hud.render();
 
 		// Eventos de teclado
+		this.disableKeyboard(false);
 		this.setupKeyboard();
 
 		// Bucle del juego
@@ -272,86 +273,106 @@ export class PlayComponent implements OnInit {
 	}
 
 	setupKeyboard() {
-		// W - Arriba
-		this.keyboard.up = this.play.keyboard(87);
-		this.keyboard.up.press = () => {
-			if (!this.showNarratives) { this.scenario.player.up(); }
-		};
-		this.keyboard.up.release = () => {
-			if (!this.showNarratives) { this.scenario.player.stopUp(); }
-		};
+		if (
+			this.keyboard.up===null &&
+			this.keyboard.down===null &&
+			this.keyboard.right===null &&
+			this.keyboard.left===null &&
+			this.keyboard.doAction===null &&
+			this.keyboard.hit===null &&
+			this.keyboard.esc===null
+		) {
+			// W - Arriba
+			this.keyboard.up = this.play.keyboard(87);
+			this.keyboard.up.press = () => {
+				if (!this.showNarratives) { this.scenario.player.up(); }
+			};
+			this.keyboard.up.release = () => {
+				if (!this.showNarratives) { this.scenario.player.stopUp(); }
+			};
 
-		// S - Abajo
-		this.keyboard.down = this.play.keyboard(83);
-		this.keyboard.down.press = () => {
-			if (!this.showNarratives) { this.scenario.player.down(); }
-		};
-		this.keyboard.down.release = () => {
-			if (!this.showNarratives) { this.scenario.player.stopDown(); }
-		};
+			// S - Abajo
+			this.keyboard.down = this.play.keyboard(83);
+			this.keyboard.down.press = () => {
+				if (!this.showNarratives) { this.scenario.player.down(); }
+			};
+			this.keyboard.down.release = () => {
+				if (!this.showNarratives) { this.scenario.player.stopDown(); }
+			};
 
-		// D - Derecha
-		this.keyboard.right = this.play.keyboard(68);
-		this.keyboard.right.press = () => {
-			if (!this.showNarratives) { this.scenario.player.right(); }
-		};
-		this.keyboard.right.release = () => {
-			if (!this.showNarratives) { this.scenario.player.stopRight(); }
-		};
+			// D - Derecha
+			this.keyboard.right = this.play.keyboard(68);
+			this.keyboard.right.press = () => {
+				if (!this.showNarratives) { this.scenario.player.right(); }
+			};
+			this.keyboard.right.release = () => {
+				if (!this.showNarratives) { this.scenario.player.stopRight(); }
+			};
 
-		// A - Izquierda
-		this.keyboard.left = this.play.keyboard(65);
-		this.keyboard.left.press = () => {
-			if (!this.showNarratives) { this.scenario.player.left(); }
-		};
-		this.keyboard.left.release = () => {
-			if (!this.showNarratives) { this.scenario.player.stopLeft(); }
-		};
+			// A - Izquierda
+			this.keyboard.left = this.play.keyboard(65);
+			this.keyboard.left.press = () => {
+				if (!this.showNarratives) { this.scenario.player.left(); }
+			};
+			this.keyboard.left.release = () => {
+				if (!this.showNarratives) { this.scenario.player.stopLeft(); }
+			};
 
-		// E - Acción
-		this.keyboard.doAction = this.play.keyboard(69);
-		this.keyboard.doAction.press = () => {
-			if (!this.showNarratives) {
-				this.scenario.player.doAction();
-			}
-			else {
-				this.nextNarrative();
-			}
-		};
-		this.keyboard.doAction.release = () => {
-			if (!this.showNarratives) { this.scenario.player.stopAction(); }
-		};
+			// E - Acción
+			this.keyboard.doAction = this.play.keyboard(69);
+			this.keyboard.doAction.press = () => {
+				if (!this.showNarratives) {
+					this.scenario.player.doAction();
+				}
+				else {
+					this.nextNarrative();
+				}
+			};
+			this.keyboard.doAction.release = () => {
+				if (!this.showNarratives) { this.scenario.player.stopAction(); }
+			};
 
-		// Espacio - Golpe
-		this.keyboard.hit = this.play.keyboard(32);
-		this.keyboard.hit.press = () => {
-			if (!this.showNarratives) {
-				this.scenario.player.hit();
-			}
-			else {
-				this.nextNarrative();
-			}
-		};
-		this.keyboard.hit.release = () => {
-			if (!this.showNarratives) { this.scenario.player.stopHit(); }
-		};
+			// Espacio - Golpe
+			this.keyboard.hit = this.play.keyboard(32);
+			this.keyboard.hit.press = () => {
+				if (!this.showNarratives) {
+					this.scenario.player.hit();
+				}
+				else {
+					this.nextNarrative();
+				}
+			};
+			this.keyboard.hit.release = () => {
+				if (!this.showNarratives) { this.scenario.player.stopHit(); }
+			};
 
-		// Escape - Cancelar
-		this.keyboard.esc = this.play.keyboard(27);
-		this.keyboard.esc.press = () => {
-			this.showNarratives = false;
-			this.showPortal = false;
-		};
+			// Escape - Cancelar
+			this.keyboard.esc = this.play.keyboard(27);
+			this.keyboard.esc.press = () => {
+				this.showNarratives = false;
+				this.showPortal = false;
+			};
+		}
 	}
-	
+
 	disableKeyboard(mode: boolean) {
-		this.keyboard.up.disabled = mode;
-		this.keyboard.down.disabled = mode;
-		this.keyboard.right.disabled = mode;
-		this.keyboard.left.disabled = mode;
-		this.keyboard.doAction.disabled = mode;
-		this.keyboard.hit.disabled = mode;
-		this.keyboard.esc.disabled = mode;
+		if (
+			this.keyboard.up!==null &&
+			this.keyboard.down!==null &&
+			this.keyboard.right!==null &&
+			this.keyboard.left!==null &&
+			this.keyboard.doAction!==null &&
+			this.keyboard.hit!==null &&
+			this.keyboard.esc!==null
+		) {
+			this.keyboard.up.disabled = mode;
+			this.keyboard.down.disabled = mode;
+			this.keyboard.right.disabled = mode;
+			this.keyboard.left.disabled = mode;
+			this.keyboard.doAction.disabled = mode;
+			this.keyboard.hit.disabled = mode;
+			this.keyboard.esc.disabled = mode;
+		}
 	}
 
 	openNarratives(character: PlayCharacter) {
@@ -419,8 +440,10 @@ export class PlayComponent implements OnInit {
 	}
 
 	changeScenario(connection: PlayConnection) {
+		console.log(connection);
 		connection.idGame = this.gameId;
 		this.loading = false;
+		this.disableKeyboard(true);
 		this.as.changeScenario(connection.toInterface()).subscribe(result => {
 			if (result.status=='ok') {
 				this.getPlayData();
