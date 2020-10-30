@@ -11,8 +11,7 @@ export class PlayCharacter {
 	orientation: string;
 	orientationList;
 	pos;
-	size;
-	blockSize;
+	blockPos;
 	originalSize;
 	center;
 	sprites;
@@ -49,21 +48,19 @@ export class PlayCharacter {
 	) {
 		this.orientation = 'down';
 		this.orientationList = [];
-		this.size = {
-			width: width * Constants.TILE_WIDTH,
-			height: height * Constants.TILE_HEIGHT
-		};
 		this.pos = {
-			x: x * Constants.TILE_WIDTH,
-			y: ((y * Constants.TILE_HEIGHT) - (this.size.height - Constants.TILE_HEIGHT))
+			x: ((x * Constants.TILE_WIDTH) - (width * Constants.TILE_WIDTH)),
+			y: ((y * Constants.TILE_HEIGHT) - (height * Constants.TILE_HEIGHT)),
+			width: (width * Constants.TILE_WIDTH),
+			height: (height * Constants.TILE_HEIGHT)
 		};
-		if (this.pos.y<0) { this.pos.y = 0; }
-		
+		this.blockPos = {
+			x: ((x * Constants.TILE_WIDTH) - (blockWidth * Constants.TILE_WIDTH)),
+			y: ((y * Constants.TILE_HEIGHT) - (blockHeight * Constants.TILE_HEIGHT)),
+			width: (blockWidth * Constants.TILE_WIDTH),
+			height: (blockHeight * Constants.TILE_HEIGHT)
+		};
 		this.originalSize = {width, height};
-		this.blockSize = {
-			width: blockWidth * Constants.TILE_WIDTH,
-			height: blockHeight * Constants.TILE_HEIGHT
-		};
 		this.scenario = scenario;
 		this.center = {};
 		this.sprites = {
@@ -107,8 +104,8 @@ export class PlayCharacter {
 
 	updateCenter() {
 		this.center = {
-			x: this.pos.x + (this.size.width / 2),
-			y: this.pos.y + (this.size.height / 2)
+			x: this.pos.x + (this.pos.width / 2),
+			y: this.pos.y + (this.pos.height / 2)
 		}
 	}
 
@@ -117,19 +114,19 @@ export class PlayCharacter {
 		const newPos: Position = new Position(this.center.x, this.center.y);
 		switch(this.orientation) {
 			case 'up': {
-				newPos.y -= this.size.height;
+				newPos.y -= this.pos.height;
 			}
 			break;
 			case 'down': {
-				newPos.y += this.size.height;
+				newPos.y += this.pos.height;
 			}
 			break;
 			case 'left': {
-				newPos.x -= this.size.width;
+				newPos.x -= this.pos.width;
 			}
 			break;
 			case 'right': {
-				newPos.x += this.size.width;
+				newPos.x += this.pos.width;
 			}
 			break;
 		}
@@ -270,7 +267,7 @@ export class PlayCharacter {
 	}
 
 	collission(obj1, obj2: Position) {
-		let rect1 = {x: obj1.pos.x, y: obj1.pos.y, width: obj1.size.width, height: obj1.size.height};
+		let rect1 = {x: obj1.x, y: obj1.y, width: obj1.width, height: obj1.height};
 		let rect2 = {x: (obj2.x * Constants.TILE_WIDTH), y: (obj2.y * Constants.TILE_HEIGHT), width: Constants.TILE_WIDTH, height: Constants.TILE_HEIGHT};
 
 		if (rect1.x < rect2.x + rect2.width &&
@@ -289,10 +286,10 @@ export class PlayCharacter {
 
 	move() {
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
-			let newPosX = this.pos.x + this.vx;
-			let newPosY = this.pos.y + this.vy;
+			let newPosX = this.blockPos.x + this.vx;
+			let newPosY = this.blockPos.y + this.vy;
 			// Colisión con los bordes de la pantalla
-			if ((newPosX < 0) || (newPosY < 0) || ((newPosX + this.blockSize.width) > Constants.SCENARIO_WIDTH) || ((newPosY + this.blockSize.height) > Constants.SCENARIO_HEIGHT)) {
+			if ((newPosX < 0) || (newPosY < 0) || ((newPosX + this.blockPos.width) > Constants.SCENARIO_WIDTH) || ((newPosY + this.blockPos.height) > Constants.SCENARIO_HEIGHT)) {
 				const next = this.getNextTile();
 				const playConnection = new PlayConnection();
 				// Izquierda
@@ -308,13 +305,13 @@ export class PlayCharacter {
 					playConnection.y = 0;
 				}
 				// Derecha
-				if (((newPosX + this.blockSize.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
+				if (((newPosX + this.blockPos.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
 					playConnection.to = this.connections.right.to;
 					playConnection.x = Constants.SCENARIO_COLS;
 					playConnection.y = next.y;
 				}
 				// Abajo
-				if (((newPosY + this.blockSize.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
+				if (((newPosY + this.blockPos.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
 					playConnection.to = this.connections.down.to;
 					playConnection.x = next.x;
 					playConnection.y = Constants.SCENARIO_ROWS;
@@ -328,8 +325,10 @@ export class PlayCharacter {
 			// Colisión con objetos
 			let hit = false;
 			let newPos = {
-				pos: {x: newPosX, y: newPosY},
-				size: this.blockSize
+				x: newPosX,
+				y: newPosY,
+				width: this.blockPos.width,
+				height: this.blockPos.height
 			};
 			this.scenario.blockers.forEach(object => {
 				if (this.collission(newPos, object)) {
@@ -342,6 +341,8 @@ export class PlayCharacter {
 			// Actualizo posición
 			this.pos.x += this.vx;
 			this.pos.y += this.vy;
+			this.blockPos.x += this.vx;
+			this.blockPos.y += this.vy;
 			this.updateCenter();
 		}
 		else {
@@ -350,15 +351,14 @@ export class PlayCharacter {
 	}
 
 	render(ctx) {
-		let posY = this.pos.y - ((this.originalSize.height-1) * Constants.TILE_HEIGHT);
-		if (posY + Constants.TILE_HEIGHT > Constants.SCENARIO_HEIGHT) {
-			posY = Constants.SCENARIO_HEIGHT - Constants.TILE_HEIGHT;
-		}
-		ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, posY, this.size.width, this.size.height);
+		ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, this.pos.y, this.pos.width, this.pos.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';
 			ctx.lineWidth = 1;
-			ctx.strokeRect(this.pos.x, posY, this.size.width, this.size.height);
+			ctx.strokeRect(this.pos.x, this.pos.y, this.pos.width, this.pos.height);
+			ctx.strokeStyle = '#00f';
+			ctx.lineWidth = 1;
+			ctx.strokeRect(this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);
 		}
 	}
 }
