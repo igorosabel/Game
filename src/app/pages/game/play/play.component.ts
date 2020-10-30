@@ -227,12 +227,13 @@ export class PlayComponent implements OnInit {
 		this.scenario = this.play.makeScenario(canvas, this.assetCache.get(this.mapBackground), this.blockers);
 		this.scenario.blockers = this.blockers;
 
-		this.scenarioObjects.forEach(object => {
-			this.scenario.addObject( this.play.makePlayObject(object, this.scenarioDatas, this.assetCache) );
-		});
-
-		this.characters.forEach(character => {
-			this.scenario.addCharacter( this.play.makePlayCharacter(character, this.scenarioDatas, this.scenario, this.assetCache) );
+		this.scenarioDatas.forEach(data => {
+			if (data.idScenarioObject!==null) {
+				this.scenario.addObject( this.play.makePlayObject(this.scenarioObjects, data, this.assetCache) );
+			}
+			if (data.idCharacter!==null) {
+				this.scenario.addCharacter( this.play.makePlayCharacter(this.characters, data, this.scenario, this.assetCache) );
+			}
 		});
 
 		let player: PlayCharacter = this.play.makePlayer(

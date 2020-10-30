@@ -106,6 +106,13 @@ export class ScenarioObjectsComponent implements OnInit {
 	changeTab(tab: string) {
 		this.detailtTab = tab;
 	}
+	
+	changeCrossable() {
+		if (this.loadedScenarioObject.crossable) {
+			this.loadedScenarioObject.blockWidth = 0;
+			this.loadedScenarioObject.blockHeight = 0;
+		}
+	}
 
 	openItemPicker() {
 		if (this.loadedScenarioObject.pickable && this.loadedScenarioObject.drops.length==1) {
@@ -265,6 +272,16 @@ export class ScenarioObjectsComponent implements OnInit {
 
 		if (validate && this.loadedScenarioObject.height==null) {
 			alert('¡No puedes dejar la altura del objeto en blanco!');
+			validate = false;
+		}
+
+		if (validate && this.loadedScenarioObject.blockWidth==null) {
+			alert('¡No puedes dejar la anchura que bloquea en blanco!');
+			validate = false;
+		}
+
+		if (validate && this.loadedScenarioObject.blockHeight==null) {
+			alert('¡No puedes dejar la altura que bloquea en blanco!');
 			validate = false;
 		}
 

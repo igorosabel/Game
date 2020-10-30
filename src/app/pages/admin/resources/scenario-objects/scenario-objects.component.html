@@ -111,7 +111,7 @@
 			<div class="row cols">
 				<div class="col">
 					<label>Cruzable</label>
-					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable" [disabled]="loadedScenarioObject.pickable">
+					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable" [disabled]="loadedScenarioObject.pickable" (click)="changeCrossable()">
 				</div>
 				<div class="col">
 					<label>Levantar</label>

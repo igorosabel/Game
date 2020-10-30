@@ -28,53 +28,53 @@ export class PlayService {
 		return new PlayCharacter(x, y, width, height, blockWidth, blockHeight, options, scenario);
 	}
 
-	makePlayObject(object: ScenarioObject, datas: ScenarioData[], assets: AssetCache) {
-		const ind = datas.findIndex(x => x.idScenarioObject===object.id);
+	makePlayObject(objects: ScenarioObject[], data: ScenarioData, assets: AssetCache) {
+		const ind = objects.findIndex(x => x.id===data.idScenarioObject);
 		const po = new PlayObject(
-			datas[ind].x,
-			datas[ind].y,
-			datas[ind].scenarioObjectWidth,
-			datas[ind].scenarioObjectHeight,
-			object
+			data.x,
+			data.y,
+			data.scenarioObjectWidth,
+			data.scenarioObjectHeight,
+			objects[ind]
 		);
 		po.assets = assets;
 
 		return po;
 	}
 
-	makePlayCharacter(character: Character, datas: ScenarioData[], scenario: PlayScenario, assets: AssetCache) {
-		const ind = datas.findIndex(x => x.idCharacter===character.id);
+	makePlayCharacter(characters: Character[], data: ScenarioData, scenario: PlayScenario, assets: AssetCache) {
+		const ind = characters.findIndex(x => x.id===data.idCharacter);
 		const playCharacter = new PlayCharacter(
-			datas[ind].x,
-			datas[ind].y,
-			datas[ind].characterWidth,
-			datas[ind].characterHeight,
-			datas[ind].characterBlockWidth,
-			datas[ind].characterBlockHeight,
+			data.x,
+			data.y,
+			data.characterWidth,
+			data.characterHeight,
+			data.characterBlockWidth,
+			data.characterBlockHeight,
 			{
-				name: character.name,
+				name: characters[ind].name,
 				isNPC: true,
-				health: character.health,
-				currentHealth: character.health,
+				health: characters[ind].health,
+				currentHealth: characters[ind].health,
 				money: 0,
-				speed: character.speed,
+				speed: characters[ind].speed,
 				items: []
 			},
 			scenario
 		);
-		for (let frame of character.allFramesUp) {
+		for (let frame of characters[ind].allFramesUp) {
 			playCharacter.sprites['up'].push(assets.get(frame));
 		}
-		for (let frame of character.allFramesDown) {
+		for (let frame of characters[ind].allFramesDown) {
 			playCharacter.sprites['down'].push(assets.get(frame));
 		}
-		for (let frame of character.allFramesLeft) {
+		for (let frame of characters[ind].allFramesLeft) {
 			playCharacter.sprites['left'].push(assets.get(frame));
 		}
-		for (let frame of character.allFramesRight) {
+		for (let frame of characters[ind].allFramesRight) {
 			playCharacter.sprites['right'].push(assets.get(frame));
 		}
-		playCharacter.narratives = character.narratives;
+		playCharacter.narratives = characters[ind].narratives;
 
 		return playCharacter;
 	}
