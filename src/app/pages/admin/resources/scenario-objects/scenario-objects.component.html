@@ -57,11 +57,11 @@
 			<div class="row cols">
 				<div class="col">
 					<label>Anchura que bloquea</label>
-					<input type="number" min="1" step="1" name="scenario-object-block-width" [(ngModel)]="loadedScenarioObject.blockWidth" placeholder="Anchura que bloquea">
+					<input type="number" min="1" step="1" name="scenario-object-block-width" [(ngModel)]="loadedScenarioObject.blockWidth" placeholder="Anchura que bloquea" [disabled]="loadedScenarioObject.crossable">
 				</div>
 				<div class="col">
 					<label>Altura</label>
-					<input type="number" min="1" step="1" name="scenario-object-block-height" [(ngModel)]="loadedScenarioObject.blockHeight" placeholder="Altura que bloquea">
+					<input type="number" min="1" step="1" name="scenario-object-block-height" [(ngModel)]="loadedScenarioObject.blockHeight" placeholder="Altura que bloquea" [disabled]="loadedScenarioObject.crossable">
 				</div>
 			</div>
 			<div class="row cols">
@@ -111,7 +111,7 @@
 			<div class="row cols">
 				<div class="col">
 					<label>Cruzable</label>
-					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable" [disabled]="loadedScenarioObject.pickable" (click)="changeCrossable()">
+					<input type="checkbox" name="scenario-object-crossable" [(ngModel)]="loadedScenarioObject.crossable" [disabled]="loadedScenarioObject.pickable" (change)="changeCrossable()">
 				</div>
 				<div class="col">
 					<label>Levantar</label>
