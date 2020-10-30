@@ -279,6 +279,19 @@ export class PlayCharacter {
 
 		return false;
 	}
+	
+	characterCollision(pos, character) {
+		let charPos = {x: character.blockPos.x, y: character.blockPos.y, width: character.blockPos.width, height: character.blockPos.height};
+
+		if (pos.x < charPos.x + charPos.width &&
+			pos.x + pos.width > charPos.x &&
+			pos.y < charPos.y + charPos.height &&
+			pos.height + pos.y > charPos.y) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public get onConnection() {
 		return this._onConnection.asEvent();
@@ -332,6 +345,11 @@ export class PlayCharacter {
 			};
 			this.scenario.blockers.forEach(object => {
 				if (this.collission(newPos, object)) {
+					hit = true;
+				}
+			});
+			this.scenario.characters.forEach(character => {
+				if (this.characterCollision(newPos, character)) {
 					hit = true;
 				}
 			});

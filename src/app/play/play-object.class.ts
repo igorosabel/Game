@@ -4,7 +4,6 @@ import { AssetCache }     from './asset-cache.class';
 
 export class PlayObject {
 	pos;
-	size;
 	object: ScenarioObject;
 	currentFrame: number;
 	interval: number;
@@ -14,9 +13,7 @@ export class PlayObject {
 	constructor(x: number, y: number, width: number, height: number, object: ScenarioObject) {
 		this.pos = {
 			x: x * Constants.TILE_WIDTH,
-			y: (y * Constants.TILE_HEIGHT) - ((height-1) * Constants.TILE_HEIGHT)
-		};
-		this.size = {
+			y: (y * Constants.TILE_HEIGHT) - ((height-1) * Constants.TILE_HEIGHT),
 			width: width * Constants.TILE_WIDTH,
 			height: height * Constants.TILE_HEIGHT
 		};
@@ -46,11 +43,11 @@ export class PlayObject {
 	render(ctx) {
 		this.playAnimation();
 		const frameImg = this.assets.get(this.object.allFrames[this.currentFrame]);
-		ctx.drawImage(frameImg, this.pos.x, this.pos.y, this.size.width, this.size.height);
+		ctx.drawImage(frameImg, this.pos.x, this.pos.y, this.pos.width, this.pos.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';
 			ctx.lineWidth = 1;
-			ctx.strokeRect(this.pos.x, this.pos.y, this.size.width, this.size.height);
+			ctx.strokeRect(this.pos.x, this.pos.y, this.pos.width, this.pos.height);
 		}
 	}
 }
