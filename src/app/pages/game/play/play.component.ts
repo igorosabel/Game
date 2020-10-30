@@ -263,7 +263,7 @@ export class PlayComponent implements OnInit {
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
 
-		this.hud = this.play.makeHud(player.health, player.currentHealth, player.money, canvas, this.assetCache);
+		this.hud = this.play.makeHud(player.character.health, player.character.currentHealth, player.character.money, canvas, this.assetCache);
 
 		// Pinto escenario
 		this.scenario.render();
@@ -284,6 +284,7 @@ export class PlayComponent implements OnInit {
 		if (timestamp >= this.start) {
 			this.scenario.render();
 			this.scenario.player.move();
+			this.scenario.characters.forEach(character => character.move());
 			this.scenario.renderItems();
 			this.hud.render();
 
@@ -420,7 +421,7 @@ export class PlayComponent implements OnInit {
 	}
 
 	nextNarrative() {
-		if (this.currentCharacter.narratives.length==(this.currentNarrative+1)) {
+		if (this.currentCharacter.character.narratives.length==(this.currentNarrative+1)) {
 			this.showNarratives = false;
 		}
 		else {

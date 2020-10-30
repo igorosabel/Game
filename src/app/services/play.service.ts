@@ -25,7 +25,16 @@ export class PlayService {
 	}
 
 	makePlayer(x, y, width, height, blockWidth, blockHeight, options, scenario) {
-		return new PlayCharacter(x, y, width, height, blockWidth, blockHeight, options, scenario);
+		const playCharacter     = new PlayCharacter(x, y, width, height, blockWidth, blockHeight, scenario);
+		const character         = new Character();
+		character.name          = options.name;
+		character.health        = options.health;
+		character.currentHealth = options.currentHealth;
+		character.money         = options.money;
+		character.speed         = options.speed;
+		character.items         = options.items;
+		playCharacter.character = character;
+		return playCharacter;
 	}
 
 	makePlayObject(objects: ScenarioObject[], data: ScenarioData, assets: AssetCache) {
@@ -51,15 +60,6 @@ export class PlayService {
 			data.characterHeight,
 			data.characterBlockWidth,
 			data.characterBlockHeight,
-			{
-				name: characters[ind].name,
-				isNPC: true,
-				health: characters[ind].health,
-				currentHealth: characters[ind].health,
-				money: 0,
-				speed: characters[ind].speed,
-				items: []
-			},
 			scenario
 		);
 		for (let frame of characters[ind].allFramesUp) {
@@ -74,7 +74,7 @@ export class PlayService {
 		for (let frame of characters[ind].allFramesRight) {
 			playCharacter.sprites['right'].push(assets.get(frame));
 		}
-		playCharacter.narratives = characters[ind].narratives;
+		playCharacter.character = characters[ind];
 
 		return playCharacter;
 	}

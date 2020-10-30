@@ -1,8 +1,13 @@
 import { CharacterInterface, CharacterFrameInterface, NarrativeInterface } from '../interfaces/interfaces';
 import { CharacterFrame } from './character-frame.model';
-import { Narrative } from './narrative.model';
+import { Narrative }      from './narrative.model';
+import { Item }           from './item.model';
 
 export class Character {
+	currentHealth: number = null;
+	money: number = null;
+	items: Item[] = null;
+
 	constructor(
 		public id: number = null,
 		public name: string = null,
@@ -33,7 +38,11 @@ export class Character {
 		public framesLeft: CharacterFrame[] = [],
 		public framesRight: CharacterFrame[] = [],
 		public narratives: Narrative[] = []
-	) {}
+	) {
+		this.currentHealth = health;
+		this.money = 0;
+		this.items = [];
+	}
 
 	getAllFrames(sent: string) {
 		const frameList = [];

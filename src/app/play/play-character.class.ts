@@ -2,6 +2,7 @@ import { EventDispatcher } from 'strongly-typed-events';
 import { Constants }       from '../model/constants';
 import { Item }            from '../model/item.model';
 import { Position }        from '../model/position.model';
+import { Character }       from '../model/character.model';
 import { Narrative }       from '../model/narrative.model';
 import { PlayScenario }    from './play-scenario.class';
 import { AssetCache }      from './asset-cache.class';
@@ -24,13 +25,7 @@ export class PlayCharacter {
 	playing: boolean;
 	interval: number;
 	name: string;
-	isNPC: boolean;
-	health: number;
-	currentHealth: number;
-	money: number;
-	speed: number;
-	items;
-	narratives: Narrative[] = [];
+	character: Character;
 	connections;
 
 	private _onAction = new EventDispatcher<PlayCharacter, Position>();
@@ -43,7 +38,6 @@ export class PlayCharacter {
 		height: number,
 		blockWidth:number,
 		blockHeight: number,
-		options,
 		scenario: PlayScenario
 	) {
 		this.orientation = 'down';
@@ -87,15 +81,6 @@ export class PlayCharacter {
 		this.playing = false;
 		this.interval = null;
 		this.updateCenter();
-
-		// Detalles del personaje
-		this.name = options.name;
-		this.isNPC = options.isNPC;
-		this.health = options.health;
-		this.currentHealth = options.currentHealth;
-		this.money = options.money;
-		this.speed = options.speed;
-		this.items = options.items;
 	}
 
 	setSprite(ind, sprite) {
@@ -152,7 +137,7 @@ export class PlayCharacter {
 
 	up() {
 		if (!this.moving.up) {
-			this.vy = -1 * Constants.DEFAULT_VY * this.speed;
+			this.vy = -1 * Constants.DEFAULT_VY * this.character.speed;
 			this.moving.up = true;
 			this.orientationList.push('up');
 			this.playAnimation();
@@ -169,7 +154,7 @@ export class PlayCharacter {
 
 	down() {
 		if (!this.moving.down) {
-			this.vy = Constants.DEFAULT_VY * this.speed;
+			this.vy = Constants.DEFAULT_VY * this.character.speed;
 			this.moving.down = true;
 			this.orientationList.push('down');
 			this.playAnimation();
@@ -186,7 +171,7 @@ export class PlayCharacter {
 
 	right() {
 		if (!this.moving.right) {
-			this.vx = Constants.DEFAULT_VX * this.speed;
+			this.vx = Constants.DEFAULT_VX * this.character.speed;
 			this.moving.right = true;
 			this.orientationList.push('right');
 			this.playAnimation();
@@ -203,7 +188,7 @@ export class PlayCharacter {
 
 	left() {
 		if (!this.moving.left) {
-			this.vx = -1 * Constants.DEFAULT_VX * this.speed;
+			this.vx = -1 * Constants.DEFAULT_VX * this.character.speed;
 			this.moving.left = true;
 			this.orientationList.push('left');
 			this.playAnimation();
@@ -298,6 +283,9 @@ export class PlayCharacter {
 	}
 
 	move() {
+		if (!this.character.fixedPosition) {
+			//console.log(this);
+		}
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
 			let newPosX = this.blockPos.x + this.vx;
 			let newPosY = this.blockPos.y + this.vy;

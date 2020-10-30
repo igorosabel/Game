@@ -13,10 +13,10 @@
 			<img [src]="currentCharacter.sprites['down'][0].src">
 		</div>
 		<div class="narrative-text">
-			<div class="narrative-character-name">{{currentCharacter.name}}</div>
+			<div class="narrative-character-name">{{currentCharacter.character.name}}</div>
 			<div class="narrative-dialog">
-				{{currentCharacter.narratives[currentNarrative].dialog}}
-				<img src="/assets/narratives-more.svg" *ngIf="currentNarrative<currentCharacter.narratives.length-1">
+				{{currentCharacter.character.narratives[currentNarrative].dialog}}
+				<img src="/assets/narratives-more.svg" *ngIf="currentNarrative<currentCharacter.character.narratives.length-1">
 			</div>
 		</div>
 	</div>
