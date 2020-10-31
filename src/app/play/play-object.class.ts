@@ -45,7 +45,7 @@ export class PlayObject {
 		const frameImg = this.assets.get(this.object.allFrames[this.currentFrame]);
 		ctx.drawImage(frameImg, this.pos.x, this.pos.y, this.pos.width, this.pos.height);
 		if (Constants.DEBUG) {
-			ctx.strokeStyle = '#f00';
+			ctx.strokeStyle = '#00f';
 			ctx.lineWidth = 1;
 			ctx.strokeRect(this.pos.x, this.pos.y, this.pos.width, this.pos.height);
 		}
