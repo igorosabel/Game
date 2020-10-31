@@ -7,6 +7,7 @@ import { Narrative }       from '../model/narrative.model';
 import { PlayScenario }    from './play-scenario.class';
 import { AssetCache }      from './asset-cache.class';
 import { PlayConnection }  from './play-connection.class';
+import { PlayUtils }       from './play-utils.class';
 
 export class PlayCharacter {
 	orientation: string;
@@ -88,10 +89,7 @@ export class PlayCharacter {
 	}
 
 	updateCenter() {
-		this.center = {
-			x: this.pos.x + (this.pos.width / 2),
-			y: this.pos.y + (this.pos.height / 2)
-		}
+		this.center = PlayUtils.getCenter(this.pos);
 	}
 
 	getNextPos() {
@@ -252,30 +250,15 @@ export class PlayCharacter {
 	}
 
 	collission(obj1, obj2: Position) {
-		let rect1 = {x: obj1.x, y: obj1.y, width: obj1.width, height: obj1.height};
 		let rect2 = {x: (obj2.x * Constants.TILE_WIDTH), y: (obj2.y * Constants.TILE_HEIGHT), width: Constants.TILE_WIDTH, height: Constants.TILE_HEIGHT};
 
-		if (rect1.x < rect2.x + rect2.width &&
-			rect1.x + rect1.width > rect2.x &&
-			rect1.y < rect2.y + rect2.height &&
-			rect1.height + rect1.y > rect2.y) {
-			return true;
-		}
-
-		return false;
+		return PlayUtils.collision(obj1, rect2);
 	}
 	
 	characterCollision(pos, character) {
 		let charPos = {x: character.blockPos.x, y: character.blockPos.y, width: character.blockPos.width, height: character.blockPos.height};
 
-		if (pos.x < charPos.x + charPos.width &&
-			pos.x + pos.width > charPos.x &&
-			pos.y < charPos.y + charPos.height &&
-			pos.height + pos.y > charPos.y) {
-			return true;
-		}
-
-		return false;
+		return PlayUtils.collision(pos, charPos);
 	}
 
 	public get onConnection() {
@@ -323,7 +306,7 @@ export class PlayCharacter {
 				return false;
 			}
 
-			// Colisión con objetos
+			// Colisión con fondos y objetos
 			let hit = false;
 			let newPos = {
 				x: newPosX,
