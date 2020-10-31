@@ -396,7 +396,6 @@ export class PlayCharacter {
 				characterList.forEach(character => {
 					if (this.characterCollision(newPos, character)) {
 						hit = true;
-console.log('stop on collision');
 						this.stopNPC();
 					}
 				});
