@@ -396,11 +396,16 @@ export class PlayCharacter {
 				characterList.forEach(character => {
 					if (this.characterCollision(newPos, character)) {
 						hit = true;
-						this.stopNPC();
 					}
 				});
+				if (this.characterCollision(newPos, this.scenario.player)) {
+					hit = true;
+				}
 			}
 			if (hit) {
+				if (this.npcData.isNPC) {
+					this.stopNPC();
+				}
 				return false;
 			}
 
