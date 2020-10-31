@@ -5,14 +5,14 @@ export class PlayUtils {
 			y: pos.y + (pos.height / 2)
 		};
 	}
-	
+
 	static distance(pos1, pos2) {
 		const obj1 = PlayUtils.getCenter(pos1);
 		const obj2 = PlayUtils.getCenter(pos2);
-		
+
 		return Math.sqrt( Math.pow((obj2.x - obj1.x), 2) + Math.pow((obj2.y - obj1.y), 2));
 	}
-	
+
 	static collision(rect1, rect2) {
 		if (rect1.x < rect2.x + rect2.width &&
 			rect1.x + rect1.width > rect2.x &&

@@ -28,6 +28,7 @@ export class PlayCharacter {
 	name: string;
 	character: Character;
 	connections;
+	npcData;
 
 	private _onAction = new EventDispatcher<PlayCharacter, Position>();
 	private _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
@@ -82,6 +83,12 @@ export class PlayCharacter {
 		this.playing = false;
 		this.interval = null;
 		this.updateCenter();
+		this.npcData = {
+			isNPC: false,
+			status: 'idle',
+			timer: null,
+			remainingTime: 0
+		};
 	}
 
 	setSprite(ind, sprite) {
@@ -144,9 +151,11 @@ export class PlayCharacter {
 	}
 
 	stopUp() {
-		this.moving.up = false;
-		this.vy = 0;
-		this.orientationList.splice( this.orientationList.indexOf('up'), 1 );
+		if (this.moving.up) {
+			this.moving.up = false;
+			this.vy = 0;
+			this.orientationList.splice( this.orientationList.indexOf('up'), 1 );
+		}
 		this.updateOrientation();
 	}
 
@@ -161,9 +170,11 @@ export class PlayCharacter {
 	}
 
 	stopDown() {
-		this.moving.down = false;
-		this.vy = 0;
-		this.orientationList.splice( this.orientationList.indexOf('down'), 1 );
+		if (this.moving.down) {
+			this.moving.down = false;
+			this.vy = 0;
+			this.orientationList.splice( this.orientationList.indexOf('down'), 1 );
+		}
 		this.updateOrientation();
 	}
 
@@ -178,9 +189,11 @@ export class PlayCharacter {
 	}
 
 	stopRight() {
-		this.moving.right = false;
-		this.vx = 0;
-		this.orientationList.splice( this.orientationList.indexOf('right'), 1 );
+		if (this.moving.right) {
+			this.moving.right = false;
+			this.vx = 0;
+			this.orientationList.splice( this.orientationList.indexOf('right'), 1 );
+		}
 		this.updateOrientation();
 	}
 
@@ -195,9 +208,11 @@ export class PlayCharacter {
 	}
 
 	stopLeft() {
-		this.moving.left = false;
-		this.vx = 0;
-		this.orientationList.splice( this.orientationList.indexOf('left'), 1 );
+		if (this.moving.left) {
+			this.moving.left = false;
+			this.vx = 0;
+			this.orientationList.splice( this.orientationList.indexOf('left'), 1 );
+		}
 		this.updateOrientation();
 	}
 
@@ -254,7 +269,7 @@ export class PlayCharacter {
 
 		return PlayUtils.collision(obj1, rect2);
 	}
-	
+
 	characterCollision(pos, character) {
 		let charPos = {x: character.blockPos.x, y: character.blockPos.y, width: character.blockPos.width, height: character.blockPos.height};
 
@@ -265,43 +280,91 @@ export class PlayCharacter {
 		return this._onConnection.asEvent();
 	}
 
-	move() {
-		if (!this.character.fixedPosition) {
-			//console.log(this);
+	stopNPC() {
+		switch (this.orientation) {
+			case 'up': { this.stopUp(); }
+			break;
+			case 'down': { this.stopDown(); }
+			break;
+			case 'left': { this.stopLeft(); }
+			break;
+			case 'right': { this.stopRight(); }
+			break;
 		}
+	}
+
+	npcLogic() {
+		if (this.npcData.isNPC && !this.character.fixedPosition) {
+			clearTimeout(this.npcData.timer);
+			this.npcData.remainingTime--;
+			const distance = PlayUtils.distance(this.scenario.player.blockPos, this.blockPos);
+			if (distance > 250) {
+				this.npcData.status = 'wandering';
+			}
+
+			if (this.npcData.status=='wandering' && this.npcData.remainingTime<1) {
+				const movementOptions = ['down', 'up', 'left', 'right'];
+				const currentInd = movementOptions.findIndex(x => x===this.orientation);
+				movementOptions.splice(currentInd, 1);
+				const option = movementOptions[Math.floor(Math.random() * movementOptions.length)];
+				this.stopNPC();
+				this.orientation = option;
+				switch (option) {
+					case 'up': { this.up(); }
+					break;
+					case 'down': { this.down(); }
+					break;
+					case 'left': { this.left(); }
+					break;
+					case 'right': { this.right(); }
+					break;
+				}
+				this.npcData.remainingTime = Math.floor(Math.random() * 6) + 3;
+			}
+
+			this.npcData.timer = setTimeout(() => { this.npcLogic(); }, 1000);
+		}
+	}
+
+	move() {
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
 			let newPosX = this.blockPos.x + this.vx;
 			let newPosY = this.blockPos.y + this.vy;
 			// Colisión con los bordes de la pantalla
 			if ((newPosX < 0) || (newPosY < 0) || ((newPosX + this.blockPos.width) > Constants.SCENARIO_WIDTH) || ((newPosY + this.blockPos.height) > Constants.SCENARIO_HEIGHT)) {
-				const next = this.getNextTile();
-				const playConnection = new PlayConnection();
-				// Izquierda
-				if ((newPosX < 0) && this.connections.left!==null) {
-					playConnection.to = this.connections.left.to;
-					playConnection.x = 0;
-					playConnection.y = next.y;
+				if (!this.npcData.isNPC) {
+					const next = this.getNextTile();
+					const playConnection = new PlayConnection();
+					// Izquierda
+					if ((newPosX < 0) && this.connections.left!==null) {
+						playConnection.to = this.connections.left.to;
+						playConnection.x = 0;
+						playConnection.y = next.y;
+					}
+					// Arriba
+					if ((newPosY < 0) && this.connections.up!==null) {
+						playConnection.to = this.connections.up.to;
+						playConnection.x = next.x;
+						playConnection.y = 0;
+					}
+					// Derecha
+					if (((newPosX + this.blockPos.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
+						playConnection.to = this.connections.right.to;
+						playConnection.x = Constants.SCENARIO_COLS;
+						playConnection.y = next.y;
+					}
+					// Abajo
+					if (((newPosY + this.blockPos.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
+						playConnection.to = this.connections.down.to;
+						playConnection.x = next.x;
+						playConnection.y = Constants.SCENARIO_ROWS;
+					}
+					if (playConnection.to!==null) {
+						this._onConnection.dispatch(this, playConnection);
+					}
 				}
-				// Arriba
-				if ((newPosY < 0) && this.connections.up!==null) {
-					playConnection.to = this.connections.up.to;
-					playConnection.x = next.x;
-					playConnection.y = 0;
-				}
-				// Derecha
-				if (((newPosX + this.blockPos.width) > Constants.SCENARIO_WIDTH) && this.connections.right!==null) {
-					playConnection.to = this.connections.right.to;
-					playConnection.x = Constants.SCENARIO_COLS;
-					playConnection.y = next.y;
-				}
-				// Abajo
-				if (((newPosY + this.blockPos.height) > Constants.SCENARIO_HEIGHT) && this.connections.down!==null) {
-					playConnection.to = this.connections.down.to;
-					playConnection.x = next.x;
-					playConnection.y = Constants.SCENARIO_ROWS;
-				}
-				if (playConnection.to!==null) {
-					this._onConnection.dispatch(this, playConnection);
+				else {
+					this.stopNPC();
 				}
 				return false;
 			}
@@ -319,14 +382,29 @@ export class PlayCharacter {
 					hit = true;
 				}
 			});
-			this.scenario.characters.forEach(character => {
-				if (this.characterCollision(newPos, character)) {
-					hit = true;
-				}
-			});
+			if (!this.npcData.isNPC) {
+				this.scenario.characters.forEach(character => {
+					if (this.characterCollision(newPos, character)) {
+						hit = true;
+					}
+				});
+			}
+			else {
+				const characterList = [...this.scenario.characters];
+				const characterInd = characterList.findIndex(x => x.pos.x===this.pos.x && x.pos.y===this.pos.y);
+				characterList.splice(characterInd, 1);
+				characterList.forEach(character => {
+					if (this.characterCollision(newPos, character)) {
+						hit = true;
+console.log('stop on collision');
+						this.stopNPC();
+					}
+				});
+			}
 			if (hit) {
 				return false;
 			}
+
 			// Actualizo posición
 			this.pos.x += this.vx;
 			this.pos.y += this.vy;

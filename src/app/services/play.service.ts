@@ -75,6 +75,7 @@ export class PlayService {
 			playCharacter.sprites['right'].push(assets.get(frame));
 		}
 		playCharacter.character = characters[ind];
+		playCharacter.npcData.isNPC = true;
 
 		return playCharacter;
 	}
@@ -118,7 +119,7 @@ export class PlayService {
 		window.addEventListener('keyup',   key.upHandler.bind(key),   false);
 		return key;
 	}
-	
+
 	removeKeyboard(key) {
 		window.removeEventListener('keydown', key.downHandler, false);
 		window.removeEventListener('keyup',   key.upHandler,   false);

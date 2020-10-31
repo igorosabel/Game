@@ -135,7 +135,7 @@ export class PlayComponent implements OnInit {
 			});
 		});
 	}
-	
+
 	checkAllLoaded() {
 		if (this.allLoaded.assets && this.allLoaded.unlockedWorlds && this.allLoaded.connections) {
 			this.setup();
@@ -268,6 +268,7 @@ export class PlayComponent implements OnInit {
 		// Pinto escenario
 		this.scenario.render();
 		this.scenario.renderItems();
+		this.scenario.characters.forEach(character => character.npcLogic());
 		this.hud.render();
 
 		// Eventos de teclado
