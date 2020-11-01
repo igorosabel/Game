@@ -423,9 +423,6 @@ export class PlayComponent implements OnInit {
 					this.nextNarrative();
 				}
 			};
-			this.keyboard.doAction.release = () => {
-				if (!this.showNarratives) { this.scenario.player.stopAction(); }
-			};
 
 			// Espacio - Golpe
 			this.keyboard.hit = this.play.keyboard(32);
@@ -436,9 +433,6 @@ export class PlayComponent implements OnInit {
 				else {
 					this.nextNarrative();
 				}
-			};
-			this.keyboard.hit.release = () => {
-				if (!this.showNarratives) { this.scenario.player.stopHit(); }
 			};
 
 			// Escape - Cancelar

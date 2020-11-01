@@ -21,8 +21,10 @@ export class PlayCharacter {
 	vx: number;
 	vy: number;
 	moving;
+	hitting;
 	frames;
 	currentFrame: number;
+	currentHitFrame: number;
 	playing: boolean;
 	interval: number;
 	name: string;
@@ -220,20 +222,15 @@ export class PlayCharacter {
 		this._onAction.dispatch(this, this.getNextPos());
 	}
 
-	stopAction() {
-
-	}
-
 	public get onAction() {
 		return this._onAction.asEvent();
 	}
 
 	hit() {
-		console.log('hit');
-	}
-
-	stopHit() {
-		console.log('stopHit');
+		if (!this.hitting) {
+			this.hitting = true;
+			this.playAnimation();
+		}
 	}
 
 	playAnimation() {
@@ -244,17 +241,31 @@ export class PlayCharacter {
 	}
 
 	stopAnimation() {
-		this.playing = false;
-		this.currentFrame = 0;
-		clearInterval(this.interval);
+		if (!this.hitting) {
+			this.playing = false;
+			this.currentFrame = 0;
+			this.currentHitFrame = 0;
+			clearInterval(this.interval);
+		}
 	}
 
 	updateAnimation() {
-		if (this.currentFrame === (this.sprites[this.orientation].length - 1)) {
-			this.currentFrame = 1;
+		if (!this.hitting) {
+			if (this.currentFrame === (this.sprites[this.orientation].length - 1)) {
+				this.currentFrame = 1;
+			}
+			else{
+				this.currentFrame++;
+			}
 		}
-		else{
-			this.currentFrame++;
+		else {
+			if (this.currentHitFrame === (this.sprites['hit-'+this.orientation].length - 1)) {
+				this.currentHitFrame = 0;
+				this.hitting = false;
+			}
+			else{
+				this.currentHitFrame++;
+			}
 		}
 	}
 
@@ -422,7 +433,11 @@ export class PlayCharacter {
 	}
 
 	render(ctx) {
-		ctx.drawImage(this.sprites[this.orientation][this.currentFrame], this.pos.x, this.pos.y, this.pos.width, this.pos.height);
+		let img = this.sprites[this.orientation][this.currentFrame];
+		if (this.hitting) {
+			img = this.sprites['hit-' + this.orientation][this.currentHitFrame];
+		}
+		ctx.drawImage(img, this.pos.x, this.pos.y, img.width, img.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';
 			ctx.lineWidth = 1;
