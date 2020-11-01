@@ -175,6 +175,39 @@ export class PlayComponent implements OnInit {
 		this.assetCache.add('/assets/player/link-left.png');
 		this.assetCache.add('/assets/player/link-right.png');
 		this.assetCache.add('/assets/player/link-up.png');
+		this.assetCache.add('/assets/player/down-hit-1.png');
+		this.assetCache.add('/assets/player/down-hit-2.png');
+		this.assetCache.add('/assets/player/down-hit-3.png');
+		this.assetCache.add('/assets/player/down-hit-4.png');
+		this.assetCache.add('/assets/player/down-hit-5.png');
+		this.assetCache.add('/assets/player/down-hit-6.png');
+		this.assetCache.add('/assets/player/left-hit-1.png');
+		this.assetCache.add('/assets/player/left-hit-2.png');
+		this.assetCache.add('/assets/player/left-hit-3.png');
+		this.assetCache.add('/assets/player/left-hit-4.png');
+		this.assetCache.add('/assets/player/left-hit-5.png');
+		this.assetCache.add('/assets/player/left-hit-6.png');
+		this.assetCache.add('/assets/player/left-hit-7.png');
+		this.assetCache.add('/assets/player/left-hit-8.png');
+		this.assetCache.add('/assets/player/left-hit-9.png');
+		this.assetCache.add('/assets/player/right-hit-1.png');
+		this.assetCache.add('/assets/player/right-hit-2.png');
+		this.assetCache.add('/assets/player/right-hit-3.png');
+		this.assetCache.add('/assets/player/right-hit-4.png');
+		this.assetCache.add('/assets/player/right-hit-5.png');
+		this.assetCache.add('/assets/player/right-hit-6.png');
+		this.assetCache.add('/assets/player/right-hit-7.png');
+		this.assetCache.add('/assets/player/right-hit-8.png');
+		this.assetCache.add('/assets/player/right-hit-9.png');
+		this.assetCache.add('/assets/player/up-hit-1.png');
+		this.assetCache.add('/assets/player/up-hit-2.png');
+		this.assetCache.add('/assets/player/up-hit-3.png');
+		this.assetCache.add('/assets/player/up-hit-4.png');
+		this.assetCache.add('/assets/player/up-hit-5.png');
+		this.assetCache.add('/assets/player/up-hit-6.png');
+		this.assetCache.add('/assets/player/up-hit-7.png');
+		this.assetCache.add('/assets/player/up-hit-8.png');
+		this.assetCache.add('/assets/player/up-hit-9.png');
 	}
 
 	updatePlayerAssets(player: PlayCharacter) {
@@ -217,6 +250,47 @@ export class PlayComponent implements OnInit {
 			this.assetCache.get('/assets/player/right-walking-5.png'),
 			this.assetCache.get('/assets/player/right-walking-6.png'),
 			this.assetCache.get('/assets/player/right-walking-7.png')
+		];
+		player.sprites['hit-up'] = [
+			this.assetCache.get('/assets/player/up-hit-1.png'),
+			this.assetCache.get('/assets/player/up-hit-2.png'),
+			this.assetCache.get('/assets/player/up-hit-3.png'),
+			this.assetCache.get('/assets/player/up-hit-4.png'),
+			this.assetCache.get('/assets/player/up-hit-5.png'),
+			this.assetCache.get('/assets/player/up-hit-6.png'),
+			this.assetCache.get('/assets/player/up-hit-7.png'),
+			this.assetCache.get('/assets/player/up-hit-8.png'),
+			this.assetCache.get('/assets/player/up-hit-9.png')
+		];
+		player.sprites['hit-down'] = [
+			this.assetCache.get('/assets/player/down-hit-1.png'),
+			this.assetCache.get('/assets/player/down-hit-2.png'),
+			this.assetCache.get('/assets/player/down-hit-3.png'),
+			this.assetCache.get('/assets/player/down-hit-4.png'),
+			this.assetCache.get('/assets/player/down-hit-5.png'),
+			this.assetCache.get('/assets/player/down-hit-6.png')
+		];
+		player.sprites['hit-left'] = [
+			this.assetCache.get('/assets/player/left-hit-1.png'),
+			this.assetCache.get('/assets/player/left-hit-2.png'),
+			this.assetCache.get('/assets/player/left-hit-3.png'),
+			this.assetCache.get('/assets/player/left-hit-4.png'),
+			this.assetCache.get('/assets/player/left-hit-5.png'),
+			this.assetCache.get('/assets/player/left-hit-6.png'),
+			this.assetCache.get('/assets/player/left-hit-7.png'),
+			this.assetCache.get('/assets/player/left-hit-8.png'),
+			this.assetCache.get('/assets/player/left-hit-9.png')
+		];
+		player.sprites['hit-right'] = [
+			this.assetCache.get('/assets/player/right-hit-1.png'),
+			this.assetCache.get('/assets/player/right-hit-2.png'),
+			this.assetCache.get('/assets/player/right-hit-3.png'),
+			this.assetCache.get('/assets/player/right-hit-4.png'),
+			this.assetCache.get('/assets/player/right-hit-5.png'),
+			this.assetCache.get('/assets/player/right-hit-6.png'),
+			this.assetCache.get('/assets/player/right-hit-7.png'),
+			this.assetCache.get('/assets/player/right-hit-8.png'),
+			this.assetCache.get('/assets/player/right-hit-9.png')
 		];
 
 		return player;
