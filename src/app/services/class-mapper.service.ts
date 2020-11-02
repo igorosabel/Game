@@ -85,6 +85,7 @@ export class ClassMapperService {
 			g.idScenario,
 			g.positionX,
 			g.positionY,
+			g.orientation,
 			g.money,
 			g.health,
 			g.maxHealth,

@@ -45,6 +45,7 @@ export interface GameInterface {
 	idScenario: number;
 	positionX: number;
 	positionY: number;
+	orientation: string;
 	money: number;
 	health: number;
 	maxHealth: number;

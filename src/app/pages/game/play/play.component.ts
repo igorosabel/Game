@@ -311,25 +311,15 @@ export class PlayComponent implements OnInit {
 		});
 
 		let player: PlayCharacter = this.play.makePlayer(
-			this.game.positionX,
-			this.game.positionY,
+			this.game,
 			1,
 			1.5,
 			1,
 			1,
-			{
-				name: this.game.name,
-				isNPC: false,
-				health: this.game.maxHealth,
-				currentHealth: this.game.health,
-				money: this.game.money,
-				speed: this.game.speed,
-				items: this.game.items
-			},
-			this.scenario
+			this.scenario,
+			this.connections
 		);
 		player = this.updatePlayerAssets(player);
-		player.connections = this.connections;
 		this.scenario.addPlayer(player);
 
 		// Eventos de personajes y objetos

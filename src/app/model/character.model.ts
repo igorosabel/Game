@@ -2,11 +2,13 @@ import { CharacterInterface, CharacterFrameInterface, NarrativeInterface } from 
 import { CharacterFrame } from './character-frame.model';
 import { Narrative }      from './narrative.model';
 import { Item }           from './item.model';
+import { Inventory }      from './inventory.model';
 
 export class Character {
 	currentHealth: number = null;
 	money: number = null;
 	items: Item[] = null;
+	inventory: Inventory[] = null;
 
 	constructor(
 		public id: number = null,
@@ -42,6 +44,7 @@ export class Character {
 		this.currentHealth = health;
 		this.money = 0;
 		this.items = [];
+		this.inventory = [];
 	}
 
 	getAllFrames(sent: string) {

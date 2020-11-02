@@ -9,6 +9,7 @@ import { ScenarioData }   from '../model/scenario-data.model';
 import { ScenarioObject } from '../model/scenario-object.model';
 import { Character }      from '../model/character.model';
 import { Position }       from '../model/position.model';
+import { Game }           from '../model/game.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -24,16 +25,18 @@ export class PlayService {
 		return new PlayScenario(canvas, mapBackground, blockers);
 	}
 
-	makePlayer(x, y, width, height, blockWidth, blockHeight, options, scenario) {
-		const playCharacter     = new PlayCharacter(x, y, width, height, blockWidth, blockHeight, scenario);
-		const character         = new Character();
-		character.name          = options.name;
-		character.health        = options.health;
-		character.currentHealth = options.currentHealth;
-		character.money         = options.money;
-		character.speed         = options.speed;
-		character.items         = options.items;
-		playCharacter.character = character;
+	makePlayer(game: Game, width, height, blockWidth, blockHeight, scenario, connections) {
+		const playCharacter       = new PlayCharacter(game.positionX, game.positionY, width, height, blockWidth, blockHeight, scenario);
+		const character           = new Character();
+		character.name            = game.name;
+		character.health          = game.maxHealth;
+		character.currentHealth   = game.health;
+		character.money           = game.money;
+		character.speed           = game.speed;
+		character.inventory       = game.items;
+		playCharacter.character   = character;
+		playCharacter.connections = connections;
+		playCharacter.orientation = game.orientation;
 		return playCharacter;
 	}
 
