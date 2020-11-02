@@ -48,16 +48,19 @@ export class PlayCharacter {
 		this.orientationList = [];
 		this.pos = {
 			x: ((x * Constants.TILE_WIDTH) - (width * Constants.TILE_WIDTH)),
-			y: ((y * Constants.TILE_HEIGHT) - (height * Constants.TILE_HEIGHT)),
+			y: ((y * Constants.TILE_HEIGHT) - (height-1 * Constants.TILE_HEIGHT)),
 			width: (width * Constants.TILE_WIDTH),
 			height: (height * Constants.TILE_HEIGHT)
 		};
+		console.log({width, height});
+		console.log(this.pos);
 		this.blockPos = {
 			x: ((x * Constants.TILE_WIDTH) - (blockWidth * Constants.TILE_WIDTH)),
-			y: ((y * Constants.TILE_HEIGHT) - (blockHeight * Constants.TILE_HEIGHT)),
+			y: ((y * Constants.TILE_HEIGHT) - (blockHeight-1 * Constants.TILE_HEIGHT)),
 			width: (blockWidth * Constants.TILE_WIDTH),
 			height: (blockHeight * Constants.TILE_HEIGHT)
 		};
+		console.log(this.blockPos);
 		this.originalSize = {width, height};
 		this.scenario = scenario;
 		this.center = {};
@@ -434,14 +437,23 @@ export class PlayCharacter {
 
 	render(ctx) {
 		let img = this.sprites[this.orientation][this.currentFrame];
+		let posX = this.pos.x;
+		let posY = this.pos.y;
 		if (this.hitting) {
 			img = this.sprites['hit-' + this.orientation][this.currentHitFrame];
+			if (this.orientation=='left') {
+				posX -= img.width - Constants.TILE_WIDTH;
+			}
+			if (this.orientation=='up') {
+				posX -= img.width - Constants.TILE_WIDTH;
+				posY -= img.height - Constants.TILE_HEIGHT;
+			}
 		}
-		ctx.drawImage(img, this.pos.x, this.pos.y, img.width, img.height);
+		ctx.drawImage(img, posX, posY, img.width, img.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';
 			ctx.lineWidth = 1;
-			ctx.strokeRect(this.pos.x, this.pos.y, this.pos.width, this.pos.height);
+			ctx.strokeRect(posX, posY, img.width, img.height);
 			ctx.strokeStyle = '#00f';
 			ctx.lineWidth = 1;
 			ctx.strokeRect(this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);

@@ -548,7 +548,6 @@ export class PlayComponent implements OnInit {
 	}
 
 	changeScenario(connection: PlayConnection) {
-		console.log(connection);
 		connection.idGame = this.gameId;
 		this.loading = true;
 		this.disableKeyboard(true);
