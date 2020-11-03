@@ -20,7 +20,9 @@ export class PlayCharacter {
 	vx: number;
 	vy: number;
 	moving;
-	hitting;
+	hitting: boolean;
+	startHitting: boolean;
+	stopHitting: boolean;
 	frames;
 	currentFrame: number;
 	currentHitFrame: number;
@@ -68,6 +70,9 @@ export class PlayCharacter {
 			right: false,
 			left: false
 		};
+		this.hitting = false;
+		this.startHitting = false;
+		this.stopHitting = false;
 		this.frames = {
 			up: [],
 			right: [],
@@ -222,6 +227,7 @@ export class PlayCharacter {
 	hit() {
 		if (!this.hitting) {
 			this.hitting = true;
+			this.startHitting = true;
 			this.playAnimation();
 		}
 	}
@@ -255,6 +261,7 @@ export class PlayCharacter {
 			if (this.currentHitFrame === (this.sprites['hit-'+this.orientation].length - 1)) {
 				this.currentHitFrame = 0;
 				this.hitting = false;
+				this.stopHitting = true;
 			}
 			else{
 				this.currentHitFrame++;
@@ -435,7 +442,7 @@ export class PlayCharacter {
 				break;
 				case 'left': {
 					posX = this.blockPos.x - (img.width - this.blockPos.width);
-					posY = this.blockPos.y - (img.height - this.blockPos.height); 
+					posY = this.blockPos.y - (img.height - this.blockPos.height);
 				}
 				break;
 				case 'right': {
@@ -452,12 +459,36 @@ export class PlayCharacter {
 		}
 		if (this.hitting) {
 			img = this.sprites['hit-' + this.orientation][this.currentHitFrame];
-			if (this.orientation=='left') {
-				posX -= img.width - Constants.TILE_WIDTH;
+			if (this.startHitting && this.orientation=='down') {
+				this.startHitting = false;
+				this.blockPos.x = this.blockPos.x - ((img.width - this.blockPos.width) / 2);;
+				this.blockPos.y = this.blockPos.y - (img.height - this.blockPos.height);
 			}
-			if (this.orientation=='up') {
-				posX -= img.width - Constants.TILE_WIDTH;
-				posY -= img.height - Constants.TILE_HEIGHT;
+			switch (this.orientation) {
+				case 'down': {
+					posX = this.blockPos.x - ((img.width - this.blockPos.width) / 2);
+					posY = this.blockPos.y;
+				}
+				break;
+				case 'left': {
+					posX = this.blockPos.x - (img.width - this.blockPos.width);
+					posY = this.blockPos.y - ((img.height - this.blockPos.height) / 2);
+				}
+				break;
+				case 'right': {
+					posX = this.blockPos.x;
+					posY = this.blockPos.y - ((img.height - this.blockPos.height) / 2);
+				}
+				break;
+				case 'up': {
+					posX = this.blockPos.x - ((img.width - this.blockPos.width) / 2);
+					posY = this.blockPos.y - (img.height - this.blockPos.height);
+				}
+				break;
+			}
+			if (this.stopHitting && this.orientation=='down') {
+				posX = this.blockPos.x;
+				posY = this.blockPos.y;
 			}
 		}
 		ctx.drawImage(img, posX, posY, img.width, img.height);

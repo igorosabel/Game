@@ -88,7 +88,7 @@
 		<p><strong>Fin de hit</strong></p>
 
 		<p class="code">
-			pox.x = blockPos.x;
+			pos.x = blockPos.x;
 			<br>
 			pos.y = blockPos.y;
 		</p>
@@ -181,7 +181,7 @@
 		<p class="code">
 			pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
 			<br>
-			pos.y = blockPos.y - (img.height - blockPos.height); 
+			pos.y = blockPos.y - (img.height - blockPos.height);
 		</p>
 
 		<p><strong>Inicio de hit</strong></p>
@@ -193,7 +193,9 @@
 		<p><strong>Hitting</strong></p>
 
 		<p class="code">
-			-
+			pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
+			<br>
+			pos.y = blockPos.y - (img.height - blockPos.height);
 		</p>
 
 		<p><strong>Fin de hit</strong></p>
