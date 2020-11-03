@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Game</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style type="text/css">
+			body {
+				background-color: #202020;
+				color: #fff;
+			}
+
+			.level-0 {
+				margin-left: 20px;
+				line-height: 1.5em;
+			}
+
+			.level-1 {
+				margin-left: 40px;
+				margin-top: 10px;
+				line-height: 1.5em;
+				margin-bottom: 10px;
+			}
+
+			.level-2 {
+				margin-left: 60px;
+				line-height: 1.5em;
+			}
+
+			.level-3 {
+				margin-left: 80px;
+				line-height: 1.5em;
+			}
+
+			.level-4 {
+				margin-left: 100px;
+				line-height: 1.5em;
+			}
+
+			.level-5 {
+				margin-left: 120px;
+				line-height: 1.5em;
+			}
+
+			.done {
+				color: #155724;
+				background-color: #d4edda;
+				border-color: #c3e6cb;
+				border-radius: 6px;
+				padding: 8px;
+			}
+
+			.not-done {
+				color: #721c24;
+				background-color: #f8d7da;
+				border-color: #f5c6cb;
+				border-radius: 6px;
+				padding: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Navegación del panel admin</h1>
+
+		<div class="level-0 done">Admin ( /admin/main )</div>
+
+			<div class="level-1 done">Mundos ( /admin/worlds )</div>
+				<div class="level-2">listado (editar / borrar) -> va a Escenarios</div>
+				<div class="level-2">añadir nuevo</div>
+
+				<div class="level-2 done">Escenarios del mundo X ( /admin/world/:id_world/scenarios )</div>
+					<div class="level-3">listado -> va a Editar Escenario</div>
+					<div class="level-3">añadir nuevo</div>
+
+					<div class="level-3 done">Editar Escenario ( /admin/world/:id_world/scenario/:id_scenario )</div>
+						<div class="level-4">editor del escenario</div>
+							<div class="level-5">indicar si es el escenario inicial y marcar punto de salida</div>
+							<div class="level-5">al pinchar en cada casilla poder modificar:</div>
+						<div class="level-4">fondo -> se elige de la lista</div>
+						<div class="level-4">objeto -> se elige de la lista pero se puede personalizar</div>
+						<div class="level-4">personaje -> se elige de la lista</div>
+
+			<div class="level-1 done">Todos los recursos ( /admin/resources )</div>
+
+				<div class="level-2 done">Fondos ( /admin/resources/backgrounds )</div>
+					<div class="level-3">listado completo (editar / borrar)</div>
+						<div class="level-4">filtro por categorías -> se puede ir a Categorías de Fondos</div>
+					<div class="level-3">añadir nuevo</div>
+
+					<div class="level-3 done">Categorías de fondos ( /admin/resources/backgrounds/categories )</div>
+						<div class="level-4">listado (editar / borrar)</div>
+						<div class="level-4">añadir nueva</div>
+
+				<div class="level-2 done">Personajes ( /admin/resources/characters )</div>
+					<div class="level-3">listado completo (editar / borrar)</div>
+						<div class="level-4">filtro por nombre / npc-monstruo</div>
+					<div class="level-3">añadir nuevo</div>
+
+				<div class="level-2 done">Objetos de escenario ( /admin/resources/scenario-objects )</div>
+					<div class="level-3">listado completo (editar / borrar)</div>
+					<div class="level-3">añadir nuevo</div>
+
+				<div class="level-2 done">Items ( /admin/resources/items )</div>
+					<div class="level-3">listado completo (editar / borrar)</div>
+						<div class="level-4">filtro por tipo</div>
+					<div class="level-3">añadir nuevo</div>
+
+				<div class="level-2 done">Recursos ( /admin/resources/assets )</div>
+					<div class="level-3">listado completo</div>
+					<div class="level-3">filtro por tags / mundo</div>
+
+			<div class="level-1 not-done">Usuarios ( /admin/users )</div>
+				<div class="level-2">listado (editar / borrar) -> va a Partidas</div>
+				<div class="level-2">añadir nuevo</div>
+
+				<div class="level-2 not-done">Partidas del usuario X ( /admin/user/:id_user/games )</div>
+					<div class="level-3">listado (editar / borrar)</div>
+					<div class="level-3">editar muestra:</div>
+						<div class="level-4">detalle de la partida</div>
+						<div class="level-4">mundos desbloqueados</div>
+						<div class="level-4">inventario</div>
+						<div class="level-4">equipamiento</div>
+	</body>
+</html>
