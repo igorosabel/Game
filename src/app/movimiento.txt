@@ -1,0 +1,26 @@
+1) down
+	inicio
+	
+		blockPos.x = (tileX * tileWidth);
+		blockPos.y = (tileY * tileHeight);
+		
+	andando
+	
+		pos.x = pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
+		pos.y = blockPos.y - (img.height - blockPos.height);
+
+
+	inicio de hit
+
+		blockPos.x = pos.x;
+		blockPos.y = pos.y;
+
+	hitting
+
+		pos.y = blockPos.y;
+		pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
+
+	fin de hit
+
+		pos.y = blockPos.y;
+		pox.x = blockPos.x;
