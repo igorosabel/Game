@@ -5,8 +5,8 @@
 	<div>
 		<div class="row" *ngFor="let scenario of scenarioList">
 			<a [routerLink]="['/admin', 'world', scenario.idWorld, 'scenario', scenario.id]">{{scenario.name}}</a>
-			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-edit" (click)="editScenario(scenario)">
-			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-delete" (click)="deleteScenario(scenario)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="scenario-edit" (click)="editScenario(scenario)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="scenario-delete" (click)="deleteScenario(scenario)">
 		</div>
 		<div class="row center" *ngIf="message!=null">{{message}}</div>
 	</div>

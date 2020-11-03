@@ -1,9 +1,9 @@
 <div class="player-select-bg">
-	<img src="/assets/player-select.png" class="player-select-title">
+	<img src="/assets/hall/player-select.png" class="player-select-title">
 
 	<div class="player-select">
 		<div class="player-select-game" *ngFor="let game of games; let i = index" [ngClass]="{'player-select-game-selected': gameSelected==i}" (mouseover)="changeSelectedGame(game)" (click)="selectGame(game)">
-			<img [src]="'/assets/player-' + (i + 1) + '.png'">
+			<img [src]="'/assets/hall/player-' + (i + 1) + '.png'">
 			<div class="player-select-name">{{game.name}}</div>
 		</div>
 	</div>

@@ -12,10 +12,10 @@
 		</select>
 	</div>
 	<a href="#" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
-		<img src="/assets/list-items.svg">
+		<img src="/assets/admin/list-items.svg">
 	</a>
 	<a href="#" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
-		<img src="/assets/list-list.svg">
+		<img src="/assets/admin/list-list.svg">
 	</a>
 </div>
 
@@ -24,8 +24,8 @@
 		<img src="{{ asset.url }}" alt="{{ asset.name }}">
 		<div class="asset-info">
 			<span title="{{asset.name}}">{{ asset.name }}</span>
-			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="asset-edit" (click)="editAsset(asset)">
-			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="asset-delete" (click)="deleteAsset(asset)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="asset-edit" (click)="editAsset(asset)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="asset-delete" (click)="deleteAsset(asset)">
 		</div>
 	</div>
 	<div class="asset-message" *ngIf="message!=null">

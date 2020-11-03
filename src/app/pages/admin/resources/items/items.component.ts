@@ -84,8 +84,8 @@ export class ItemsComponent implements OnInit {
 
 	resetLoadedItem() {
 		this.loadedItem = new Item();
-		this.loadedItem.assetUrl = '/assets/no-asset.svg';
-		this.animationImage = '/assets/no-asset.svg';
+		this.loadedItem.assetUrl = '/assets/admin/no-asset.svg';
+		this.animationImage = '/assets/admin/no-asset.svg';
 		this.assetPickerWhere = null;
 		this.changeTab('data');
 		this.animationInd = -1;

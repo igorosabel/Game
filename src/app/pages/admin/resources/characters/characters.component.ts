@@ -98,16 +98,16 @@ export class CharactersComponent implements OnInit {
 		clearInterval(this.animationTimer.left);
 		clearInterval(this.animationTimer.right);
 		this.loadedCharacter = new Character();
-		this.loadedCharacter.dropAssetUrl = '/assets/no-asset.svg';
+		this.loadedCharacter.dropAssetUrl = '/assets/admin/no-asset.svg';
 		this.dropItemName = 'Elige un item';
-		this.loadedCharacter.assetUpUrl = '/assets/no-asset.svg';
-		this.animationImage.up = '/assets/no-asset.svg';
-		this.loadedCharacter.assetDownUrl = '/assets/no-asset.svg';
-		this.animationImage.down = '/assets/no-asset.svg';
-		this.loadedCharacter.assetLeftUrl = '/assets/no-asset.svg';
-		this.animationImage.left = '/assets/no-asset.svg';
-		this.loadedCharacter.assetRightUrl = '/assets/no-asset.svg';
-		this.animationImage.right = '/assets/no-asset.svg';
+		this.loadedCharacter.assetUpUrl = '/assets/admin/no-asset.svg';
+		this.animationImage.up = '/assets/admin/no-asset.svg';
+		this.loadedCharacter.assetDownUrl = '/assets/admin/no-asset.svg';
+		this.animationImage.down = '/assets/admin/no-asset.svg';
+		this.loadedCharacter.assetLeftUrl = '/assets/admin/no-asset.svg';
+		this.animationImage.left = '/assets/admin/no-asset.svg';
+		this.loadedCharacter.assetRightUrl = '/assets/admin/no-asset.svg';
+		this.animationImage.right = '/assets/admin/no-asset.svg';
 	}
 
 	showAddCharacter(ev = null) {
@@ -142,7 +142,7 @@ export class CharactersComponent implements OnInit {
 	removeSelectedDropItem(ev) {
 		ev && ev.preventDefault();
 		this.loadedCharacter.dropIdItem = null;
-		this.loadedCharacter.dropAssetUrl = '/assets/no-asset.svg';
+		this.loadedCharacter.dropAssetUrl = '/assets/admin/no-asset.svg';
 		this.dropItemName = 'Elige un item';
 	}
 
@@ -389,20 +389,20 @@ export class CharactersComponent implements OnInit {
 			character.blockHeight,
 			character.fixedPosition,
 			character.idAssetUp,
-			(character.assetUpUrl!=null) ? character.assetUpUrl : '/assets/no-asset.svg',
+			(character.assetUpUrl!=null) ? character.assetUpUrl : '/assets/admin/no-asset.svg',
 			character.idAssetDown,
 			character.assetDownUrl,
 			character.idAssetLeft,
-			(character.assetLeftUrl!=null) ? character.assetLeftUrl : '/assets/no-asset.svg',
+			(character.assetLeftUrl!=null) ? character.assetLeftUrl : '/assets/admin/no-asset.svg',
 			character.idAssetRight,
-			(character.assetRightUrl!=null) ? character.assetRightUrl : '/assets/no-asset.svg',
+			(character.assetRightUrl!=null) ? character.assetRightUrl : '/assets/admin/no-asset.svg',
 			character.type,
 			character.health,
 			character.attack,
 			character.defense,
 			character.speed,
 			character.dropIdItem,
-			(character.dropAssetUrl!=null) ? character.dropAssetUrl : '/assets/no-asset.svg',
+			(character.dropAssetUrl!=null) ? character.dropAssetUrl : '/assets/admin/no-asset.svg',
 			character.dropChance,
 			character.respawn,
 			[],
@@ -417,7 +417,7 @@ export class CharactersComponent implements OnInit {
 				this.loadedCharacter['frames'+sent].push(frame);
 			}
 
-			this.animationImage[sent.toLowerCase()] = (this.loadedCharacter['asset'+sent+'Url']!=null) ? this.loadedCharacter['asset'+sent+'Url'] : '/assets/no-asset.svg';
+			this.animationImage[sent.toLowerCase()] = (this.loadedCharacter['asset'+sent+'Url']!=null) ? this.loadedCharacter['asset'+sent+'Url'] : '/assets/admin/no-asset.svg';
 			this.animationInd[sent.toLowerCase()] = -1;
 			clearInterval(this.animationTimer[sent.toLowerCase()]);
 			this.animationTimer[sent.toLowerCase()] = null;

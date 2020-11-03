@@ -81,9 +81,9 @@ export class ScenarioObjectsComponent implements OnInit {
 	resetLoadedScenarioObject() {
 		clearInterval(this.animationTimer);
 		this.loadedScenarioObject = new ScenarioObject();
-		this.loadedScenarioObject.assetUrl = '/assets/no-asset.svg';
-		this.loadedScenarioObject.assetActiveUrl = '/assets/no-asset.svg';
-		this.animationImage = '/assets/no-asset.svg';
+		this.loadedScenarioObject.assetUrl = '/assets/admin/no-asset.svg';
+		this.loadedScenarioObject.assetActiveUrl = '/assets/admin/no-asset.svg';
+		this.animationImage = '/assets/admin/no-asset.svg';
 		this.activeTriggerWorld = null;
 		this.scenarioList = [];
 	}
@@ -176,7 +176,7 @@ export class ScenarioObjectsComponent implements OnInit {
 			this.loadedScenarioObject.activeTrigger = null;
 			this.loadedScenarioObject.activeTriggerCustom = null;
 			this.loadedScenarioObject.idAssetActive = null;
-			this.loadedScenarioObject.assetActiveUrl = '/assets/no-asset.svg';
+			this.loadedScenarioObject.assetActiveUrl = '/assets/admin/no-asset.svg';
 			this.loadedScenarioObject.crossable = false;
 			this.loadedScenarioObject.grabbable = false;
 			this.loadedScenarioObject.breakable = false;
@@ -389,7 +389,7 @@ export class ScenarioObjectsComponent implements OnInit {
 			this.loadedScenarioObject.drops.push(drop);
 		}
 
-		this.animationImage = (this.loadedScenarioObject.assetUrl!=null) ? this.loadedScenarioObject.assetUrl : '/assets/no-asset.svg';
+		this.animationImage = (this.loadedScenarioObject.assetUrl!=null) ? this.loadedScenarioObject.assetUrl : '/assets/admin/no-asset.svg';
 		this.animationInd = -1;
 		clearInterval(this.animationTimer);
 		this.animationTimer = null;

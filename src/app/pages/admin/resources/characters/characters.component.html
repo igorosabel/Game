@@ -8,10 +8,10 @@
 		</select>
 	</div>
 	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
-		<img src="/assets/list-items.svg">
+		<img src="/assets/admin/list-items.svg">
 	</a>
 	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
-		<img src="/assets/list-list.svg">
+		<img src="/assets/admin/list-list.svg">
 	</a>
 </div>
 
@@ -20,8 +20,8 @@
 		<img src="{{ character.assetDownUrl }}" alt="{{ character.name }}">
 		<div class="character-info">
 			<span title="{{character.name}}">{{ character.name }}</span>
-			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="character-edit" (click)="editCharacter(character)">
-			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="character-delete" (click)="deleteCharacter(character)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="character-edit" (click)="editCharacter(character)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="character-delete" (click)="deleteCharacter(character)">
 		</div>
 	</div>
 	<div class="character-message" *ngIf="message!=null">
@@ -136,18 +136,18 @@
 			<div class="animation-slider">
 				<div class="animation-frame" *ngFor="let frame of loadedCharacter.framesDown; let ind = index">
 					<button class="animation-delete" (click)="frameDelete('down', frame)">
-						<img src="/assets/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg">
 					</button>
 					<button class="animation-left" (click)="frameLeft('down', frame)" *ngIf="ind!=0">
-						<img src="/assets/frame-left.svg">
+						<img src="/assets/admin/frame-left.svg">
 					</button>
 					<button class="animation-right" (click)="frameRight('down', frame)" *ngIf="ind!=loadedCharacter.framesDown.length-1">
-						<img src="/assets/frame-right.svg">
+						<img src="/assets/admin/frame-right.svg">
 					</button>
 					<img [src]="frame.assetUrl">
 				</div>
 				<div class="animation-frame animation-frame-add">
-					<img src="/assets/add-frame.svg" (click)="openAssetPicker('framesDown')">
+					<img src="/assets/admin/add-frame.svg" (click)="openAssetPicker('framesDown')">
 				</div>
 			</div>
 		</div>
@@ -165,18 +165,18 @@
 			<div class="animation-slider">
 				<div class="animation-frame" *ngFor="let frame of loadedCharacter.framesUp; let ind = index">
 					<button class="animation-delete" (click)="frameDelete('up', frame)">
-						<img src="/assets/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg">
 					</button>
 					<button class="animation-left" (click)="frameLeft('up', frame)" *ngIf="ind!=0">
-						<img src="/assets/frame-left.svg">
+						<img src="/assets/admin/frame-left.svg">
 					</button>
 					<button class="animation-right" (click)="frameRight('up', frame)" *ngIf="ind!=loadedCharacter.framesUp.length-1">
-						<img src="/assets/frame-right.svg">
+						<img src="/assets/admin/frame-right.svg">
 					</button>
 					<img [src]="frame.assetUrl">
 				</div>
 				<div class="animation-frame animation-frame-add">
-					<img src="/assets/add-frame.svg" (click)="openAssetPicker('framesUp')">
+					<img src="/assets/admin/add-frame.svg" (click)="openAssetPicker('framesUp')">
 				</div>
 			</div>
 		</div>
@@ -194,18 +194,18 @@
 			<div class="animation-slider">
 				<div class="animation-frame" *ngFor="let frame of loadedCharacter.framesLeft; let ind = index">
 					<button class="animation-delete" (click)="frameDelete('left', frame)">
-						<img src="/assets/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg">
 					</button>
 					<button class="animation-left" (click)="frameLeft('left', frame)" *ngIf="ind!=0">
-						<img src="/assets/frame-left.svg">
+						<img src="/assets/admin/frame-left.svg">
 					</button>
 					<button class="animation-right" (click)="frameRight('left', frame)" *ngIf="ind!=loadedCharacter.framesLeft.length-1">
-						<img src="/assets/frame-right.svg">
+						<img src="/assets/admin/frame-right.svg">
 					</button>
 					<img [src]="frame.assetUrl">
 				</div>
 				<div class="animation-frame animation-frame-add">
-					<img src="/assets/add-frame.svg" (click)="openAssetPicker('framesLeft')">
+					<img src="/assets/admin/add-frame.svg" (click)="openAssetPicker('framesLeft')">
 				</div>
 			</div>
 		</div>
@@ -223,18 +223,18 @@
 			<div class="animation-slider">
 				<div class="animation-frame" *ngFor="let frame of loadedCharacter.framesRight; let ind = index">
 					<button class="animation-delete" (click)="frameDelete('right', frame)">
-						<img src="/assets/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg">
 					</button>
 					<button class="animation-left" (click)="frameLeft('right', frame)" *ngIf="ind!=0">
-						<img src="/assets/frame-left.svg">
+						<img src="/assets/admin/frame-left.svg">
 					</button>
 					<button class="animation-right" (click)="frameRight('right', frame)" *ngIf="ind!=loadedCharacter.framesRight.length-1">
-						<img src="/assets/frame-right.svg">
+						<img src="/assets/admin/frame-right.svg">
 					</button>
 					<img [src]="frame.assetUrl">
 				</div>
 				<div class="animation-frame animation-frame-add">
-					<img src="/assets/add-frame.svg" (click)="openAssetPicker('framesRight')">
+					<img src="/assets/admin/add-frame.svg" (click)="openAssetPicker('framesRight')">
 				</div>
 			</div>
 		</div>
@@ -249,9 +249,9 @@
 					<div class="narratives-item-header">
 						<label>{{narrative.order}}</label>
 						<span>
-							<img src="/assets/move-down.svg" title="Mover abajo el diálogo" (click)="moveNarrative(narrative, 'down')">
-							<img src="/assets/move-up.svg" title="Mover arriba el diálogo" (click)="moveNarrative(narrative, 'up')">
-							<img src="/assets/delete.svg" title="Borrar el diálogo" (click)="deleteNarrative(narrative)">
+							<img src="/assets/admin/move-down.svg" title="Mover abajo el diálogo" (click)="moveNarrative(narrative, 'down')">
+							<img src="/assets/admin/move-up.svg" title="Mover arriba el diálogo" (click)="moveNarrative(narrative, 'up')">
+							<img src="/assets/admin/delete.svg" title="Borrar el diálogo" (click)="deleteNarrative(narrative)">
 						</span>
 					</div>
 					<textarea name="narrative-item" class="narrative-dialog" [(ngModel)]="narrative.dialog"></textarea>

@@ -2,10 +2,10 @@
 
 <div class="scenario-object-header">
 	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
-		<img src="/assets/list-items.svg">
+		<img src="/assets/admin/list-items.svg">
 	</a>
 	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
-		<img src="/assets/list-list.svg">
+		<img src="/assets/admin/list-list.svg">
 	</a>
 </div>
 
@@ -14,8 +14,8 @@
 		<img src="{{ scenarioObject.assetUrl }}" alt="{{ scenarioObject.name }}">
 		<div class="scenario-object-info">
 			<span title="{{scenarioObject.name}}">{{ scenarioObject.name }}</span>
-			<img src="/assets/edit.svg" alt="Editar" title="Editar" class="scenario-object-edit" (click)="editScenarioObject(scenarioObject)">
-			<img src="/assets/delete.svg" alt="Borrar" title="Borrar" class="scenario-object-delete" (click)="deleteScenarioObject(scenarioObject)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="scenario-object-edit" (click)="editScenarioObject(scenarioObject)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="scenario-object-delete" (click)="deleteScenarioObject(scenarioObject)">
 		</div>
 	</div>
 	<div class="scenario-object-message" *ngIf="message!=null">
@@ -141,18 +141,18 @@
 			<div class="animation-slider">
 				<div class="animation-frame" *ngFor="let frame of loadedScenarioObject.frames; let ind = index">
 					<button class="animation-delete" (click)="frameDelete(frame)">
-						<img src="/assets/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg">
 					</button>
 					<button class="animation-left" (click)="frameLeft(frame)" *ngIf="ind!=0">
-						<img src="/assets/frame-left.svg">
+						<img src="/assets/admin/frame-left.svg">
 					</button>
 					<button class="animation-right" (click)="frameRight(frame)" *ngIf="ind!=loadedScenarioObject.frames.length-1">
-						<img src="/assets/frame-right.svg">
+						<img src="/assets/admin/frame-right.svg">
 					</button>
 					<img [src]="frame.assetUrl">
 				</div>
 				<div class="animation-frame animation-frame-add">
-					<img src="/assets/add-frame.svg" (click)="openAssetPicker('frames')">
+					<img src="/assets/admin/add-frame.svg" (click)="openAssetPicker('frames')">
 				</div>
 			</div>
 		</div>

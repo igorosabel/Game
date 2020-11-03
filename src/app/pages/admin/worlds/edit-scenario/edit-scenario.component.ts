@@ -27,18 +27,18 @@ export class EditScenarioComponent implements OnInit {
 	selected = {
 		selecting: null,
 		idBackground: null,
-		backgroundAssetUrl: '/assets/color-picker.svg',
+		backgroundAssetUrl: '/assets/admin/color-picker.svg',
 		idScenarioObject: null,
-		scenarioObjectAssetUrl: '/assets/color-picker.svg',
+		scenarioObjectAssetUrl: '/assets/admin/color-picker.svg',
 		scenarioObjectWidth: null,
 		scenarioObjectHeight: null,
 		idCharacter: null,
-		characterAssetUrl: '/assets/color-picker.svg',
+		characterAssetUrl: '/assets/admin/color-picker.svg',
 		characterWidth: null,
 		characterHeight: null
 	};
 	startSelecting: boolean = false;
-	mapGenerating: string = '/assets/create-map.svg';
+	mapGenerating: string = '/assets/admin/create-map.svg';
 	showDebug: boolean = false;
 	worldId: number = null;
 	scenarioId: number = null;
@@ -129,7 +129,7 @@ export class EditScenarioComponent implements OnInit {
 		ev && ev.preventDefault();
 		const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);
 		this.selected['id'+firstUpper] = null;
-		this.selected[mode+'AssetUrl'] = '/assets/color-picker.svg';
+		this.selected[mode+'AssetUrl'] = '/assets/admin/color-picker.svg';
 		if (mode=='scenarioObject' || mode=='character') {
 			this.selected[mode+'Width'] = null;
 			this.selected[mode+'Height'] = null;
@@ -168,7 +168,7 @@ export class EditScenarioComponent implements OnInit {
 	createMap() {
 		this.mapGenerating = '/assets/loading.svg';
 		this.as.generateMap(this.scenarioId).subscribe(result => {
-			this.mapGenerating = '/assets/create-map.svg';
+			this.mapGenerating = '/assets/admin/create-map.svg';
 			if (result.status=='ok') {
 				alert('¡Mapa creado!');
 			}
@@ -208,17 +208,17 @@ export class EditScenarioComponent implements OnInit {
 				cell.y,
 				cell.idBackground,
 				(cell.idBackground!=null) ? cell.backgroundName : 'Sin fondo',
-				(cell.idBackground!=null) ? cell.backgroundAssetUrl : '/assets/no-asset.svg',
+				(cell.idBackground!=null) ? cell.backgroundAssetUrl : '/assets/admin/no-asset.svg',
 				cell.idScenarioObject,
 				(cell.idScenarioObject!=null) ? cell.scenarioObjectName : 'Sin objeto',
-				(cell.idScenarioObject!=null) ? cell.scenarioObjectAssetUrl : '/assets/no-asset.svg',
+				(cell.idScenarioObject!=null) ? cell.scenarioObjectAssetUrl : '/assets/admin/no-asset.svg',
 				cell.scenarioObjectWidth,
 				cell.scenarioObjectHeight,
 				cell.scenarioObjectBlockWidth,
 				cell.scenarioObjectBlockHeight,
 				cell.idCharacter,
 				(cell.idCharacter!=null) ? cell.characterName : 'Sin personaje',
-				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/no-asset.svg',
+				(cell.idCharacter!=null) ? cell.characterAssetUrl : '/assets/admin/no-asset.svg',
 				cell.characterWidth,
 				cell.characterHeight,
 				cell.characterBlockWidth,
@@ -271,7 +271,7 @@ export class EditScenarioComponent implements OnInit {
 	deleteBackground(ev) {
 		ev && ev.preventDefault();
 		this.loadedCell.idBackground = null;
-		this.loadedCell.backgroundAssetUrl = '/assets/no-asset.svg';
+		this.loadedCell.backgroundAssetUrl = '/assets/admin/no-asset.svg';
 		this.loadedCell.backgroundName = 'Sin fondo';
 	}
 
@@ -294,7 +294,7 @@ export class EditScenarioComponent implements OnInit {
 	deleteScenarioObject(ev) {
 		ev && ev.preventDefault();
 		this.loadedCell.idScenarioObject = null;
-		this.loadedCell.scenarioObjectAssetUrl = '/assets/no-asset.svg';
+		this.loadedCell.scenarioObjectAssetUrl = '/assets/admin/no-asset.svg';
 		this.loadedCell.scenarioObjectName = 'Sin objeto';
 	}
 
@@ -317,7 +317,7 @@ export class EditScenarioComponent implements OnInit {
 	deleteCharacter(ev) {
 		ev && ev.preventDefault();
 		this.loadedCell.idCharacter = null;
-		this.loadedCell.characterAssetUrl = '/assets/no-asset.svg';
+		this.loadedCell.characterAssetUrl = '/assets/admin/no-asset.svg';
 		this.loadedCell.characterName = 'Sin personaje';
 	}
 

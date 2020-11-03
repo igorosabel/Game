@@ -76,7 +76,7 @@ export class BackgroundsComponent implements OnInit {
 
 	resetLoadedBackground() {
 		this.loadedBackground = new Background();
-		this.loadedBackground.assetUrl = '/assets/no-asset.svg';
+		this.loadedBackground.assetUrl = '/assets/admin/no-asset.svg';
 	}
 
 	showAddBackground(ev = null) {

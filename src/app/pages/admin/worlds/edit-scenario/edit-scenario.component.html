@@ -20,7 +20,7 @@
 	</div>
 	<div class="start-picker">
 		<label>Inicio</label>
-		<img src="/assets/start-location.svg" [ngClass]="{'start-selecting': startSelecting}" (click)="selectStart()">
+		<img src="/assets/admin/start-location.svg" [ngClass]="{'start-selecting': startSelecting}" (click)="selectStart()">
 	</div>
 	<div class="map-generate">
 		<a href="https://apigame.osumi.es/maps/{{worldId}}-{{scenarioId}}.png" target="_blank">Mapa</a>
@@ -35,7 +35,7 @@
 <div class="edit-scenario-container">
 	<div class="edit-scenario-with-connections">
 		<div class="edit-scenario-upbottom">
-			<img src="/assets/go-up.svg" title="Conectar escenario por arriba" (click)="connect('up')">
+			<img src="/assets/admin/go-up.svg" title="Conectar escenario por arriba" (click)="connect('up')">
 			<span *ngIf="connections.up!=null">
 				{{connections.up.toName}}
 				<a href="#" (click)="deleteConnection($event, 'up')">X</a>
@@ -43,7 +43,7 @@
 		</div>
 		<div class="edit-scenario-main">
 			<div class="edit-scenario-side">
-				<img src="/assets/go-left.svg" title="Conectar escenario por la izquierda" (click)="connect('left')">
+				<img src="/assets/admin/go-left.svg" title="Conectar escenario por la izquierda" (click)="connect('left')">
 				<span *ngIf="connections.left!=null" title="{{connections.left.toName}}">
 					{{connections.left.toName}}
 					<a href="#" (click)="deleteConnection($event, 'left')">X</a>
@@ -60,7 +60,7 @@
 				</div>
 			</div>
 			<div class="edit-scenario-side">
-				<img src="/assets/go-right.svg" title="Conectar escenario por la derecha" (click)="connect('right')">
+				<img src="/assets/admin/go-right.svg" title="Conectar escenario por la derecha" (click)="connect('right')">
 				<span *ngIf="connections.right!=null" title="{{connections.right.toName}}">
 					{{connections.right.toName}}
 					<a href="#" (click)="deleteConnection($event, 'right')">X</a>
@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		<div class="edit-scenario-upbottom">
-			<img src="/assets/go-down.svg" title="Conectar escenario por abajo" (click)="connect('down')">
+			<img src="/assets/admin/go-down.svg" title="Conectar escenario por abajo" (click)="connect('down')">
 			<span *ngIf="connections.down!=null">
 				{{connections.down.toName}}
 				<a href="#" (click)="deleteConnection($event, 'down')">X</a>
@@ -89,7 +89,7 @@
 				<main>
 					<img [src]="loadedCell.backgroundAssetUrl" (click)="openBackgroundPicker()">
 					<a href="#" *ngIf="loadedCell.idBackground!=null" (click)="deleteBackground($event)">
-						<img src="/assets/cant-cross.svg">
+						<img src="/assets/admin/cant-cross.svg">
 					</a>
 				</main>
 				<footer>
@@ -101,7 +101,7 @@
 				<main>
 					<img [src]="loadedCell.scenarioObjectAssetUrl" (click)="openScenarioObjectPicker()">
 					<a href="#" *ngIf="loadedCell.idScenarioObject!=null" (click)="deleteScenarioObject($event)">
-						<img src="/assets/cant-cross.svg">
+						<img src="/assets/admin/cant-cross.svg">
 					</a>
 				</main>
 				<footer>
@@ -113,7 +113,7 @@
 				<main>
 					<img [src]="loadedCell.characterAssetUrl" (click)="openCharacterPicker()">
 					<a href="#" *ngIf="loadedCell.idCharacter!=null" (click)="deleteCharacter($event)">
-						<img src="/assets/cant-cross.svg">
+						<img src="/assets/admin/cant-cross.svg">
 					</a>
 				</main>
 				<footer>
