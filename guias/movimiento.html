@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Game</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style type="text/css">
+			body {
+				background-color: #202020;
+				color: #fff;
+			}
+
+			h1 {
+				text-align: center;
+			}
+
+			h2 {
+				text-align: center;
+				border-bottom: 1px solid #ccc;
+				padding-bottom: 16px;
+			}
+
+			.images {
+				display: flex;
+				justify-content: space-around;
+			}
+
+			img {
+				height: 150px;
+			}
+
+			.code {
+				margin-left: 20px;
+				line-height: 1.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Inicio</h1>
+
+		<p><strong>Constructor</strong></p>
+
+		<p class="code">
+			blockPos.x = tileX * tileWidth;
+			<br>
+			blockPos.y = tileY * tileHeight;
+			<br>
+			blockPos.width = blockWidth * tileWidth;
+			<br>
+			blockPos.height = blockHeight * tileHeight;
+		</p>
+
+		<h1>Movimientos</h1>
+
+		<!-- DOWN -->
+
+		<h2>1.- Down</h2>
+
+		<div class="images">
+			<img src="./down.png">
+			<img src="./down-hit.png">
+		</div>
+
+		<p><strong>Andando</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
+			<br>
+			pos.y = blockPos.y - (img.height - blockPos.height);
+		</p>
+
+		<p><strong>Inicio de hit</strong></p>
+
+		<p class="code">
+			blockPos.x = pos.x;
+			<br>
+			blockPos.y = pos.y;
+		</p>
+
+		<p><strong>Hitting</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
+			<br>
+			pos.y = blockPos.y;
+		</p>
+
+		<p><strong>Fin de hit</strong></p>
+
+		<p class="code">
+			pox.x = blockPos.x;
+			<br>
+			pos.y = blockPos.y;
+		</p>
+
+		<!-- LEFT -->
+
+		<h2>2.- Left</h2>
+
+		<div class="images">
+			<img src="./left.png">
+			<img src="./left-hit.png">
+		</div>
+
+		<p><strong>Andando</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x - (img.width - blockPos.width);
+			<br>
+			pos.y = blockPos.y - (img.height - blockPos.height);
+		</p>
+
+		<p><strong>Inicio de hit</strong></p>
+
+		<p class="code">
+			-
+		</p>
+
+		<p><strong>Hitting</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x - (img.width - blockPos.width);
+			<br>
+			pos.y = blockPos.y - ((img.height - blockPos.height) / 2);
+		</p>
+
+		<p><strong>Fin de hit</strong></p>
+
+		<p class="code">
+			-
+		</p>
+
+		<!-- RIGHT -->
+
+		<h2>3.- Right</h2>
+
+		<div class="images">
+			<img src="./right.png">
+			<img src="./right-hit.png">
+		</div>
+
+		<p><strong>Andando</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x;
+			<br>
+			pos.y = blockPos.y - (img.height - blockPos.height);
+		</p>
+
+		<p><strong>Inicio de hit</strong></p>
+
+		<p class="code">
+			-
+		</p>
+
+		<p><strong>Hitting</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x;
+			<br>
+			pos.y = blockPos.y - ((img.height - blockPos.height) / 2);
+		</p>
+
+		<p><strong>Fin de hit</strong></p>
+
+		<p class="code">
+			-
+		</p>
+
+		<!-- UP -->
+
+		<h2>4.- Up</h2>
+
+		<div class="images">
+			<img src="./up.png">
+			<img src="./up-hit.png">
+		</div>
+
+		<p><strong>Andando</strong></p>
+
+		<p class="code">
+			pos.x = blockPos.x - ((img.width - blockPos.width) / 2);
+			<br>
+			pos.y = blockPos.y - (img.height - blockPos.height); 
+		</p>
+
+		<p><strong>Inicio de hit</strong></p>
+
+		<p class="code">
+			-
+		</p>
+
+		<p><strong>Hitting</strong></p>
+
+		<p class="code">
+			-
+		</p>
+
+		<p><strong>Fin de hit</strong></p>
+
+		<p class="code">
+			-
+		</p>
+	</body>
+</html>
