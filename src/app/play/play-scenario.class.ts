@@ -106,7 +106,7 @@ export class PlayScenario {
 		list.push(this.player);
 		list = list.concat(this.objects);
 		list = list.concat(this.characters);
-		list.sort((a, b) => a.pos.y - b.pos.y);
+		list.sort((a, b) => a.blockPos.y - b.blockPos.y);
 
 		list.forEach(item => {
 			item.render(this.canvas.ctx);

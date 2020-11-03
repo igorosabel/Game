@@ -12,7 +12,6 @@ import { PlayUtils }       from './play-utils.class';
 export class PlayCharacter {
 	orientation: string;
 	orientationList;
-	pos;
 	blockPos;
 	originalSize;
 	center;
@@ -46,21 +45,12 @@ export class PlayCharacter {
 	) {
 		this.orientation = 'down';
 		this.orientationList = [];
-		this.pos = {
-			x: ((x * Constants.TILE_WIDTH) - (width * Constants.TILE_WIDTH)),
-			y: ((y * Constants.TILE_HEIGHT) - (height-1 * Constants.TILE_HEIGHT)),
-			width: (width * Constants.TILE_WIDTH),
-			height: (height * Constants.TILE_HEIGHT)
-		};
-		console.log({width, height});
-		console.log(this.pos);
 		this.blockPos = {
-			x: ((x * Constants.TILE_WIDTH) - (blockWidth * Constants.TILE_WIDTH)),
-			y: ((y * Constants.TILE_HEIGHT) - (blockHeight-1 * Constants.TILE_HEIGHT)),
+			x: (x * Constants.TILE_WIDTH),
+			y: (y * Constants.TILE_HEIGHT),
 			width: (blockWidth * Constants.TILE_WIDTH),
 			height: (blockHeight * Constants.TILE_HEIGHT)
 		};
-		console.log(this.blockPos);
 		this.originalSize = {width, height};
 		this.scenario = scenario;
 		this.center = {};
@@ -101,7 +91,7 @@ export class PlayCharacter {
 	}
 
 	updateCenter() {
-		this.center = PlayUtils.getCenter(this.pos);
+		this.center = PlayUtils.getCenter(this.blockPos);
 	}
 
 	getNextPos() {
@@ -109,19 +99,19 @@ export class PlayCharacter {
 		const newPos: Position = new Position(this.center.x, this.center.y);
 		switch(this.orientation) {
 			case 'up': {
-				newPos.y -= this.pos.height;
+				newPos.y -= this.blockPos.height;
 			}
 			break;
 			case 'down': {
-				newPos.y += this.pos.height;
+				newPos.y += this.blockPos.height;
 			}
 			break;
 			case 'left': {
-				newPos.x -= this.pos.width;
+				newPos.x -= this.blockPos.width;
 			}
 			break;
 			case 'right': {
-				newPos.x += this.pos.width;
+				newPos.x += this.blockPos.width;
 			}
 			break;
 		}
@@ -405,7 +395,7 @@ export class PlayCharacter {
 			}
 			else {
 				const characterList = [...this.scenario.characters];
-				const characterInd = characterList.findIndex(x => x.pos.x===this.pos.x && x.pos.y===this.pos.y);
+				const characterInd = characterList.findIndex(x => x.blockPos.x===this.blockPos.x && x.blockPos.y===this.blockPos.y);
 				characterList.splice(characterInd, 1);
 				characterList.forEach(character => {
 					if (this.characterCollision(newPos, character)) {
@@ -424,8 +414,6 @@ export class PlayCharacter {
 			}
 
 			// Actualizo posición
-			this.pos.x += this.vx;
-			this.pos.y += this.vy;
 			this.blockPos.x += this.vx;
 			this.blockPos.y += this.vy;
 			this.updateCenter();
@@ -437,8 +425,31 @@ export class PlayCharacter {
 
 	render(ctx) {
 		let img = this.sprites[this.orientation][this.currentFrame];
-		let posX = this.pos.x;
-		let posY = this.pos.y;
+		let posX, posY;
+		if (!this.hitting) {
+			switch (this.orientation) {
+				case 'down': {
+					posX = this.blockPos.x - ((img.width - this.blockPos.width) / 2);
+					posY = this.blockPos.y - (img.height - this.blockPos.height);
+				}
+				break;
+				case 'left': {
+					posX = this.blockPos.x - (img.width - this.blockPos.width);
+					posY = this.blockPos.y - (img.height - this.blockPos.height); 
+				}
+				break;
+				case 'right': {
+					posX = this.blockPos.x;
+					posY = this.blockPos.y - (img.height - this.blockPos.height);
+				}
+				break;
+				case 'up': {
+					posX = this.blockPos.x - ((img.width - this.blockPos.width) / 2);
+					posY = this.blockPos.y - (img.height - this.blockPos.height);
+				}
+				break;
+			}
+		}
 		if (this.hitting) {
 			img = this.sprites['hit-' + this.orientation][this.currentHitFrame];
 			if (this.orientation=='left') {

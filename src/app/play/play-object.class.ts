@@ -3,7 +3,7 @@ import { ScenarioObject } from '../model/scenario-object.model';
 import { AssetCache }     from './asset-cache.class';
 
 export class PlayObject {
-	pos;
+	blockPos;
 	object: ScenarioObject;
 	currentFrame: number;
 	interval: number;
@@ -11,7 +11,7 @@ export class PlayObject {
 	playing: boolean;
 
 	constructor(x: number, y: number, width: number, height: number, object: ScenarioObject) {
-		this.pos = {
+		this.blockPos = {
 			x: x * Constants.TILE_WIDTH,
 			y: (y * Constants.TILE_HEIGHT) - ((height-1) * Constants.TILE_HEIGHT),
 			width: width * Constants.TILE_WIDTH,
@@ -43,11 +43,11 @@ export class PlayObject {
 	render(ctx) {
 		this.playAnimation();
 		const frameImg = this.assets.get(this.object.allFrames[this.currentFrame]);
-		ctx.drawImage(frameImg, this.pos.x, this.pos.y, this.pos.width, this.pos.height);
+		ctx.drawImage(frameImg, this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#00f';
 			ctx.lineWidth = 1;
-			ctx.strokeRect(this.pos.x, this.pos.y, this.pos.width, this.pos.height);
+			ctx.strokeRect(this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);
 		}
 	}
 }
