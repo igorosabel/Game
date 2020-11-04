@@ -18,6 +18,7 @@ export class PlayScenario {
 	private _onCharacterAction = new EventDispatcher<PlayScenario, PlayCharacter>();
 	private _onObjectAction = new EventDispatcher<PlayScenario, PlayObject>();
 	private _onPlayerConnection = new EventDispatcher<PlayScenario, PlayConnection>();
+	private _onPlayerHit = new EventDispatcher<PlayScenario, PlayCharacter>();
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
 		// Creo el canvas
@@ -74,6 +75,12 @@ export class PlayScenario {
 			this.player.stop();
 			this._onPlayerConnection.dispatch(this, connection);
 		});
+		player.onHit.subscribe((c, position) => {
+			const character = this.findOnPosition(position, this.characters);
+			if (character!==null) {
+				this._onPlayerHit.dispatch(this, character);
+			}
+		});
 		this.player = player;
 	}
 	
@@ -87,6 +94,10 @@ export class PlayScenario {
 
 	public get onPlayerConnection() {
 		return this._onPlayerConnection.asEvent();
+	}
+
+	public get onPlayerHit() {
+		return this._onPlayerHit.asEvent();
 	}
 
 	addObject(object: PlayObject) {

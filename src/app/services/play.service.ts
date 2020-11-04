@@ -34,6 +34,8 @@ export class PlayService {
 		const playCharacter       = new PlayCharacter(game.positionX, game.positionY, width, height, blockWidth, blockHeight, scenario);
 		const character           = new Character();
 		character.name            = game.name;
+		character.attack          = game.attack;
+		character.defense         = game.defense;
 		character.health          = game.maxHealth;
 		character.currentHealth   = game.health;
 		character.money           = game.money;

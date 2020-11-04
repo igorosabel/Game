@@ -33,8 +33,9 @@ export class PlayCharacter {
 	connections;
 	npcData;
 
-	private _onAction = new EventDispatcher<PlayCharacter, Position>();
+	private _onAction     = new EventDispatcher<PlayCharacter, Position>();
 	private _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
+	private _onHit        = new EventDispatcher<PlayCharacter, Position>();
 
 	constructor(
 		x: number,
@@ -229,7 +230,12 @@ export class PlayCharacter {
 			this.hitting = true;
 			this.startHitting = true;
 			this.playAnimation();
+			this._onHit.dispatch(this, this.getNextPos());
 		}
+	}
+
+	public get onHit() {
+		return this._onHit.asEvent();
 	}
 
 	playAnimation() {

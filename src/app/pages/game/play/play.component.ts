@@ -90,6 +90,7 @@ export class PlayComponent implements OnInit {
 			this.worldId = result.idWorld;
 			this.scenarioId = result.idScenario;
 			this.game = this.cms.getGame(result.game);
+			console.log(this.game);
 			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
@@ -329,6 +330,7 @@ export class PlayComponent implements OnInit {
 		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
+		this.scenario.onPlayerHit.subscribe((c, character) => { this.playerHit(character) });
 
 		this.hud = this.play.makeHud(player.character.health, player.character.currentHealth, player.character.money, canvas, this.assetCache);
 
@@ -558,5 +560,15 @@ export class PlayComponent implements OnInit {
 				alert('¡Ocurrió un error!');
 			}
 		});
+	}
+	
+	playerHit(character: PlayCharacter) {
+		console.log(character);
+		console.log(this.scenario.player);
+		const damage = this.scenario.player.character.attack;
+		let hp = character.character.currentHealth;
+		console.log('Damage: '+damage);
+		console.log('HP: '+hp);
+		console.log('HP - damage: '+(hp - damage));
 	}
 }
