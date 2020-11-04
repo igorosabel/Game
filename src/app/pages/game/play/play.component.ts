@@ -329,7 +329,7 @@ export class PlayComponent implements OnInit {
 		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
-console.log(this.scenario);
+
 		this.hud = this.play.makeHud(player.character.health, player.character.currentHealth, player.character.money, canvas, this.assetCache);
 
 		// Pinto escenario
@@ -524,9 +524,14 @@ console.log(this.scenario);
 		this.portalTravel(this.portalWorld);
 	}
 
+	portalClose(ev) {
+		ev && ev.preventDefault();
+		this.disableKeyboard(false);
+		this.showPortal = false;
+	}
+
 	portalTravel(world: World) {
 		if (world.id===this.worldId){
-			console.log('return');
 			return;
 		}
 		this.travelling = true;
