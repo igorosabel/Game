@@ -27,6 +27,7 @@ export class WorldsComponent implements OnInit {
 		this.loadWorlds();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddWorld() };
 	}
 

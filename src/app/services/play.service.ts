@@ -103,11 +103,13 @@ export class PlayService {
 			release: undefined,
 			downHandler: undefined,
 			upHandler: undefined,
-			disabled: false
+			disabled: false,
+			onlyEsc: false
 		};
 
 		key.downHandler = function(event) {
 			if (this.disabled) { return; }
+			if (this.onlyEsc && event.keyCode!==27) { return; }
 			if (event.keyCode === key.code) {
 				if (key.isUp && key.press) { key.press(); }
 				key.isDown = true;
@@ -117,6 +119,7 @@ export class PlayService {
 		};
 		key.upHandler = function(event) {
 			if (this.disabled) { return; }
+			if (this.onlyEsc && event.keyCode!==27) { return; }
 			if (event.keyCode === key.code) {
 				if (key.isDown && key.release) { key.release(); }
 				key.isDown = false;

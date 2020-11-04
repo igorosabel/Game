@@ -54,6 +54,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		this.loadScenarioObjects();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddScenarioObject() };
 	}
 

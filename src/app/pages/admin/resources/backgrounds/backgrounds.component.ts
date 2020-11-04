@@ -38,6 +38,7 @@ export class BackgroundsComponent implements OnInit {
 		this.loadBackgrounds();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddBackground() };
 	}
 

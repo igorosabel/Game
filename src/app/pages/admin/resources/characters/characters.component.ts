@@ -64,6 +64,7 @@ export class CharactersComponent implements OnInit {
 		this.loadCharacters();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddCharacter() };
 	}
 

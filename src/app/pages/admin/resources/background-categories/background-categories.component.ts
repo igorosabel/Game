@@ -29,6 +29,7 @@ export class BackgroundCategoriesComponent implements OnInit {
 		this.loadBackgroundCategories();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddBackgroundCategory() };
 	}
 

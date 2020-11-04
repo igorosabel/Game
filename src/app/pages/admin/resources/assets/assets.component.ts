@@ -40,6 +40,7 @@ export class AssetsComponent implements OnInit {
 		this.loadAssets();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddAsset() };
 	}
 

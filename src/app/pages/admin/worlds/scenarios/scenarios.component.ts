@@ -31,6 +31,7 @@ export class ScenariosComponent implements OnInit {
 			this.loadScenarios();
 
 			let esc = this.play.keyboard(27);
+			esc.onlyEsc = true;
 			esc.press = () => { this.showAddScenario() };
 		});
 	}

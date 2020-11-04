@@ -54,6 +54,7 @@ export class ItemsComponent implements OnInit {
 		this.loadItems();
 
 		let esc = this.play.keyboard(27);
+		esc.onlyEsc = true;
 		esc.press = () => { this.showAddItem() };
 	}
 
