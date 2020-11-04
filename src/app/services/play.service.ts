@@ -1,21 +1,26 @@
-import { Injectable }     from '@angular/core';
-import { PlayCanvas }     from '../play/play-canvas.class';
-import { PlayScenario }   from '../play/play-scenario.class';
-import { PlayCharacter }  from '../play/play-character.class';
-import { PlayHud }        from '../play/play-hud.class';
-import { AssetCache }     from '../play/asset-cache.class';
-import { PlayObject }     from '../play/play-object.class';
-import { ScenarioData }   from '../model/scenario-data.model';
-import { ScenarioObject } from '../model/scenario-object.model';
-import { Character }      from '../model/character.model';
-import { Position }       from '../model/position.model';
-import { Game }           from '../model/game.model';
+import { Injectable }         from '@angular/core';
+import { PlayCanvas }         from '../play/play-canvas.class';
+import { PlayScenario }       from '../play/play-scenario.class';
+import { PlayCharacter }      from '../play/play-character.class';
+import { PlayHud }            from '../play/play-hud.class';
+import { AssetCache }         from '../play/asset-cache.class';
+import { PlayObject }         from '../play/play-object.class';
+import { ScenarioData }       from '../model/scenario-data.model';
+import { ScenarioObject }     from '../model/scenario-object.model';
+import { Character }          from '../model/character.model';
+import { Position }           from '../model/position.model';
+import { Game }               from '../model/game.model';
+import { ClassMapperService } from './class-mapper.service';
+import {
+	CharacterInterface,
+	ScenarioObjectInterface
+} from '../interfaces/interfaces';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class PlayService {
-	constructor() {}
+	constructor(private cms: ClassMapperService) {}
 
 	makeCanvas() {
 		return new PlayCanvas();
@@ -40,22 +45,23 @@ export class PlayService {
 		return playCharacter;
 	}
 
-	makePlayObject(objects: ScenarioObject[], data: ScenarioData, assets: AssetCache) {
-		const ind = objects.findIndex(x => x.id===data.idScenarioObject);
+	makePlayObject(so: ScenarioObjectInterface, data: ScenarioData, assets: AssetCache) {
+		const scenarioObject = this.cms.getScenarioObject(so);
 		const po = new PlayObject(
 			data.x,
 			data.y,
 			data.scenarioObjectWidth,
 			data.scenarioObjectHeight,
-			objects[ind]
+			scenarioObject
 		);
 		po.assets = assets;
 
 		return po;
 	}
 
-	makePlayCharacter(characters: Character[], data: ScenarioData, scenario: PlayScenario, assets: AssetCache) {
-		const ind = characters.findIndex(x => x.id===data.idCharacter);
+	makePlayCharacter(c: CharacterInterface, data: ScenarioData, scenario: PlayScenario, assets: AssetCache) {
+		const character = this.cms.getCharacter(c);
+		character.currentHealth = data.characterHealth;
 		const playCharacter = new PlayCharacter(
 			data.x,
 			data.y,
@@ -65,21 +71,20 @@ export class PlayService {
 			data.characterBlockHeight,
 			scenario
 		);
-		for (let frame of characters[ind].allFramesUp) {
+		for (let frame of character.allFramesUp) {
 			playCharacter.sprites['up'].push(assets.get(frame));
 		}
-		for (let frame of characters[ind].allFramesDown) {
+		for (let frame of character.allFramesDown) {
 			playCharacter.sprites['down'].push(assets.get(frame));
 		}
-		for (let frame of characters[ind].allFramesLeft) {
+		for (let frame of character.allFramesLeft) {
 			playCharacter.sprites['left'].push(assets.get(frame));
 		}
-		for (let frame of characters[ind].allFramesRight) {
+		for (let frame of character.allFramesRight) {
 			playCharacter.sprites['right'].push(assets.get(frame));
 		}
-		playCharacter.character = characters[ind];
+		playCharacter.character = character;
 		playCharacter.npcData.isNPC = true;
-
 		return playCharacter;
 	}
 

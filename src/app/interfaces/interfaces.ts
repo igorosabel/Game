@@ -117,6 +117,7 @@ export interface ScenarioDataInterface {
 	characterHeight: number;
 	characterBlockWidth: number;
 	characterBlockHeight: number;
+	characterHealth: number;
 }
 
 export interface ConnectionInterface {

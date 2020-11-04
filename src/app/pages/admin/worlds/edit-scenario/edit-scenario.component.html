@@ -117,6 +117,7 @@
 					</a>
 				</main>
 				<footer>
+					<input *ngIf="loadedCell.idCharacter!==null" type="number" min="0" step="1" name="character-health" [(ngModel)]="loadedCell.characterHealth" placeholder="Salud actual">
 					{{loadedCell.characterName}}
 				</footer>
 			</div>

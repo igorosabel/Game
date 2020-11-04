@@ -284,9 +284,16 @@
 
 				footer {
 					display: flex;
-					height: 40px;
+					flex-direction: column;
+					height: 80px;
 					align-items: center;
 					justify-content: center;
+
+					input {
+						width: 60%;
+						margin: 16px 0;
+						text-align: center;
+					}
 				}
 			}
 		}

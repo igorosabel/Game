@@ -22,7 +22,8 @@ export class ScenarioData {
 		public characterWidth: number = null,
 		public characterHeight: number = null,
 		public characterBlockWidth: number = null,
-		public characterBlockHeight: number = null
+		public characterBlockHeight: number = null,
+		public characterHealth: number = null
 	) {}
 
 	toInterface(): ScenarioDataInterface {
@@ -47,7 +48,8 @@ export class ScenarioData {
 			characterWidth: this.characterWidth,
 			characterHeight: this.characterHeight,
 			characterBlockWidth: this.characterBlockWidth,
-			characterBlockHeight: this.characterBlockHeight
+			characterBlockHeight: this.characterBlockHeight,
+			characterHealth: this.characterHealth
 		};
 		return scenarioData;
 	}

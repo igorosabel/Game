@@ -171,7 +171,8 @@ export class ClassMapperService {
 			sd.characterWidth,
 			sd.characterHeight,
 			sd.characterBlockWidth,
-			sd.characterBlockHeight
+			sd.characterBlockHeight,
+			sd.characterHealth
 		);
 	}
 

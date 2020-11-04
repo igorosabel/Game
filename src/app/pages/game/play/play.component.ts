@@ -302,11 +302,14 @@ export class PlayComponent implements OnInit {
 		this.scenario.blockers = this.blockers;
 
 		this.scenarioDatas.forEach(data => {
+			let ind = null;
 			if (data.idScenarioObject!==null) {
-				this.scenario.addObject( this.play.makePlayObject(this.scenarioObjects, data, this.assetCache) );
+				ind = this.scenarioObjects.findIndex(x => x.id===data.idScenarioObject);
+				this.scenario.addObject( this.play.makePlayObject(this.scenarioObjects[ind].toInterface(), data, this.assetCache) );
 			}
 			if (data.idCharacter!==null) {
-				this.scenario.addCharacter( this.play.makePlayCharacter(this.characters, data, this.scenario, this.assetCache) );
+				ind = this.characters.findIndex(x => x.id===data.idCharacter);
+				this.scenario.addCharacter( this.play.makePlayCharacter(this.characters[ind].toInterface(), data, this.scenario, this.assetCache) );
 			}
 		});
 
@@ -326,7 +329,7 @@ export class PlayComponent implements OnInit {
 		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
-
+console.log(this.scenario);
 		this.hud = this.play.makeHud(player.character.health, player.character.currentHealth, player.character.money, canvas, this.assetCache);
 
 		// Pinto escenario
