@@ -82,6 +82,10 @@ export class ApiService {
 		return this.http.post<StatusResult>(this.url + 'api/change-scenario', connection);
 	}
 
+	hitEnemy(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'api/hit-enemy', {id});
+	}
+
 	adminLogin(data: LoginData): Observable<LoginResult> {
 		return this.http.post<LoginResult>(this.url + 'admin/login', data);
 	}

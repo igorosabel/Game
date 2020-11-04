@@ -10,6 +10,7 @@ import { PlayConnection }  from './play-connection.class';
 import { PlayUtils }       from './play-utils.class';
 
 export class PlayCharacter {
+	idScenarioData: number;
 	orientation: string;
 	orientationList;
 	blockPos;

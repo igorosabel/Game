@@ -567,8 +567,10 @@ export class PlayComponent implements OnInit {
 		console.log(this.scenario.player);
 		const damage = this.scenario.player.character.attack;
 		let hp = character.character.currentHealth;
+		const defense = character.character.defense;
 		console.log('Damage: '+damage);
 		console.log('HP: '+hp);
-		console.log('HP - damage: '+(hp - damage));
+		console.log('HP - (damage - defense): '+(hp - (damage - defense)));
+		character.character.currentHealth -= (damage - defense);
 	}
 }

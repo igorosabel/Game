@@ -85,6 +85,7 @@ export class PlayService {
 		for (let frame of character.allFramesRight) {
 			playCharacter.sprites['right'].push(assets.get(frame));
 		}
+		playCharacter.idScenarioData = data.id;
 		playCharacter.character = character;
 		playCharacter.npcData.isNPC = true;
 		return playCharacter;
