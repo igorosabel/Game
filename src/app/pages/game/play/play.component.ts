@@ -64,6 +64,8 @@ export class PlayComponent implements OnInit {
 		esc: null
 	};
 
+	showOver: boolean = false;
+
 	showNarratives: boolean = false;
 	currentCharacter: PlayNPC = null;
 	currentNarrative: number = 0;
@@ -378,58 +380,68 @@ export class PlayComponent implements OnInit {
 			// W - Arriba
 			this.keyboard.up = this.play.keyboard(87);
 			this.keyboard.up.press = () => {
-				if (!this.showNarratives) { this.scenario.player.up(); }
+				if (!this.showOver) { this.scenario.player.up(); }
 			};
 			this.keyboard.up.release = () => {
-				if (!this.showNarratives) { this.scenario.player.stopUp(); }
+				if (!this.showOver) { this.scenario.player.stopUp(); }
 			};
 
 			// S - Abajo
 			this.keyboard.down = this.play.keyboard(83);
 			this.keyboard.down.press = () => {
-				if (!this.showNarratives) { this.scenario.player.down(); }
+				if (!this.showOver) { this.scenario.player.down(); }
 			};
 			this.keyboard.down.release = () => {
-				if (!this.showNarratives) { this.scenario.player.stopDown(); }
+				if (!this.showOver) { this.scenario.player.stopDown(); }
 			};
 
 			// D - Derecha
 			this.keyboard.right = this.play.keyboard(68);
 			this.keyboard.right.press = () => {
-				if (!this.showNarratives) { this.scenario.player.right(); }
+				if (!this.showOver) { this.scenario.player.right(); }
 			};
 			this.keyboard.right.release = () => {
-				if (!this.showNarratives) { this.scenario.player.stopRight(); }
+				if (!this.showOver) { this.scenario.player.stopRight(); }
 			};
 
 			// A - Izquierda
 			this.keyboard.left = this.play.keyboard(65);
 			this.keyboard.left.press = () => {
-				if (!this.showNarratives) { this.scenario.player.left(); }
+				if (!this.showOver) { this.scenario.player.left(); }
 			};
 			this.keyboard.left.release = () => {
-				if (!this.showNarratives) { this.scenario.player.stopLeft(); }
+				if (!this.showOver) { this.scenario.player.stopLeft(); }
 			};
 
 			// E - Acción
 			this.keyboard.doAction = this.play.keyboard(69);
 			this.keyboard.doAction.press = () => {
-				if (!this.showNarratives) {
-					this.scenario.player.doAction();
-				}
-				else {
+				if (this.showNarratives) {
 					this.nextNarrative();
+					return;
+				}
+				if (this.showMessage) {
+					this.closeMessage();
+					return;
+				}
+				if (!this.showOver) {
+					this.scenario.player.doAction();
 				}
 			};
 
 			// Espacio - Golpe
 			this.keyboard.hit = this.play.keyboard(32);
 			this.keyboard.hit.press = () => {
-				if (!this.showNarratives) {
-					this.scenario.player.hit();
-				}
-				else {
+				if (this.showNarratives) {
 					this.nextNarrative();
+					return;
+				}
+				if (this.showMessage) {
+					this.closeMessage();
+					return;
+				}
+				if (!this.showOver) {
+					this.scenario.player.hit();
 				}
 			};
 
@@ -437,7 +449,10 @@ export class PlayComponent implements OnInit {
 			this.keyboard.esc = this.play.keyboard(27);
 			this.keyboard.esc.press = () => {
 				this.showNarratives = false;
-				this.showPortal = false;
+				this.showPortal     = false;
+				this.showMessage    = false;
+				this.showOver       = false;
+				this.disableKeyboard(false);
 			};
 		}
 		else {
@@ -478,22 +493,54 @@ export class PlayComponent implements OnInit {
 			this.keyboard.doAction.disabled = mode;
 			this.keyboard.hit.disabled = mode;
 			this.keyboard.esc.disabled = mode;
+			if (!mode) {
+				this.escKeyboard(mode);
+			}
+		}
+	}
+	
+	escKeyboard(mode: boolean) {
+		if (
+			this.keyboard.up!==null &&
+			this.keyboard.down!==null &&
+			this.keyboard.right!==null &&
+			this.keyboard.left!==null &&
+			this.keyboard.doAction!==null &&
+			this.keyboard.hit!==null &&
+			this.keyboard.esc!==null
+		) {
+			this.keyboard.up.onlyEsc = mode;
+			this.keyboard.down.onlyEsc = mode;
+			this.keyboard.right.onlyEsc = mode;
+			this.keyboard.left.onlyEsc = mode;
+			this.keyboard.doAction.onlyEsc = mode;
+			this.keyboard.hit.onlyEsc = mode;
+			this.keyboard.esc.onlyEsc = mode;
 		}
 	}
 
 	openNarratives(character: PlayNPC) {
-		this.showNarratives = true;
+		this.showOver         = true;
+		this.showNarratives   = true;
 		this.currentNarrative = 0;
 		this.currentCharacter = character;
 	}
 
 	nextNarrative() {
 		if (this.currentCharacter.character.narratives.length==(this.currentNarrative+1)) {
-			this.showNarratives = false;
+			this.showNarratives   = false;
+			this.showOver         = false;
+			this.currentNarrative = 0;
 		}
 		else {
 			this.currentNarrative++;
 		}
+	}
+	
+	closeMessage() {
+		this.showMessage = false;
+		this.showOver    = false;
+		this.disableKeyboard(false);
 	}
 
 	activateObject(playObject: PlayObject) {
@@ -502,13 +549,14 @@ export class PlayComponent implements OnInit {
 			if (playObject.object.activeTrigger==1 && playObject.object.activeTriggerCustom===null) {
 				this.portalWorld = new World();
 				this.showPortal = true;
-				this.disableKeyboard(true);
+				this.showOver   = true;
+				this.escKeyboard(true);
 			}
 			// Mensaje
 			if (playObject.object.activeTrigger==0 && playObject.object.activeTriggerCustom!==null) {
 				this.currentObject = playObject;
 				this.showMessage = true;
-				this.disableKeyboard(true);
+				this.showOver    = true;
 			}
 		}
 	}
@@ -540,6 +588,7 @@ export class PlayComponent implements OnInit {
 		ev && ev.preventDefault();
 		this.disableKeyboard(false);
 		this.showPortal = false;
+		this.showOver   = false;
 	}
 
 	portalTravel(world: World) {

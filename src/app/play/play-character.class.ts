@@ -455,6 +455,10 @@ export class PlayCharacter {
 			}
 		}
 		ctx.drawImage(img, posX, posY, img.width, img.height);
+		/*ctx.globalAlpha = 0.62;
+		ctx.globalCompositeOperation = 'source-atop';
+		ctx.fillStyle = 'red';
+		ctx.fillRect(posX, posY, img.width, img.height);*/
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#f00';
 			ctx.lineWidth = 1;
