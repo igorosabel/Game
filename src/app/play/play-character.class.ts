@@ -22,7 +22,6 @@ export class PlayCharacter {
 	vy: number;
 	moving;
 	hitting: boolean;
-	startHitting: boolean;
 	stopHitting: boolean;
 	frames;
 	currentFrame: number;
@@ -71,7 +70,6 @@ export class PlayCharacter {
 			left: false
 		};
 		this.hitting = false;
-		this.startHitting = false;
 		this.stopHitting = false;
 		this.frames = {
 			up: [],
@@ -422,11 +420,6 @@ export class PlayCharacter {
 		}
 		if (this.hitting) {
 			img = this.sprites['hit-' + this.orientation][this.currentHitFrame];
-			if (this.startHitting && this.orientation=='down') {
-				this.startHitting = false;
-				this.blockPos.x = this.blockPos.x - ((img.width - this.blockPos.width) / 2);;
-				this.blockPos.y = this.blockPos.y - (img.height - this.blockPos.height);
-			}
 			switch (this.orientation) {
 				case 'down': {
 					posX = this.blockPos.x - ((img.width - this.blockPos.width) / 2);

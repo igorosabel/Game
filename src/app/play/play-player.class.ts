@@ -31,7 +31,6 @@ export class PlayPlayer extends PlayCharacter {
 	hit() {
 		if (!this.hitting) {
 			this.hitting = true;
-			this.startHitting = true;
 			this.playAnimation();
 			this._onHit.dispatch(this, this.getNextPos());
 		}
