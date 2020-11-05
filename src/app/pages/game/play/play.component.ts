@@ -119,6 +119,13 @@ export class PlayComponent implements OnInit {
 				this.allLoaded.assets = true;
 				this.checkAllLoaded();
 			});
+			// Effects
+			this.assetCache.add('/assets/play/death-1.png');
+			this.assetCache.add('/assets/play/death-2.png');
+			this.assetCache.add('/assets/play/death-3.png');
+			this.assetCache.add('/assets/play/death-4.png');
+			this.assetCache.add('/assets/play/death-5.png');
+			this.assetCache.add('/assets/play/death-6.png');
 
 			this.as.getUnlockedWorlds(this.gameId).subscribe(result => {
 				this.unlockedWorlds = this.cms.getWorlds(result.list);
@@ -623,6 +630,9 @@ export class PlayComponent implements OnInit {
 
 	playerHit(enemy: PlayNPC) {
 		enemy.character.currentHealth -= (this.scenario.player.character.attack - enemy.character.defense);
+		if (enemy.character.currentHealth<1) {
+			enemy.die();
+		}
 
 		this.as.hitEnemy(this.gameId, enemy.idScenarioData).subscribe(result => {
 			console.log(result);

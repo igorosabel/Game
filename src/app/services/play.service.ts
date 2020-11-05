@@ -77,6 +77,14 @@ export class PlayService {
 			data.id
 		);
 		playNPC.addCharacterSprites(assets);
+		// Death sprites
+		playNPC.addSprite('death', assets.get('/assets/play/death-1.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-2.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-3.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-4.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-5.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-6.png'));
+
 		return playNPC;
 	}
 

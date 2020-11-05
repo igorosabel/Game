@@ -59,7 +59,8 @@ export class PlayCharacter {
 			up: [],
 			right: [],
 			down: [],
-			left: []
+			left: [],
+			death: []
 		};
 		this.vx = 0;
 		this.vy = 0;
@@ -92,20 +93,20 @@ export class PlayCharacter {
 	
 	addCharacterSprites(assets: AssetCache) {
 		for (let frame of this.character.allFramesUp) {
-			this.setSprite('up', assets.get(frame));
+			this.addSprite('up', assets.get(frame));
 		}
 		for (let frame of this.character.allFramesDown) {
-			this.setSprite('down', assets.get(frame));
+			this.addSprite('down', assets.get(frame));
 		}
 		for (let frame of this.character.allFramesLeft) {
-			this.setSprite('left', assets.get(frame));
+			this.addSprite('left', assets.get(frame));
 		}
 		for (let frame of this.character.allFramesRight) {
-			this.setSprite('right', assets.get(frame));
+			this.addSprite('right', assets.get(frame));
 		}
 	}
 
-	setSprite(ind, sprite) {
+	addSprite(ind, sprite) {
 		this.sprites[ind].push(sprite);
 	}
 
