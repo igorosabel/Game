@@ -27,8 +27,9 @@ export class PlayCharacter {
 	currentFrame: number;
 	currentHitFrame: number;
 	playing: boolean;
+	dying: boolean;
+	currentDieFrame: number;
 	interval: number;
-	name: string;
 	character: Character;
 	connections;
 	npcData;
@@ -79,7 +80,10 @@ export class PlayCharacter {
 			left: []
 		};
 		this.currentFrame = 0;
+		this.currentHitFrame = 0;
 		this.playing = false;
+		this.dying = false;
+		this.currentDieFrame = 0;
 		this.interval = null;
 		this.updateCenter();
 		this.npcData = {
@@ -90,7 +94,7 @@ export class PlayCharacter {
 			remainingTime: 0
 		};
 	}
-	
+
 	addCharacterSprites(assets: AssetCache) {
 		for (let frame of this.character.allFramesUp) {
 			this.addSprite('up', assets.get(frame));
@@ -264,6 +268,14 @@ export class PlayCharacter {
 			}
 			else{
 				this.currentHitFrame++;
+			}
+		}
+		if (this.dying) {
+			if (this.currentDieFrame === (this.sprites['death'].length - 1)) {
+				this.currentDieFrame = 0;
+			}
+			else{
+				this.currentDieFrame++;
 			}
 		}
 	}
@@ -449,6 +461,15 @@ export class PlayCharacter {
 			}
 		}
 		ctx.drawImage(img, posX, posY, img.width, img.height);
+		if (this.dying) {
+			let centerX = posX + (img.width / 2);
+			let centerY = posY + (img.height / 2);
+			let deathImg = this.sprites['death'][this.currentDieFrame];
+			let deathPosX = centerX - (deathImg.width / 2);
+			let deathPosY = centerY - (deathImg.height / 2);
+
+			ctx.drawImage(deathImg, deathPosX, deathPosY, deathImg.width, deathImg.height);
+		}
 		/*ctx.globalAlpha = 0.62;
 		ctx.globalCompositeOperation = 'source-atop';
 		ctx.fillStyle = 'red';

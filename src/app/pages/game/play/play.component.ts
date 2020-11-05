@@ -115,10 +115,6 @@ export class PlayComponent implements OnInit {
 			this.assetCache.addScenarioObjects(this.scenarioObjects);
 			// Characters
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
-			this.assetCache.load().then(() => {
-				this.allLoaded.assets = true;
-				this.checkAllLoaded();
-			});
 			// Effects
 			this.assetCache.add('/assets/play/death-1.png');
 			this.assetCache.add('/assets/play/death-2.png');
@@ -126,6 +122,11 @@ export class PlayComponent implements OnInit {
 			this.assetCache.add('/assets/play/death-4.png');
 			this.assetCache.add('/assets/play/death-5.png');
 			this.assetCache.add('/assets/play/death-6.png');
+
+			this.assetCache.load().then(() => {
+				this.allLoaded.assets = true;
+				this.checkAllLoaded();
+			});
 
 			this.as.getUnlockedWorlds(this.gameId).subscribe(result => {
 				this.unlockedWorlds = this.cms.getWorlds(result.list);
@@ -505,7 +506,7 @@ export class PlayComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	escKeyboard(mode: boolean) {
 		if (
 			this.keyboard.up!==null &&
@@ -543,7 +544,7 @@ export class PlayComponent implements OnInit {
 			this.currentNarrative++;
 		}
 	}
-	
+
 	closeMessage() {
 		this.showMessage = false;
 		this.showOver    = false;
@@ -634,8 +635,8 @@ export class PlayComponent implements OnInit {
 			enemy.die();
 		}
 
-		this.as.hitEnemy(this.gameId, enemy.idScenarioData).subscribe(result => {
-			console.log(result);
-		});
+		//this.as.hitEnemy(this.gameId, enemy.idScenarioData).subscribe(result => {
+			//console.log(result);
+		//});
 	}
 }

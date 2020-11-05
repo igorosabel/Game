@@ -56,8 +56,9 @@ export class PlayNPC extends PlayCharacter {
 			this.npcData.timer = setTimeout(() => { this.npcLogic(); }, 1000);
 		}
 	}
-	
+
 	die() {
-		
+		this.dying = true;
+		this.currentDieFrame = 0;
 	}
 }
