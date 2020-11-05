@@ -1,7 +1,8 @@
 import { Injectable }         from '@angular/core';
 import { PlayCanvas }         from '../play/play-canvas.class';
 import { PlayScenario }       from '../play/play-scenario.class';
-import { PlayCharacter }      from '../play/play-character.class';
+import { PlayPlayer }         from '../play/play-player.class';
+import { PlayNPC }            from '../play/play-npc.class';
 import { PlayHud }            from '../play/play-hud.class';
 import { AssetCache }         from '../play/asset-cache.class';
 import { PlayObject }         from '../play/play-object.class';
@@ -31,20 +32,20 @@ export class PlayService {
 	}
 
 	makePlayer(game: Game, width, height, blockWidth, blockHeight, scenario, connections) {
-		const playCharacter       = new PlayCharacter(game.positionX, game.positionY, width, height, blockWidth, blockHeight, scenario);
-		const character           = new Character();
-		character.name            = game.name;
-		character.attack          = game.attack;
-		character.defense         = game.defense;
-		character.health          = game.maxHealth;
-		character.currentHealth   = game.health;
-		character.money           = game.money;
-		character.speed           = game.speed;
-		character.inventory       = game.items;
-		playCharacter.character   = character;
-		playCharacter.connections = connections;
-		playCharacter.orientation = game.orientation;
-		return playCharacter;
+		const playPlayer        = new PlayPlayer(game.positionX, game.positionY, width, height, blockWidth, blockHeight, scenario);
+		const character         = new Character();
+		character.name          = game.name;
+		character.attack        = game.attack;
+		character.defense       = game.defense;
+		character.health        = game.maxHealth;
+		character.currentHealth = game.health;
+		character.money         = game.money;
+		character.speed         = game.speed;
+		character.inventory     = game.items;
+		playPlayer.character    = character;
+		playPlayer.connections  = connections;
+		playPlayer.orientation  = game.orientation;
+		return playPlayer;
 	}
 
 	makePlayObject(so: ScenarioObjectInterface, data: ScenarioData, assets: AssetCache) {
@@ -61,34 +62,22 @@ export class PlayService {
 		return po;
 	}
 
-	makePlayCharacter(c: CharacterInterface, data: ScenarioData, scenario: PlayScenario, assets: AssetCache) {
+	makePlayNPC(c: CharacterInterface, data: ScenarioData, scenario: PlayScenario, assets: AssetCache) {
 		const character = this.cms.getCharacter(c);
 		character.currentHealth = data.characterHealth;
-		const playCharacter = new PlayCharacter(
+		const playNPC = new PlayNPC(
 			data.x,
 			data.y,
 			data.characterWidth,
 			data.characterHeight,
 			data.characterBlockWidth,
 			data.characterBlockHeight,
-			scenario
+			scenario,
+			character,
+			data.id
 		);
-		for (let frame of character.allFramesUp) {
-			playCharacter.sprites['up'].push(assets.get(frame));
-		}
-		for (let frame of character.allFramesDown) {
-			playCharacter.sprites['down'].push(assets.get(frame));
-		}
-		for (let frame of character.allFramesLeft) {
-			playCharacter.sprites['left'].push(assets.get(frame));
-		}
-		for (let frame of character.allFramesRight) {
-			playCharacter.sprites['right'].push(assets.get(frame));
-		}
-		playCharacter.idScenarioData = data.id;
-		playCharacter.character = character;
-		playCharacter.npcData.isNPC = true;
-		return playCharacter;
+		playNPC.addCharacterSprites(assets);
+		return playNPC;
 	}
 
 	makeHud(health: number, currentHealth: number, money: number, canvas, assets: AssetCache) {

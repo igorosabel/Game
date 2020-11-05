@@ -34,9 +34,7 @@ export class PlayCharacter {
 	connections;
 	npcData;
 
-	private _onAction     = new EventDispatcher<PlayCharacter, Position>();
-	private _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
-	private _onHit        = new EventDispatcher<PlayCharacter, Position>();
+	_onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
 
 	constructor(
 		x: number,
@@ -87,10 +85,26 @@ export class PlayCharacter {
 		this.updateCenter();
 		this.npcData = {
 			isNPC: false,
+			isEnemy: false,
 			status: 'idle',
 			timer: null,
 			remainingTime: 0
 		};
+	}
+	
+	addCharacterSprites(assets: AssetCache) {
+		for (let frame of this.character.allFramesUp) {
+			this.setSprite('up', assets.get(frame));
+		}
+		for (let frame of this.character.allFramesDown) {
+			this.setSprite('down', assets.get(frame));
+		}
+		for (let frame of this.character.allFramesLeft) {
+			this.setSprite('left', assets.get(frame));
+		}
+		for (let frame of this.character.allFramesRight) {
+			this.setSprite('right', assets.get(frame));
+		}
 	}
 
 	setSprite(ind, sprite) {
@@ -218,27 +232,6 @@ export class PlayCharacter {
 		this.updateOrientation();
 	}
 
-	doAction() {
-		this._onAction.dispatch(this, this.getNextPos());
-	}
-
-	public get onAction() {
-		return this._onAction.asEvent();
-	}
-
-	hit() {
-		if (!this.hitting) {
-			this.hitting = true;
-			this.startHitting = true;
-			this.playAnimation();
-			this._onHit.dispatch(this, this.getNextPos());
-		}
-	}
-
-	public get onHit() {
-		return this._onHit.asEvent();
-	}
-
 	playAnimation() {
 		if (!this.playing) {
 			this.playing = true;
@@ -288,14 +281,10 @@ export class PlayCharacter {
 		return PlayUtils.collision(obj1, rect2);
 	}
 
-	characterCollision(pos, character) {
+	npcCollision(pos, character) {
 		let charPos = {x: character.blockPos.x, y: character.blockPos.y, width: character.blockPos.width, height: character.blockPos.height};
 
 		return PlayUtils.collision(pos, charPos);
-	}
-
-	public get onConnection() {
-		return this._onConnection.asEvent();
 	}
 
 	stopNPC() {
@@ -308,39 +297,6 @@ export class PlayCharacter {
 			break;
 			case 'right': { this.stopRight(); }
 			break;
-		}
-	}
-
-	npcLogic() {
-		if (this.npcData.isNPC && !this.character.fixedPosition) {
-			clearTimeout(this.npcData.timer);
-			this.npcData.remainingTime--;
-			const distance = PlayUtils.distance(this.scenario.player.blockPos, this.blockPos);
-			if (distance > 250) {
-				this.npcData.status = 'wandering';
-			}
-
-			if (this.npcData.status=='wandering' && this.npcData.remainingTime<1) {
-				const movementOptions = ['down', 'up', 'left', 'right'];
-				const currentInd = movementOptions.findIndex(x => x===this.orientation);
-				movementOptions.splice(currentInd, 1);
-				const option = movementOptions[Math.floor(Math.random() * movementOptions.length)];
-				this.stopNPC();
-				this.orientation = option;
-				switch (option) {
-					case 'up': { this.up(); }
-					break;
-					case 'down': { this.down(); }
-					break;
-					case 'left': { this.left(); }
-					break;
-					case 'right': { this.right(); }
-					break;
-				}
-				this.npcData.remainingTime = Math.floor(Math.random() * 6) + 3;
-			}
-
-			this.npcData.timer = setTimeout(() => { this.npcLogic(); }, 1000);
 		}
 	}
 
@@ -401,22 +357,22 @@ export class PlayCharacter {
 				}
 			});
 			if (!this.npcData.isNPC) {
-				this.scenario.characters.forEach(character => {
-					if (this.characterCollision(newPos, character)) {
+				this.scenario.npcs.forEach(npc => {
+					if (this.npcCollision(newPos, npc)) {
 						hit = true;
 					}
 				});
 			}
 			else {
-				const characterList = [...this.scenario.characters];
-				const characterInd = characterList.findIndex(x => x.blockPos.x===this.blockPos.x && x.blockPos.y===this.blockPos.y);
-				characterList.splice(characterInd, 1);
-				characterList.forEach(character => {
-					if (this.characterCollision(newPos, character)) {
+				const npcList = [...this.scenario.npcs];
+				const npcInd = npcList.findIndex(x => x.blockPos.x===this.blockPos.x && x.blockPos.y===this.blockPos.y);
+				npcList.splice(npcInd, 1);
+				npcList.forEach(npc => {
+					if (this.npcCollision(newPos, npc)) {
 						hit = true;
 					}
 				});
-				if (this.characterCollision(newPos, this.scenario.player)) {
+				if (this.npcCollision(newPos, this.scenario.player)) {
 					hit = true;
 				}
 			}

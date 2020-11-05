@@ -9,7 +9,8 @@ import { World }              from '../../../model/world.model';
 import { AssetCache }         from '../../../play/asset-cache.class';
 import { PlayCanvas }         from '../../../play/play-canvas.class';
 import { PlayScenario }       from '../../../play/play-scenario.class';
-import { PlayCharacter }      from '../../../play/play-character.class';
+import { PlayPlayer }         from '../../../play/play-player.class';
+import { PlayNPC }            from '../../../play/play-npc.class';
 import { PlayObject }         from '../../../play/play-object.class';
 import { PlayConnection }     from '../../../play/play-connection.class';
 import { PlayHud }            from '../../../play/play-hud.class';
@@ -64,7 +65,7 @@ export class PlayComponent implements OnInit {
 	};
 
 	showNarratives: boolean = false;
-	currentCharacter: PlayCharacter = null;
+	currentCharacter: PlayNPC = null;
 	currentNarrative: number = 0;
 
 	showPortal: boolean = false;
@@ -90,7 +91,6 @@ export class PlayComponent implements OnInit {
 			this.worldId = result.idWorld;
 			this.scenarioId = result.idScenario;
 			this.game = this.cms.getGame(result.game);
-			console.log(this.game);
 			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
@@ -211,7 +211,7 @@ export class PlayComponent implements OnInit {
 		this.assetCache.add('/assets/player/up-hit-9.png');
 	}
 
-	updatePlayerAssets(player: PlayCharacter) {
+	updatePlayerAssets(player: PlayPlayer) {
 		player.sprites['up'] = [
 			this.assetCache.get('/assets/player/link-up.png'),
 			this.assetCache.get('/assets/player/up-walking-1.png'),
@@ -310,11 +310,11 @@ export class PlayComponent implements OnInit {
 			}
 			if (data.idCharacter!==null) {
 				ind = this.characters.findIndex(x => x.id===data.idCharacter);
-				this.scenario.addCharacter( this.play.makePlayCharacter(this.characters[ind].toInterface(), data, this.scenario, this.assetCache) );
+				this.scenario.addNPC( this.play.makePlayNPC(this.characters[ind].toInterface(), data, this.scenario, this.assetCache) );
 			}
 		});
 
-		let player: PlayCharacter = this.play.makePlayer(
+		let player: PlayPlayer = this.play.makePlayer(
 			this.game,
 			1,
 			1.5,
@@ -327,7 +327,7 @@ export class PlayComponent implements OnInit {
 		this.scenario.addPlayer(player);
 
 		// Eventos de personajes y objetos
-		this.scenario.onCharacterAction.subscribe((c, character) => { this.openNarratives(character) });
+		this.scenario.onNPCAction.subscribe((c, character) => { this.openNarratives(character) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
 		this.scenario.onPlayerHit.subscribe((c, character) => { this.playerHit(character) });
@@ -337,7 +337,7 @@ export class PlayComponent implements OnInit {
 		// Pinto escenario
 		this.scenario.render();
 		this.scenario.renderItems();
-		this.scenario.characters.forEach(character => character.npcLogic());
+		this.scenario.npcs.forEach(npc => npc.npcLogic());
 		this.hud.render();
 
 		// Eventos de teclado
@@ -354,7 +354,7 @@ export class PlayComponent implements OnInit {
 		if (timestamp >= this.start) {
 			this.scenario.render();
 			this.scenario.player.move();
-			this.scenario.characters.forEach(character => character.move());
+			this.scenario.npcs.forEach(npc => npc.move());
 			this.scenario.renderItems();
 			this.hud.render();
 
@@ -478,7 +478,7 @@ export class PlayComponent implements OnInit {
 		}
 	}
 
-	openNarratives(character: PlayCharacter) {
+	openNarratives(character: PlayNPC) {
 		this.showNarratives = true;
 		this.currentNarrative = 0;
 		this.currentCharacter = character;
@@ -562,10 +562,10 @@ export class PlayComponent implements OnInit {
 		});
 	}
 
-	playerHit(character: PlayCharacter) {
-		character.character.currentHealth -= (this.scenario.player.character.attack - character.character.defense);
+	playerHit(enemy: PlayNPC) {
+		enemy.character.currentHealth -= (this.scenario.player.character.attack - enemy.character.defense);
 
-		this.as.hitEnemy(this.gameId, character.idScenarioData).subscribe(result => {
+		this.as.hitEnemy(this.gameId, enemy.idScenarioData).subscribe(result => {
 			console.log(result);
 		});
 	}

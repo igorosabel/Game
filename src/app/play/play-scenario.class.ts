@@ -3,22 +3,23 @@ import { Constants }       from '../model/constants';
 import { Position }        from '../model/position.model';
 import { PlayCanvas }      from './play-canvas.class';
 import { PlayObject }      from './play-object.class';
-import { PlayCharacter }   from './play-character.class';
+import { PlayPlayer }      from './play-player.class';
+import { PlayNPC }         from './play-npc.class';
 import { PlayConnection }  from './play-connection.class';
 
 export class PlayScenario {
 	debug: boolean;
 	canvas: PlayCanvas;
 	mapBackground;
-	player: PlayCharacter;
+	player: PlayPlayer;
 	objects: PlayObject[];
-	characters: PlayCharacter[];
+	npcs: PlayNPC[];
 	blockers: Position[];
 	
-	private _onCharacterAction = new EventDispatcher<PlayScenario, PlayCharacter>();
+	private _onNPCAction = new EventDispatcher<PlayScenario, PlayNPC>();
 	private _onObjectAction = new EventDispatcher<PlayScenario, PlayObject>();
 	private _onPlayerConnection = new EventDispatcher<PlayScenario, PlayConnection>();
-	private _onPlayerHit = new EventDispatcher<PlayScenario, PlayCharacter>();
+	private _onPlayerHit = new EventDispatcher<PlayScenario, PlayNPC>();
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
 		// Creo el canvas
@@ -29,7 +30,7 @@ export class PlayScenario {
 		this.blockers = blockers;
 		this.player = null;
 		this.objects = [];
-		this.characters = [];
+		this.npcs = [];
 	}
 
 	get ctx() {
@@ -55,12 +56,14 @@ export class PlayScenario {
 		return null;
 	}
 
-	addPlayer(player: PlayCharacter) {
+	addPlayer(player: PlayPlayer) {
 		player.onAction.subscribe((c, position) => {
-			const character = this.findOnPosition(position, this.characters);
-			if (character!==null) {
-				this.player.stop();
-				this._onCharacterAction.dispatch(this, character);
+			const npc = this.findOnPosition(position, this.npcs);
+			if (npc!==null) {
+				if (!npc.npcData.isEnemy) {
+					this.player.stop();
+					this._onNPCAction.dispatch(this, npc);
+				}
 			}
 			else {
 				const object = this.findOnPosition(position, this.objects);
@@ -76,16 +79,16 @@ export class PlayScenario {
 			this._onPlayerConnection.dispatch(this, connection);
 		});
 		player.onHit.subscribe((c, position) => {
-			const character = this.findOnPosition(position, this.characters);
-			if (character!==null) {
-				this._onPlayerHit.dispatch(this, character);
+			const npc = this.findOnPosition(position, this.npcs);
+			if (npc!==null) {
+				this._onPlayerHit.dispatch(this, npc);
 			}
 		});
 		this.player = player;
 	}
 	
-	public get onCharacterAction() {
-		return this._onCharacterAction.asEvent();
+	public get onNPCAction() {
+		return this._onNPCAction.asEvent();
 	}
 	
 	public get onObjectAction() {
@@ -104,8 +107,8 @@ export class PlayScenario {
 		this.objects.push(object);
 	}
 
-	addCharacter(character: PlayCharacter) {
-		this.characters.push(character);
+	addNPC(npc: PlayNPC) {
+		this.npcs.push(npc);
 	}
 
 	render() {
@@ -116,7 +119,7 @@ export class PlayScenario {
 		let list = [];
 		list.push(this.player);
 		list = list.concat(this.objects);
-		list = list.concat(this.characters);
+		list = list.concat(this.npcs);
 		list.sort((a, b) => a.blockPos.y - b.blockPos.y);
 
 		list.forEach(item => {
