@@ -7,7 +7,7 @@ export class PlayObject {
 	object: ScenarioObject;
 	currentFrame: number;
 	interval: number;
-	assets: AssetCache;
+	sprites;
 	playing: boolean;
 
 	constructor(x: number, y: number, width: number, height: number, object: ScenarioObject) {
@@ -21,7 +21,17 @@ export class PlayObject {
 
 		this.currentFrame = 0;
 		this.playing = false;
-		this.assets = null;
+		this.sprites = [];
+	}
+
+	addObjectSprites(assets: AssetCache) {
+		for (let frame of this.object.allFrames) {
+			this.addSprite(assets.get(frame));
+		}
+	}
+
+	addSprite(sprite) {
+		this.sprites.push(sprite);
 	}
 
 	playAnimation() {
@@ -42,7 +52,7 @@ export class PlayObject {
 
 	render(ctx) {
 		this.playAnimation();
-		const frameImg = this.assets.get(this.object.allFrames[this.currentFrame]);
+		const frameImg = this.sprites[this.currentFrame];
 		ctx.drawImage(frameImg, this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);
 		if (Constants.DEBUG) {
 			ctx.strokeStyle = '#00f';

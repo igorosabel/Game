@@ -73,6 +73,9 @@ export class PlayComponent implements OnInit {
 	unlockedWorlds: World[] = [];
 	travelling: boolean = false;
 
+	showMessage: boolean = false;
+	currentObject: PlayObject = null;
+
 	constructor(
 		private as: ApiService,
 		private cms: ClassMapperService,
@@ -495,9 +498,16 @@ export class PlayComponent implements OnInit {
 
 	activateObject(playObject: PlayObject) {
 		if (playObject.object.activable) {
+			// Portal
 			if (playObject.object.activeTrigger==1 && playObject.object.activeTriggerCustom===null) {
 				this.portalWorld = new World();
 				this.showPortal = true;
+				this.disableKeyboard(true);
+			}
+			// Mensaje
+			if (playObject.object.activeTrigger==0 && playObject.object.activeTriggerCustom!==null) {
+				this.currentObject = playObject;
+				this.showMessage = true;
 				this.disableKeyboard(true);
 			}
 		}

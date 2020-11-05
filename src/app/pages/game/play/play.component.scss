@@ -224,3 +224,53 @@
 		}
 	}
 }
+
+.message {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	background-color: rgba(0, 0, 0, 0.6);
+
+	.message-box {
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		background-color: #fff;
+		color: #000;
+		width: calc(100% - 40px);
+		padding: 16px;
+		display: flex;
+		flex-direction: row;
+
+		.message-picture {
+			display: flex;
+			width: 100px;
+			justify-content: center;
+			align-items: center;
+
+			img {
+				height: 100%;
+			}
+		}
+
+		.message-text {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+
+			.message-title {
+				font-size: 2em;
+				border-bottom: 1px solid #ccc;
+				margin-bottom: 16px;
+			}
+
+			.message-dialog {
+				font-size: 1.5em;
+				white-space: pre;
+			}
+		}
+	}
+}

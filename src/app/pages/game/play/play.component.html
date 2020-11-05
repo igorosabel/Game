@@ -61,3 +61,17 @@
 		</div>
 	</div>
 </div>
+
+<div class="message" *ngIf="showMessage">
+	<div class="message-box">
+		<div class="message-picture">
+			<img [src]="currentObject.sprites[0].src">
+		</div>
+		<div class="message-text">
+			<div class="message-title">{{currentObject.object.name}}</div>
+			<div class="message-dialog">
+				{{currentObject.object.activeTriggerCustom}}
+			</div>
+		</div>
+	</div>
+</div>

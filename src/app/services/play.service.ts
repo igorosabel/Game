@@ -57,7 +57,7 @@ export class PlayService {
 			data.scenarioObjectHeight,
 			scenarioObject
 		);
-		po.assets = assets;
+		po.addObjectSprites(assets);
 
 		return po;
 	}
