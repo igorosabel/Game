@@ -25,7 +25,7 @@ export class PlayNPC extends PlayCharacter {
 	}
 
 	npcLogic() {
-		if (this.npcData.isNPC && !this.character.fixedPosition) {
+		if (this.npcData.isNPC && !this.character.fixedPosition && !this.dying) {
 			clearTimeout(this.npcData.timer);
 			this.npcData.remainingTime--;
 			const distance = PlayUtils.distance(this.scenario.player.blockPos, this.blockPos);
@@ -60,5 +60,7 @@ export class PlayNPC extends PlayCharacter {
 	die() {
 		this.dying = true;
 		this.currentDieFrame = 0;
+		clearTimeout(this.npcData.timer);
+		this.stopNPC();
 	}
 }
