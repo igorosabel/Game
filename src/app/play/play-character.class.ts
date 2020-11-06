@@ -1,5 +1,5 @@
 import { EventDispatcher } from 'strongly-typed-events';
-import { Constants }       from '../model/constants';
+import { Constants }       from '../constants';
 import { Item }            from '../model/item.model';
 import { Position }        from '../model/position.model';
 import { Character }       from '../model/character.model';

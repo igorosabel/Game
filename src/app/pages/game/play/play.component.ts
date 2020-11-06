@@ -1,5 +1,5 @@
 import { Component, OnInit }  from '@angular/core';
-import { Constants }          from '../../../model/constants';
+import { Constants }          from '../../../constants';
 import { Game }               from '../../../model/game.model';
 import { ScenarioData }       from '../../../model/scenario-data.model';
 import { ScenarioObject }     from '../../../model/scenario-object.model';

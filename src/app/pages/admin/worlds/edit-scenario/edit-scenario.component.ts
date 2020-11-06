@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild }  from '@angular/core';
 import { Router, ActivatedRoute, Params} from '@angular/router';
+import { Constants }                     from '../../../../constants';
 import { ApiService }                    from '../../../../services/api.service';
 import { CommonService }                 from '../../../../services/common.service';
 import { ClassMapperService }            from '../../../../services/class-mapper.service';
 import { PlayService }                   from '../../../../services/play.service';
-import { Constants }                     from '../../../../model/constants';
 import { Scenario }                      from '../../../../model/scenario.model';
 import { ScenarioData }                  from '../../../../model/scenario-data.model';
 import { Connection }                    from '../../../../model/connection.model';

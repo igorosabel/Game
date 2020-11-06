@@ -1,5 +1,5 @@
 import { EventDispatcher } from 'strongly-typed-events';
-import { Constants }       from '../model/constants';
+import { Constants }       from '../constants';
 import { Position }        from '../model/position.model';
 import { PlayCanvas }      from './play-canvas.class';
 import { PlayObject }      from './play-object.class';

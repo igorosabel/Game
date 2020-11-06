@@ -1,4 +1,4 @@
-import { Constants }      from '../model/constants';
+import { Constants }      from '../constants';
 import { ScenarioObject } from '../model/scenario-object.model';
 import { AssetCache }     from './asset-cache.class';
 

@@ -1,4 +1,4 @@
-import { Constants } from '../model/constants';
+import { Constants } from '../constants';
 
 export class PlayCanvas {
 	canvas;
