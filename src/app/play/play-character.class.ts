@@ -143,13 +143,9 @@ export class PlayCharacter {
 		return newPos;
 	}
 
-	getNextTile() {
+	getNextTile(): Position {
 		const newPos: Position = this.getNextPos();
-		const nextTile: Position = new Position(
-			Math.floor(newPos.x / Constants.TILE_WIDTH),
-			Math.floor(newPos.y / Constants.TILE_HEIGHT)
-		);
-		return nextTile;
+		return PlayUtils.getTile(newPos);
 	}
 
 	stop() {

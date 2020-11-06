@@ -11,4 +11,5 @@ export class Constants {
 	public static DEFAULT_VX: number = 3;
 	public static DEFAULT_VY: number = 3;
 	public static NEXT_POS: number = 10;
+	public static PLAYER_UPDATE_TIME: number = 10000;
 }

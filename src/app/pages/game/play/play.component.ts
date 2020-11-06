@@ -14,6 +14,7 @@ import { PlayNPC }            from '../../../play/play-npc.class';
 import { PlayObject }         from '../../../play/play-object.class';
 import { PlayConnection }     from '../../../play/play-connection.class';
 import { PlayHud }            from '../../../play/play-hud.class';
+import { PlayUtils }          from '../../../play/play-utils.class';
 import { ApiService }         from '../../../services/api.service';
 import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
@@ -53,6 +54,7 @@ export class PlayComponent implements OnInit {
 
 	hud: PlayHud = null;
 	start: number = 0;
+	playerUpdateTimer: number = null;
 
 	keyboard = {
 		down: null,
@@ -361,6 +363,7 @@ export class PlayComponent implements OnInit {
 		// Bucle del juego
 		this.gameLoop();
 		this.loading = false;
+		this.playerUpdateTimer = setInterval(this.updatePlayerPosition.bind(this), Constants.PLAYER_UPDATE_TIME);
 	}
 
 	gameLoop(timestamp: number = 0) {
@@ -526,6 +529,15 @@ export class PlayComponent implements OnInit {
 			this.keyboard.hit.onlyEsc = mode;
 			this.keyboard.esc.onlyEsc = mode;
 		}
+	}
+
+	updatePlayerPosition() {
+		const pos = PlayUtils.getTile(new Position(this.scenario.player.blockPos.x, this.scenario.player.blockPos.y));
+		this.as.updatePosition(this.gameId, pos.x, pos.y, this.scenario.player.orientation).subscribe(result => {
+			if (result.status=='error') {
+				alert('¡Ocurrió un error al actualizar la última posición del jugador!');
+			}
+		});
 	}
 
 	openNarratives(character: PlayNPC) {

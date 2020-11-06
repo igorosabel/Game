@@ -86,6 +86,10 @@ export class ApiService {
 		return this.http.post<StatusResult>(this.url + 'api/hit-enemy', {idGame, idScenarioData});
 	}
 
+	updatePosition(idGame: number, x: number, y: number, orientation: string): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'api/update-position', {idGame, x, y, orientation});
+	}
+
 	adminLogin(data: LoginData): Observable<LoginResult> {
 		return this.http.post<LoginResult>(this.url + 'admin/login', data);
 	}

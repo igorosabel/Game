@@ -1,3 +1,6 @@
+import { Constants } from '../constants';
+import { Position }  from '../model/position.model';
+
 export class PlayUtils {
 	static getCenter(pos) {
 		return {
@@ -22,5 +25,12 @@ export class PlayUtils {
 		}
 
 		return false;
+	}
+	
+	static getTile(pos: Position): Position {
+		return new Position(
+			Math.floor(pos.x / Constants.TILE_WIDTH),
+			Math.floor(pos.y / Constants.TILE_HEIGHT)
+		);
 	}
 }
