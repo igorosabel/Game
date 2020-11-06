@@ -340,10 +340,11 @@ export class PlayComponent implements OnInit {
 		this.scenario.addPlayer(player);
 
 		// Eventos de personajes y objetos
-		this.scenario.onNPCAction.subscribe((c, character) => { this.openNarratives(character) });
+		this.scenario.onNPCAction.subscribe((c, npc) => { this.openNarratives(npc) });
+		this.scenario.onNPCDie.subscribe((c, npc) => { this.enemyKilled(npc) });
 		this.scenario.onObjectAction.subscribe((c, object) => { this.activateObject(object) });
 		this.scenario.onPlayerConnection.subscribe((c, connection) => { this.changeScenario(connection) });
-		this.scenario.onPlayerHit.subscribe((c, character) => { this.playerHit(character) });
+		this.scenario.onPlayerHit.subscribe((c, npc) => { this.playerHit(npc) });
 
 		this.hud = this.play.makeHud(player.character.health, player.character.currentHealth, player.character.money, canvas, this.assetCache);
 
@@ -638,5 +639,10 @@ export class PlayComponent implements OnInit {
 		//this.as.hitEnemy(this.gameId, enemy.idScenarioData).subscribe(result => {
 			//console.log(result);
 		//});
+	}
+	
+	enemyKilled(enemy: PlayNPC) {
+		const ind = this.scenario.npcs.findIndex(x => x.idScenarioData===enemy.idScenarioData);
+		this.scenario.npcs.splice(ind, 1);
 	}
 }

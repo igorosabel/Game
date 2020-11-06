@@ -35,6 +35,7 @@ export class PlayCharacter {
 	npcData;
 
 	_onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
+	_onDie =  new EventDispatcher<PlayCharacter, number>();
 
 	constructor(
 		x: number,
@@ -247,6 +248,7 @@ export class PlayCharacter {
 			this.playing = false;
 			this.currentFrame = 0;
 			this.currentHitFrame = 0;
+			this.currentDieFrame = 0;
 			clearInterval(this.interval);
 		}
 	}
@@ -273,6 +275,8 @@ export class PlayCharacter {
 		if (this.dying) {
 			if (this.currentDieFrame === (this.sprites['death'].length - 1)) {
 				this.currentDieFrame = 0;
+				this.stopAnimation();
+				this._onDie.dispatch(this, this.character.type);
 			}
 			else{
 				this.currentDieFrame++;
@@ -310,8 +314,15 @@ export class PlayCharacter {
 			break;
 		}
 	}
+	
+	public get onDie() {
+		return this._onDie.asEvent();
+	}
 
 	move() {
+		if (this.dying) {
+			return;
+		}
 		if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
 			let newPosX = this.blockPos.x + this.vx;
 			let newPosY = this.blockPos.y + this.vy;

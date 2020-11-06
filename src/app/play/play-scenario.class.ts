@@ -16,10 +16,11 @@ export class PlayScenario {
 	npcs: PlayNPC[];
 	blockers: Position[];
 	
-	private _onNPCAction = new EventDispatcher<PlayScenario, PlayNPC>();
-	private _onObjectAction = new EventDispatcher<PlayScenario, PlayObject>();
+	private _onNPCAction        = new EventDispatcher<PlayScenario, PlayNPC>();
+	private _onNPCDie           = new EventDispatcher<PlayScenario, PlayNPC>();
+	private _onObjectAction     = new EventDispatcher<PlayScenario, PlayObject>();
 	private _onPlayerConnection = new EventDispatcher<PlayScenario, PlayConnection>();
-	private _onPlayerHit = new EventDispatcher<PlayScenario, PlayNPC>();
+	private _onPlayerHit        = new EventDispatcher<PlayScenario, PlayNPC>();
 
 	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
 		// Creo el canvas
@@ -90,6 +91,10 @@ export class PlayScenario {
 	public get onNPCAction() {
 		return this._onNPCAction.asEvent();
 	}
+
+	public get onNPCDie() {
+		return this._onNPCDie.asEvent();
+	}
 	
 	public get onObjectAction() {
 		return this._onObjectAction.asEvent();
@@ -108,6 +113,9 @@ export class PlayScenario {
 	}
 
 	addNPC(npc: PlayNPC) {
+		npc.onDie.subscribe((c, type) => {
+			this._onNPCDie.dispatch(this, npc);
+		});
 		this.npcs.push(npc);
 	}
 

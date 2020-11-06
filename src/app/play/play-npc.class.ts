@@ -62,5 +62,6 @@ export class PlayNPC extends PlayCharacter {
 		this.currentDieFrame = 0;
 		clearTimeout(this.npcData.timer);
 		this.stopNPC();
+		this.playAnimation();
 	}
 }

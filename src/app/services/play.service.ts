@@ -42,6 +42,7 @@ export class PlayService {
 		character.money         = game.money;
 		character.speed         = game.speed;
 		character.inventory     = game.items;
+		character.type          = -1;
 		playPlayer.character    = character;
 		playPlayer.connections  = connections;
 		playPlayer.orientation  = game.orientation;
@@ -79,10 +80,16 @@ export class PlayService {
 		playNPC.addCharacterSprites(assets);
 		// Death sprites
 		playNPC.addSprite('death', assets.get('/assets/play/death-1.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-1.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-2.png'));
 		playNPC.addSprite('death', assets.get('/assets/play/death-2.png'));
 		playNPC.addSprite('death', assets.get('/assets/play/death-3.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-3.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-4.png'));
 		playNPC.addSprite('death', assets.get('/assets/play/death-4.png'));
 		playNPC.addSprite('death', assets.get('/assets/play/death-5.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-5.png'));
+		playNPC.addSprite('death', assets.get('/assets/play/death-6.png'));
 		playNPC.addSprite('death', assets.get('/assets/play/death-6.png'));
 
 		return playNPC;
