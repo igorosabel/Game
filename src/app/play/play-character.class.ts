@@ -2,6 +2,7 @@ import { EventDispatcher } from 'strongly-typed-events';
 import { Constants }       from '../constants';
 import { Item }            from '../model/item.model';
 import { Position }        from '../model/position.model';
+import { PositionSize }    from '../model/position-size.model';
 import { Character }       from '../model/character.model';
 import { Narrative }       from '../model/narrative.model';
 import { PlayScenario }    from './play-scenario.class';
@@ -12,10 +13,10 @@ import { PlayUtils }       from './play-utils.class';
 export class PlayCharacter {
 	idScenarioData: number;
 	orientation: string;
-	orientationList;
-	blockPos;
+	orientationList: string[];
+	blockPos: PositionSize;
 	originalSize;
-	center;
+	center: Position;
 	sprites;
 	scenario: PlayScenario;
 	vx: number;
@@ -48,15 +49,15 @@ export class PlayCharacter {
 	) {
 		this.orientation = 'down';
 		this.orientationList = [];
-		this.blockPos = {
-			x: (x * Constants.TILE_WIDTH),
-			y: (y * Constants.TILE_HEIGHT),
-			width: (blockWidth * Constants.TILE_WIDTH),
-			height: (blockHeight * Constants.TILE_HEIGHT)
-		};
+		this.blockPos = new PositionSize(
+			(x * Constants.TILE_WIDTH),
+			(y * Constants.TILE_HEIGHT),
+			(blockWidth * Constants.TILE_WIDTH),
+			(blockHeight * Constants.TILE_HEIGHT)
+		);
 		this.originalSize = {width, height};
 		this.scenario = scenario;
-		this.center = {};
+		this.center = new Position();
 		this.sprites = {
 			up: [],
 			right: [],
@@ -287,13 +288,23 @@ export class PlayCharacter {
 	}
 
 	collission(obj1, obj2: Position) {
-		let rect2 = {x: (obj2.x * Constants.TILE_WIDTH), y: (obj2.y * Constants.TILE_HEIGHT), width: Constants.TILE_WIDTH, height: Constants.TILE_HEIGHT};
+		let rect2 = new PositionSize(
+			(obj2.x * Constants.TILE_WIDTH),
+			(obj2.y * Constants.TILE_HEIGHT),
+			Constants.TILE_WIDTH,
+			Constants.TILE_HEIGHT
+		);
 
 		return PlayUtils.collision(obj1, rect2);
 	}
 
 	npcCollision(pos, character) {
-		let charPos = {x: character.blockPos.x, y: character.blockPos.y, width: character.blockPos.width, height: character.blockPos.height};
+		let charPos = new PositionSize(
+			character.blockPos.x,
+			character.blockPos.y,
+			character.blockPos.width,
+			character.blockPos.height
+		);
 
 		return PlayUtils.collision(pos, charPos);
 	}
@@ -310,7 +321,7 @@ export class PlayCharacter {
 			break;
 		}
 	}
-	
+
 	public get onDie() {
 		return this._onDie.asEvent();
 	}

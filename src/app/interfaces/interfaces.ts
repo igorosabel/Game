@@ -152,6 +152,13 @@ export interface PositionInterface {
 	y: number;
 }
 
+export interface PositionSizeInterface {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+
 export interface PlayResult {
 	status: string;
 	idWorld: number;

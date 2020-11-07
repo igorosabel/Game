@@ -643,6 +643,9 @@ export class PlayComponent implements OnInit {
 	}
 
 	playerHit(enemy: PlayNPC) {
+		if (enemy.dying) {
+			return;
+		}
 		enemy.character.currentHealth -= (this.scenario.player.character.attack - enemy.character.defense);
 		if (enemy.character.currentHealth<1) {
 			enemy.die();
@@ -652,7 +655,7 @@ export class PlayComponent implements OnInit {
 			//console.log(result);
 		//});
 	}
-	
+
 	enemyKilled(enemy: PlayNPC) {
 		const ind = this.scenario.npcs.findIndex(x => x.idScenarioData===enemy.idScenarioData);
 		this.scenario.npcs.splice(ind, 1);
