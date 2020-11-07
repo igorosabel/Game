@@ -7,16 +7,30 @@
 
 <div class="game"></div>
 
-<div class="narratives" *ngIf="showNarratives">
-	<div class="narratives-box">
-		<div class="narrative-picture">
+<div class="dialog" *ngIf="showNarratives">
+	<div class="dialog-box">
+		<div class="dialog-picture">
 			<img [src]="currentCharacter.sprites['down'][0].src">
 		</div>
-		<div class="narrative-text">
-			<div class="narrative-character-name">{{currentCharacter.character.name}}</div>
-			<div class="narrative-dialog">
+		<div class="dialog-text">
+			<div class="dialog-title">{{currentCharacter.character.name}}</div>
+			<div class="dialog-dialog">
 				{{currentCharacter.character.narratives[currentNarrative].dialog}}
 				<img src="/assets/play/narratives-more.svg" *ngIf="currentNarrative<currentCharacter.character.narratives.length-1">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="dialog" *ngIf="showMessage">
+	<div class="dialog-box">
+		<div class="dialog-picture">
+			<img [src]="currentObject.sprites[0].src">
+		</div>
+		<div class="dialog-text">
+			<div class="dialog-title">{{currentObject.object.name}}</div>
+			<div class="dialog-dialog">
+				{{currentObject.object.activeTriggerCustom}}
 			</div>
 		</div>
 	</div>
@@ -57,20 +71,6 @@
 						<div class="word">{{world.wordThree}}</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="message" *ngIf="showMessage">
-	<div class="message-box">
-		<div class="message-picture">
-			<img [src]="currentObject.sprites[0].src">
-		</div>
-		<div class="message-text">
-			<div class="message-title">{{currentObject.object.name}}</div>
-			<div class="message-dialog">
-				{{currentObject.object.activeTriggerCustom}}
 			</div>
 		</div>
 	</div>

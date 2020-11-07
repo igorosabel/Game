@@ -1,6 +1,8 @@
 import { Constants }    from '../constants';
 import { Position }     from '../model/position.model';
 import { PositionSize } from '../model/position-size.model';
+import { PlayPlayer }   from './play-player.class';
+import { PlayNPC }      from './play-npc.class';
 
 export class PlayUtils {
 	static getCenter(pos: PositionSize): Position {
@@ -34,4 +36,14 @@ export class PlayUtils {
 			Math.floor(pos.y / Constants.TILE_HEIGHT)
 		);
 	}
+
+    static getVector(player: PlayPlayer, enemy: PlayNPC): Position {
+        player.updateCenter();
+        enemy.updateCenter();
+
+        return new Position(
+            (enemy.center.x - player.center.x),
+            (enemy.center.y - player.center.y)
+        );
+    }
 }

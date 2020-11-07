@@ -646,6 +646,7 @@ export class PlayComponent implements OnInit {
 		if (enemy.dying) {
 			return;
 		}
+		console.log(PlayUtils.getVector(this.scenario.player, enemy));
 		enemy.character.currentHealth -= (this.scenario.player.character.attack - enemy.character.defense);
 		if (enemy.character.currentHealth<1) {
 			enemy.die();

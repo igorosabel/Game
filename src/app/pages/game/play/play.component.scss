@@ -25,70 +25,6 @@
     padding-top: 60px;
 }
 
-.narratives {
-	position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    background-color: rgba(0, 0, 0, 0.6);
-
-	.narratives-box {
-		position: absolute;
-		bottom: 20px;
-		left: 20px;
-		background-color: #fff;
-		color: #000;
-		width: calc(100% - 40px);
-		padding: 16px;
-		display: flex;
-		flex-direction: row;
-
-		.narrative-picture {
-			display: flex;
-			width: 100px;
-			justify-content: center;
-			align-items: center;
-
-			img {
-				height: 100%;
-			}
-		}
-
-		.narrative-text {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-
-			.narrative-character-name {
-				font-size: 2em;
-				border-bottom: 1px solid #ccc;
-				margin-bottom: 16px;
-			}
-
-			.narrative-dialog {
-				font-size: 1.5em;
-				position: relative;
-
-				img {
-					position: absolute;
-					bottom: 0;
-					right: 20px;
-					opacity: 1;
-					animation: animatedMore 2s linear infinite;
-				}
-
-				@keyframes animatedMore {
-					0% { opacity: 1;}
-					50% { opacity: 0; }
-					100%{ opacity: 1;}
-				}
-			}
-		}
-	}
-}
-
 .portal {
 	position: fixed;
 	top: 0;
@@ -225,7 +161,7 @@
 	}
 }
 
-.message {
+.dialog {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -234,7 +170,7 @@
 	z-index: 10;
 	background-color: rgba(0, 0, 0, 0.6);
 
-	.message-box {
+	.dialog-box {
 		position: absolute;
 		bottom: 20px;
 		left: 20px;
@@ -245,7 +181,7 @@
 		display: flex;
 		flex-direction: row;
 
-		.message-picture {
+		.dialog-picture {
 			display: flex;
 			width: 100px;
 			justify-content: center;
@@ -257,18 +193,18 @@
 			}
 		}
 
-		.message-text {
+		.dialog-text {
 			display: flex;
 			flex-direction: column;
 			flex: 1;
 
-			.message-title {
+			.dialog-title {
 				font-size: 2em;
 				border-bottom: 1px solid #ccc;
 				margin-bottom: 16px;
 			}
 
-			.message-dialog {
+			.dialog-dialog {
 				font-size: 1.5em;
 				white-space: pre;
 			}
