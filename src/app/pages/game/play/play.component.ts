@@ -62,11 +62,14 @@ export class PlayComponent implements OnInit {
 		left: null,
 		right: null,
 		doAction: null,
+		openInventory: null,
 		hit: null,
 		esc: null
 	};
 
 	showOver: boolean = false;
+
+	showInventory: boolean = false;
 
 	showNarratives: boolean = false;
 	currentCharacter: PlayNPC = null;
@@ -386,6 +389,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.right===null &&
 			this.keyboard.left===null &&
 			this.keyboard.doAction===null &&
+			this.keyboard.openInventory===null &&
 			this.keyboard.hit===null &&
 			this.keyboard.esc===null
 		) {
@@ -441,6 +445,18 @@ export class PlayComponent implements OnInit {
 				}
 			};
 
+			// I - Inventario
+			this.keyboard.openInventory = this.play.keyboard(73);
+			this.keyboard.openInventory.press = () => {
+				if (this.showInventory) {
+					this.closeInventory();
+					return;
+				}
+				if (!this.showOver) {
+					this.openInventory();
+				}
+			};
+
 			// Espacio - Golpe
 			this.keyboard.hit = this.play.keyboard(32);
 			this.keyboard.hit.press = () => {
@@ -463,6 +479,7 @@ export class PlayComponent implements OnInit {
 				this.showNarratives = false;
 				this.showPortal     = false;
 				this.showMessage    = false;
+				this.showInventory  = false;
 				this.showOver       = false;
 				this.disableKeyboard(false);
 			};
@@ -473,6 +490,7 @@ export class PlayComponent implements OnInit {
 			this.play.removeKeyboard(this.keyboard.right);
 			this.play.removeKeyboard(this.keyboard.left);
 			this.play.removeKeyboard(this.keyboard.doAction);
+			this.play.removeKeyboard(this.keyboard.openInventory);
 			this.play.removeKeyboard(this.keyboard.hit);
 			this.play.removeKeyboard(this.keyboard.esc);
 
@@ -481,6 +499,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.right = null;
 			this.keyboard.left = null;
 			this.keyboard.doAction = null;
+			this.keyboard.openInventory = null;
 			this.keyboard.hit = null;
 			this.keyboard.esc = null;
 
@@ -495,6 +514,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.right!==null &&
 			this.keyboard.left!==null &&
 			this.keyboard.doAction!==null &&
+			this.keyboard.openInventory!==null &&
 			this.keyboard.hit!==null &&
 			this.keyboard.esc!==null
 		) {
@@ -503,6 +523,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.right.disabled = mode;
 			this.keyboard.left.disabled = mode;
 			this.keyboard.doAction.disabled = mode;
+			this.keyboard.openInventory.disabled = mode;
 			this.keyboard.hit.disabled = mode;
 			this.keyboard.esc.disabled = mode;
 			if (!mode) {
@@ -518,6 +539,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.right!==null &&
 			this.keyboard.left!==null &&
 			this.keyboard.doAction!==null &&
+			this.keyboard.openInventory!==null &&
 			this.keyboard.hit!==null &&
 			this.keyboard.esc!==null
 		) {
@@ -526,6 +548,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.right.onlyEsc = mode;
 			this.keyboard.left.onlyEsc = mode;
 			this.keyboard.doAction.onlyEsc = mode;
+			this.keyboard.openInventory.onlyEsc = mode;
 			this.keyboard.hit.onlyEsc = mode;
 			this.keyboard.esc.onlyEsc = mode;
 		}
@@ -605,7 +628,7 @@ export class PlayComponent implements OnInit {
 		this.portalTravel(this.portalWorld);
 	}
 
-	portalClose(ev) {
+	closePortal(ev) {
 		ev && ev.preventDefault();
 		this.disableKeyboard(false);
 		this.showPortal = false;
@@ -625,6 +648,19 @@ export class PlayComponent implements OnInit {
 				alert('¡No existe ningún mundo con las palabras indicadas!');
 			}
 		});
+	}
+
+	openInventory() {
+		this.showOver = true;
+		this.showInventory = true;
+		this.escKeyboard(true);
+	}
+
+	closeInventory(ev = null) {
+		ev && ev.preventDefault();
+		this.disableKeyboard(false);
+		this.showInventory = false;
+		this.showOver      = false;
 	}
 
 	changeScenario(connection: PlayConnection) {

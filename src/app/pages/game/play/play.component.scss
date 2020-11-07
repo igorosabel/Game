@@ -211,3 +211,108 @@
 		}
 	}
 }
+
+.inventory {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.inventory-box {
+		background-color: #fff;
+		color: #000;
+		width: 60%;
+
+		.inventory-header {
+			padding: 16px;
+			font-size: 2em;
+			border-bottom: 1px solid #ccc;
+			height: 80px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			a {
+				color: #ccc;
+				text-decoration: none;
+
+				&:hover {
+					color: #000;
+				}
+			}
+		}
+
+		.inventory-body {
+			display: flex;
+			flex-direction: row;
+			height: 400px;
+
+			.inventory-list {
+				flex: 5;
+				height: 100%;
+				border-right: 1px solid #ccc;
+			}
+
+			.inventory-equipment {
+				flex: 1;
+				padding: 16px;
+
+				.inventory-equipment-header {
+					margin-bottom: 16px;
+				}
+
+				.inventory-equipment-head {
+					border: 1px solid #888;
+					background-color: #ccc;
+					height: 60px;
+					width: 60px;
+					margin: 0 auto;
+				}
+
+				.inventory-equipment-necklace {
+					border: 1px solid #888;
+					width: 50px;
+					height: 20px;
+					background-color: #ccc;
+					margin: 8px auto 0;
+				}
+
+				.inventory-equipment-body {
+					border: 1px solid #888;
+					background-color: #ccc;
+					width: 120px;
+					margin: 8px auto 0;
+					height: 100px;
+				}
+
+				.inventory-equipment-boots {
+					margin: 8px auto 0;
+					display: flex;
+					justify-content: space-between;
+					width: 90px;
+
+					.inventory-equipment-boot {
+						border: 1px solid #888;
+						background-color: #ccc;
+						height: 80px;
+						width: 30px;
+					}
+				}
+
+				.inventory-equipment-weapon {
+					border: 1px solid #888;
+					background-color: #ccc;
+					width: 80px;
+					margin: 0 auto;
+					height: 150px;
+				}
+			}
+		}
+	}
+}
