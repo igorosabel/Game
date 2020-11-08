@@ -117,7 +117,7 @@ export class PlayCharacter {
 	}
 
 	updateCenter() {
-		this.center = PlayUtils.getCenter(this.blockPos);
+		this.center = this.blockPos.getCenter();
 	}
 
 	getNextPos() {

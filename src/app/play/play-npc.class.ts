@@ -28,7 +28,7 @@ export class PlayNPC extends PlayCharacter {
 		if (this.npcData.isNPC && !this.character.fixedPosition && !this.dying) {
 			clearTimeout(this.npcData.timer);
 			this.npcData.remainingTime--;
-			const distance = PlayUtils.distance(this.scenario.player.blockPos, this.blockPos);
+			const distance = this.scenario.player.blockPos.distance(this.blockPos);
 			if (distance > 250) {
 				this.npcData.status = 'wandering';
 			}
