@@ -1,4 +1,4 @@
-import { ItemInterface, ItemFrameInterface } from '../interfaces/interfaces';
+import { ItemInterface } from '../interfaces/interfaces';
 import { ItemFrame } from './item-frame.model';
 
 export class Item {

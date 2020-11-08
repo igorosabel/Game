@@ -1,8 +1,8 @@
-import { CharacterInterface, CharacterFrameInterface, NarrativeInterface } from '../interfaces/interfaces';
-import { CharacterFrame } from './character-frame.model';
-import { Narrative }      from './narrative.model';
-import { Item }           from './item.model';
-import { Inventory }      from './inventory.model';
+import { CharacterInterface } from '../interfaces/interfaces';
+import { CharacterFrame }     from './character-frame.model';
+import { Narrative }          from './narrative.model';
+import { Item }               from './item.model';
+import { Inventory }          from './inventory.model';
 
 export class Character {
 	currentHealth: number = null;

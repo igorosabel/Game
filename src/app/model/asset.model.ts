@@ -31,7 +31,7 @@ export class Asset {
 		this._tagList = str;
 	}
 
-	set file(str) {
+	set file(str: string) {
 		this.modified = true;
 		this.url = str;
 	}

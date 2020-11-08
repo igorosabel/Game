@@ -39,7 +39,7 @@ export class AssetsComponent implements OnInit {
 		this.loadWorlds();
 		this.loadAssets();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddAsset() };
 	}
@@ -123,7 +123,7 @@ export class AssetsComponent implements OnInit {
 		document.getElementById('asset-file').click();
 	}
 
-	onFileChange(event) {
+	onFileChange(event: Event) {
 		let reader = new FileReader();
 		if ( (<HTMLInputElement>event.target).files && (<HTMLInputElement>event.target).files.length > 0) {
 			this.loadingFile = true;

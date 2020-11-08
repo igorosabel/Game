@@ -63,7 +63,7 @@ export class CharactersComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadCharacters();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddCharacter() };
 	}
@@ -88,7 +88,7 @@ export class CharactersComponent implements OnInit {
 		this.characterListFiltered = filteredList;
 	}
 
-	changeFilterListOption(ev, option) {
+	changeFilterListOption(ev: MouseEvent, option: string) {
 		ev && ev.preventDefault();
 		this.filterListOption = option;
 	}
@@ -111,7 +111,7 @@ export class CharactersComponent implements OnInit {
 		this.animationImage.right = '/assets/admin/no-asset.svg';
 	}
 
-	showAddCharacter(ev = null) {
+	showAddCharacter(ev: MouseEvent = null) {
 		ev && ev.preventDefault();
 		if (!this.showDetail) {
 			this.resetLoadedCharacter();
@@ -140,7 +140,7 @@ export class CharactersComponent implements OnInit {
 		this.dropItemName = selectedItem.name;
 	}
 
-	removeSelectedDropItem(ev) {
+	removeSelectedDropItem(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		this.loadedCharacter.dropIdItem = null;
 		this.loadedCharacter.dropAssetUrl = '/assets/admin/no-asset.svg';
@@ -208,7 +208,7 @@ export class CharactersComponent implements OnInit {
 		const conf = confirm('¿Estás seguro de querer borrar este frame?');
 		if (conf) {
 			let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
-			const ind = this.loadedCharacter['frames'+sentUpper].findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+			const ind = this.loadedCharacter['frames'+sentUpper].findIndex((x: CharacterFrame) => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
 			this.loadedCharacter['frames'+sentUpper].splice(ind, 1);
 			this.updateFrameOrders(sentUpper);
 		}
@@ -216,7 +216,7 @@ export class CharactersComponent implements OnInit {
 
 	frameLeft(sent: string, frame: CharacterFrame) {
 		let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
-		const ind = this.loadedCharacter['frames'+sentUpper].findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+		const ind = this.loadedCharacter['frames'+sentUpper].findIndex((x: CharacterFrame) => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
 		if (ind==0) {
 			return;
 		}
@@ -228,7 +228,7 @@ export class CharactersComponent implements OnInit {
 
 	frameRight(sent: string, frame: CharacterFrame) {
 		let sentUpper = sent.substring(0,1).toUpperCase() + sent.substring(1);
-		const ind = this.loadedCharacter['frames'+sentUpper].findIndex(x => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
+		const ind = this.loadedCharacter['frames'+sentUpper].findIndex((x: CharacterFrame) => (x.id+x.idAsset.toString())==(frame.id+frame.idAsset.toString()));
 		if (ind==(this.loadedCharacter['frames'+sentUpper].length-1)) {
 			return;
 		}

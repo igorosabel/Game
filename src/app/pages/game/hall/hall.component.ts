@@ -48,7 +48,7 @@ export class HallComponent implements OnInit {
 		this.showNewGame = false;
 	}
 
-	newGame(ev) {
+	newGame(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		if (this.newGameName===null) {
 			alert('¡No puedes dejar el nombre del personaje en blanco!');

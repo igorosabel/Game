@@ -181,6 +181,14 @@ export interface WorldStartInterface {
 	check: boolean;
 }
 
+export interface NPCData {
+	isNPC: boolean;
+	isEnemy: boolean;
+	status: string;
+	timer: number;
+	remainingTime: number;
+}
+
 export interface TagInterface {
 	id: number;
 	name: string;

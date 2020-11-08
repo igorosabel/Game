@@ -53,7 +53,7 @@ export class ItemsComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadItems();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddItem() };
 	}
@@ -78,7 +78,7 @@ export class ItemsComponent implements OnInit {
 		this.itemListFiltered = filteredList;
 	}
 
-	changeFilterListOption(ev, option) {
+	changeFilterListOption(ev: MouseEvent, option: string) {
 		ev && ev.preventDefault();
 		this.filterListOption = option;
 	}
@@ -147,7 +147,7 @@ export class ItemsComponent implements OnInit {
 
 	startAnimation() {
 		if (this.loadedItem.allFrames.length>1) {
-			this.animationTimer = setInterval(() => { this.animatePreview() }, 300);
+			this.animationTimer = window.setInterval(() => { this.animatePreview() }, 300);
 		}
 		else {
 			this.animationImage = this.loadedItem.assetUrl;

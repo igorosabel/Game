@@ -1,14 +1,13 @@
 import { EventDispatcher } from 'strongly-typed-events';
 import { Constants }       from '../constants';
-import { Item }            from '../model/item.model';
 import { Position }        from '../model/position.model';
 import { PositionSize }    from '../model/position-size.model';
 import { Character }       from '../model/character.model';
-import { Narrative }       from '../model/narrative.model';
 import { PlayScenario }    from './play-scenario.class';
 import { AssetCache }      from './asset-cache.class';
 import { PlayConnection }  from './play-connection.class';
 import { PlayUtils }       from './play-utils.class';
+import { NPCData }         from '../interfaces/interfaces';
 
 export class PlayCharacter {
 	idScenarioData: number;
@@ -33,7 +32,7 @@ export class PlayCharacter {
 	interval: number;
 	character: Character;
 	connections;
-	npcData;
+	npcData: NPCData;
 
 	_onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
 	_onDie =  new EventDispatcher<PlayCharacter, number>();
@@ -112,7 +111,7 @@ export class PlayCharacter {
 		}
 	}
 
-	addSprite(ind, sprite) {
+	addSprite(ind: string, sprite) {
 		this.sprites[ind].push(sprite);
 	}
 
@@ -236,7 +235,7 @@ export class PlayCharacter {
 	playAnimation() {
 		if (!this.playing) {
 			this.playing = true;
-			this.interval = setInterval(this.updateAnimation.bind(this), Constants.FRAME_DURATION);
+			this.interval = window.setInterval(this.updateAnimation.bind(this), Constants.FRAME_DURATION);
 		}
 	}
 
@@ -287,7 +286,7 @@ export class PlayCharacter {
 		}
 	}
 
-	collission(obj1, obj2: Position) {
+	collission(obj1: PositionSize, obj2: Position) {
 		let rect2 = new PositionSize(
 			(obj2.x * Constants.TILE_WIDTH),
 			(obj2.y * Constants.TILE_HEIGHT),
@@ -298,7 +297,7 @@ export class PlayCharacter {
 		return PlayUtils.collision(obj1, rect2);
 	}
 
-	npcCollision(pos, character) {
+	npcCollision(pos: PositionSize, character: PlayCharacter) {
 		let charPos = new PositionSize(
 			character.blockPos.x,
 			character.blockPos.y,
@@ -374,12 +373,12 @@ export class PlayCharacter {
 
 			// Colisión con fondos y objetos
 			let hit = false;
-			let newPos = {
-				x: newPosX,
-				y: newPosY,
-				width: this.blockPos.width,
-				height: this.blockPos.height
-			};
+			let newPos = new PositionSize(
+				newPosX,
+				newPosY,
+				this.blockPos.width,
+				this.blockPos.height
+			);
 			this.scenario.blockers.forEach(object => {
 				if (this.collission(newPos, object)) {
 					hit = true;
@@ -422,9 +421,10 @@ export class PlayCharacter {
 		}
 	}
 
-	render(ctx) {
+	render(ctx: CanvasRenderingContext2D) {
 		let img = this.sprites[this.orientation][this.currentFrame];
-		let posX, posY;
+		let posX: number = null;
+		let posY: number = null;
 		if (!this.hitting) {
 			switch (this.orientation) {
 				case 'down': {

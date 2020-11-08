@@ -1,4 +1,4 @@
-import { InventoryInterface, ItemInterface } from '../interfaces/interfaces';
+import { InventoryInterface } from '../interfaces/interfaces';
 import { Item } from './item.model';
 
 export class Inventory {

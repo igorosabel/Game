@@ -30,7 +30,7 @@ export class ScenariosComponent implements OnInit {
 			this.worldId = params.id_world;
 			this.loadScenarios();
 
-			let esc = this.play.keyboard(27);
+			let esc = this.play.keyboard('Escape');
 			esc.onlyEsc = true;
 			esc.press = () => { this.showAddScenario() };
 		});
@@ -54,7 +54,7 @@ export class ScenariosComponent implements OnInit {
 		this.loadedScenario.idWorld = this.worldId;
 	}
 
-	showAddScenario(ev = null) {
+	showAddScenario(ev: MouseEvent = null) {
 		ev && ev.preventDefault();
 		if (!this.showDetail) {
 			this.resetLoadedScenario();

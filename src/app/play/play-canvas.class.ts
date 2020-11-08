@@ -1,8 +1,8 @@
 import { Constants } from '../constants';
 
 export class PlayCanvas {
-	canvas;
-	ctx;
+	canvas: HTMLCanvasElement;
+	ctx: CanvasRenderingContext2D;
 
 	constructor() {
 		document.querySelector('.game').innerHTML = '';

@@ -37,7 +37,7 @@ export class BackgroundsComponent implements OnInit {
 		this.loadBackgroundCategories();
 		this.loadBackgrounds();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddBackground() };
 	}
@@ -70,7 +70,7 @@ export class BackgroundsComponent implements OnInit {
 		this.backgroundListFiltered = filteredList;
 	}
 
-	changeFilterListOption(ev, option) {
+	changeFilterListOption(ev: MouseEvent, option: string) {
 		ev && ev.preventDefault();
 		this.filterListOption = option;
 	}
@@ -80,7 +80,7 @@ export class BackgroundsComponent implements OnInit {
 		this.loadedBackground.assetUrl = '/assets/admin/no-asset.svg';
 	}
 
-	showAddBackground(ev = null) {
+	showAddBackground(ev: MouseEvent = null) {
 		ev && ev.preventDefault();
 		if (!this.showDetail) {
 			this.resetLoadedBackground();
@@ -112,10 +112,10 @@ export class BackgroundsComponent implements OnInit {
 			alert('¡No puedes dejar el nombre del fondo en blanco!');
 		}
 
-    if (validate && this.loadedBackground.idBackgroundCategory===null) {
-		validate = false;
-		alert('¡No has elegido ninguna categoría para el fondo!');
-    }
+		if (validate && this.loadedBackground.idBackgroundCategory===null) {
+			validate = false;
+			alert('¡No has elegido ninguna categoría para el fondo!');
+		}
 
 		if (validate && this.loadedBackground.idAsset===null) {
 			validate = false;

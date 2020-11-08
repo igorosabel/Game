@@ -366,7 +366,7 @@ export class PlayComponent implements OnInit {
 		// Bucle del juego
 		this.gameLoop();
 		this.loading = false;
-		this.playerUpdateTimer = setInterval(this.updatePlayerPosition.bind(this), Constants.PLAYER_UPDATE_TIME);
+		this.playerUpdateTimer = window.setInterval(this.updatePlayerPosition.bind(this), Constants.PLAYER_UPDATE_TIME);
 	}
 
 	gameLoop(timestamp: number = 0) {
@@ -394,7 +394,7 @@ export class PlayComponent implements OnInit {
 			this.keyboard.esc===null
 		) {
 			// W - Arriba
-			this.keyboard.up = this.play.keyboard(87);
+			this.keyboard.up = this.play.keyboard('w');
 			this.keyboard.up.press = () => {
 				if (!this.showOver) { this.scenario.player.up(); }
 			};
@@ -403,7 +403,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// S - Abajo
-			this.keyboard.down = this.play.keyboard(83);
+			this.keyboard.down = this.play.keyboard('s');
 			this.keyboard.down.press = () => {
 				if (!this.showOver) { this.scenario.player.down(); }
 			};
@@ -412,7 +412,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// D - Derecha
-			this.keyboard.right = this.play.keyboard(68);
+			this.keyboard.right = this.play.keyboard('d');
 			this.keyboard.right.press = () => {
 				if (!this.showOver) { this.scenario.player.right(); }
 			};
@@ -421,7 +421,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// A - Izquierda
-			this.keyboard.left = this.play.keyboard(65);
+			this.keyboard.left = this.play.keyboard('a');
 			this.keyboard.left.press = () => {
 				if (!this.showOver) { this.scenario.player.left(); }
 			};
@@ -430,7 +430,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// E - Acción
-			this.keyboard.doAction = this.play.keyboard(69);
+			this.keyboard.doAction = this.play.keyboard('e');
 			this.keyboard.doAction.press = () => {
 				if (this.showNarratives) {
 					this.nextNarrative();
@@ -446,7 +446,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// I - Inventario
-			this.keyboard.openInventory = this.play.keyboard(73);
+			this.keyboard.openInventory = this.play.keyboard('i');
 			this.keyboard.openInventory.press = () => {
 				if (this.showInventory) {
 					this.closeInventory();
@@ -458,7 +458,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// Espacio - Golpe
-			this.keyboard.hit = this.play.keyboard(32);
+			this.keyboard.hit = this.play.keyboard(' ');
 			this.keyboard.hit.press = () => {
 				if (this.showNarratives) {
 					this.nextNarrative();
@@ -474,7 +474,7 @@ export class PlayComponent implements OnInit {
 			};
 
 			// Escape - Cancelar
-			this.keyboard.esc = this.play.keyboard(27);
+			this.keyboard.esc = this.play.keyboard('Escape');
 			this.keyboard.esc.press = () => {
 				this.showNarratives = false;
 				this.showPortal     = false;
@@ -628,7 +628,7 @@ export class PlayComponent implements OnInit {
 		this.portalTravel(this.portalWorld);
 	}
 
-	closePortal(ev) {
+	closePortal(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		this.disableKeyboard(false);
 		this.showPortal = false;

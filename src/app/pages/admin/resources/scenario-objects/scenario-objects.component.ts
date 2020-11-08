@@ -53,7 +53,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		this.loadWorlds();
 		this.loadScenarioObjects();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddScenarioObject() };
 	}
@@ -74,7 +74,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		});
 	}
 
-	changeFilterListOption(ev, option) {
+	changeFilterListOption(ev: MouseEvent, option: string) {
 		ev && ev.preventDefault();
 		this.filterListOption = option;
 	}
@@ -107,7 +107,7 @@ export class ScenarioObjectsComponent implements OnInit {
 	changeTab(tab: string) {
 		this.detailtTab = tab;
 	}
-	
+
 	changeCrossable() {
 		if (this.loadedScenarioObject.crossable) {
 			this.loadedScenarioObject.blockWidth = 0;
@@ -197,7 +197,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		clearInterval(this.animationTimer);
 
 		if (this.loadedScenarioObject.allFrames.length>1) {
-			this.animationTimer = setInterval(() => { this.animatePreview() }, 300);
+			this.animationTimer = window.setInterval(() => { this.animatePreview() }, 300);
 		}
 		else {
 			this.animationImage = this.loadedScenarioObject.assetUrl;
@@ -249,7 +249,7 @@ export class ScenarioObjectsComponent implements OnInit {
 		}
 	}
 
-	deleteDrop(ev, drop: ScenarioObjectDrop) {
+	deleteDrop(ev: MouseEvent, drop: ScenarioObjectDrop) {
 		ev && ev.preventDefault();
 		const conf = confirm('¿Estás seguro de querer borrar el item "' + drop.itemName + '"?');
 		if (conf) {

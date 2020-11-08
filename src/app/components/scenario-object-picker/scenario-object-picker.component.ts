@@ -25,7 +25,7 @@ export class ScenarioObjectPickerComponent implements OnInit {
 		this.show = true;
 	}
 
-	closePicker(ev) {
+	closePicker(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		this.show = false;
 	}

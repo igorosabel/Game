@@ -7,10 +7,10 @@ import { PlayHud }            from '../play/play-hud.class';
 import { AssetCache }         from '../play/asset-cache.class';
 import { PlayObject }         from '../play/play-object.class';
 import { ScenarioData }       from '../model/scenario-data.model';
-import { ScenarioObject }     from '../model/scenario-object.model';
 import { Character }          from '../model/character.model';
 import { Position }           from '../model/position.model';
 import { Game }               from '../model/game.model';
+import { Key }                from '../model/key.model';
 import { ClassMapperService } from './class-mapper.service';
 import {
 	CharacterInterface,
@@ -27,11 +27,11 @@ export class PlayService {
 		return new PlayCanvas();
 	}
 
-	makeScenario(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
+	makeScenario(canvas: PlayCanvas, mapBackground: HTMLImageElement, blockers: Position[]) {
 		return new PlayScenario(canvas, mapBackground, blockers);
 	}
 
-	makePlayer(game: Game, width, height, blockWidth, blockHeight, scenario, connections) {
+	makePlayer(game: Game, width: number, height: number, blockWidth: number, blockHeight: number, scenario: PlayScenario, connections) {
 		const playPlayer        = new PlayPlayer(game.positionX, game.positionY, width, height, blockWidth, blockHeight, scenario);
 		const character         = new Character();
 		character.name          = game.name;
@@ -95,50 +95,19 @@ export class PlayService {
 		return playNPC;
 	}
 
-	makeHud(health: number, currentHealth: number, money: number, canvas, assets: AssetCache) {
+	makeHud(health: number, currentHealth: number, money: number, canvas: PlayCanvas, assets: AssetCache) {
 		return new PlayHud(health, currentHealth, money, canvas, assets);
 	}
 
-	keyboard(keyCode) {
-		const key = {
-			code: keyCode,
-			isDown: false,
-			isUp: true,
-			press: undefined,
-			release: undefined,
-			downHandler: undefined,
-			upHandler: undefined,
-			disabled: false,
-			onlyEsc: false
-		};
-
-		key.downHandler = function(event) {
-			if (this.disabled) { return; }
-			if (this.onlyEsc && event.keyCode!==27) { return; }
-			if (event.keyCode === key.code) {
-				if (key.isUp && key.press) { key.press(); }
-				key.isDown = true;
-				key.isUp = false;
-			}
-			event.preventDefault();
-		};
-		key.upHandler = function(event) {
-			if (this.disabled) { return; }
-			if (this.onlyEsc && event.keyCode!==27) { return; }
-			if (event.keyCode === key.code) {
-				if (key.isDown && key.release) { key.release(); }
-				key.isDown = false;
-				key.isUp = true;
-			}
-			event.preventDefault();
-		};
+	keyboard(keyCode: string): Key {
+		const key = new Key(keyCode);
 
 		window.addEventListener('keydown', key.downHandler.bind(key), false);
 		window.addEventListener('keyup',   key.upHandler.bind(key),   false);
 		return key;
 	}
 
-	removeKeyboard(key) {
+	removeKeyboard(key: Key) {
 		window.removeEventListener('keydown', key.downHandler, false);
 		window.removeEventListener('keyup',   key.upHandler,   false);
 	}

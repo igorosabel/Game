@@ -28,7 +28,7 @@ export class BackgroundCategoriesComponent implements OnInit {
 		this.message = 'Cargando...';
 		this.loadBackgroundCategories();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddBackgroundCategory() };
 	}

@@ -4,7 +4,6 @@ import { LoginData }         from '../../../interfaces/interfaces';
 import { ApiService }        from '../../../services/api.service';
 import { UserService }       from '../../../services/user.service';
 import { CommonService }     from '../../../services/common.service';
-import { AuthService }       from '../../../services/auth.service';
 
 @Component({
 	selector: 'game-admin-login',
@@ -22,12 +21,11 @@ export class AdminLoginComponent implements OnInit {
 	constructor(private as: ApiService,
 				private user: UserService,
 				private cs: CommonService,
-				private router: Router,
-				private auth: AuthService) {}
+				private router: Router) {}
 
 	ngOnInit(): void {}
 
-	doLogin(ev) {
+	doLogin(ev: MouseEvent) {
 		ev.preventDefault();
 		this.loginError = false;
 

@@ -26,7 +26,7 @@ export class WorldsComponent implements OnInit {
 		this.message = 'Cargando...';
 		this.loadWorlds();
 
-		let esc = this.play.keyboard(27);
+		let esc = this.play.keyboard('Escape');
 		esc.onlyEsc = true;
 		esc.press = () => { this.showAddWorld() };
 	}
@@ -48,7 +48,7 @@ export class WorldsComponent implements OnInit {
 		this.loadedWorld = new World();
 	}
 
-	showAddWorld(ev = null) {
+	showAddWorld(ev: MouseEvent = null) {
 		ev && ev.preventDefault();
 		if (!this.showDetail) {
 			this.resetLoadedWorld();

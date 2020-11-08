@@ -1,13 +1,14 @@
 import { AssetCache } from './asset-cache.class';
+import { PlayCanvas } from './play-canvas.class';
 
 export class PlayHud {
 	health: number;
 	currentHealth: number;
 	money: number;
-	canvas;
-	assets;
+	canvas: PlayCanvas;
+	assets: AssetCache;
 
-	constructor(health: number, currentHealth: number, money: number, canvas, assets: AssetCache) {
+	constructor(health: number, currentHealth: number, money: number, canvas: PlayCanvas, assets: AssetCache) {
 		this.health = health;
 		this.currentHealth = currentHealth;
 		this.money = money;
@@ -23,7 +24,7 @@ export class PlayHud {
 		ctx.drawImage(this.assets.get('/assets/hud/money.png'), 10, posY, 8, 10);
 		ctx.font = "18px 'GraphicPixel'";
 		ctx.fillStyle = '#fff';
-		ctx.fillText(this.money, 25, 32);
+		ctx.fillText(this.money.toString(), 25, 32);
 
 		// Health
 		const hearts = this.health / 20;

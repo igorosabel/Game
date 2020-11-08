@@ -10,19 +10,19 @@ import { PlayConnection }  from './play-connection.class';
 export class PlayScenario {
 	debug: boolean;
 	canvas: PlayCanvas;
-	mapBackground;
+	mapBackground: HTMLImageElement;
 	player: PlayPlayer;
 	objects: PlayObject[];
 	npcs: PlayNPC[];
 	blockers: Position[];
-	
+
 	private _onNPCAction        = new EventDispatcher<PlayScenario, PlayNPC>();
 	private _onNPCDie           = new EventDispatcher<PlayScenario, PlayNPC>();
 	private _onObjectAction     = new EventDispatcher<PlayScenario, PlayObject>();
 	private _onPlayerConnection = new EventDispatcher<PlayScenario, PlayConnection>();
 	private _onPlayerHit        = new EventDispatcher<PlayScenario, PlayNPC>();
 
-	constructor(canvas: PlayCanvas, mapBackground, blockers: Position[]) {
+	constructor(canvas: PlayCanvas, mapBackground: HTMLImageElement, blockers: Position[]) {
 		// Creo el canvas
 		this.canvas = canvas;
 		this.mapBackground = mapBackground;
@@ -37,7 +37,7 @@ export class PlayScenario {
 	get ctx() {
 		return this.canvas.ctx;
 	}
-	
+
 	findOnPosition(pos: Position, list) {
 		for (let item of list) {
 			let startPosX = (item.blockPos.x - Constants.NEXT_POS);
@@ -73,7 +73,7 @@ export class PlayScenario {
 					this._onObjectAction.dispatch(this, object);
 				}
 			}
-			
+
 		});
 		player.onConnection.subscribe((c, connection) => {
 			this.player.stop();
@@ -87,7 +87,7 @@ export class PlayScenario {
 		});
 		this.player = player;
 	}
-	
+
 	public get onNPCAction() {
 		return this._onNPCAction.asEvent();
 	}
@@ -95,7 +95,7 @@ export class PlayScenario {
 	public get onNPCDie() {
 		return this._onNPCDie.asEvent();
 	}
-	
+
 	public get onObjectAction() {
 		return this._onObjectAction.asEvent();
 	}

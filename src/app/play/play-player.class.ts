@@ -1,7 +1,6 @@
 import { EventDispatcher } from 'strongly-typed-events';
 import { PlayCharacter }   from './play-character.class';
 import { PlayScenario }    from './play-scenario.class';
-import { PlayConnection }  from './play-connection.class';
 import { Position }        from '../model/position.model';
 
 export class PlayPlayer extends PlayCharacter {

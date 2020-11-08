@@ -79,7 +79,7 @@ export class EditScenarioComponent implements OnInit {
 			this.loadScenario();
 			this.loadScenarioList();
 
-			let esc = this.play.keyboard(27);
+			let esc = this.play.keyboard('Escape');
 			esc.press = () => { this.openCell() };
 		});
 	}
@@ -126,7 +126,7 @@ export class EditScenarioComponent implements OnInit {
 		}
 	}
 
-	cancelCopyCell(ev, mode: string) {
+	cancelCopyCell(ev: MouseEvent, mode: string) {
 		ev && ev.preventDefault();
 		const firstUpper = mode.substring(0, 1).toUpperCase() + mode.substring(1);
 		this.selected['id'+firstUpper] = null;
@@ -272,7 +272,7 @@ export class EditScenarioComponent implements OnInit {
 		this.loadedCell.backgroundName = background.name;
 	}
 
-	deleteBackground(ev) {
+	deleteBackground(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		this.loadedCell.idBackground = null;
 		this.loadedCell.backgroundAssetUrl = '/assets/admin/no-asset.svg';
@@ -295,7 +295,7 @@ export class EditScenarioComponent implements OnInit {
 		this.loadedCell.scenarioObjectHeight = scenarioObject.height;
 	}
 
-	deleteScenarioObject(ev) {
+	deleteScenarioObject(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		this.loadedCell.idScenarioObject = null;
 		this.loadedCell.scenarioObjectAssetUrl = '/assets/admin/no-asset.svg';
@@ -319,7 +319,7 @@ export class EditScenarioComponent implements OnInit {
 		this.loadedCell.characterHealth = character.health;
 	}
 
-	deleteCharacter(ev) {
+	deleteCharacter(ev: MouseEvent) {
 		ev && ev.preventDefault();
 		this.loadedCell.idCharacter = null;
 		this.loadedCell.characterAssetUrl = '/assets/admin/no-asset.svg';
@@ -349,14 +349,19 @@ export class EditScenarioComponent implements OnInit {
 		}
 	}
 
-	deleteConnection(ev, sent: string) {
+	deleteConnection(ev: MouseEvent, sent: string) {
 		ev && ev.preventDefault();
 		this.as.deleteConnection(this.connections[sent].toInterface()).subscribe(result => {
-			this.connections[sent] = null;
+			if (result.status=='ok') {
+				this.connections[sent] = null;
+			}
+			else {
+				alert('¡Ocurrió un error al borrar la conexión!');
+			}
 		});
 	}
 
-	showConnectionDetail(ev = null, mode = false) {
+	showConnectionDetail(ev: MouseEvent = null, mode = false) {
 		ev && ev.preventDefault();
 		this.showConnectionsDetail = mode;
 	}
@@ -376,9 +381,14 @@ export class EditScenarioComponent implements OnInit {
 		);
 
 		this.as.saveConnection(connection.toInterface()).subscribe(result => {
-			this.connections[this.connectWhere] = connection;
-			this.connectWhere = null;
-			this.showConnectionDetail(null, false);
+			if (result.status=='ok') {
+				this.connections[this.connectWhere] = connection;
+				this.connectWhere = null;
+				this.showConnectionDetail(null, false);
+			}
+			else {
+				alert('¡Ocurrió un error al guardar la conexión!');
+			}
 		});
 	}
 }

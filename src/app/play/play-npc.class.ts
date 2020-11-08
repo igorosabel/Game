@@ -1,6 +1,5 @@
 import { PlayCharacter } from './play-character.class';
 import { PlayScenario }  from './play-scenario.class';
-import { PlayUtils }     from './play-utils.class';
 import { Character }     from '../model/character.model';
 
 export class PlayNPC extends PlayCharacter {
@@ -53,7 +52,7 @@ export class PlayNPC extends PlayCharacter {
 				this.npcData.remainingTime = Math.floor(Math.random() * 6) + 3;
 			}
 
-			this.npcData.timer = setTimeout(() => { this.npcLogic(); }, 1000);
+			this.npcData.timer = window.setTimeout(() => { this.npcLogic(); }, 1000);
 		}
 	}
 

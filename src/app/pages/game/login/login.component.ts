@@ -4,7 +4,6 @@ import { LoginData, RegisterData } from '../../../interfaces/interfaces';
 import { ApiService }              from '../../../services/api.service';
 import { UserService }             from '../../../services/user.service';
 import { CommonService }           from '../../../services/common.service';
-import { AuthService }             from '../../../services/auth.service';
 
 @Component({
 	selector: 'game-login',
@@ -29,8 +28,7 @@ export class LoginComponent implements OnInit {
 	constructor(private as: ApiService,
 				private user: UserService,
 				private cs: CommonService,
-				private router: Router,
-				private auth: AuthService) {}
+				private router: Router) {}
 	ngOnInit(): void {}
 
 	selectTab(option: string) {
@@ -40,7 +38,7 @@ export class LoginComponent implements OnInit {
 		this.selectedTab = option;
 	}
 
-	checkLogin(ev) {
+	checkLogin(ev: Event) {
 		ev && ev.preventDefault();
 		this.loginError = false;
 
@@ -72,7 +70,7 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	checkRegister(ev) {
+	checkRegister(ev: Event) {
 		ev && ev.preventDefault();
 		this.registerError = null;
 		if (this.registerData.email=='') {
