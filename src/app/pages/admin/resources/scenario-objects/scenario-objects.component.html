@@ -53,8 +53,6 @@
 					<label>Altura</label>
 					<input type="number" min="1" step="1" name="scenario-object-height" [(ngModel)]="loadedScenarioObject.height" placeholder="Altura del objeto">
 				</div>
-			</div>
-			<div class="row cols">
 				<div class="col">
 					<label>Anchura que bloquea</label>
 					<input type="number" min="1" step="1" name="scenario-object-block-width" [(ngModel)]="loadedScenarioObject.blockWidth" placeholder="Anchura que bloquea" [disabled]="loadedScenarioObject.crossable">
@@ -130,7 +128,7 @@
 					<img [src]="loadedScenarioObject.assetUrl" (click)="openAssetPicker('main')">
 					<div>Imagen principal</div>
 				</div>
-				<div class="col picker" *ngIf="loadedScenarioObject.activable">
+				<div class="col picker" *ngIf="loadedScenarioObject.activable || loadedScenarioObject.breakable">
 					<img [src]="loadedScenarioObject.assetActiveUrl" (click)="openAssetPicker('active')">
 					<div>Imagen activado</div>
 				</div>
