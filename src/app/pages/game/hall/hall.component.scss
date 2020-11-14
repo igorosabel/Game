@@ -40,6 +40,20 @@
 				line-height: 46px;
 				float: left;
 			}
+
+			a {
+				display: none;
+				color: #f00;
+				position: absolute;
+				right: 50px;
+				text-decoration: none;
+				top: 12px;
+				font-size: 2em;
+			}
+
+			&:hover a {
+				display: block;
+			}
 		}
 
 		.player-select-game-selected {

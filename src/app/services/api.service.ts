@@ -62,6 +62,10 @@ export class ApiService {
 		return this.http.post<StatusIdResult>(this.url + 'api/new-game', data);
 	}
 
+	deleteGame(id: number): Observable<StatusResult> {
+		return this.http.post<StatusResult>(this.url + 'api/delete-game', {id});
+	}
+
 	getPlayData(id: number): Observable<PlayResult> {
 		return this.http.post<PlayResult>(this.url + 'api/get-play-data', {id});
 	}

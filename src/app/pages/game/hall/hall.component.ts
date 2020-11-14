@@ -71,4 +71,20 @@ export class HallComponent implements OnInit {
 			}
 		});
 	}
+
+	deleteGame(ev: MouseEvent, game: Game) {
+		ev.preventDefault();
+		ev.stopPropagation();
+		const conf = confirm('¿Estás seguro de querer borrar esta partida? Este proceso es irreversible y no se podrá recuperar una vez borrado.');
+		if (conf) {
+			this.as.deleteGame(game.id).subscribe(result => {
+				if (result.status=='ok') {
+					this.loadGames();
+				}
+				else {
+					alert('¡Ocurrió un error al borrar la partida!');
+				}
+			});
+		}
+	}
 }

@@ -5,6 +5,7 @@
 		<div class="player-select-game" *ngFor="let game of games; let i = index" [ngClass]="{'player-select-game-selected': gameSelected==i}" (mouseover)="changeSelectedGame(game)" (click)="selectGame(game)">
 			<img [src]="'/assets/hall/player-' + (i + 1) + '.png'">
 			<div class="player-select-name">{{game.name}}</div>
+			<a href="#" (click)="deleteGame($event, game)" *ngIf="game.idScenario!==null">X</a>
 		</div>
 	</div>
 
