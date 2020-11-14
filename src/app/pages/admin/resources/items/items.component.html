@@ -65,28 +65,28 @@
 						</div>
 						<div class="col">
 							<label>Valor del item</label>
-							<input type="text" name="item-money" [(ngModel)]="loadedItem.money" placeholder="Valor del item">
+							<input type="number" min="0" step="1" name="item-money" [(ngModel)]="loadedItem.money" placeholder="Valor del item">
 						</div>
 						<!-- tipo arma 1 -> attack -->
 						<div class="col" *ngIf="loadedItem.type==1">
 							<label>Ataque del item</label>
-							<input type="text" name="item-attack" [(ngModel)]="loadedItem.attack" placeholder="Ataque del item">
+							<input type="number" min="0" step="1" name="item-attack" [(ngModel)]="loadedItem.attack" placeholder="Ataque del item">
 						</div>
 						<!-- tipo arma 2 -> health -->
 						<div class="col" *ngIf="loadedItem.type==2">
 							<label>Curación del item</label>
-							<input type="text" name="item-health" [(ngModel)]="loadedItem.health" placeholder="Curación del item">
+							<input type="number" min="0" step="1" name="item-health" [(ngModel)]="loadedItem.health" placeholder="Curación del item">
 						</div>
 					</div>
 					<!-- tipo equipamiento 3 -> defense / speed / wearable -->
 					<div class="row cols" *ngIf="loadedItem.type==3">
 						<div class="col">
 							<label>Defensa del item</label>
-							<input type="text" name="item-defense" [(ngModel)]="loadedItem.defense" placeholder="Defensa del item">
+							<input type="number" min="0" step="1" name="item-defense" [(ngModel)]="loadedItem.defense" placeholder="Defensa del item">
 						</div>
 						<div class="col">
 							<label>Velocidad del item</label>
-							<input type="text" name="item-speed" [(ngModel)]="loadedItem.speed" placeholder="Velocidad del item">
+							<input type="number" min="0" step="1" name="item-speed" [(ngModel)]="loadedItem.speed" placeholder="Velocidad del item">
 						</div>
 						<div class="col">
 							<label>Tipo de equipamiento</label>
