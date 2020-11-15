@@ -1,1 +1,30 @@
-<p>tooltip works!</p>
+<div class="tooltip">
+	<img [src]="item.assetUrl">
+	<div class="tooltip-info">
+		<div class="tooltip-name">{{item.name}}</div>
+		<div class="tooltip-line">
+			<label>Valor</label>
+			<span *ngIf="item.money!==null">
+				{{item.money}}
+				<img src="/assets/hud/money.png">
+			</span>
+			<span *ngIf="item.money===null">-</span>
+		</div>
+		<div *ngIf="item.health!==null" class="tooltip-line">
+			<label>Salud</label>
+			<span>{{item.health > 0 ? '+' + item.health : item.health}}</span>
+		</div>
+		<div *ngIf="item.attack!==null" class="tooltip-line">
+			<label>Ataque</label>
+			<span>{{item.attack > 0 ? '+' + item.attack : item.attack}}</span>
+		</div>
+		<div *ngIf="item.defense!==null" class="tooltip-line">
+			<label>Defensa</label>
+			<span>{{item.defense > 0 ? '+' + item.defense : item.defense}}</span>
+		</div>
+		<div *ngIf="item.speed!==null" class="tooltip-line">
+			<label>Velocidad</label>
+			<span>{{item.speed > 0 ? '+' + item.speed : item.speed}}</span>
+		</div>
+	</div>
+</div>
