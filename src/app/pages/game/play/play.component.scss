@@ -267,6 +267,8 @@
 					margin: 8px;
 					width: 100px;
 					height: 100px;
+					padding: 8px;
+					box-shadow: inset 0 0 5px #000;
 
 					img {
 						height: 100%;
@@ -300,6 +302,8 @@
 						height: 60px;
 						width: 60px;
 						margin: 0 auto;
+						padding: 8px;
+						box-shadow: inset 0 0 5px #000;
 					}
 
 					.inventory-equipment-necklace {
@@ -308,6 +312,8 @@
 						height: 20px;
 						background-color: #ccc;
 						margin: 8px auto 0;
+						padding: 8px;
+						box-shadow: inset 0 0 5px #000;
 					}
 
 					.inventory-equipment-body {
@@ -316,6 +322,8 @@
 						width: 120px;
 						margin: 8px auto 0;
 						height: 100px;
+						padding: 8px;
+						box-shadow: inset 0 0 5px #000;
 					}
 
 					.inventory-equipment-boots {
@@ -329,6 +337,8 @@
 							background-color: #ccc;
 							height: 80px;
 							width: 30px;
+							padding: 8px;
+							box-shadow: inset 0 0 5px #000;
 						}
 					}
 
@@ -338,6 +348,8 @@
 						width: 80px;
 						margin: 0 auto;
 						height: 150px;
+						padding: 8px;
+						box-shadow: inset 0 0 5px #000;
 					}
 				}
 
