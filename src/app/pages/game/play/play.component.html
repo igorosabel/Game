@@ -15,22 +15,47 @@
 		</div>
 		<div class="inventory-body">
 			<div class="inventory-list">
-
-			</div>
-			<div class="inventory-equipment">
-				<div class="inventory-equipment-header">Equipo</div>
-				<div class="inventory-equipment-head"></div>
-				<div class="inventory-equipment-necklace"></div>
-				<div class="inventory-equipment-body"></div>
-				<div class="inventory-equipment-boots">
-					<div class="inventory-equipment-boot"></div>
-					<div class="inventory-equipment-boot"></div>
+				<div class="inventory-item" *ngFor="let item of game.items" (mouseover)="tooltip.load(item.item)" (mousemove)="tooltip.move($event)" (mouseout)="tooltip.show(false)">
+					<img *ngIf="item.id!==null" [src]="item.item.assetUrl">
 				</div>
 			</div>
-			<div class="inventory-equipment">
-				<div class="inventory-equipment-header">Arma</div>
-				<div class="inventory-equipment-weapon">
-					<img *ngIf="game.equipment.weapon!==null" [src]="game.equipment.weapon.assetUrl">
+			<div class="inventory-player">
+				<div class="inventory-equipment">
+					<div>
+						<div class="inventory-equipment-header">Equipo</div>
+						<div class="inventory-equipment-head" (mouseover)="tooltip.load(game.equipment.head)" (mousemove)="tooltip.move($event)" (mouseout)="tooltip.show(false)"></div>
+						<div class="inventory-equipment-necklace" (mouseover)="tooltip.load(game.equipment.necklace)" (mousemove)="tooltip.move($event)" (mouseout)="tooltip.show(false)"></div>
+						<div class="inventory-equipment-body" (mouseover)="tooltip.load(game.equipment.body)" (mousemove)="tooltip.move($event)" (mouseout)="tooltip.show(false)"></div>
+						<div class="inventory-equipment-boots" (mouseover)="tooltip.load(game.equipment.boots)" (mousemove)="tooltip.move($event)" (mouseout)="tooltip.show(false)">
+							<div class="inventory-equipment-boot"></div>
+							<div class="inventory-equipment-boot"></div>
+						</div>
+					</div>
+					<div>
+						<div class="inventory-equipment-header">Arma</div>
+						<div class="inventory-equipment-weapon" (mouseover)="tooltip.load(game.equipment.weapon)" (mousemove)="tooltip.move($event)" (mouseout)="tooltip.show(false)">
+							<img *ngIf="game.equipment.weapon!==null" [src]="game.equipment.weapon.assetUrl">
+						</div>
+					</div>
+				</div>
+				<div class="inventory-stats">
+					<div class="inventory-equipment-header">Estadísticas</div>
+					<div class="inventory-stat">
+						<label>Salud</label>
+						<span>{{scenario.player.character.currentHealth}} / {{scenario.player.character.health}}</span>
+					</div>
+					<div class="inventory-stat">
+						<label>Ataque</label>
+						<span>{{scenario.player.character.attack}}</span>
+					</div>
+					<div class="inventory-stat">
+						<label>Defensa</label>
+						<span>{{scenario.player.character.defense}}</span>
+					</div>
+					<div class="inventory-stat">
+						<label>Velocidad</label>
+						<span>{{scenario.player.character.speed}}</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -105,3 +130,5 @@
 		</div>
 	</div>
 </div>
+
+<game-tooltip #tooltip></game-tooltip>

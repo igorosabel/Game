@@ -1,5 +1,6 @@
 import { ScenarioObject } from '../model/scenario-object.model';
-import { Character } from '../model/character.model';
+import { Character }      from '../model/character.model';
+import { Equipment }      from '../model/equipment.model';
 
 export class AssetCache {
 	_items: string[];
@@ -64,6 +65,24 @@ export class AssetCache {
 		}
 		for (let frame of c.framesRight) {
 			this.add(frame.assetUrl);
+		}
+	}
+
+	addEquipment(equipment: Equipment) {
+		if (equipment.head!==null) {
+			this.add(equipment.head.assetUrl);
+		}
+		if (equipment.necklace!==null) {
+			this.add(equipment.necklace.assetUrl);
+		}
+		if (equipment.body!==null) {
+			this.add(equipment.body.assetUrl);
+		}
+		if (equipment.boots!==null) {
+			this.add(equipment.boots.assetUrl);
+		}
+		if (equipment.weapon!==null) {
+			this.add(equipment.weapon.assetUrl);
 		}
 	}
 

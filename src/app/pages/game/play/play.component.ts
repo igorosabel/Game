@@ -1,6 +1,7 @@
-import { Component, OnInit }  from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Constants }          from '../../../constants';
 import { Game }               from '../../../model/game.model';
+import { Inventory }          from '../../../model/inventory.model';
 import { ScenarioData }       from '../../../model/scenario-data.model';
 import { ScenarioObject }     from '../../../model/scenario-object.model';
 import { Character }          from '../../../model/character.model';
@@ -20,6 +21,7 @@ import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
 import { ClassMapperService } from '../../../services/class-mapper.service';
 import { PlayService }        from '../../../services/play.service';
+import { TooltipComponent }   from '../../../components/tooltip/tooltip.component';
 
 @Component({
 	selector: 'game-play',
@@ -83,6 +85,8 @@ export class PlayComponent implements OnInit {
 	showMessage: boolean = false;
 	currentObject: PlayObject = null;
 
+	@ViewChild('tooltip', { static: true }) tooltip: TooltipComponent;
+
 	constructor(
 		private as: ApiService,
 		private cms: ClassMapperService,
@@ -101,12 +105,15 @@ export class PlayComponent implements OnInit {
 			this.worldId = result.idWorld;
 			this.scenarioId = result.idScenario;
 			this.game = this.cms.getGame(result.game);
-console.log(this.game);
 			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
 			this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
 			this.characters = this.cms.getCharacters(result.characters);
+
+			for (let i=this.game.items.length; i<Constants.INVENTORY_SIZE; i++) {
+				this.game.items.push(new Inventory());
+			}
 
 			// Background
 			this.assetCache.add(this.mapBackground);
@@ -115,6 +122,8 @@ console.log(this.game);
 			this.assetCache.add('/assets/hud/heart_full.png');
 			this.assetCache.add('/assets/hud/heart_half.png');
 			this.assetCache.add('/assets/hud/money.png');
+			// Equipment
+			this.assetCache.addEquipment(this.game.equipment);
 			// Player
 			this.loadPlayerAssets();
 			// Scenario objects

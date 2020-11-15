@@ -251,71 +251,113 @@
 		.inventory-body {
 			display: flex;
 			flex-direction: row;
-			height: 400px;
+			height: 520px;
 
 			.inventory-list {
 				flex: 5;
-				height: 100%;
 				border-right: 1px solid #ccc;
-			}
-
-			.inventory-equipment {
-				flex: 1;
+				display: flex;
+				flex-wrap: wrap;
+				height: 100%;
+				overflow-y: scroll;
 				padding: 16px;
 
-				img {
-					width: 100%;
-					max-height: 100%;
+				.inventory-item {
+					border: 2px solid #000;
+					margin: 8px;
+					width: 100px;
+					height: 100px;
+
+					img {
+						height: 100%;
+						max-width: 100%;
+					}
+				}
+			}
+
+			.inventory-player {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+
+				.inventory-equipment {
+					display: flex;
+					flex-direction: row;
+
+					& > div {
+						flex: 1;
+						padding: 16px;
+					}
+
+					img {
+						width: 100%;
+						max-height: 100%;
+					}
+
+					.inventory-equipment-head {
+						border: 2px solid #000;
+						background-color: #ccc;
+						height: 60px;
+						width: 60px;
+						margin: 0 auto;
+					}
+
+					.inventory-equipment-necklace {
+						border: 2px solid #000;
+						width: 50px;
+						height: 20px;
+						background-color: #ccc;
+						margin: 8px auto 0;
+					}
+
+					.inventory-equipment-body {
+						border: 2px solid #000;
+						background-color: #ccc;
+						width: 120px;
+						margin: 8px auto 0;
+						height: 100px;
+					}
+
+					.inventory-equipment-boots {
+						margin: 8px auto 0;
+						display: flex;
+						justify-content: space-between;
+						width: 90px;
+
+						.inventory-equipment-boot {
+							border: 2px solid #000;
+							background-color: #ccc;
+							height: 80px;
+							width: 30px;
+						}
+					}
+
+					.inventory-equipment-weapon {
+						border: 2px solid #000;
+						background-color: #ccc;
+						width: 80px;
+						margin: 0 auto;
+						height: 150px;
+					}
+				}
+
+				.inventory-stats {
+					padding: 16px;
+					border-top: 1px solid #ccc;
+
+					.inventory-stat {
+						display: flex;
+						line-height: 1.5em;
+
+						label {
+							flex: 1;
+						}
+					}
 				}
 
 				.inventory-equipment-header {
 					margin-bottom: 16px;
-				}
-
-				.inventory-equipment-head {
-					border: 1px solid #888;
-					background-color: #ccc;
-					height: 60px;
-					width: 60px;
-					margin: 0 auto;
-				}
-
-				.inventory-equipment-necklace {
-					border: 1px solid #888;
-					width: 50px;
-					height: 20px;
-					background-color: #ccc;
-					margin: 8px auto 0;
-				}
-
-				.inventory-equipment-body {
-					border: 1px solid #888;
-					background-color: #ccc;
-					width: 120px;
-					margin: 8px auto 0;
-					height: 100px;
-				}
-
-				.inventory-equipment-boots {
-					margin: 8px auto 0;
-					display: flex;
-					justify-content: space-between;
-					width: 90px;
-
-					.inventory-equipment-boot {
-						border: 1px solid #888;
-						background-color: #ccc;
-						height: 80px;
-						width: 30px;
-					}
-				}
-
-				.inventory-equipment-weapon {
-					border: 1px solid #888;
-					background-color: #ccc;
-					width: 80px;
-					margin: 0 auto;
-					height: 150px;
+					font-weight: bold;
 				}
 			}
 		}
