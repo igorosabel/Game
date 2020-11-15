@@ -1,5 +1,6 @@
 import { BrowserModule }           from '@angular/platform-browser';
 import { NgModule }                from '@angular/core';
+import { DragDropModule }          from '@angular/cdk/drag-drop';
 import { AppRoutingModule }        from './app-routing.module';
 import { AppComponent }            from './app.component';
 import { FormsModule }             from '@angular/forms';
@@ -20,7 +21,8 @@ import { PAGES, COMPONENTS, PIPES, SERVICES }  from './app.common';
 		AppRoutingModule,
 		HttpClientModule,
 		FormsModule,
-		BrowserAnimationsModule
+		BrowserAnimationsModule,
+    DragDropModule
 	],
 	providers: [
 		...SERVICES,
