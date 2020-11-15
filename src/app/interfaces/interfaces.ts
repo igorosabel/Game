@@ -39,6 +39,14 @@ export interface InventoryInterface {
 	num: number;
 }
 
+export interface EquipmentInterface {
+	head: ItemInterface;
+	necklace: ItemInterface;
+	body: ItemInterface;
+	boots: ItemInterface;
+	weapon: ItemInterface;
+}
+
 export interface GameInterface {
 	id: number;
 	name: string;
@@ -53,6 +61,7 @@ export interface GameInterface {
 	defense: number;
 	speed: number;
 	items: InventoryInterface[];
+	equipment: EquipmentInterface;
 }
 
 export interface GameResult {

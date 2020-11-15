@@ -1,6 +1,7 @@
 import { Injectable }          from '@angular/core';
 import { Inventory }           from '../model/inventory.model';
 import { Game }                from '../model/game.model';
+import { Equipment }           from '../model/equipment.model';
 import { World }               from '../model/world.model';
 import { Scenario }            from '../model/scenario.model';
 import { ScenarioData }        from '../model/scenario-data.model';
@@ -22,6 +23,7 @@ import { CommonService }       from './common.service';
 import {
 	InventoryInterface,
 	GameInterface,
+	EquipmentInterface,
 	WorldInterface,
 	ScenarioInterface,
 	ScenarioDataInterface,
@@ -47,7 +49,7 @@ import {
 export class ClassMapperService {
 	constructor(private cs: CommonService) {}
 
-	getInventories(response: InventoryInterface[]) {
+	getInventories(response: InventoryInterface[]): Inventory[] {
 		const inventories: Inventory[] = [];
 
 		for (let i of response) {
@@ -57,7 +59,7 @@ export class ClassMapperService {
 		return inventories;
 	}
 
-	getInventory(i: InventoryInterface) {
+	getInventory(i: InventoryInterface): Inventory {
 		return new Inventory(
 			i.id,
 			i.idGame,
@@ -65,6 +67,16 @@ export class ClassMapperService {
 			this.getItem(i.item),
 			i.order,
 			i.num
+		);
+	}
+
+	getEquipment(e: EquipmentInterface): Equipment {
+		return new Equipment(
+			(e.head===null) ? null : this.getItem(e.head),
+			(e.necklace===null) ? null : this.getItem(e.necklace),
+			(e.body===null) ? null : this.getItem(e.body),
+			(e.boots===null) ? null : this.getItem(e.boots),
+			(e.weapon===null) ? null : this.getItem(e.weapon)
 		);
 	}
 
@@ -91,7 +103,9 @@ export class ClassMapperService {
 			g.maxHealth,
 			g.attack,
 			g.defense,
-			g.speed
+			g.speed,
+			this.getInventories(g.items),
+			this.getEquipment(g.equipment)
 		);
 	}
 

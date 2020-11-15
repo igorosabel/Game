@@ -101,6 +101,7 @@ export class PlayComponent implements OnInit {
 			this.worldId = result.idWorld;
 			this.scenarioId = result.idScenario;
 			this.game = this.cms.getGame(result.game);
+console.log(this.game);
 			this.blockers = this.cms.getPositions(result.blockers);
 			this.mapBackground = this.cs.urldecode(result.mapBackground);
 			this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);

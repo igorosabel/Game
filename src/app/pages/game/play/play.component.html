@@ -29,7 +29,9 @@
 			</div>
 			<div class="inventory-equipment">
 				<div class="inventory-equipment-header">Arma</div>
-				<div class="inventory-equipment-weapon"></div>
+				<div class="inventory-equipment-weapon">
+					<img *ngIf="game.equipment.weapon!==null" [src]="game.equipment.weapon.assetUrl">
+				</div>
 			</div>
 		</div>
 	</div>

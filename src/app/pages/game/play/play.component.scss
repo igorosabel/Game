@@ -263,6 +263,11 @@
 				flex: 1;
 				padding: 16px;
 
+				img {
+					width: 100%;
+					max-height: 100%;
+				}
+
 				.inventory-equipment-header {
 					margin-bottom: 16px;
 				}
