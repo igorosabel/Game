@@ -50,7 +50,8 @@ import { ItemPickerComponent }           from './components/item-picker/item-pic
 import { BackgroundPickerComponent }     from './components/background-picker/background-picker.component';
 import { ScenarioObjectPickerComponent } from './components/scenario-object-picker/scenario-object-picker.component';
 import { CharacterPickerComponent }      from './components/character-picker/character-picker.component';
-import { TooltipComponent } from './components/tooltip/tooltip.component';
+import { InventoryComponent }            from './components/inventory/inventory.component';
+import { TooltipComponent }              from './components/tooltip/tooltip.component';
 
 export const COMPONENTS: any[] = [
 	HeaderComponent,
@@ -59,6 +60,7 @@ export const COMPONENTS: any[] = [
 	BackgroundPickerComponent,
 	ScenarioObjectPickerComponent,
 	CharacterPickerComponent,
+	InventoryComponent,
 	TooltipComponent
 ];
 

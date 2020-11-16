@@ -21,7 +21,7 @@ import { CommonService }      from '../../../services/common.service';
 import { DataShareService }   from '../../../services/data-share.service';
 import { ClassMapperService } from '../../../services/class-mapper.service';
 import { PlayService }        from '../../../services/play.service';
-import { TooltipComponent }   from '../../../components/tooltip/tooltip.component';
+import { InventoryComponent } from '../../../components/inventory/inventory.component';
 
 @Component({
 	selector: 'game-play',
@@ -71,8 +71,6 @@ export class PlayComponent implements OnInit {
 
 	showOver: boolean = false;
 
-	showInventory: boolean = false;
-
 	showNarratives: boolean = false;
 	currentCharacter: PlayNPC = null;
 	currentNarrative: number = 0;
@@ -85,7 +83,7 @@ export class PlayComponent implements OnInit {
 	showMessage: boolean = false;
 	currentObject: PlayObject = null;
 
-	@ViewChild('tooltip', { static: true }) tooltip: TooltipComponent;
+	@ViewChild('inventory', { static: true }) inventory: InventoryComponent;
 
 	constructor(
 		private as: ApiService,
@@ -111,25 +109,32 @@ export class PlayComponent implements OnInit {
 			this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
 			this.characters = this.cms.getCharacters(result.characters);
 
+			// Inventory
 			for (let i=this.game.items.length; i<Constants.INVENTORY_SIZE; i++) {
 				this.game.items.push(new Inventory());
 			}
 
 			// Background
 			this.assetCache.add(this.mapBackground);
+
 			// Hud
 			this.assetCache.add('/assets/hud/heart_empty.png');
 			this.assetCache.add('/assets/hud/heart_full.png');
 			this.assetCache.add('/assets/hud/heart_half.png');
 			this.assetCache.add('/assets/hud/money.png');
+
 			// Equipment
 			this.assetCache.addEquipment(this.game.equipment);
+
 			// Player
 			this.loadPlayerAssets();
+
 			// Scenario objects
 			this.assetCache.addScenarioObjects(this.scenarioObjects);
+
 			// Characters
 			this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
+
 			// Effects
 			this.assetCache.add('/assets/play/death-1.png');
 			this.assetCache.add('/assets/play/death-2.png');
@@ -662,15 +667,15 @@ export class PlayComponent implements OnInit {
 
 	openInventory() {
 		this.showOver = true;
-		this.showInventory = true;
 		this.escKeyboard(true);
+		this.inventory.show();
 	}
 
-	closeInventory(ev = null) {
-		ev && ev.preventDefault();
-		this.disableKeyboard(false);
-		this.showInventory = false;
-		this.showOver      = false;
+	closeInventory(ev: boolean) {
+		if (ev) {
+			this.disableKeyboard(false);
+			this.showOver      = false;
+		}
 	}
 
 	changeScenario(connection: PlayConnection) {
