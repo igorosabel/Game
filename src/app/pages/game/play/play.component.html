@@ -76,4 +76,4 @@
 	</div>
 </div>
 
-<game-inventory #inventory [(inventoryList)]="game.items" (onClose)="closeInventory($event)"></game-inventory>
+<game-inventory #inventory [(inventoryList)]="game.items" [(equipment)]="game.equipment" [(player)]="scenario.player" (onClose)="closeInventory($event)"></game-inventory>

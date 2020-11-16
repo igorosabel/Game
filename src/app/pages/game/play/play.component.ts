@@ -40,7 +40,7 @@ export class PlayComponent implements OnInit {
 	scenarioId: number = null;
 	assetCache: AssetCache = new AssetCache();
 
-	game: Game = null;
+	game: Game = new Game();
 	scenario: PlayScenario = null;
 	blockers: Position[] = [];
 	mapBackground: string = null;
@@ -463,8 +463,8 @@ export class PlayComponent implements OnInit {
 			// I - Inventario
 			this.keyboard.openInventory = this.play.keyboard('i');
 			this.keyboard.openInventory.press = () => {
-				if (this.showInventory) {
-					this.closeInventory();
+				if (this.inventory.isOpened()) {
+					this.closeInventory(true);
 					return;
 				}
 				if (!this.showOver) {
@@ -494,9 +494,9 @@ export class PlayComponent implements OnInit {
 				this.showNarratives = false;
 				this.showPortal     = false;
 				this.showMessage    = false;
-				this.showInventory  = false;
 				this.showOver       = false;
 				this.disableKeyboard(false);
+				this.inventory.close();
 			};
 		}
 		else {
