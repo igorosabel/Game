@@ -1,12 +1,12 @@
 <game-header [leftUrl]="['/admin','main']" leftTitle="&lt; Admin" title="Mundos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
-<div class="world-list">
+<div class="admin-list">
 	<div class="header">Mundos</div>
 	<div>
 		<div class="row" *ngFor="let world of worldList">
 			<a [routerLink]="['/admin', 'world', world.id, 'scenarios']">{{world.name}}</a>
-			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="world-edit" (click)="editWorld(world)">
-			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="world-delete" (click)="deleteWorld(world)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="edit" (click)="editWorld(world)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="delete" (click)="deleteWorld(world)">
 		</div>
 		<div class="row center" *ngIf="message!=null">{{message}}</div>
 	</div>
@@ -14,7 +14,7 @@
 
 <a href="#" class="fab-button" id="add-btn" (click)="showAddWorld($event)">+</a>
 
-<div class="world-detail" [ngClass]="{'world-detail-show':showDetail}">
+<div class="detail" [ngClass]="{'detail-show':showDetail}">
 	<div class="box">
 		<div class="header">
 			<span>{{worldDetailHeader}}</span>
