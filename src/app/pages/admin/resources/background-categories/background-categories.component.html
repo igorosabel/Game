@@ -1,12 +1,12 @@
 <game-header [leftUrl]="['/admin','resources','backgrounds']" leftTitle="&lt; Fondos" title="Categorías de fondos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
-<div class="background-category-list">
+<div class="admin-list">
 	<div class="header">Categorías de fondos</div>
 	<div>
 		<div class="row" *ngFor="let backgroundCategory of backgroundCategoryList">
 			<span>{{backgroundCategory.name}}</span>
-			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="background-category-edit" (click)="editBackgroundCategory(backgroundCategory)">
-			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="background-category-delete" (click)="deleteBackgroundCategory(backgroundCategory)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="edit" (click)="editBackgroundCategory(backgroundCategory)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="delete" (click)="deleteBackgroundCategory(backgroundCategory)">
 		</div>
 		<div class="row center" *ngIf="message!=null">{{message}}</div>
 	</div>
@@ -14,7 +14,7 @@
 
 <a href="#" class="fab-button" id="add-btn" (click)="showAddBackgroundCategory($event)">+</a>
 
-<div class="background-category-detail" [ngClass]="{'background-category-detail-show':showDetail}">
+<div class="detail" [ngClass]="{'detail-show':showDetail}">
 	<div class="box">
 		<div class="header">
 			<span>{{backgroundCategoryDetailHeader}}</span>

@@ -10,7 +10,7 @@ import { ClassMapperService } from '../../../../services/class-mapper.service';
 @Component({
 	selector: 'game-assets',
 	templateUrl: './assets.component.html',
-	styleUrls: ['./assets.component.scss']
+	styleUrls: ['./assets.component.scss', '../../scss/resources.scss']
 })
 export class AssetsComponent implements OnInit {
 	tagFilter: number = null;

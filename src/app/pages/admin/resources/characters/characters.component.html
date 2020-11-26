@@ -1,6 +1,6 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Personajes" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
-<div class="characters-header">
+<div class="section-header">
 	<div>
 		<select name="characters-filter-type" [(ngModel)]="characterFilter" (change)="updateFilteredList()">
 			<option [ngValue]="null">Elige un tipo</option>
@@ -15,16 +15,16 @@
 	</a>
 </div>
 
-<div class="character-list" [ngClass]="{'character-list-list': filterListOption=='list'}">
-	<div *ngFor="let character of characterListFiltered" [ngClass]="{'character-item': filterListOption=='items', 'character-list-item': filterListOption=='list'}">
+<div class="list" [ngClass]="{'list-list': filterListOption=='list'}">
+	<div *ngFor="let character of characterListFiltered" [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
 		<img src="{{ character.assetDownUrl }}" alt="{{ character.name }}">
-		<div class="character-info">
+		<div class="info">
 			<span title="{{character.name}}">{{ character.name }}</span>
-			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="character-edit" (click)="editCharacter(character)">
-			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="character-delete" (click)="deleteCharacter(character)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" (click)="editCharacter(character)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" (click)="deleteCharacter(character)">
 		</div>
 	</div>
-	<div class="character-message" *ngIf="message!=null">
+	<div class="message" *ngIf="message!=null">
 		{{message}}
 	</div>
 </div>

@@ -11,7 +11,7 @@ import { AssetPickerComponent }         from '../../../../components/asset-picke
 @Component({
 	selector: 'game-backgrounds',
 	templateUrl: './backgrounds.component.html',
-	styleUrls: ['./backgrounds.component.scss']
+	styleUrls: ['./backgrounds.component.scss', '../../scss/resources.scss']
 })
 export class BackgroundsComponent implements OnInit {
 	backgroundCategoryFilter: number = null;

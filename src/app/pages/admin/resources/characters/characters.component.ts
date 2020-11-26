@@ -13,7 +13,7 @@ import { ItemPickerComponent }           from '../../../../components/item-picke
 @Component({
 	selector: 'game-characters',
 	templateUrl: './characters.component.html',
-	styleUrls: ['./characters.component.scss']
+	styleUrls: ['./characters.component.scss', '../../scss/resources.scss']
 })
 export class CharactersComponent implements OnInit {
 	characterFilter: number = null;

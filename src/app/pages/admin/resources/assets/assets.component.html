@@ -1,6 +1,6 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Recursos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
-<div class="assets-header">
+<div class="section-header">
 	<div>
 		<select name="assets-filter-tag" [(ngModel)]="tagFilter" (change)="updateFilteredList()">
 			<option [ngValue]="null">Elige una tag</option>
@@ -11,24 +11,24 @@
 			<option *ngFor="let world of worldList" [ngValue]="world.id">{{world.name}}</option>
 		</select>
 	</div>
-	<a href="#" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
 		<img src="/assets/admin/list-items.svg">
 	</a>
-	<a href="#" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
 		<img src="/assets/admin/list-list.svg">
 	</a>
 </div>
 
-<div class="asset-list" [ngClass]="{'asset-list-list': filterListOption=='list'}">
-	<div *ngFor="let asset of assetListFiltered" [ngClass]="{'asset-item': filterListOption=='items', 'asset-list-item': filterListOption=='list'}">
+<div class="list" [ngClass]="{'list-list': filterListOption=='list'}">
+	<div *ngFor="let asset of assetListFiltered" [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
 		<img src="{{ asset.url }}" alt="{{ asset.name }}">
-		<div class="asset-info">
+		<div class="info">
 			<span title="{{asset.name}}">{{ asset.name }}</span>
-			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="asset-edit" (click)="editAsset(asset)">
-			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="asset-delete" (click)="deleteAsset(asset)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" (click)="editAsset(asset)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" (click)="deleteAsset(asset)">
 		</div>
 	</div>
-	<div class="asset-message" *ngIf="message!=null">
+	<div class="message" *ngIf="message!=null">
 		{{message}}
 	</div>
 </div>

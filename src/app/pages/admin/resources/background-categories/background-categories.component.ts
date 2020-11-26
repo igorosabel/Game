@@ -8,7 +8,7 @@ import { BackgroundCategory } from '../../../../model/background-category.model'
 @Component({
 	selector: 'game-background-categories',
 	templateUrl: './background-categories.component.html',
-	styleUrls: ['./background-categories.component.scss']
+	styleUrls: ['../../scss/admin.scss']
 })
 export class BackgroundCategoriesComponent implements OnInit {
 	backgroundCategoryList: BackgroundCategory[] = [];

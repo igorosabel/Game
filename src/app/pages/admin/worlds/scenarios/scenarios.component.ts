@@ -8,7 +8,7 @@ import { Scenario }                      from '../../../../model/scenario.model'
 @Component({
 	selector: 'game-scenarios',
 	templateUrl: './scenarios.component.html',
-	styleUrls: ['../../admin.scss']
+	styleUrls: ['../../scss/admin.scss']
 })
 export class ScenariosComponent implements OnInit {
 	worldId: number = null;

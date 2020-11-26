@@ -1,32 +1,32 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Fondos" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
-<div class="backgrounds-header">
+<div class="section-header">
 	<div>
 		<select name="backgrounds-filter-category" [(ngModel)]="backgroundCategoryFilter" (change)="updateFilteredList()">
 			<option [ngValue]="null">Elige una categoría</option>
 			<option *ngFor="let backgroundCategory of backgroundCategoryList" [ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
 		</select>
 	</div>
-  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
-    <img src="/assets/admin/list-items.svg">
-  </a>
-  <a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
-    <img src="/assets/admin/list-list.svg">
-  </a>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='items'}" (click)="changeFilterListOption($event, 'items')">
+		<img src="/assets/admin/list-items.svg">
+	</a>
+	<a href="#" class="filter-option" [ngClass]="{'filter-option-selected':filterListOption=='list'}" (click)="changeFilterListOption($event, 'list')">
+		<img src="/assets/admin/list-list.svg">
+	</a>
 	<a routerLink="/admin/resources/backgrounds/categories">Categorías</a>
 </div>
 
-<div class="background-list" [ngClass]="{'background-list-list': filterListOption=='list'}">
-	<div *ngFor="let background of backgroundListFiltered" [ngClass]="{'background-item': filterListOption=='items', 'background-list-item': filterListOption=='list'}">
+<div class="list" [ngClass]="{'list-list': filterListOption=='list'}">
+	<div *ngFor="let background of backgroundListFiltered" [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
 		<img src="{{ background.assetUrl }}" alt="{{ background.name }}">
 		<img src="/assets/admin/cant-cross.svg" class="cant-cross" *ngIf="!background.crossable">
-		<div class="background-info">
+		<div class="info">
 			<span title="{{background.name}}">{{ background.name }}</span>
 			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="background-edit" (click)="editBackground(background)">
 			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="background-delete" (click)="deleteBackground(background)">
 		</div>
 	</div>
-	<div class="background-message" *ngIf="message!=null">
+	<div class="message" *ngIf="message!=null">
 		{{message}}
 	</div>
 </div>

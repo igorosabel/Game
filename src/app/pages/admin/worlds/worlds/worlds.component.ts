@@ -7,7 +7,7 @@ import { World }              from '../../../../model/world.model';
 @Component({
 	selector: 'game-worlds',
 	templateUrl: './worlds.component.html',
-	styleUrls: ['../../admin.scss']
+	styleUrls: ['../../scss/admin.scss']
 })
 export class WorldsComponent implements OnInit {
 	worldList: World[] = [];

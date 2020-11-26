@@ -1,10 +1,48 @@
-.background-category-list {
+/** Menús principales **/
+.admin-menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	li {
+		margin: 16px;
+
+		a {
+			display: flex;
+			border: 2px solid #ff0;
+			width: 250px;
+			height: 60px;
+			justify-content: center;
+			align-items: center;
+			background-color: #fff;
+			color: #000;
+			text-decoration: none;
+			transition: all .3s ease-in-out;
+
+			&:hover {
+				font-size: 1.2em;
+			}
+		}
+	}
+}
+
+/** Listado de elementos **/
+.admin-list {
 	position: absolute;
 	top: 80px;
 	left: 10%;
 	width: 80%;
-    background-color: #fff;
-    color: #000;
+	background-color: #fff;
+	color: #000;
 
 	.header {
 		display: flex;
@@ -21,21 +59,27 @@
 		align-items: center;
 		position: relative;
 
-		span {
+		a, span {
+			color: #000;
+			text-decoration: none;
 			height: 50px;
 			display: inline-flex;
 			align-items: center;
 			width: 100%;
 			padding-left: 16px;
+
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 
-		.background-category-edit {
+		.edit {
 			position: absolute;
 			cursor: pointer;
 			right: 48px;
 		}
 
-		.background-category-delete {
+		.delete {
 			position: absolute;
 			cursor: pointer;
 			right: 16px;
@@ -43,7 +87,8 @@
 	}
 }
 
-.background-category-detail {
+/** Detalle de un elemento de la lista **/
+.detail {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -114,17 +159,22 @@
 	}
 }
 
-.background-category-detail-show {
+.detail-show {
 	display: flex;
 }
 
 @media screen and (min-width: 900px) {
-	.background-category-list {
+	.admin-menu {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.admin-list {
 		left: 25%;
 		width: 50%;
 	}
 
-	.background-category-detail {
+	.detail {
 		.box {
 			width: 50%;
 		}
