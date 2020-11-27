@@ -15,7 +15,7 @@ import { ItemPickerComponent }           from '../../../../components/item-picke
 @Component({
 	selector: 'game-scenario-objects',
 	templateUrl: './scenario-objects.component.html',
-	styleUrls: ['./scenario-objects.component.scss']
+	styleUrls: ['./scenario-objects.component.scss', '../../scss/resources.scss']
 })
 export class ScenarioObjectsComponent implements OnInit {
 	worldList: World[] = [];

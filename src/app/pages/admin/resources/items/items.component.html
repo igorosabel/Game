@@ -1,6 +1,6 @@
 <game-header [leftUrl]="['/admin','resources']" leftTitle="&lt; Recursos" title="Items" [rightUrl]="['/admin','logout']" rightTitle="Salir"></game-header>
 
-<div class="items-header">
+<div class="section-header">
 	<div>
 		<select name="items-filter-type" [(ngModel)]="itemFilter" (change)="updateFilteredList()">
 			<option [ngValue]="null">Elige un tipo</option>
@@ -15,16 +15,16 @@
 	</a>
 </div>
 
-<div class="item-list" [ngClass]="{'item-list-list': filterListOption=='list'}">
-	<div *ngFor="let item of itemListFiltered" [ngClass]="{'item-item': filterListOption=='items', 'item-list-item': filterListOption=='list'}">
+<div class="list" [ngClass]="{'list-list': filterListOption=='list'}">
+	<div *ngFor="let item of itemListFiltered" [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
 		<img src="{{ item.assetUrl }}" alt="{{ item.name }}">
-		<div class="item-info">
+		<div class="info">
 			<span title="{{item.name}}">{{ item.name }}</span>
-			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="item-edit" (click)="editItem(item)">
-			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="item-delete" (click)="deleteItem(item)">
+			<img src="/assets/admin/edit.svg" alt="Editar" title="Editar" class="edit" (click)="editItem(item)">
+			<img src="/assets/admin/delete.svg" alt="Borrar" title="Borrar" class="delete" (click)="deleteItem(item)">
 		</div>
 	</div>
-	<div class="item-message" *ngIf="message!=null">
+	<div class="message" *ngIf="message!=null">
 		{{message}}
 	</div>
 </div>

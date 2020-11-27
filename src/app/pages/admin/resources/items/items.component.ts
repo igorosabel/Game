@@ -11,7 +11,7 @@ import { AssetPickerComponent }         from '../../../../components/asset-picke
 @Component({
 	selector: 'game-items',
 	templateUrl: './items.component.html',
-	styleUrls: ['./items.component.scss']
+	styleUrls: ['./items.component.scss', '../../scss/resources.scss']
 })
 export class ItemsComponent implements OnInit {
 	itemFilter: number = null;
