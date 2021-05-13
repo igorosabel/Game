@@ -87,7 +87,7 @@ export class AssetCache {
 	}
 
 	load() {
-		return new Promise(resolve => {
+		return new Promise<void>(resolve => {
 			this._toLoad = this._items.length;
 			let loadHandler = () => {
 				this._loaded += 1;
