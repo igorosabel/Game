@@ -83,7 +83,7 @@ export class PlayComponent implements OnInit {
 	showMessage: boolean = false;
 	currentObject: PlayObject = null;
 
-	@ViewChild('inventory', { static: true }) inventory: InventoryComponent;
+	@ViewChild('inventory', { static: false }) inventory: InventoryComponent;
 
 	constructor(
 		private as: ApiService,
