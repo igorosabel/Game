@@ -1,95 +1,18 @@
 /**
- * Páginas
- */
-import { LoginComponent }                from './pages/game/login/login.component';
-import { HallComponent }                 from './pages/game/hall/hall.component';
-import { PlayComponent }                 from './pages/game/play/play.component';
-import { AdminLoginComponent }           from './pages/admin/admin-login/admin-login.component';
-import { AdminLogoutComponent }          from './pages/admin/admin-logout/admin-logout.component';
-import { AdminMainComponent }            from './pages/admin/admin-main/admin-main.component';
-import { AssetsComponent }               from './pages/admin/resources/assets/assets.component';
-import { BackgroundCategoriesComponent } from './pages/admin/resources/background-categories/background-categories.component';
-import { BackgroundsComponent }          from './pages/admin/resources/backgrounds/backgrounds.component';
-import { CharactersComponent }           from './pages/admin/resources/characters/characters.component';
-import { ItemsComponent }                from './pages/admin/resources/items/items.component';
-import { ResourcesComponent }            from './pages/admin/resources/resources/resources.component';
-import { ScenarioObjectsComponent }      from './pages/admin/resources/scenario-objects/scenario-objects.component';
-import { GamesComponent }                from './pages/admin/users/games/games.component';
-import { UsersComponent }                from './pages/admin/users/users/users.component';
-import { EditScenarioComponent }         from './pages/admin/worlds/edit-scenario/edit-scenario.component';
-import { ScenariosComponent }            from './pages/admin/worlds/scenarios/scenarios.component';
-import { WorldsComponent }               from './pages/admin/worlds/worlds/worlds.component';
-
-export const PAGES: any[] = [
-	LoginComponent,
-	HallComponent,
-	PlayComponent,
-	AdminLoginComponent,
-	AdminLogoutComponent,
-	AdminMainComponent,
-	AssetsComponent,
-	BackgroundCategoriesComponent,
-	BackgroundsComponent,
-	CharactersComponent,
-	ItemsComponent,
-	ResourcesComponent,
-	ScenarioObjectsComponent,
-	GamesComponent,
-	UsersComponent,
-	EditScenarioComponent,
-	ScenariosComponent,
-	WorldsComponent
-];
-
-/**
- * Componentes
- */
-import { HeaderComponent }               from './components/header/header.component';
-import { AssetPickerComponent }          from './components/asset-picker/asset-picker.component';
-import { ItemPickerComponent }           from './components/item-picker/item-picker.component';
-import { BackgroundPickerComponent }     from './components/background-picker/background-picker.component';
-import { ScenarioObjectPickerComponent } from './components/scenario-object-picker/scenario-object-picker.component';
-import { CharacterPickerComponent }      from './components/character-picker/character-picker.component';
-import { InventoryComponent }            from './components/inventory/inventory.component';
-import { TooltipComponent }              from './components/tooltip/tooltip.component';
-
-export const COMPONENTS: any[] = [
-	HeaderComponent,
-	AssetPickerComponent,
-	ItemPickerComponent,
-	BackgroundPickerComponent,
-	ScenarioObjectPickerComponent,
-	CharacterPickerComponent,
-	InventoryComponent,
-	TooltipComponent
-];
-
-/**
- * Pipes
- */
-import { UrldecodePipe }  from './pipes/urldecode.pipe';
-
-export const PIPES: any[] = [
-  UrldecodePipe
-];
-
-/**
  * Servicios
  */
-import { CommonService }      from './services/common.service';
-import { ApiService }         from './services/api.service';
-import { DataShareService }   from './services/data-share.service';
-import { UserService }        from './services/user.service';
-import { AuthService }        from './services/auth.service';
-import { ClassMapperService } from './services/class-mapper.service';
-import { PlayService }        from './services/play.service';
+import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { ClassMapperService } from 'src/app/services/class-mapper.service';
+import { DataShareService } from 'src/app/services/data-share.service';
+import { PlayService } from 'src/app/services/play.service';
+import { UserService } from 'src/app/services/user.service';
 
 export const SERVICES: any[] = [
-	CommonService,
-	ApiService,
-	DataShareService,
-	UserService,
-	AuthService,
-	ClassMapperService,
-	PlayService
+  ApiService,
+  DataShareService,
+  UserService,
+  AuthService,
+  ClassMapperService,
+  PlayService,
 ];

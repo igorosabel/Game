@@ -1,0 +1,98 @@
+<game-header title="The Game"
+			 [rightUrl]="['/game','logout']"
+			 rightTitle="Salir"></game-header>
+
+<div class="loading"
+	 *ngIf="loading">
+	<img src="/assets/loading.svg">
+	Cargando...
+</div>
+
+<div class="game"></div>
+
+<div class="dialog"
+	 *ngIf="showNarratives">
+	<div class="dialog-box">
+		<div class="dialog-picture">
+			<img [src]="currentCharacter.sprites['down'][0].src">
+		</div>
+		<div class="dialog-text">
+			<div class="dialog-title">{{currentCharacter.character.name}}</div>
+			<div class="dialog-dialog">
+				{{currentCharacter.character.narratives[currentNarrative].dialog}}
+				<img src="/assets/play/narratives-more.svg"
+					 *ngIf="currentNarrative<currentCharacter.character.narratives.length-1">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="dialog"
+	 *ngIf="showMessage">
+	<div class="dialog-box">
+		<div class="dialog-picture">
+			<img [src]="currentObject.sprites[0].src">
+		</div>
+		<div class="dialog-text">
+			<div class="dialog-title">{{currentObject.object.name}}</div>
+			<div class="dialog-dialog">
+				{{currentObject.object.activeTriggerCustom}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="portal"
+	 *ngIf="showPortal">
+	<div class="portal-box">
+		<div class="portal-header">
+			Portal
+			<a href="#"
+			   (click)="closePortal($event)">X</a>
+		</div>
+		<div class="portal-body">
+			<div class="portal-words">
+				<div class="portal-description">Introduce las tres palabras del mundo al que quieres ir:</div>
+				<div class="portal-word">
+					<label>Primera palabra</label>
+					<input type="text"
+						   [(ngModel)]="portalWorld.wordOne">
+				</div>
+				<div class="portal-word">
+					<label>Segunda palabra</label>
+					<input type="text"
+						   [(ngModel)]="portalWorld.wordTwo">
+				</div>
+				<div class="portal-word">
+					<label>Tercera palabra</label>
+					<input type="text"
+						   [(ngModel)]="portalWorld.wordThree">
+				</div>
+				<div class="portal-go">
+					<button (click)="portalActivate()">Viajar</button>
+				</div>
+			</div>
+			<div class="portal-list">
+				<div class="item"
+					 *ngFor="let world of unlockedWorlds"
+					 [ngClass]="{'current': world.id==worldId}"
+					 (click)="portalTravel(world)">
+					<div class="header">{{world.name}}</div>
+					<div class="description">{{world.description}}</div>
+					<div class="word-list">
+						<div class="word">{{world.wordOne}}</div>
+						<div class="word">{{world.wordTwo}}</div>
+						<div class="word">{{world.wordThree}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<game-inventory *ngIf="scenario"
+				#inventory
+				[(inventoryList)]="game.items"
+				[(equipment)]="game.equipment"
+				[(player)]="scenario.player"
+				(onClose)="closeInventory($event)"></game-inventory>

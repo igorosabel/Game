@@ -1,0 +1,43 @@
+<div class="asset-picker"
+	 [ngClass]="{'asset-picker-show': show}">
+	<div class="asset-picker-box">
+		<div class="asset-picker-header">
+			<div>
+				<select name="tag-filter"
+						[(ngModel)]="tagFilter"
+						(change)="updateFilteredList()">
+					<option [ngValue]="null">Etiqueta</option>
+					<option *ngFor="let tag of tagList"
+							[ngValue]="tag.id">{{tag.name}}</option>
+				</select>
+				<select name="world-filter"
+						[(ngModel)]="worldFilter"
+						(change)="updateFilteredList()">
+					<option [ngValue]="null">Mundo</option>
+					<option *ngFor="let world of worldList"
+							[ngValue]="world.id">{{world.name}}</option>
+				</select>
+			</div>
+			<span>
+				<label for="name-copy">Copiar nombre</label>
+				<input type="checkbox"
+					   name="name-copy"
+					   id="name-copy"
+					   [(ngModel)]="nameCopy">
+			</span>
+		</div>
+
+		<div class="asset-list">
+			<div class="asset-item"
+				 *ngFor="let asset of assetListFiltered"
+				 [ngClass]="{'asset-item-selected': asset.id==selectedItem}"
+				 (click)="selectAsset(asset)">
+				<img src="{{ asset.url }}"
+					 alt="{{ asset.name }}">
+				<div class="asset-info">
+					<span title="{{asset.name}}">{{ asset.name }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

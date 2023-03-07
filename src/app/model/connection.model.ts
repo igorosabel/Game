@@ -1,22 +1,32 @@
-import { ConnectionInterface } from '../interfaces/interfaces';
+import { ConnectionInterface } from 'src/app/interfaces/interfaces';
+import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class Connection {
-	constructor(
-		public from: number = null,
-		public fromName: string = null,
-		public to: number = null,
-		public toName: string = null,
-		public orientation: string = null
-	) {}
+  constructor(
+    public from: number = null,
+    public fromName: string = null,
+    public to: number = null,
+    public toName: string = null,
+    public orientation: string = null
+  ) {}
 
-	toInterface(): ConnectionInterface {
-		const connection: ConnectionInterface = {
-			from: this.from,
-			fromName: this.fromName,
-			to: this.to,
-			toName: this.toName,
-			orientation: this.orientation
-		};
-		return connection;
-	}
+  fromInterface(c: ConnectionInterface): Connection {
+    this.from = c.from;
+    this.fromName = Utils.urldecode(c.fromName);
+    this.to = c.to;
+    this.toName = Utils.urldecode(c.toName);
+    this.orientation = c.orientation;
+
+    return this;
+  }
+
+  toInterface(): ConnectionInterface {
+    return {
+      from: this.from,
+      fromName: Utils.urlencode(this.fromName),
+      to: this.to,
+      toName: Utils.urlencode(this.toName),
+      orientation: this.orientation,
+    };
+  }
 }

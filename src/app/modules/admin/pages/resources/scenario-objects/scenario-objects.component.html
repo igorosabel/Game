@@ -1,0 +1,303 @@
+<game-header [leftUrl]="['/admin','resources']"
+			 leftTitle="&lt; Recursos"
+			 title="Objetos de escenario"
+			 [rightUrl]="['/admin','logout']"
+			 rightTitle="Salir"></game-header>
+
+<div class="section-header section-header-right">
+	<a href="#"
+	   class="filter-option"
+	   [ngClass]="{'filter-option-selected':filterListOption=='items'}"
+	   (click)="changeFilterListOption($event, 'items')">
+		<img src="/assets/admin/list-items.svg">
+	</a>
+	<a href="#"
+	   class="filter-option"
+	   [ngClass]="{'filter-option-selected':filterListOption=='list'}"
+	   (click)="changeFilterListOption($event, 'list')">
+		<img src="/assets/admin/list-list.svg">
+	</a>
+</div>
+
+<div class="list"
+	 [ngClass]="{'list-list': filterListOption=='list'}">
+	<div *ngFor="let scenarioObject of scenarioObjectList"
+		 [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
+		<img src="{{ scenarioObject.assetUrl }}"
+			 alt="{{ scenarioObject.name }}">
+		<div class="info">
+			<span title="{{scenarioObject.name}}">{{ scenarioObject.name }}</span>
+			<img src="/assets/admin/edit.svg"
+				 alt="Editar"
+				 title="Editar"
+				 class="edit"
+				 (click)="editScenarioObject(scenarioObject)">
+			<img src="/assets/admin/delete.svg"
+				 alt="Borrar"
+				 title="Borrar"
+				 class="delete"
+				 (click)="deleteScenarioObject(scenarioObject)">
+		</div>
+	</div>
+	<div class="message"
+		 *ngIf="message!=null">
+		{{message}}
+	</div>
+</div>
+
+<a href="#"
+   class="fab-button"
+   id="add-btn"
+   (click)="showAddScenarioObject($event)">+</a>
+
+<div class="scenario-object-detail"
+	 [ngClass]="{'scenario-object-detail-show':showDetail}">
+	<div class="box">
+		<div class="header">
+			<span>{{scenarioObjectDetailHeader}}</span>
+			<a href="#"
+			   (click)="showAddScenarioObject($event)">X</a>
+		</div>
+		<div class="tabs">
+			<div class="tab"
+				 [ngClass]="{'tab-active':detailtTab=='data'}"
+				 (click)="changeTab('data')">Datos</div>
+			<div class="tab"
+				 [ngClass]="{'tab-active':detailtTab=='animation'}"
+				 (click)="changeTab('animation')">Animación</div>
+			<div class="tab"
+				 [ngClass]="{'tab-active':detailtTab=='drops'}"
+				 (click)="changeTab('drops')"
+				 *ngIf="loadedScenarioObject.pickable || loadedScenarioObject.activeTrigger==3">Items</div>
+		</div>
+		<!-- Datos -->
+		<div class="body"
+			 [ngClass]="{'body-show':detailtTab=='data'}">
+			<div class="row cols">
+				<div class="col">
+					<label>Nombre del objeto</label>
+					<input type="text"
+						   name="scenario-object-name"
+						   [(ngModel)]="loadedScenarioObject.name"
+						   placeholder="Nombre del objeto">
+				</div>
+			</div>
+			<div class="row cols">
+				<div class="col">
+					<label>Anchura</label>
+					<input type="number"
+						   min="1"
+						   step="1"
+						   name="scenario-object-width"
+						   [(ngModel)]="loadedScenarioObject.width"
+						   placeholder="Anchura del objeto">
+				</div>
+				<div class="col">
+					<label>Altura</label>
+					<input type="number"
+						   min="1"
+						   step="1"
+						   name="scenario-object-height"
+						   [(ngModel)]="loadedScenarioObject.height"
+						   placeholder="Altura del objeto">
+				</div>
+				<div class="col">
+					<label>Anchura que bloquea</label>
+					<input type="number"
+						   min="1"
+						   step="1"
+						   name="scenario-object-block-width"
+						   [(ngModel)]="loadedScenarioObject.blockWidth"
+						   placeholder="Anchura que bloquea"
+						   [disabled]="loadedScenarioObject.crossable">
+				</div>
+				<div class="col">
+					<label>Altura</label>
+					<input type="number"
+						   min="1"
+						   step="1"
+						   name="scenario-object-block-height"
+						   [(ngModel)]="loadedScenarioObject.blockHeight"
+						   placeholder="Altura que bloquea"
+						   [disabled]="loadedScenarioObject.crossable">
+				</div>
+			</div>
+			<div class="row cols">
+				<div class="col">
+					<label>Obtener</label>
+					<input type="checkbox"
+						   name="scenario-object-pickable"
+						   [(ngModel)]="loadedScenarioObject.pickable"
+						   (change)="updatePickable()">
+				</div>
+				<div class="col">
+					<label>Activar</label>
+					<input type="checkbox"
+						   name="scenario-object-activable"
+						   [(ngModel)]="loadedScenarioObject.activable"
+						   [disabled]="loadedScenarioObject.pickable">
+				</div>
+				<div class="col"
+					 *ngIf="loadedScenarioObject.activable">
+					<label>Tiempo activo</label>
+					<input type="number"
+						   min="0"
+						   step="1"
+						   name="scenario-object-active-time"
+						   [(ngModel)]="loadedScenarioObject.activeTime"
+						   placeholder="Tiempo activo">
+				</div>
+			</div>
+			<div class="row cols"
+				 *ngIf="loadedScenarioObject.activable">
+				<div class="col">
+					<label>Tipo de activador</label>
+					<select name="scenario-object-active-trigger"
+							[(ngModel)]="loadedScenarioObject.activeTrigger">
+						<option [ngValue]="null">Elige tipo</option>
+						<option *ngFor="let type of activeTriggerTypes"
+								[ngValue]="type.id">{{type.name}}</option>
+					</select>
+				</div>
+				<div class="col"
+					 *ngIf="loadedScenarioObject.activable">
+					<ng-container *ngIf="loadedScenarioObject.activeTrigger==0">
+						<label>Mensaje de activación</label>
+						<textarea name="scenario-object-active-trigger-custom"
+								  [(ngModel)]="loadedScenarioObject.activeTriggerCustom"></textarea>
+					</ng-container>
+					<ng-container *ngIf="loadedScenarioObject.activeTrigger==1">
+						<label>Mundo al que transportar</label>
+						<select name="scenario-object-active-trigger-custom-world"
+								[(ngModel)]="activeTriggerWorld"
+								(change)="loadSelectedWorldScenarios()">
+							<option [ngValue]="null">Elige un mundo</option>
+							<option *ngFor="let world of worldList"
+									[ngValue]="world.id">{{world.name}}</option>
+						</select>
+						<select name="scenario-object-active-trigger-custom-scenario"
+								[(ngModel)]="loadedScenarioObject.activeTriggerCustom"
+								*ngIf="activeTriggerWorld!=null">
+							<option [ngValue]="null">Elige un escenario</option>
+							<option *ngFor="let scenario of scenarioList"
+									[ngValue]="scenario.id">{{scenario.name}}{{scenario.initial ? ' (inicio)' : ''}}</option>
+						</select>
+					</ng-container>
+					<ng-container *ngIf="loadedScenarioObject.activeTrigger==2">
+						<label>Orden a ejecutar</label>
+						<input type="text"
+							   name="scenario-object-active-trigger-custom"
+							   [(ngModel)]="loadedScenarioObject.activeTriggerCustom"
+							   placeholder="Orden a ejecutar">
+					</ng-container>
+				</div>
+			</div>
+			<div class="row cols">
+				<div class="col">
+					<label>Cruzable</label>
+					<input type="checkbox"
+						   name="scenario-object-crossable"
+						   [(ngModel)]="loadedScenarioObject.crossable"
+						   [disabled]="loadedScenarioObject.pickable"
+						   (change)="changeCrossable()">
+				</div>
+				<div class="col">
+					<label>Levantar</label>
+					<input type="checkbox"
+						   name="scenario-object-grabbable"
+						   [(ngModel)]="loadedScenarioObject.grabbable"
+						   [disabled]="loadedScenarioObject.pickable">
+				</div>
+				<div class="col">
+					<label>Romper</label>
+					<input type="checkbox"
+						   name="scenario-object-breakable"
+						   [(ngModel)]="loadedScenarioObject.breakable"
+						   [disabled]="loadedScenarioObject.pickable">
+				</div>
+			</div>
+		</div>
+		<!-- Animación -->
+		<div class="body"
+			 [ngClass]="{'body-show':detailtTab=='animation'}">
+			<div class="row cols cols-column">
+				<div class="col picker">
+					<img [src]="loadedScenarioObject.assetUrl"
+						 (click)="openAssetPicker('main')">
+					<div>Imagen principal</div>
+				</div>
+				<div class="col picker"
+					 *ngIf="loadedScenarioObject.activable || loadedScenarioObject.breakable">
+					<img [src]="loadedScenarioObject.assetActiveUrl"
+						 (click)="openAssetPicker('active')">
+					<div>Imagen activado</div>
+				</div>
+				<div class="col preview-col">
+					<img [src]="animationImage">
+				</div>
+			</div>
+			<div class="animation-slider">
+				<div class="animation-frame"
+					 *ngFor="let frame of loadedScenarioObject.frames; let ind = index">
+					<button class="animation-delete"
+							(click)="frameDelete(frame)">
+						<img src="/assets/admin/frame-delete.svg">
+					</button>
+					<button class="animation-left"
+							(click)="frameLeft(frame)"
+							*ngIf="ind!=0">
+						<img src="/assets/admin/frame-left.svg">
+					</button>
+					<button class="animation-right"
+							(click)="frameRight(frame)"
+							*ngIf="ind!=loadedScenarioObject.frames.length-1">
+						<img src="/assets/admin/frame-right.svg">
+					</button>
+					<img [src]="frame.assetUrl">
+				</div>
+				<div class="animation-frame animation-frame-add">
+					<img src="/assets/admin/add-frame.svg"
+						 (click)="openAssetPicker('frames')">
+				</div>
+			</div>
+		</div>
+		<!-- Items -->
+		<div class="body"
+			 [ngClass]="{'body-show':detailtTab=='drops'}">
+			<div class="scenario-object-drops">
+				<div class="scenario-object-add-drop">
+					<button (click)="openItemPicker()">Añadir item</button>
+				</div>
+				<div class="scenario-object-drop-list">
+					<div class="scenario-object-drop"
+						 *ngFor="let drop of loadedScenarioObject.drops">
+						<div class="scenario-object-drop-name">
+							<a href="#"
+							   (click)="deleteDrop($event, drop)">x</a>
+							<img [src]="drop.assetUrl">
+							{{drop.itemName}}
+						</div>
+						<input type="number"
+							   min="1"
+							   step="1"
+							   name="scenario-object-drop-num"
+							   [(ngModel)]="drop.num"
+							   placeholder="Cantidad"
+							   [readonly]="loadedScenarioObject.pickable">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<button (click)="saveScenarioObject()"
+					*ngIf="!savingScenarioObject">Continuar</button>
+			<button disabled="disabled"
+					*ngIf="savingScenarioObject">Guardando...</button>
+		</div>
+	</div>
+</div>
+
+<game-asset-picker #assetPicker
+				   (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+<game-item-picker #itemPicker
+				  (selectItemEvent)="selectedItem($event)"></game-item-picker>

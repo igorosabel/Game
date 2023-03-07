@@ -1,16 +1,20 @@
-import { TagInterface } from '../interfaces/interfaces';
+import { TagInterface } from 'src/app/interfaces/interfaces';
+import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class Tag {
-	constructor(
-		public id: number = null,
-		public name: string = null
-	) {}
-	
-	toInterface(): TagInterface {
-		const tag: TagInterface = {
-			id: this.id,
-			name: this.name
-		};
-		return tag;
-	}
+  constructor(public id: number = null, public name: string = null) {}
+
+  fromInterface(t: TagInterface): Tag {
+    this.id = t.id;
+    this.name = Utils.urldecode(t.name);
+
+    return this;
+  }
+
+  toInterface(): TagInterface {
+    return {
+      id: this.id,
+      name: Utils.urlencode(this.name),
+    };
+  }
 }

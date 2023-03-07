@@ -1,20 +1,29 @@
-import { ScenarioObjectFrameInterface } from '../interfaces/interfaces';
+import { ScenarioObjectFrameInterface } from 'src/app/interfaces/interfaces';
+import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class ScenarioObjectFrame {
-	constructor(
-		public id: number = null,
-		public idAsset: number = null,
-		public assetUrl: string = null,
-		public order: number = null
-	) {}
+  constructor(
+    public id: number = null,
+    public idAsset: number = null,
+    public assetUrl: string = null,
+    public order: number = null
+  ) {}
 
-	toInterface(): ScenarioObjectFrameInterface {
-		const scenarioObjectFrame: ScenarioObjectFrameInterface = {
-			id: this.id,
-			idAsset: this.idAsset,
-			assetUrl: this.assetUrl,
-			order: this.order
-		};
-		return scenarioObjectFrame;
-	}
+  fromInterface(sof: ScenarioObjectFrameInterface): ScenarioObjectFrame {
+    this.id = sof.id;
+    this.idAsset = sof.idAsset;
+    this.assetUrl = Utils.urldecode(sof.assetUrl);
+    this.order = sof.order;
+
+    return this;
+  }
+
+  toInterface(): ScenarioObjectFrameInterface {
+    return {
+      id: this.id,
+      idAsset: this.idAsset,
+      assetUrl: Utils.urlencode(this.assetUrl),
+      order: this.order,
+    };
+  }
 }

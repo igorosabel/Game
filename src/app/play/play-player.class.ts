@@ -1,45 +1,50 @@
-import { EventDispatcher } from 'strongly-typed-events';
-import { PlayCharacter }   from './play-character.class';
-import { PlayScenario }    from './play-scenario.class';
-import { Position }        from '../model/position.model';
+import { Position } from 'src/app/model/position.model';
+import { PlayCharacter } from 'src/app/play/play-character.class';
+import { PlayConnection } from 'src/app/play/play-connection.class';
+import { PlayScenario } from 'src/app/play/play-scenario.class';
+import { EventDispatcher, IEvent } from 'strongly-typed-events';
 
 export class PlayPlayer extends PlayCharacter {
-	private _onAction     = new EventDispatcher<PlayPlayer, Position>();
-	private _onHit        = new EventDispatcher<PlayPlayer, Position>();
+  private _onAction: EventDispatcher<PlayPlayer, Position> =
+    new EventDispatcher<PlayPlayer, Position>();
+  private _onHit: EventDispatcher<PlayPlayer, Position> = new EventDispatcher<
+    PlayPlayer,
+    Position
+  >();
 
-	constructor(
-		x: number,
-		y: number,
-		width: number,
-		height: number,
-		blockWidth:number,
-		blockHeight: number,
-		scenario: PlayScenario
-	) {
-		super(x, y, width, height, blockWidth, blockHeight, scenario);
-	}
+  constructor(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    blockWidth: number,
+    blockHeight: number,
+    scenario: PlayScenario
+  ) {
+    super(x, y, width, height, blockWidth, blockHeight, scenario);
+  }
 
-	doAction() {
-		this._onAction.dispatch(this, this.getNextPos());
-	}
+  doAction(): void {
+    this._onAction.dispatch(this, this.getNextPos());
+  }
 
-	public get onAction() {
-		return this._onAction.asEvent();
-	}
+  public get onAction(): IEvent<PlayPlayer, Position> {
+    return this._onAction.asEvent();
+  }
 
-	hit() {
-		if (!this.hitting) {
-			this.hitting = true;
-			this.playAnimation();
-			this._onHit.dispatch(this, this.getNextPos());
-		}
-	}
+  hit(): void {
+    if (!this.hitting) {
+      this.hitting = true;
+      this.playAnimation();
+      this._onHit.dispatch(this, this.getNextPos());
+    }
+  }
 
-	public get onHit() {
-		return this._onHit.asEvent();
-	}
+  public get onHit(): IEvent<PlayPlayer, Position> {
+    return this._onHit.asEvent();
+  }
 
-	public get onConnection() {
-		return this._onConnection.asEvent();
-	}
+  public get onConnection(): IEvent<PlayCharacter, PlayConnection> {
+    return this._onConnection.asEvent();
+  }
 }

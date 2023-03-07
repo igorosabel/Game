@@ -1,0 +1,22 @@
+<div class="scenario-object-picker"
+	 [ngClass]="{'scenario-object-picker-show': show}">
+	<div class="scenario-object-picker-box">
+		<div class="scenario-object-picker-header">
+			<a href="#"
+			   (click)="closePicker($event)">X</a>
+		</div>
+
+		<div class="scenario-object-list">
+			<div class="scenario-object-item"
+				 *ngFor="let scenarioObject of scenarioObjectList"
+				 [ngClass]="{'scenario-object-item-selected': scenarioObject.id==selected}"
+				 (click)="selectScenarioObject(scenarioObject)">
+				<img src="{{ scenarioObject.assetUrl }}"
+					 alt="{{ scenarioObject.name }}">
+				<div class="scenario-object-info">
+					<span title="{{scenarioObject.name}}">{{ scenarioObject.name }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

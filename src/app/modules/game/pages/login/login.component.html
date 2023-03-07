@@ -1,0 +1,86 @@
+<game-header img="/assets/home/triforce.png"
+			 title="The Game"></game-header>
+
+<div class="home-box">
+	<div class="home-tabs">
+		<div class="home-tab"
+			 [ngClass]="{'home-tab-selected': selectedTab=='login'}"
+			 (click)="selectTab('login')">Iniciar sesión</div>
+		<div class="home-tab"
+			 [ngClass]="{'home-tab-selected': selectedTab=='register'}"
+			 (click)="selectTab('register')">Registro</div>
+	</div>
+	<div class="home-tab-content"
+		 [ngClass]="{'home-tab-content-selected': selectedTab=='login'}">
+		<form action="#"
+			  (ngSubmit)="checkLogin($event)">
+			<div class="home-row">
+				<input type="email"
+					   class="home-input"
+					   name="login-email"
+					   [(ngModel)]="loginData.email"
+					   placeholder="E-mail"
+					   autofocus>
+			</div>
+			<div class="home-row">
+				<input type="password"
+					   class="home-input"
+					   name="login-pass"
+					   [(ngModel)]="loginData.pass"
+					   placeholder="Contraseña">
+			</div>
+			<div class="home-row">
+				<input type="submit"
+					   class="home-btn"
+					   value="Continuar"
+					   [disabled]="loading">
+			</div>
+		</form>
+	</div>
+	<div class="home-tab-content"
+		 [ngClass]="{'home-tab-content-selected': selectedTab=='register'}">
+		<form action="#"
+			  (ngSubmit)="checkRegister($event)">
+			<div class="home-row">
+				<input type="email"
+					   class="home-input"
+					   name="register-email"
+					   [(ngModel)]="registerData.email"
+					   placeholder="E-mail">
+			</div>
+			<div class="home-row">
+				<input type="email"
+					   class="home-input"
+					   name="register-conf"
+					   [(ngModel)]="registerData.conf"
+					   placeholder="Confirmar e-mail">
+			</div>
+			<div class="home-row">
+				<input type="password"
+					   class="home-input"
+					   name="register-pass"
+					   [(ngModel)]="registerData.pass"
+					   placeholder="Contraseña">
+			</div>
+			<div class="home-row">
+				<input type="submit"
+					   class="home-btn"
+					   id="register-go"
+					   value="Continuar"
+					   [disabled]="loading">
+			</div>
+		</form>
+	</div>
+	<div class="home-error"
+		 *ngIf="loginError">
+		Email o contraseña incorrectos.
+	</div>
+	<div class="home-error"
+		 *ngIf="registerError=='in-use'">
+		El e-mail introducido ya está registrado.
+	</div>
+	<div class="home-error"
+		 *ngIf="registerError=='error'">
+		Ocurrió un error al realizar el registro.
+	</div>
+</div>

@@ -1,0 +1,92 @@
+<div class="inventory"
+	 *ngIf="showInventory">
+	<div class="inventory-box">
+		<div class="inventory-header">
+			Inventario
+			<a href="#"
+			   (click)="close($event)">X</a>
+		</div>
+		<div class="inventory-body">
+			<div class="inventory-list">
+				<div class="inventory-item"
+					 *ngFor="let item of inventoryList"
+					 (mouseover)="tooltip.load(item.item)"
+					 (mousemove)="tooltip.move($event)"
+					 (mouseout)="tooltip.show(false)"
+					 cdkDrag>
+					<img *ngIf="item.id!==null"
+						 [src]="item.item.assetUrl">
+				</div>
+			</div>
+			<div class="inventory-player">
+				<div class="inventory-equipment">
+					<div>
+						<div class="inventory-equipment-header">Equipo</div>
+						<div class="inventory-equipment-head"
+							 (mouseover)="tooltip.load(equipment.head)"
+							 (mousemove)="tooltip.move($event)"
+							 (mouseout)="tooltip.show(false)"
+							 cdkDrop>
+							<img *ngIf="equipment.head!==null"
+								 [src]="equipment.head.assetUrl">
+						</div>
+						<div class="inventory-equipment-necklace"
+							 (mouseover)="tooltip.load(equipment.necklace)"
+							 (mousemove)="tooltip.move($event)"
+							 (mouseout)="tooltip.show(false)"
+							 cdkDrop>
+							<img *ngIf="equipment.necklace!==null"
+								 [src]="equipment.necklace.assetUrl">
+						</div>
+						<div class="inventory-equipment-body"
+							 (mouseover)="tooltip.load(equipment.body)"
+							 (mousemove)="tooltip.move($event)"
+							 (mouseout)="tooltip.show(false)"
+							 cdkDrop>
+							<img *ngIf="equipment.necklace!==null"
+								 [src]="equipment.necklace.assetUrl">
+						</div>
+						<div class="inventory-equipment-boots"
+							 (mouseover)="tooltip.load(equipment.boots)"
+							 (mousemove)="tooltip.move($event)"
+							 (mouseout)="tooltip.show(false)"
+							 cdkDrop>
+							<img *ngIf="equipment.boots!==null"
+								 [src]="equipment.boots.assetUrl">
+						</div>
+					</div>
+					<div>
+						<div class="inventory-equipment-header">Arma</div>
+						<div class="inventory-equipment-weapon"
+							 (mouseover)="tooltip.load(equipment.weapon)"
+							 (mousemove)="tooltip.move($event)"
+							 (mouseout)="tooltip.show(false)"
+							 cdkDrop>
+							<img *ngIf="equipment.weapon!==null"
+								 [src]="equipment.weapon.assetUrl">
+						</div>
+					</div>
+				</div>
+				<div class="inventory-stats">
+					<div class="inventory-equipment-header">Estadísticas</div>
+					<div class="inventory-stat">
+						<label>Salud</label>
+						<span>{{player.character.currentHealth}} / {{player.character.health}}</span>
+					</div>
+					<div class="inventory-stat">
+						<label>Ataque</label>
+						<span>{{player.character.attack}}</span>
+					</div>
+					<div class="inventory-stat">
+						<label>Defensa</label>
+						<span>{{player.character.defense}}</span>
+					</div>
+					<div class="inventory-stat">
+						<label>Velocidad</label>
+						<span>{{player.character.speed}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

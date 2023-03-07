@@ -4,13 +4,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-import { COMPONENTS, PAGES, PIPES, SERVICES } from './app.common';
-import { AppComponent } from './app.component';
-import { TokenInterceptor } from './interceptors/token.interceptor';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { SERVICES } from 'src/app/app.common';
+import { AppComponent } from 'src/app/app.component';
+import { TokenInterceptor } from 'src/app/interceptors/token.interceptor';
 
 @NgModule({
-  declarations: [AppComponent, ...PAGES, ...COMPONENTS, ...PIPES],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

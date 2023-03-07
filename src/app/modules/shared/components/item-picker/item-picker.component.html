@@ -1,0 +1,29 @@
+<div class="item-picker"
+	 [ngClass]="{'item-picker-show': show}">
+	<div class="item-picker-box">
+		<div class="item-picker-header">
+			<div>
+				<select name="item-filter"
+						[(ngModel)]="itemFilter"
+						(change)="updateFilteredList()">
+					<option [ngValue]="null">Tipo</option>
+					<option *ngFor="let type of typeList"
+							[ngValue]="type.id">{{type.name}}</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="item-list">
+			<div class="item-item"
+				 *ngFor="let item of itemListFiltered"
+				 [ngClass]="{'item-item-selected': item.id==selected}"
+				 (click)="selectItem(item)">
+				<img src="{{ item.assetUrl }}"
+					 alt="{{ item.name }}">
+				<div class="item-info">
+					<span title="{{item.name}}">{{ item.name }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
