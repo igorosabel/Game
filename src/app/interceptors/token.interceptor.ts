@@ -1,40 +1,24 @@
 import {
-  HttpErrorResponse,
   HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
+  HttpHandlerFn,
+  HttpInterceptorFn,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { UserService } from '../services/user.service';
+import { inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
-@Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-  constructor(public user: UserService) {}
+export const TokenInterceptor: HttpInterceptorFn = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<unknown>> => {
+  const us: UserService = inject(UserService);
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    request = request.clone({
-      setHeaders: {
-        Authorization: this.user.token ? this.user.token : '',
-      },
-    });
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage: string = '';
-        if (error.error instanceof ErrorEvent) {
-          // client-side error
-          errorMessage = `Error: ${error.error.message}`;
-        } else {
-          // server-side error
-          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-        }
-        return throwError(errorMessage);
-      })
-    );
-  }
-}
+  req = req.clone({
+    setHeaders: {
+      Authorization: us.logged && us.token ? us.token : '',
+    },
+  });
+
+  return next(req);
+};

@@ -1,37 +1,45 @@
 <game-header title="The Game"
 			 [rightUrl]="['/game','logout']"
-			 rightTitle="Salir"></game-header>
+			 rightTitle="Salir" />
 
-<div class="loading"
-	 *ngIf="loading">
-	<img src="/assets/loading.svg">
+@if (loading) {
+<div class="loading">
+	<img src="/assets/loading.svg"
+		 alt="">
 	Cargando...
 </div>
+}
 
 <div class="game"></div>
 
-<div class="dialog"
-	 *ngIf="showNarratives">
+@if (showNarratives) {
+<div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
-			<img [src]="currentCharacter.sprites['down'][0].src">
+			<img [src]="currentCharacter.sprites['down'][0].src"
+				 alt="">
 		</div>
 		<div class="dialog-text">
 			<div class="dialog-title">{{currentCharacter.character.name}}</div>
 			<div class="dialog-dialog">
 				{{currentCharacter.character.narratives[currentNarrative].dialog}}
-				<img src="/assets/play/narratives-more.svg"
-					 *ngIf="currentNarrative<currentCharacter.character.narratives.length-1">
+				@if (currentNarrative<currentCharacter.character.narratives.length-1) {
+																 <img
+																 src="/assets/play/narratives-more.svg"
+																 alt="">
+					}
 			</div>
 		</div>
 	</div>
 </div>
+}
 
-<div class="dialog"
-	 *ngIf="showMessage">
+@if (showMessage) {
+<div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
-			<img [src]="currentObject.sprites[0].src">
+			<img [src]="currentObject.sprites[0].src"
+				 alt="">
 		</div>
 		<div class="dialog-text">
 			<div class="dialog-title">{{currentObject.object.name}}</div>
@@ -41,9 +49,10 @@
 		</div>
 	</div>
 </div>
+}
 
-<div class="portal"
-	 *ngIf="showPortal">
+@if (showPortal) {
+<div class="portal">
 	<div class="portal-box">
 		<div class="portal-header">
 			Portal
@@ -73,9 +82,9 @@
 				</div>
 			</div>
 			<div class="portal-list">
+				@for (world of unlockedWorlds; track world.id) {
 				<div class="item"
-					 *ngFor="let world of unlockedWorlds"
-					 [ngClass]="{'current': world.id==worldId}"
+					 [ngClass]="{'current': world.id === worldId}"
 					 (click)="portalTravel(world)">
 					<div class="header">{{world.name}}</div>
 					<div class="description">{{world.description}}</div>
@@ -85,14 +94,17 @@
 						<div class="word">{{world.wordThree}}</div>
 					</div>
 				</div>
+				}
 			</div>
 		</div>
 	</div>
 </div>
+}
 
-<game-inventory *ngIf="scenario"
-				#inventory
+@if (scenario) {
+<game-inventory #inventory
 				[(inventoryList)]="game.items"
 				[(equipment)]="game.equipment"
 				[(player)]="scenario.player"
-				(onClose)="closeInventory($event)"></game-inventory>
+				(onClose)="closeInventory($event)" />
+}

@@ -2,49 +2,57 @@
 			 leftTitle="&lt; Escenarios"
 			 title="Editar"
 			 [rightUrl]="['/admin','logout']"
-			 rightTitle="Salir"></game-header>
+			 rightTitle="Salir" />
 
 <div class="edit-scenario-header">
 	<div class="header-picker">
 		<div>
 			<label>Fondo</label>
 			<img [src]="selected.backgroundAssetUrl"
-				 [ngClass]="{'selecting': selected.selecting=='background'}"
-				 (click)="copyCell('background')">
+				 [ngClass]="{'selecting': selected.selecting === 'background'}"
+				 (click)="copyCell('background')"
+				 alt="">
+			@if (selected.idBackground !== null) {
 			<a href="#"
-			   *ngIf="selected.idBackground!=null"
 			   (click)="cancelCopyCell($event, 'background')">X</a>
+			}
 		</div>
 		<div>
 			<label>Objeto</label>
 			<img [src]="selected.scenarioObjectAssetUrl"
-				 [ngClass]="{'selecting': selected.selecting=='scenarioObject'}"
-				 (click)="copyCell('scenarioObject')">
+				 [ngClass]="{'selecting': selected.selecting === 'scenarioObject'}"
+				 (click)="copyCell('scenarioObject')"
+				 alt="">
+			@if (selected.idScenarioObject !== null) {
 			<a href="#"
-			   *ngIf="selected.idScenarioObject!=null"
 			   (click)="cancelCopyCell($event, 'scenarioObject')">X</a>
+			}
 		</div>
 		<div>
 			<label>Personaje</label>
 			<img [src]="selected.characterAssetUrl"
-				 [ngClass]="{'selecting': selected.selecting=='character'}"
-				 (click)="copyCell('character')">
+				 [ngClass]="{'selecting': selected.selecting === 'character'}"
+				 (click)="copyCell('character')"
+				 alt="">
+			@if (selected.idCharacter !== null) {
 			<a href="#"
-			   *ngIf="selected.idCharacter!=null"
 			   (click)="cancelCopyCell($event, 'character')">X</a>
+			}
 		</div>
 	</div>
 	<div class="start-picker">
 		<label>Inicio</label>
 		<img src="/assets/admin/start-location.svg"
 			 [ngClass]="{'start-selecting': startSelecting}"
-			 (click)="selectStart()">
+			 (click)="selectStart()"
+			 alt="">
 	</div>
 	<div class="map-generate">
 		<a href="https://apigame.osumi.es/maps/{{worldId}}-{{scenarioId}}.png"
 		   target="_blank">Mapa</a>
 		<img [src]="mapGenerating"
-			 (click)="createMap()">
+			 (click)="createMap()"
+			 alt="">
 	</div>
 	<div>
 		<label for="show-debug">Debug</label>
@@ -59,68 +67,86 @@
 		<div class="edit-scenario-upbottom">
 			<img src="/assets/admin/go-up.svg"
 				 title="Conectar escenario por arriba"
-				 (click)="connect('up')">
-			<span *ngIf="connections.up!=null">
+				 (click)="connect('up')"
+				 alt="Arriba">
+			@if (connections.up !== null) {
+			<span>
 				{{connections.up.toName}}
 				<a href="#"
 				   (click)="deleteConnection($event, 'up')">X</a>
 			</span>
+			}
 		</div>
 		<div class="edit-scenario-main">
 			<div class="edit-scenario-side">
 				<img src="/assets/admin/go-left.svg"
 					 title="Conectar escenario por la izquierda"
-					 (click)="connect('left')">
-				<span *ngIf="connections.left!=null"
-					  title="{{connections.left.toName}}">
+					 (click)="connect('left')"
+					 alt="Izquierda">
+				@if (connections.left !== null) {
+				<span [title]="connections.left.toName">
 					{{connections.left.toName}}
 					<a href="#"
 					   (click)="deleteConnection($event, 'left')">X</a>
 				</span>
+				}
 			</div>
 			<div class="edit-scenario">
-				<div *ngFor="let row of scenario"
-					 class="edit-scenario-row">
-					<div *ngFor="let cell of row"
-						 class="edit-scenario-cell"
-						 [ngClass]="{'debug': showDebug, 'start-cell': cell.x==loadedScenario.startX && cell.y==loadedScenario.startY}"
+				@for (row of scenario; track row) {
+				<div class="edit-scenario-row">
+					@for (cell of row; track cell) {
+					<div class="edit-scenario-cell"
+						 [ngClass]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario.startX && cell.y === loadedScenario.startY}"
 						 (click)="openCell(null, cell)">
-						<img *ngIf="cell.idBackground!=null"
-							 [src]="cell.backgroundAssetUrl"
-							 class="edit-scenario-cell-background">
-						<img *ngIf="cell.idScenarioObject!=null"
-							 [src]="cell.scenarioObjectAssetUrl"
+						@if (cell.idBackground !== null) {
+						<img [src]="cell.backgroundAssetUrl"
+							 class="edit-scenario-cell-background"
+							 alt="">
+						}
+						@if (cell.idScenarioObject !== null) {
+						<img [src]="cell.scenarioObjectAssetUrl"
 							 class="edit-scenario-cell-over"
-							 [ngStyle]="{'width': (100*cell.scenarioObjectWidth)+'%', 'height': (100*cell.scenarioObjectHeight)+'%'}">
-						<img *ngIf="cell.idCharacter!=null"
-							 [src]="cell.characterAssetUrl"
+							 [ngStyle]="{'width': (100*cell.scenarioObjectWidth)+'%', 'height': (100*cell.scenarioObjectHeight)+'%'}"
+							 alt="">
+						}
+						@if (cell.idCharacter !== null) {
+						<img [src]="cell.characterAssetUrl"
 							 class="edit-scenario-cell-over"
-							 [ngStyle]="{'width': (100*cell.characterWidth)+'%', 'height': (100*cell.characterHeight)+'%'}">
+							 [ngStyle]="{'width': (100*cell.characterWidth)+'%', 'height': (100*cell.characterHeight)+'%'}"
+							 alt="">
+						}
 						<span>{{cell.x}} - {{cell.y}}</span>
 					</div>
+					}
 				</div>
+				}
 			</div>
 			<div class="edit-scenario-side">
 				<img src="/assets/admin/go-right.svg"
 					 title="Conectar escenario por la derecha"
-					 (click)="connect('right')">
-				<span *ngIf="connections.right!=null"
-					  title="{{connections.right.toName}}">
+					 (click)="connect('right')"
+					 alt="Derecha">
+				@if (connections.right !== null) {
+				<span [title]="connections.right.toName">
 					{{connections.right.toName}}
 					<a href="#"
 					   (click)="deleteConnection($event, 'right')">X</a>
 				</span>
+				}
 			</div>
 		</div>
 		<div class="edit-scenario-upbottom">
 			<img src="/assets/admin/go-down.svg"
 				 title="Conectar escenario por abajo"
-				 (click)="connect('down')">
-			<span *ngIf="connections.down!=null">
+				 (click)="connect('down')"
+				 alt="Abajo">
+			@if (connections.down !== null) {
+			<span [title]="connections.down.toName">
 				{{connections.down.toName}}
 				<a href="#"
 				   (click)="deleteConnection($event, 'down')">X</a>
 			</span>
+			}
 		</div>
 	</div>
 </div>
@@ -138,12 +164,15 @@
 				<header>Fondo</header>
 				<main>
 					<img [src]="loadedCell.backgroundAssetUrl"
-						 (click)="openBackgroundPicker()">
+						 (click)="openBackgroundPicker()"
+						 alt="">
+					@if (loadedCell.idBackground !== null) {
 					<a href="#"
-					   *ngIf="loadedCell.idBackground!=null"
 					   (click)="deleteBackground($event)">
-						<img src="/assets/admin/cant-cross.svg">
+						<img src="/assets/admin/cant-cross.svg"
+							 alt="">
 					</a>
+					}
 				</main>
 				<footer>
 					{{loadedCell.backgroundName}}
@@ -153,12 +182,15 @@
 				<header>Objeto</header>
 				<main>
 					<img [src]="loadedCell.scenarioObjectAssetUrl"
-						 (click)="openScenarioObjectPicker()">
+						 (click)="openScenarioObjectPicker()"
+						 alt="">
+					@if (loadedCell.idScenarioObject !== null) {
 					<a href="#"
-					   *ngIf="loadedCell.idScenarioObject!=null"
 					   (click)="deleteScenarioObject($event)">
-						<img src="/assets/admin/cant-cross.svg">
+						<img src="/assets/admin/cant-cross.svg"
+							 alt="">
 					</a>
+					}
 				</main>
 				<footer>
 					{{loadedCell.scenarioObjectName}}
@@ -168,30 +200,36 @@
 				<header>Personaje</header>
 				<main>
 					<img [src]="loadedCell.characterAssetUrl"
-						 (click)="openCharacterPicker()">
+						 (click)="openCharacterPicker()"
+						 alt="">
+					@if (loadedCell.idCharacter !== null) {
 					<a href="#"
-					   *ngIf="loadedCell.idCharacter!=null"
 					   (click)="deleteCharacter($event)">
-						<img src="/assets/admin/cant-cross.svg">
+						<img src="/assets/admin/cant-cross.svg"
+							 alt="">
 					</a>
+					}
 				</main>
 				<footer>
-					<input *ngIf="loadedCell.idCharacter!==null"
-						   type="number"
+					@if (loadedCell.idCharacter !== null) {
+					<input type="number"
 						   min="0"
 						   step="1"
 						   name="character-health"
 						   [(ngModel)]="loadedCell.characterHealth"
 						   placeholder="Salud actual">
+					}
 					{{loadedCell.characterName}}
 				</footer>
 			</div>
 		</div>
 		<div class="footer">
-			<button (click)="saveCell()"
-					*ngIf="!savingCell">Continuar</button>
-			<button disabled="disabled"
-					*ngIf="savingCell">Guardando...</button>
+			@if (!savingCell) {
+			<button (click)="saveCell()">Continuar</button>
+			}
+			@if (savingCell) {
+			<button disabled="disabled">Guardando...</button>
+			}
 		</div>
 	</div>
 </div>
@@ -205,20 +243,22 @@
 			   (click)="showConnectionDetail($event)">X</a>
 		</div>
 		<div class="body">
-			<div *ngFor="let scenario of scenarioList"
-				 class="row"
+			@for (scenario of scenarioList; track scenario.id) {
+			<div class="row"
 				 (click)="selectScenarioConnection(scenario)">
 				{{scenario.name}}
 			</div>
-			<div *ngIf="scenarioList.length==0"
-				 class="no-result">No hay más escenarios en este mundo</div>
+			}
+			@empty {
+			<div class="no-result">No hay más escenarios en este mundo</div>
+			}
 		</div>
 	</div>
 </div>
 
 <game-background-picker #backgroundPicker
-						(selectBackgroundEvent)="selectedBackground($event)"></game-background-picker>
+						(selectBackgroundEvent)="selectedBackground($event)" />
 <game-scenario-object-picker #scenarioObjectPicker
-							 (selectScenarioObjectEvent)="selectedScenarioObject($event)"></game-scenario-object-picker>
+							 (selectScenarioObjectEvent)="selectedScenarioObject($event)" />
 <game-character-picker #characterPicker
-					   (selectCharacterEvent)="selectedCharacter($event)"></game-character-picker>
+					   (selectCharacterEvent)="selectedCharacter($event)" />

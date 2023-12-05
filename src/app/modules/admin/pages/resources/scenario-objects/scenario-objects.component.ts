@@ -178,7 +178,7 @@ export default class ScenarioObjectsComponent implements OnInit {
 
   selectedAsset(selectedAsset: AssetInterface): void {
     if (this.assetPickerWhere == 'frames') {
-      let frame: ScenarioObjectFrame = new ScenarioObjectFrame(
+      const frame: ScenarioObjectFrame = new ScenarioObjectFrame(
         null,
         selectedAsset.id,
         selectedAsset.url,
@@ -286,7 +286,7 @@ export default class ScenarioObjectsComponent implements OnInit {
   }
 
   updateFrameOrders(): void {
-    for (let frameOrder in this.loadedScenarioObject.frames) {
+    for (const frameOrder in this.loadedScenarioObject.frames) {
       this.loadedScenarioObject.frames[frameOrder].order = parseInt(frameOrder);
     }
   }
@@ -404,7 +404,7 @@ export default class ScenarioObjectsComponent implements OnInit {
     }
 
     if (validate && this.loadedScenarioObject.drops.length > 0) {
-      for (let drop of this.loadedScenarioObject.drops) {
+      for (const drop of this.loadedScenarioObject.drops) {
         if (drop.num == null) {
           alert(
             '¡No puedes dejar en blanco el número de unidades para el item "' +
@@ -464,13 +464,10 @@ export default class ScenarioObjectsComponent implements OnInit {
       [],
       []
     );
-    for (let frame of scenarioObject.frames) {
-      frame.assetUrl = frame.assetUrl;
+    for (const frame of scenarioObject.frames) {
       this.loadedScenarioObject.frames.push(frame);
     }
-    for (let drop of scenarioObject.drops) {
-      drop.assetUrl = drop.assetUrl;
-      drop.itemName = drop.itemName;
+    for (const drop of scenarioObject.drops) {
       this.loadedScenarioObject.drops.push(drop);
     }
 

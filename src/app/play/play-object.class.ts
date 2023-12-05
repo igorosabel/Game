@@ -32,7 +32,7 @@ export class PlayObject {
   }
 
   addObjectSprites(assets: AssetCache): void {
-    for (let frame of this.object.allFrames) {
+    for (const frame of this.object.allFrames) {
       this.addSprite(assets.get(frame));
     }
   }

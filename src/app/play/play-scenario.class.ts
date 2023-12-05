@@ -45,12 +45,12 @@ export class PlayScenario {
   }
 
   findOnPosition(pos: Position, list: any): any {
-    for (let item of list) {
-      let startPosX: number = item.blockPos.x - Constants.NEXT_POS;
-      let endPosX: number =
+    for (const item of list) {
+      const startPosX: number = item.blockPos.x - Constants.NEXT_POS;
+      const endPosX: number =
         startPosX + item.blockPos.width + Constants.NEXT_POS;
-      let startPosY: number = item.blockPos.y - Constants.NEXT_POS;
-      let endPosY: number =
+      const startPosY: number = item.blockPos.y - Constants.NEXT_POS;
+      const endPosY: number =
         startPosY + item.blockPos.height + Constants.NEXT_POS;
       if (
         pos.x > startPosX &&

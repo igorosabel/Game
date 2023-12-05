@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -19,7 +19,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./login.component.scss'],
   imports: [CommonModule, FormsModule, HeaderComponent],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   selectedTab: string = 'login';
   loginData: LoginData = {
     email: '',
@@ -39,8 +39,6 @@ export class LoginComponent implements OnInit {
     private user: UserService,
     private router: Router
   ) {}
-
-  ngOnInit(): void {}
 
   selectTab(option: string): void {
     if (this.loading) {

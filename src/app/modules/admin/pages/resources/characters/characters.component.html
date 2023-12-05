@@ -2,7 +2,7 @@
 			 leftTitle="&lt; Recursos"
 			 title="Personajes"
 			 [rightUrl]="['/admin','logout']"
-			 rightTitle="Salir"></game-header>
+			 rightTitle="Salir" />
 
 <div class="section-header">
 	<div>
@@ -10,32 +10,35 @@
 				[(ngModel)]="characterFilter"
 				(change)="updateFilteredList()">
 			<option [ngValue]="null">Elige un tipo</option>
-			<option *ngFor="let type of typeList"
-					[ngValue]="type.id">{{type.name}}</option>
+			@for (type of typeList; track type.id) {
+			<option [ngValue]="type.id">{{type.name}}</option>
+			}
 		</select>
 	</div>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected':filterListOption=='items'}"
+	   [ngClass]="{'filter-option-selected': filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
-		<img src="/assets/admin/list-items.svg">
+		<img src="/assets/admin/list-items.svg"
+			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected':filterListOption=='list'}"
+	   [ngClass]="{'filter-option-selected': filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
-		<img src="/assets/admin/list-list.svg">
+		<img src="/assets/admin/list-list.svg"
+			 alt="Lista">
 	</a>
 </div>
 
 <div class="list"
-	 [ngClass]="{'list-list': filterListOption=='list'}">
-	<div *ngFor="let character of characterListFiltered"
-		 [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
-		<img src="{{ character.assetDownUrl }}"
-			 alt="{{ character.name }}">
+	 [ngClass]="{'list-list': filterListOption === 'list'}">
+	@for (character of characterListFiltered; track character.id) {
+	<div [ngClass]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
+		<img [src]="character.assetDownUrl"
+			 [alt]="character.name">
 		<div class="info">
-			<span title="{{character.name}}">{{ character.name }}</span>
+			<span [title]="character.name">{{ character.name }}</span>
 			<img src="/assets/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
@@ -46,10 +49,12 @@
 				 (click)="deleteCharacter(character)">
 		</div>
 	</div>
-	<div class="message"
-		 *ngIf="message!=null">
+	}
+	@if (message !== null) {
+	<div class="message">
 		{{message}}
 	</div>
+	}
 </div>
 
 <a href="#"
@@ -67,36 +72,38 @@
 		</div>
 		<div class="tabs">
 			<div class="tab"
-				 [ngClass]="{'tab-active':detailtTab=='data'}"
+				 [ngClass]="{'tab-active': detailtTab === 'data'}"
 				 (click)="changeTab('data')">Datos</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active':detailtTab=='down'}"
+				 [ngClass]="{'tab-active': detailtTab === 'down'}"
 				 (click)="changeTab('down')">Abajo</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active':detailtTab=='up'}"
+				 [ngClass]="{'tab-active': detailtTab === 'up'}"
 				 (click)="changeTab('up')">Arriba</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active':detailtTab=='left'}"
+				 [ngClass]="{'tab-active': detailtTab === 'left'}"
 				 (click)="changeTab('left')">Izquierda</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active':detailtTab=='right'}"
+				 [ngClass]="{'tab-active': detailtTab === 'right'}"
 				 (click)="changeTab('right')">Derecha</div>
+			@if (loadedCharacter.type === 0) {
 			<div class="tab"
-				 [ngClass]="{'tab-active':detailtTab=='narratives'}"
-				 (click)="changeTab('narratives')"
-				 *ngIf="loadedCharacter.type==0">Narrativas</div>
+				 [ngClass]="{'tab-active': detailtTab === 'narratives'}"
+				 (click)="changeTab('narratives')">Narrativas</div>
+			}
 		</div>
 		<!-- Datos -->
 		<div class="body"
-			 [ngClass]="{'body-show':detailtTab=='data'}">
+			 [ngClass]="{'body-show': detailtTab === 'data'}">
 			<div class="row cols">
 				<div class="col">
 					<label>Tipo de personaje</label>
 					<select name="character-type"
 							[(ngModel)]="loadedCharacter.type">
 						<option [ngValue]="null">Elige un tipo</option>
-						<option *ngFor="let type of typeList"
-								[ngValue]="type.id">{{type.name}}</option>
+						@for (type of typeList; track type.id) {
+						<option [ngValue]="type.id">{{type.name}}</option>
+						}
 					</select>
 				</div>
 				<div class="col">
@@ -151,8 +158,8 @@
 						   [(ngModel)]="loadedCharacter.fixedPosition">
 				</div>
 			</div>
-			<div class="row cols"
-				 *ngIf="loadedCharacter.type==1">
+			@if (loadedCharacter.type === 1) {
+			<div class="row cols">
 				<div class="col">
 					<label>Salud del personaje</label>
 					<input type="number"
@@ -181,8 +188,9 @@
 						   placeholder="Defensa del personaje">
 				</div>
 			</div>
-			<div class="row cols"
-				 *ngIf="loadedCharacter.type==1">
+			}
+			@if (loadedCharacter.type === 1) {
+			<div class="row cols">
 				<div class="col">
 					<label>Velocidad del personaje</label>
 					<input type="number"
@@ -202,16 +210,19 @@
 						   placeholder="Tiempo para volver a aparecer">
 				</div>
 			</div>
-			<div class="row cols"
-				 *ngIf="loadedCharacter.type==1">
+			}
+			@if (loadedCharacter.type === 1) {
+			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.dropAssetUrl"
-						 (click)="openItemPicker()">
+						 (click)="openItemPicker()"
+						 alt="">
 					<div>
 						{{dropItemName}}
-						<a *ngIf="loadedCharacter.dropIdItem"
-						   href="#"
+						@if (loadedCharacter.dropIdItem) {
+						<a href="#"
 						   (click)="removeSelectedDropItem($event)">(x)</a>
+						}
 					</div>
 				</div>
 				<div class="col">
@@ -225,199 +236,245 @@
 						   placeholder="Porcentaje de posibilidad de obtener item">
 				</div>
 			</div>
+			}
 		</div>
 		<!-- Abajo -->
 		<div class="body"
-			 [ngClass]="{'body-show':detailtTab=='down'}">
+			 [ngClass]="{'body-show': detailtTab === 'down'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetDownUrl"
-						 (click)="openAssetPicker('down')">
+						 (click)="openAssetPicker('down')"
+						 alt="">
 					<div>Imagen principal "abajo"</div>
 				</div>
 				<div class="col preview-col">
-					<img [src]="animationImage.down">
+					<img [src]="animationImage.down"
+						 alt="">
 				</div>
 			</div>
 			<div class="animation-slider">
-				<div class="animation-frame"
-					 *ngFor="let frame of loadedCharacter.framesDown; let ind = index">
+				@for (frame of loadedCharacter.framesDown; track frame.id; let ind = $index) {
+				<div class="animation-frame">
 					<button class="animation-delete"
 							(click)="frameDelete('down', frame)">
-						<img src="/assets/admin/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg"
+							 alt="Borrar">
 					</button>
+					@if (ind !== 0) {
 					<button class="animation-left"
-							(click)="frameLeft('down', frame)"
-							*ngIf="ind!=0">
-						<img src="/assets/admin/frame-left.svg">
+							(click)="frameLeft('down', frame)">
+						<img src="/assets/admin/frame-left.svg"
+							 alt="Izquierda">
 					</button>
+					}
+					@if (ind !== loadedCharacter.framesDown.length-1) {
 					<button class="animation-right"
-							(click)="frameRight('down', frame)"
-							*ngIf="ind!=loadedCharacter.framesDown.length-1">
-						<img src="/assets/admin/frame-right.svg">
+							(click)="frameRight('down', frame)">
+						<img src="/assets/admin/frame-right.svg"
+							 alt="Derecha">
 					</button>
-					<img [src]="frame.assetUrl">
+					}
+					<img [src]="frame.assetUrl"
+						 alt="">
 				</div>
+				}
 				<div class="animation-frame animation-frame-add">
 					<img src="/assets/admin/add-frame.svg"
-						 (click)="openAssetPicker('framesDown')">
+						 (click)="openAssetPicker('framesDown')"
+						 alt="Añadir frame">
 				</div>
 			</div>
 		</div>
 		<!-- Arriba -->
 		<div class="body"
-			 [ngClass]="{'body-show':detailtTab=='up'}">
+			 [ngClass]="{'body-show': detailtTab === 'up'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetUpUrl"
-						 (click)="openAssetPicker('up')">
+						 (click)="openAssetPicker('up')"
+						 alt="Arriba">
 					<div>Imagen principal "arriba"</div>
 				</div>
 				<div class="col preview-col">
-					<img [src]="animationImage.up">
+					<img [src]="animationImage.up"
+						 alt="">
 				</div>
 			</div>
 			<div class="animation-slider">
-				<div class="animation-frame"
-					 *ngFor="let frame of loadedCharacter.framesUp; let ind = index">
+				@for (frame of loadedCharacter.framesUp; track frame.id; let ind = $index) {
+				<div class="animation-frame">
 					<button class="animation-delete"
 							(click)="frameDelete('up', frame)">
-						<img src="/assets/admin/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg"
+							 alt="Borrar">
 					</button>
+					@if (ind !== 0) {
 					<button class="animation-left"
-							(click)="frameLeft('up', frame)"
-							*ngIf="ind!=0">
-						<img src="/assets/admin/frame-left.svg">
+							(click)="frameLeft('up', frame)">
+						<img src="/assets/admin/frame-left.svg"
+							 alt="Izquierda">
 					</button>
+					}
+					@if (ind !== loadedCharacter.framesUp.length-1) {
 					<button class="animation-right"
-							(click)="frameRight('up', frame)"
-							*ngIf="ind!=loadedCharacter.framesUp.length-1">
-						<img src="/assets/admin/frame-right.svg">
+							(click)="frameRight('up', frame)">
+						<img src="/assets/admin/frame-right.svg"
+							 alt="Derecha">
 					</button>
-					<img [src]="frame.assetUrl">
+					}
+					<img [src]="frame.assetUrl"
+						 alt="">
 				</div>
+				}
 				<div class="animation-frame animation-frame-add">
 					<img src="/assets/admin/add-frame.svg"
-						 (click)="openAssetPicker('framesUp')">
+						 (click)="openAssetPicker('framesUp')"
+						 alt="">
 				</div>
 			</div>
 		</div>
 		<!-- Izquierda -->
 		<div class="body"
-			 [ngClass]="{'body-show':detailtTab=='left'}">
+			 [ngClass]="{'body-show': detailtTab === 'left'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetLeftUrl"
-						 (click)="openAssetPicker('left')">
+						 (click)="openAssetPicker('left')"
+						 alt="Izquierda">
 					<div>Imagen principal "izquierda"</div>
 				</div>
 				<div class="col preview-col">
-					<img [src]="animationImage.left">
+					<img [src]="animationImage.left"
+						 alt="">
 				</div>
 			</div>
 			<div class="animation-slider">
-				<div class="animation-frame"
-					 *ngFor="let frame of loadedCharacter.framesLeft; let ind = index">
+				@for (frame of loadedCharacter.framesLeft; track frame.id; let ind = $index) {
+				<div class="animation-frame">
 					<button class="animation-delete"
 							(click)="frameDelete('left', frame)">
-						<img src="/assets/admin/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg"
+							 alt="Borrar">
 					</button>
+					@if (ind !== 0) {
 					<button class="animation-left"
-							(click)="frameLeft('left', frame)"
-							*ngIf="ind!=0">
-						<img src="/assets/admin/frame-left.svg">
+							(click)="frameLeft('left', frame)">
+						<img src="/assets/admin/frame-left.svg"
+							 alt="Izquierda">
 					</button>
+					}
+					@if (ind !== loadedCharacter.framesLeft.length-1) {}
 					<button class="animation-right"
-							(click)="frameRight('left', frame)"
-							*ngIf="ind!=loadedCharacter.framesLeft.length-1">
-						<img src="/assets/admin/frame-right.svg">
+							(click)="frameRight('left', frame)">
+						<img src="/assets/admin/frame-right.svg"
+							 alt="Derecha">
 					</button>
-					<img [src]="frame.assetUrl">
+					<img [src]="frame.assetUrl"
+						 alt="">
 				</div>
+				}
 				<div class="animation-frame animation-frame-add">
 					<img src="/assets/admin/add-frame.svg"
-						 (click)="openAssetPicker('framesLeft')">
+						 (click)="openAssetPicker('framesLeft')"
+						 alt="">
 				</div>
 			</div>
 		</div>
 		<!-- Derecha -->
 		<div class="body"
-			 [ngClass]="{'body-show':detailtTab=='right'}">
+			 [ngClass]="{'body-show': detailtTab === 'right'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetRightUrl"
-						 (click)="openAssetPicker('right')">
+						 (click)="openAssetPicker('right')"
+						 alt="Derecha">
 					<div>Imagen principal "derecha"</div>
 				</div>
 				<div class="col preview-col">
-					<img [src]="animationImage.right">
+					<img [src]="animationImage.right"
+						 alt="">
 				</div>
 			</div>
 			<div class="animation-slider">
-				<div class="animation-frame"
-					 *ngFor="let frame of loadedCharacter.framesRight; let ind = index">
+				@for (frame of loadedCharacter.framesRight; track frame.id; let ind = $index) {
+				<div class="animation-frame">
 					<button class="animation-delete"
 							(click)="frameDelete('right', frame)">
-						<img src="/assets/admin/frame-delete.svg">
+						<img src="/assets/admin/frame-delete.svg"
+							 alt="Borrar">
 					</button>
+					@if (ind !== 0) {
 					<button class="animation-left"
-							(click)="frameLeft('right', frame)"
-							*ngIf="ind!=0">
-						<img src="/assets/admin/frame-left.svg">
+							(click)="frameLeft('right', frame)">
+						<img src="/assets/admin/frame-left.svg"
+							 alt="Izquierda">
 					</button>
+					}
+					@if (ind !== loadedCharacter.framesRight.length-1) {
 					<button class="animation-right"
-							(click)="frameRight('right', frame)"
-							*ngIf="ind!=loadedCharacter.framesRight.length-1">
-						<img src="/assets/admin/frame-right.svg">
+							(click)="frameRight('right', frame)">
+						<img src="/assets/admin/frame-right.svg"
+							 alt="Derecha">
 					</button>
-					<img [src]="frame.assetUrl">
+					}
+					<img [src]="frame.assetUrl"
+						 alt="">
 				</div>
+				}
 				<div class="animation-frame animation-frame-add">
 					<img src="/assets/admin/add-frame.svg"
-						 (click)="openAssetPicker('framesRight')">
+						 (click)="openAssetPicker('framesRight')"
+						 alt="">
 				</div>
 			</div>
 		</div>
 		<!-- Narrativas -->
 		<div class="body"
-			 [ngClass]="{'body-show':detailtTab=='narratives'}">
+			 [ngClass]="{'body-show': detailtTab === 'narratives'}">
 			<div class="narratives-header">
 				Narrativas
 				<button (click)="addNarrative()">Añadir</button>
 			</div>
 			<div class="narratives-list">
-				<div *ngFor="let narrative of loadedCharacter.narratives"
-					 class="narratives-item">
+				@for (narrative of loadedCharacter.narratives; track narrative.id) {
+				<div class="narratives-item">
 					<div class="narratives-item-header">
 						<label>{{narrative.order}}</label>
 						<span>
 							<img src="/assets/admin/move-down.svg"
 								 title="Mover abajo el diálogo"
-								 (click)="moveNarrative(narrative, 'down')">
+								 (click)="moveNarrative(narrative, 'down')"
+								 alt="Abajo">
 							<img src="/assets/admin/move-up.svg"
 								 title="Mover arriba el diálogo"
-								 (click)="moveNarrative(narrative, 'up')">
+								 (click)="moveNarrative(narrative, 'up')"
+								 alt="Arriba">
 							<img src="/assets/admin/delete.svg"
 								 title="Borrar el diálogo"
-								 (click)="deleteNarrative(narrative)">
+								 (click)="deleteNarrative(narrative)"
+								 alt="Borrar">
 						</span>
 					</div>
 					<textarea name="narrative-item"
 							  class="narrative-dialog"
 							  [(ngModel)]="narrative.dialog"></textarea>
 				</div>
+				}
 			</div>
 		</div>
 		<div class="footer">
-			<button (click)="saveCharacter()"
-					*ngIf="!savingCharacter">Continuar</button>
-			<button disabled="disabled"
-					*ngIf="savingCharacter">Guardando...</button>
+			@if (!savingCharacter) {
+			<button (click)="saveCharacter()">Continuar</button>
+			}
+			@if (savingCharacter) {
+			<button disabled="disabled">Guardando...</button>
+			}
 		</div>
 	</div>
 </div>
 
 <game-asset-picker #assetPicker
-				   (selectAssetEvent)="selectedAsset($event)"></game-asset-picker>
+				   (selectAssetEvent)="selectedAsset($event)" />
 <game-item-picker #itemPicker
-				  (selectItemEvent)="selectedItem($event)"></game-item-picker>
+				  (selectItemEvent)="selectedItem($event)" />

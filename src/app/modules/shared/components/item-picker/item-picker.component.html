@@ -7,23 +7,25 @@
 						[(ngModel)]="itemFilter"
 						(change)="updateFilteredList()">
 					<option [ngValue]="null">Tipo</option>
-					<option *ngFor="let type of typeList"
-							[ngValue]="type.id">{{type.name}}</option>
+					@for (type of typeList; track type.id) {
+					<option [ngValue]="type.id">{{type.name}}</option>
+					}
 				</select>
 			</div>
 		</div>
 
 		<div class="item-list">
+			@for (item of itemListFiltered; track item.id) {
 			<div class="item-item"
-				 *ngFor="let item of itemListFiltered"
-				 [ngClass]="{'item-item-selected': item.id==selected}"
+				 [ngClass]="{'item-item-selected': item.id === selected}"
 				 (click)="selectItem(item)">
-				<img src="{{ item.assetUrl }}"
-					 alt="{{ item.name }}">
+				<img [src]="item.assetUrl"
+					 [alt]="item.name">
 				<div class="item-info">
-					<span title="{{item.name}}">{{ item.name }}</span>
+					<span [title]="item.name">{{ item.name }}</span>
 				</div>
 			</div>
+			}
 		</div>
 	</div>
 </div>

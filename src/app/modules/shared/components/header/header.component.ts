@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -7,7 +6,7 @@ import { RouterModule } from '@angular/router';
   selector: 'game-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
 })
 export class HeaderComponent {
   @Input() leftUrl: string[] = [];

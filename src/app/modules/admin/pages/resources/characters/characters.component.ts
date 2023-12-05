@@ -190,7 +190,7 @@ export default class CharactersComponent implements OnInit {
       const orientation: string = this.assetPickerWhere
         .replace('frames', '')
         .toLowerCase();
-      let frame: CharacterFrame = new CharacterFrame(
+      const frame: CharacterFrame = new CharacterFrame(
         null,
         selectedAsset.id,
         selectedAsset.url,
@@ -210,9 +210,9 @@ export default class CharactersComponent implements OnInit {
 
   startAnimation(): void {
     const sentList: string[] = ['up', 'down', 'left', 'right'];
-    for (let sent of sentList) {
+    for (const sent of sentList) {
       clearInterval(this.animationTimer[sent]);
-      let sentUpper: string =
+      const sentUpper: string =
         sent.substring(0, 1).toUpperCase() + sent.substring(1);
 
       if (this.loadedCharacter['allFrames' + sentUpper].length > 1) {
@@ -227,7 +227,7 @@ export default class CharactersComponent implements OnInit {
   }
 
   animatePreview(sent: string): void {
-    let sentUpper: string =
+    const sentUpper: string =
       sent.substring(0, 1).toUpperCase() + sent.substring(1);
     this.animationInd[sent]++;
     if (
@@ -243,7 +243,7 @@ export default class CharactersComponent implements OnInit {
   frameDelete(sent: string, frame: CharacterFrame): void {
     const conf: boolean = confirm('¿Estás seguro de querer borrar este frame?');
     if (conf) {
-      let sentUpper: string =
+      const sentUpper: string =
         sent.substring(0, 1).toUpperCase() + sent.substring(1);
       const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
         (x: CharacterFrame): boolean =>
@@ -255,7 +255,7 @@ export default class CharactersComponent implements OnInit {
   }
 
   frameLeft(sent: string, frame: CharacterFrame): void {
-    let sentUpper: string =
+    const sentUpper: string =
       sent.substring(0, 1).toUpperCase() + sent.substring(1);
     const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
       (x: CharacterFrame): boolean =>
@@ -272,7 +272,7 @@ export default class CharactersComponent implements OnInit {
   }
 
   frameRight(sent: string, frame: CharacterFrame): void {
-    let sentUpper: string =
+    const sentUpper: string =
       sent.substring(0, 1).toUpperCase() + sent.substring(1);
     const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
       (x: CharacterFrame): boolean =>
@@ -289,7 +289,7 @@ export default class CharactersComponent implements OnInit {
   }
 
   updateFrameOrders(sent: string): void {
-    for (let frameOrder in this.loadedCharacter['frames' + sent]) {
+    for (const frameOrder in this.loadedCharacter['frames' + sent]) {
       this.loadedCharacter['frames' + sent][frameOrder].order =
         parseInt(frameOrder);
     }
@@ -339,7 +339,7 @@ export default class CharactersComponent implements OnInit {
   }
 
   updateNarrativeOrders(): void {
-    for (let narrativeOrder in this.loadedCharacter.narratives) {
+    for (const narrativeOrder in this.loadedCharacter.narratives) {
       this.loadedCharacter.narratives[narrativeOrder].order =
         parseInt(narrativeOrder) + 1;
     }
@@ -510,9 +510,9 @@ export default class CharactersComponent implements OnInit {
       [],
       character.narratives
     );
-    let sentList: string[] = ['Up', 'Down', 'Left', 'Right'];
-    for (let sent of sentList) {
-      for (let frame of character['frames' + sent]) {
+    const sentList: string[] = ['Up', 'Down', 'Left', 'Right'];
+    for (const sent of sentList) {
+      for (const frame of character['frames' + sent]) {
         this.loadedCharacter['frames' + sent].push(frame);
       }
 

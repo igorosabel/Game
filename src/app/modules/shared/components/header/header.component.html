@@ -1,12 +1,15 @@
 <header>
-	<a *ngIf="leftTitle"
-	   [routerLink]="leftUrl"
+	@if (leftTitle) {
+	<a [routerLink]="leftUrl"
 	   class="header-left">{{leftTitle}}</a>
-	<img *ngIf="img"
-		 [src]="img"
+	}
+	@if (img) {
+	<img [src]="img"
 		 [alt]="title">
+	}
 	{{title}}
-	<a *ngIf="rightTitle"
-	   [routerLink]="rightUrl"
+	@if (rightTitle) {
+	<a [routerLink]="rightUrl"
 	   class="header-right">{{rightTitle}}</a>
+	}
 </header>

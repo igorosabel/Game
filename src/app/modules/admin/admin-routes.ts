@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from 'src/app/guard/auth.guard';
+import { isLoggedGuardFn } from 'src/app/guard/auth.guard.fn';
 
 export const ADMIN_ROUTES: Route[] = [
   {
@@ -11,19 +11,19 @@ export const ADMIN_ROUTES: Route[] = [
     path: 'logout',
     loadComponent: () =>
       import('src/app/modules/admin/pages/admin-logout/admin-logout.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'main',
     loadComponent: () =>
       import('src/app/modules/admin/pages/admin-main/admin-main.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'worlds',
     loadComponent: () =>
       import('src/app/modules/admin/pages/worlds/worlds/worlds.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'world/:id_world/scenarios',
@@ -31,7 +31,7 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/worlds/scenarios/scenarios.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'world/:id_world/scenario/:id_scenario',
@@ -39,7 +39,7 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/worlds/edit-scenario/edit-scenario.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources',
@@ -47,7 +47,7 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/resources/resources/resources.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources/backgrounds',
@@ -55,7 +55,7 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/resources/backgrounds/backgrounds.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources/backgrounds/categories',
@@ -63,7 +63,7 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/resources/background-categories/background-categories.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources/characters',
@@ -71,7 +71,7 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/resources/characters/characters.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources/scenario-objects',
@@ -79,30 +79,30 @@ export const ADMIN_ROUTES: Route[] = [
       import(
         'src/app/modules/admin/pages/resources/scenario-objects/scenario-objects.component'
       ),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources/items',
     loadComponent: () =>
       import('src/app/modules/admin/pages/resources/items/items.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'resources/assets',
     loadComponent: () =>
       import('src/app/modules/admin/pages/resources/assets/assets.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'users',
     loadComponent: () =>
       import('src/app/modules/admin/pages/users/users/users.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'user/:id_user/games',
     loadComponent: () =>
       import('src/app/modules/admin/pages/users/games/games.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
 ];

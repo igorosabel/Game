@@ -1,18 +1,18 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from 'src/app/guard/auth.guard';
+import { isLoggedGuardFn } from 'src/app/guard/auth.guard.fn';
 
 export const GAME_ROUTES: Route[] = [
   {
     path: 'hall',
     loadComponent: () =>
       import('src/app/modules/game/pages/hall/hall.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'play',
     loadComponent: () =>
       import('src/app/modules/game/pages/play/play.component'),
-    canActivate: [AuthGuard],
+    canActivate: [isLoggedGuardFn],
   },
   {
     path: 'logout',

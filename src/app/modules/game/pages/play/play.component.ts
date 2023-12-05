@@ -188,7 +188,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
           const connections: Connection[] = this.cms.getConnections(
             result.list
           );
-          for (let connection of connections) {
+          for (const connection of connections) {
             this.connections[connection.orientation] = connection;
           }
           this.allLoaded.connections = true;
@@ -751,7 +751,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let currentWorldInd: number = this.unlockedWorlds.findIndex(
+    const currentWorldInd: number = this.unlockedWorlds.findIndex(
       (x: World): boolean => x.id === this.worldId
     );
     if (
@@ -792,8 +792,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
         world.wordThree
       )
       .subscribe((result: StatusIdResult): void => {
-        if (result.status == 'ok') {
-        } else {
+        if (result.status !== 'ok') {
           alert('¡No existe ningún mundo con las palabras indicadas!');
         }
       });

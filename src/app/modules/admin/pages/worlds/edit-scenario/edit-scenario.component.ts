@@ -119,10 +119,10 @@ export default class EditScenarioComponent implements OnInit {
             this.scenario[y][x] = new ScenarioData(null, this.scenarioId, x, y);
           }
         }
-        let scenarioDataList: ScenarioData[] = this.cms.getScenarioDatas(
+        const scenarioDataList: ScenarioData[] = this.cms.getScenarioDatas(
           result.data
         );
-        for (let scenarioData of scenarioDataList) {
+        for (const scenarioData of scenarioDataList) {
           this.scenario[scenarioData.y][scenarioData.x] = scenarioData;
         }
         this.connections = {
@@ -131,10 +131,10 @@ export default class EditScenarioComponent implements OnInit {
           left: null,
           right: null,
         };
-        let connections: Connection[] = this.cms.getConnections(
+        const connections: Connection[] = this.cms.getConnections(
           result.connection
         );
-        for (let connection of connections) {
+        for (const connection of connections) {
           this.connections[connection.orientation] = connection;
         }
       });
@@ -144,7 +144,7 @@ export default class EditScenarioComponent implements OnInit {
     this.as
       .getScenarios(this.worldId)
       .subscribe((result: ScenarioResult): void => {
-        let scenarios: Scenario[] = this.cms.getScenarios(result.list);
+        const scenarios: Scenario[] = this.cms.getScenarios(result.list);
         this.scenarioList = scenarios.filter(
           (x: Scenario): boolean => x.id != this.scenarioId
         );

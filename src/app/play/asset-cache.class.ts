@@ -28,7 +28,7 @@ export class AssetCache {
   }
 
   addScenarioObjects(list: ScenarioObject[]): void {
-    for (let so of list) {
+    for (const so of list) {
       this.addScenarioObject(so);
     }
   }
@@ -36,16 +36,16 @@ export class AssetCache {
   addScenarioObject(so: ScenarioObject): void {
     this.add(so.assetUrl);
     this.add(so.assetActiveUrl);
-    for (let drop of so.drops) {
+    for (const drop of so.drops) {
       this.add(drop.assetUrl);
     }
-    for (let frame of so.frames) {
+    for (const frame of so.frames) {
       this.add(frame.assetUrl);
     }
   }
 
   addCharacters(list: Character[]): void {
-    for (let c of list) {
+    for (const c of list) {
       this.addCharacter(c);
     }
   }
@@ -56,16 +56,16 @@ export class AssetCache {
     this.add(c.assetLeftUrl);
     this.add(c.assetRightUrl);
     this.add(c.dropAssetUrl);
-    for (let frame of c.framesUp) {
+    for (const frame of c.framesUp) {
       this.add(frame.assetUrl);
     }
-    for (let frame of c.framesDown) {
+    for (const frame of c.framesDown) {
       this.add(frame.assetUrl);
     }
-    for (let frame of c.framesLeft) {
+    for (const frame of c.framesLeft) {
       this.add(frame.assetUrl);
     }
-    for (let frame of c.framesRight) {
+    for (const frame of c.framesRight) {
       this.add(frame.assetUrl);
     }
   }
@@ -91,7 +91,7 @@ export class AssetCache {
   load(): Promise<void> {
     return new Promise<void>((resolve): void => {
       this._toLoad = this._items.length;
-      let loadHandler = (): void => {
+      const loadHandler = (): void => {
         this._loaded += 1;
         if (this._toLoad === this._loaded) {
           this._toLoad = 0;

@@ -2,7 +2,7 @@
 			 leftTitle="&lt; Recursos"
 			 title="Recursos"
 			 [rightUrl]="['/admin','logout']"
-			 rightTitle="Salir"></game-header>
+			 rightTitle="Salir" />
 
 <div class="section-header">
 	<div>
@@ -10,39 +10,43 @@
 				[(ngModel)]="tagFilter"
 				(change)="updateFilteredList()">
 			<option [ngValue]="null">Elige una tag</option>
-			<option *ngFor="let tag of tagList"
-					[ngValue]="tag.id">{{tag.name}}</option>
+			@for (tag of tagList; track tag.id) {
+			<option [ngValue]="tag.id">{{tag.name}}</option>
+			}
 		</select>
 		<select name="assets-filter-world"
 				[(ngModel)]="worldFilter"
 				(change)="updateFilteredList()">
 			<option [ngValue]="null">Elige un mundo</option>
-			<option *ngFor="let world of worldList"
-					[ngValue]="world.id">{{world.name}}</option>
+			@for (world of worldList; track world.id) {
+			<option [ngValue]="world.id">{{world.name}}</option>
+			}
 		</select>
 	</div>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected':filterListOption=='items'}"
+	   [ngClass]="{'filter-option-selected':filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
-		<img src="/assets/admin/list-items.svg">
+		<img src="/assets/admin/list-items.svg"
+			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected':filterListOption=='list'}"
+	   [ngClass]="{'filter-option-selected':filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
-		<img src="/assets/admin/list-list.svg">
+		<img src="/assets/admin/list-list.svg"
+			 alt="Lista">
 	</a>
 </div>
 
 <div class="list"
-	 [ngClass]="{'list-list': filterListOption=='list'}">
-	<div *ngFor="let asset of assetListFiltered"
-		 [ngClass]="{'item': filterListOption=='items', 'list-item': filterListOption=='list'}">
-		<img src="{{ asset.url }}"
-			 alt="{{ asset.name }}">
+	 [ngClass]="{'list-list': filterListOption === 'list'}">
+	@for (asset of assetListFiltered; track asset.id) {
+	<div [ngClass]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
+		<img [src]="asset.url"
+			 [alt]="asset.name">
 		<div class="info">
-			<span title="{{asset.name}}">{{ asset.name }}</span>
+			<span [title]="asset.name">{{ asset.name }}</span>
 			<img src="/assets/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
@@ -53,10 +57,12 @@
 				 (click)="deleteAsset(asset)">
 		</div>
 	</div>
-	<div class="message"
-		 *ngIf="message!=null">
+	}
+	@if (message !== null) {
+	<div class="message">
 		{{message}}
 	</div>
+	}
 </div>
 
 <a href="#"
@@ -82,18 +88,21 @@
 			<label>Elige mundo</label>
 			<select [(ngModel)]="loadedAsset.idWorld">
 				<option [value]="null">Ninguno</option>
-				<option *ngFor="let world of worldList"
-						[value]="world.id">{{world.name}}</option>
+				@for (world of worldList; track world.id) {
+				<option [value]="world.id">{{world.name}}</option>
+				}
 			</select>
 		</div>
 		<div class="row row-image">
 			<div class="asset-preview"
 				 id="asset-image"
 				 [ngStyle]="{background:loadedAsset.style}"></div>
-			<button (click)="openFile()"
-					*ngIf="!loadingFile">Elegir archivo</button>
-			<button disabled="disabled"
-					*ngIf="loadingFile">Cargando...</button>
+			@if (!loadingFile) {
+			<button (click)="openFile()">Elegir archivo</button>
+			}
+			@if (loadingFile) {
+			<button disabled="disabled">Cargando...</button>
+			}
 			<input type="file"
 				   id="asset-file"
 				   value=""
@@ -107,10 +116,12 @@
 				   placeholder="Tags del recurso">
 		</div>
 		<div class="footer">
-			<button (click)="saveAsset()"
-					*ngIf="!savingAsset">Continuar</button>
-			<button disabled="disabled"
-					*ngIf="savingAsset">Guardando...</button>
+			@if (!savingAsset) {
+			<button (click)="saveAsset()">Continuar</button>
+			}
+			@if (savingAsset) {
+			<button disabled="disabled">Guardando...</button>
+			}
 		</div>
 	</div>
 </div>

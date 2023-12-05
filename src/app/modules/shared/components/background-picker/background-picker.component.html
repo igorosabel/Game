@@ -7,8 +7,9 @@
 						[(ngModel)]="backgroundFilter"
 						(change)="updateFilteredList()">
 					<option [ngValue]="null">Tipo</option>
-					<option *ngFor="let backgroundCategory of backgroundCategoryList"
-							[ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
+					@for (backgroundCategory of backgroundCategoryList; track backgroundCategory.id) {
+					<option [ngValue]="backgroundCategory.id">{{backgroundCategory.name}}</option>
+					}
 				</select>
 			</div>
 			<a href="#"
@@ -16,16 +17,17 @@
 		</div>
 
 		<div class="background-list">
+			@for (background of backgroundListFiltered; track background.id) {
 			<div class="background-item"
-				 *ngFor="let background of backgroundListFiltered"
-				 [ngClass]="{'background-item-selected': background.id==selected}"
+				 [ngClass]="{'background-item-selected': background.id === selected}"
 				 (click)="selectBackground(background)">
-				<img src="{{ background.assetUrl }}"
-					 alt="{{ background.name }}">
+				<img [src]="background.assetUrl"
+					 [alt]="background.name">
 				<div class="background-info">
-					<span title="{{background.name}}">{{ background.name }}</span>
+					<span [title]="background.name">{{ background.name }}</span>
 				</div>
 			</div>
+			}
 		</div>
 	</div>
 </div>

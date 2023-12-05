@@ -1,4 +1,4 @@
-<game-header></game-header>
+<game-header />
 
 <form name="frm-login"
 	  (ngSubmit)="doLogin($event)"
@@ -20,13 +20,16 @@
 			</div>
 		</div>
 		<div class="footer">
+			@if (!loading) {
 			<input type="submit"
-				   value="Continuar"
-				   *ngIf="!loading">
-			<button disabled="disabled"
-					*ngIf="loading">Iniciando sesión...</button>
+				   value="Continuar">
+			}
+			@if (loading) {
+			<button disabled="disabled">Iniciando sesión...</button>
+			}
 		</div>
-		<div class="error"
-			 *ngIf="loginError">Email o contraseña incorrecto</div>
+		@if (loginError) {
+		<div class="error">Email o contraseña incorrecto</div>
+		}
 	</div>
 </form>

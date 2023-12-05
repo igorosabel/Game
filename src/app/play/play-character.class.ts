@@ -103,16 +103,16 @@ export class PlayCharacter {
   }
 
   addCharacterSprites(assets: AssetCache): void {
-    for (let frame of this.character.allFramesUp) {
+    for (const frame of this.character.allFramesUp) {
       this.addSprite('up', assets.get(frame));
     }
-    for (let frame of this.character.allFramesDown) {
+    for (const frame of this.character.allFramesDown) {
       this.addSprite('down', assets.get(frame));
     }
-    for (let frame of this.character.allFramesLeft) {
+    for (const frame of this.character.allFramesLeft) {
       this.addSprite('left', assets.get(frame));
     }
-    for (let frame of this.character.allFramesRight) {
+    for (const frame of this.character.allFramesRight) {
       this.addSprite('right', assets.get(frame));
     }
   }
@@ -299,7 +299,7 @@ export class PlayCharacter {
   }
 
   collission(obj1: PositionSize, obj2: Position): boolean {
-    let rect2: PositionSize = new PositionSize(
+    const rect2: PositionSize = new PositionSize(
       obj2.x * Constants.TILE_WIDTH,
       obj2.y * Constants.TILE_HEIGHT,
       Constants.TILE_WIDTH,
@@ -310,7 +310,7 @@ export class PlayCharacter {
   }
 
   npcCollision(pos: PositionSize, character: PlayCharacter): boolean {
-    let charPos: PositionSize = new PositionSize(
+    const charPos: PositionSize = new PositionSize(
       character.blockPos.x,
       character.blockPos.y,
       character.blockPos.width,
@@ -359,8 +359,8 @@ export class PlayCharacter {
       this.moving.right ||
       this.moving.left
     ) {
-      let newPosX: number = this.blockPos.x + this.vx;
-      let newPosY: number = this.blockPos.y + this.vy;
+      const newPosX: number = this.blockPos.x + this.vx;
+      const newPosY: number = this.blockPos.y + this.vy;
       // Colisión con los bordes de la pantalla
       if (
         newPosX < 0 ||
@@ -412,7 +412,7 @@ export class PlayCharacter {
 
       // Colisión con fondos y objetos
       let hit: boolean = false;
-      let newPos: PositionSize = new PositionSize(
+      const newPos: PositionSize = new PositionSize(
         newPosX,
         newPosY,
         this.blockPos.width,
@@ -528,11 +528,11 @@ export class PlayCharacter {
     }
     ctx.drawImage(img, posX, posY, img.width, img.height);
     if (this.dying) {
-      let centerX: number = posX + img.width / 2;
-      let centerY: number = posY + img.height / 2;
-      let deathImg = this.sprites['death'][this.currentDieFrame];
-      let deathPosX: number = centerX - deathImg.width / 2;
-      let deathPosY: number = centerY - deathImg.height / 2;
+      const centerX: number = posX + img.width / 2;
+      const centerY: number = posY + img.height / 2;
+      const deathImg = this.sprites['death'][this.currentDieFrame];
+      const deathPosX: number = centerX - deathImg.width / 2;
+      const deathPosY: number = centerY - deathImg.height / 2;
 
       ctx.drawImage(
         deathImg,

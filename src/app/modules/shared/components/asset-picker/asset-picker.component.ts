@@ -78,7 +78,7 @@ export class AssetPickerComponent implements OnInit {
     } else {
       if (this.tagFilter !== null && this.worldFilter !== null) {
         filteredList = this.assetList.filter((x: Asset): boolean => {
-          let tagsFiltered: Tag[] = x.tags.filter(
+          const tagsFiltered: Tag[] = x.tags.filter(
             (t: Tag): boolean => t.id === this.tagFilter
           );
           return tagsFiltered.length > 0;
@@ -89,7 +89,7 @@ export class AssetPickerComponent implements OnInit {
       } else {
         if (this.tagFilter !== null) {
           filteredList = this.assetList.filter((x: Asset): boolean => {
-            let tagsFiltered: Tag[] = x.tags.filter(
+            const tagsFiltered: Tag[] = x.tags.filter(
               (t: Tag): boolean => t.id === this.tagFilter
             );
             return tagsFiltered.length > 0;

@@ -7,16 +7,17 @@
 		</div>
 
 		<div class="scenario-object-list">
+			@for (scenarioObject of scenarioObjectList; track scenarioObject.id) {
 			<div class="scenario-object-item"
-				 *ngFor="let scenarioObject of scenarioObjectList"
-				 [ngClass]="{'scenario-object-item-selected': scenarioObject.id==selected}"
+				 [ngClass]="{'scenario-object-item-selected': scenarioObject.id === selected}"
 				 (click)="selectScenarioObject(scenarioObject)">
-				<img src="{{ scenarioObject.assetUrl }}"
-					 alt="{{ scenarioObject.name }}">
+				<img [src]="scenarioObject.assetUrl"
+					 [alt]="scenarioObject.name">
 				<div class="scenario-object-info">
-					<span title="{{scenarioObject.name}}">{{ scenarioObject.name }}</span>
+					<span [title]="scenarioObject.name">{{ scenarioObject.name }}</span>
 				</div>
 			</div>
+			}
 		</div>
 	</div>
 </div>

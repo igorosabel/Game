@@ -2,13 +2,13 @@
 			 leftTitle="&lt; Mundos"
 			 title="Escenarios"
 			 [rightUrl]="['/admin','logout']"
-			 rightTitle="Salir"></game-header>
+			 rightTitle="Salir" />
 
 <div class="admin-list">
 	<div class="header">Escenarios</div>
 	<div>
-		<div class="row"
-			 *ngFor="let scenario of scenarioList">
+		@for (scenario of scenarioList; track scenario.id) {
+		<div class="row">
 			<a [routerLink]="['/admin', 'world', scenario.idWorld, 'scenario', scenario.id]">{{scenario.name}}</a>
 			<img src="/assets/admin/edit.svg"
 				 alt="Editar"
@@ -21,8 +21,10 @@
 				 class="delete"
 				 (click)="deleteScenario(scenario)">
 		</div>
-		<div class="row center"
-			 *ngIf="message!=null">{{message}}</div>
+		}
+		@if (message !== null) {
+		<div class="row center">{{message}}</div>
+		}
 	</div>
 </div>
 

@@ -51,7 +51,7 @@ export default class AssetsComponent implements OnInit {
     this.loadWorlds();
     this.loadAssets();
 
-    let esc: Key = this.play.keyboard('Escape');
+    const esc: Key = this.play.keyboard('Escape');
     esc.onlyEsc = true;
     esc.press = (): void => {
       this.showAddAsset();
@@ -90,7 +90,7 @@ export default class AssetsComponent implements OnInit {
     } else {
       if (this.tagFilter !== null && this.worldFilter !== null) {
         filteredList = this.assetList.filter((x: Asset): boolean => {
-          let tagsFiltered: Tag[] = x.tags.filter(
+          const tagsFiltered: Tag[] = x.tags.filter(
             (t: Tag): boolean => t.id === this.tagFilter
           );
           return tagsFiltered.length > 0;
@@ -101,7 +101,7 @@ export default class AssetsComponent implements OnInit {
       } else {
         if (this.tagFilter !== null) {
           filteredList = this.assetList.filter((x: Asset): boolean => {
-            let tagsFiltered: Tag[] = x.tags.filter(
+            const tagsFiltered: Tag[] = x.tags.filter(
               (t: Tag): boolean => t.id === this.tagFilter
             );
             return tagsFiltered.length > 0;
@@ -143,13 +143,13 @@ export default class AssetsComponent implements OnInit {
   }
 
   onFileChange(event: Event): void {
-    let reader: FileReader = new FileReader();
+    const reader: FileReader = new FileReader();
     if (
       (<HTMLInputElement>event.target).files &&
       (<HTMLInputElement>event.target).files.length > 0
     ) {
       this.loadingFile = true;
-      let file = (<HTMLInputElement>event.target).files[0];
+      const file = (<HTMLInputElement>event.target).files[0];
       reader.readAsDataURL(file);
       reader.onload = (): void => {
         this.loadedAsset.file = reader.result as string;
@@ -191,7 +191,7 @@ export default class AssetsComponent implements OnInit {
       asset.url,
       []
     );
-    for (let t of asset.tags) {
+    for (const t of asset.tags) {
       this.loadedAsset.tags.push(new Tag(t.id, t.name));
     }
 

@@ -1,17 +1,17 @@
 <game-header img="/assets/home/triforce.png"
-			 title="The Game"></game-header>
+			 title="The Game" />
 
 <div class="home-box">
 	<div class="home-tabs">
 		<div class="home-tab"
-			 [ngClass]="{'home-tab-selected': selectedTab=='login'}"
+			 [ngClass]="{'home-tab-selected': selectedTab === 'login'}"
 			 (click)="selectTab('login')">Iniciar sesión</div>
 		<div class="home-tab"
-			 [ngClass]="{'home-tab-selected': selectedTab=='register'}"
+			 [ngClass]="{'home-tab-selected': selectedTab === 'register'}"
 			 (click)="selectTab('register')">Registro</div>
 	</div>
 	<div class="home-tab-content"
-		 [ngClass]="{'home-tab-content-selected': selectedTab=='login'}">
+		 [ngClass]="{'home-tab-content-selected': selectedTab === 'login'}">
 		<form action="#"
 			  (ngSubmit)="checkLogin($event)">
 			<div class="home-row">
@@ -38,7 +38,7 @@
 		</form>
 	</div>
 	<div class="home-tab-content"
-		 [ngClass]="{'home-tab-content-selected': selectedTab=='register'}">
+		 [ngClass]="{'home-tab-content-selected': selectedTab === 'register'}">
 		<form action="#"
 			  (ngSubmit)="checkRegister($event)">
 			<div class="home-row">
@@ -71,16 +71,19 @@
 			</div>
 		</form>
 	</div>
-	<div class="home-error"
-		 *ngIf="loginError">
+	@if (loginError) {
+	<div class="home-error">
 		Email o contraseña incorrectos.
 	</div>
-	<div class="home-error"
-		 *ngIf="registerError=='in-use'">
+	}
+	@if (registerError === 'in-use') {
+	<div class="home-error">
 		El e-mail introducido ya está registrado.
 	</div>
-	<div class="home-error"
-		 *ngIf="registerError=='error'">
+	}
+	@if (registerError === 'error') {
+	<div class="home-error">
 		Ocurrió un error al realizar el registro.
 	</div>
+	}
 </div>

@@ -1,19 +1,23 @@
 <div class="player-select-bg">
 	<img src="/assets/hall/player-select.png"
-		 class="player-select-title">
+		 class="player-select-title"
+		 alt="">
 
 	<div class="player-select">
+		@for (game of games; track game.id; let i = $index) {
 		<div class="player-select-game"
-			 *ngFor="let game of games; let i = index"
-			 [ngClass]="{'player-select-game-selected': gameSelected==i}"
+			 [ngClass]="{'player-select-game-selected': gameSelected === i}"
 			 (mouseover)="changeSelectedGame(game)"
 			 (click)="selectGame(game)">
-			<img [src]="'/assets/hall/player-' + (i + 1) + '.png'">
+			<img [src]="'/assets/hall/player-' + (i + 1) + '.png'"
+				 alt="">
 			<div class="player-select-name">{{game.name}}</div>
+			@if (game.idScenario !== null) {
 			<a href="#"
-			   (click)="deleteGame($event, game)"
-			   *ngIf="game.idScenario!==null">X</a>
+			   (click)="deleteGame($event, game)">X</a>
+			}
 		</div>
+		}
 	</div>
 
 	<form method="post"
@@ -28,7 +32,8 @@
 					   (click)="closeNewGame($event)">x</a>
 				</div>
 				<div class="new-game-info">
-					<img src="/assets/player/link-down.png">
+					<img src="/assets/player/link-down.png"
+						 alt="">
 					<input type="text"
 						   name="new-game-name"
 						   [(ngModel)]="newGameName"

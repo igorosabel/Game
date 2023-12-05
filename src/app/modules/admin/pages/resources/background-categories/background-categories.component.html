@@ -2,13 +2,13 @@
 			 leftTitle="&lt; Fondos"
 			 title="Categorías de fondos"
 			 [rightUrl]="['/admin','logout']"
-			 rightTitle="Salir"></game-header>
+			 rightTitle="Salir" />
 
 <div class="admin-list">
 	<div class="header">Categorías de fondos</div>
 	<div>
-		<div class="row"
-			 *ngFor="let backgroundCategory of backgroundCategoryList">
+		@for (backgroundCategory of backgroundCategoryList; track backgroundCategory.id) {
+		<div class="row">
 			<span>{{backgroundCategory.name}}</span>
 			<img src="/assets/admin/edit.svg"
 				 alt="Editar"
@@ -21,8 +21,10 @@
 				 class="delete"
 				 (click)="deleteBackgroundCategory(backgroundCategory)">
 		</div>
-		<div class="row center"
-			 *ngIf="message!=null">{{message}}</div>
+		}
+		@if (message !== null) {
+		<div class="row center">{{message}}</div>
+		}
 	</div>
 </div>
 

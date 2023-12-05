@@ -224,7 +224,7 @@ export default class ItemsComponent implements OnInit {
   }
 
   updateFrameOrders(): void {
-    for (let frameOrder in this.loadedItem.frames) {
+    for (const frameOrder in this.loadedItem.frames) {
       this.loadedItem.frames[frameOrder].order = parseInt(frameOrder);
     }
   }
@@ -340,8 +340,7 @@ export default class ItemsComponent implements OnInit {
       item.wearable,
       []
     );
-    for (let frame of item.frames) {
-      frame.assetUrl = frame.assetUrl;
+    for (const frame of item.frames) {
       this.loadedItem.frames.push(frame);
     }
 

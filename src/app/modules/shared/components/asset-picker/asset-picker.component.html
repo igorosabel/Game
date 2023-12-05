@@ -7,15 +7,17 @@
 						[(ngModel)]="tagFilter"
 						(change)="updateFilteredList()">
 					<option [ngValue]="null">Etiqueta</option>
-					<option *ngFor="let tag of tagList"
-							[ngValue]="tag.id">{{tag.name}}</option>
+					@for (tag of tagList; track tag.id) {
+					<option [ngValue]="tag.id">{{tag.name}}</option>
+					}
 				</select>
 				<select name="world-filter"
 						[(ngModel)]="worldFilter"
 						(change)="updateFilteredList()">
 					<option [ngValue]="null">Mundo</option>
-					<option *ngFor="let world of worldList"
-							[ngValue]="world.id">{{world.name}}</option>
+					@for (world of worldList; track world.id) {
+					<option [ngValue]="world.id">{{world.name}}</option>
+					}
 				</select>
 			</div>
 			<span>
@@ -28,16 +30,17 @@
 		</div>
 
 		<div class="asset-list">
+			@for (asset of assetListFiltered; track asset.id) {
 			<div class="asset-item"
-				 *ngFor="let asset of assetListFiltered"
-				 [ngClass]="{'asset-item-selected': asset.id==selectedItem}"
+				 [ngClass]="{'asset-item-selected': asset.id === selectedItem}"
 				 (click)="selectAsset(asset)">
-				<img src="{{ asset.url }}"
-					 alt="{{ asset.name }}">
+				<img [src]="asset.url"
+					 [alt]="asset.name">
 				<div class="asset-info">
-					<span title="{{asset.name}}">{{ asset.name }}</span>
+					<span [title]="asset.name">{{ asset.name }}</span>
 				</div>
 			</div>
+			}
 		</div>
 	</div>
 </div>
