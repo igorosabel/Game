@@ -1,26 +1,36 @@
 import { Injectable } from '@angular/core';
 import {
   AssetInterface,
+  TagInterface,
+} from 'src/app/interfaces/asset.interfaces';
+import {
   BackgroundCategoryInterface,
   BackgroundInterface,
+} from 'src/app/interfaces/background.interfaces';
+import {
   CharacterFrameInterface,
   CharacterInterface,
-  ConnectionInterface,
-  EquipmentInterface,
-  GameInterface,
-  InventoryInterface,
+  NarrativeInterface,
+} from 'src/app/interfaces/character.interfaces';
+import { GameInterface } from 'src/app/interfaces/game.interfaces';
+import {
   ItemFrameInterface,
   ItemInterface,
-  NarrativeInterface,
+} from 'src/app/interfaces/item.interfaces';
+import {
+  EquipmentInterface,
+  InventoryInterface,
   PositionInterface,
+} from 'src/app/interfaces/player.interfaces';
+import {
+  ConnectionInterface,
   ScenarioDataInterface,
   ScenarioInterface,
   ScenarioObjectDropInterface,
   ScenarioObjectFrameInterface,
   ScenarioObjectInterface,
-  TagInterface,
-  WorldInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/scenario.interfaces';
+import { WorldInterface } from 'src/app/interfaces/world.interfaces';
 import { Asset } from 'src/app/model/asset.model';
 import { BackgroundCategory } from 'src/app/model/background-category.model';
 import { Background } from 'src/app/model/background.model';

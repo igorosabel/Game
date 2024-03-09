@@ -1,4 +1,4 @@
-import { ScenarioDataInterface } from 'src/app/interfaces/interfaces';
+import { ScenarioDataInterface } from 'src/app/interfaces/scenario.interfaces';
 import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class ScenarioData {

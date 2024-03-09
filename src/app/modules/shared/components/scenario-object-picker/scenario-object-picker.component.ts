@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   ScenarioObjectInterface,
   ScenarioObjectResult,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/scenario.interfaces';
 import { ScenarioObject } from 'src/app/model/scenario-object.model';
 import { ApiService } from 'src/app/services/api.service';
 import { ClassMapperService } from 'src/app/services/class-mapper.service';

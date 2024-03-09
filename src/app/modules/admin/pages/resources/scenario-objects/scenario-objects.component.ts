@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
 import {
-  AssetInterface,
-  ItemInterface,
+  StatusMessageResult,
+  StatusResult,
+} from 'src/app/interfaces/interfaces';
+import { ItemInterface } from 'src/app/interfaces/item.interfaces';
+import {
   ScenarioObjectResult,
   ScenarioResult,
   ScenarioTriggerTypeInterface,
-  StatusMessageResult,
-  StatusResult,
-  WorldResult,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/scenario.interfaces';
+import { WorldResult } from 'src/app/interfaces/world.interfaces';
 import { Key } from 'src/app/model/key.model';
 import { ScenarioObjectDrop } from 'src/app/model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from 'src/app/model/scenario-object-frame.model';

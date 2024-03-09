@@ -1,5 +1,5 @@
-import { WorldInterface } from 'src/app/interfaces/interfaces';
-import { Utils } from '../modules/shared/utils.class';
+import { WorldInterface } from 'src/app/interfaces/world.interfaces';
+import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class World {
   constructor(

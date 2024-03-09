@@ -5,7 +5,7 @@ import {
   ItemInterface,
   ItemResult,
   ItemTypeInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/item.interfaces';
 import { Item } from 'src/app/model/item.model';
 import { ApiService } from 'src/app/services/api.service';
 import { ClassMapperService } from 'src/app/services/class-mapper.service';

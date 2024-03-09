@@ -1,4 +1,4 @@
-import { ItemFrameInterface } from 'src/app/interfaces/interfaces';
+import { ItemFrameInterface } from 'src/app/interfaces/item.interfaces';
 import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class ItemFrame {

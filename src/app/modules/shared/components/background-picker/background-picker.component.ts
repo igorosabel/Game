@@ -5,7 +5,7 @@ import {
   BackgroundCategoryResult,
   BackgroundInterface,
   BackgroundResult,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/background.interfaces';
 import { BackgroundCategory } from 'src/app/model/background-category.model';
 import { Background } from 'src/app/model/background.model';
 import { ApiService } from 'src/app/services/api.service';

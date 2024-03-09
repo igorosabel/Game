@@ -2,7 +2,7 @@ import {
   ScenarioObjectDropInterface,
   ScenarioObjectFrameInterface,
   ScenarioObjectInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/scenario.interfaces';
 import { ScenarioObjectDrop } from 'src/app/model/scenario-object-drop.model';
 import { ScenarioObjectFrame } from 'src/app/model/scenario-object-frame.model';
 import { Utils } from 'src/app/modules/shared/utils.class';
@@ -34,7 +34,7 @@ export class ScenarioObject {
   get allFrames(): string[] {
     const frameList: string[] = [];
     frameList.push(this.assetUrl);
-    for (let frame of this.frames) {
+    for (const frame of this.frames) {
       frameList.push(frame.assetUrl);
     }
     return frameList;

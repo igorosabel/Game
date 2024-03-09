@@ -1,4 +1,4 @@
-import { NarrativeInterface } from 'src/app/interfaces/interfaces';
+import { NarrativeInterface } from 'src/app/interfaces/character.interfaces';
 import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class Narrative {

@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AssetResult, TagResult } from 'src/app/interfaces/asset.interfaces';
 import {
-  AssetResult,
   StatusMessageResult,
   StatusResult,
-  TagResult,
-  WorldResult,
 } from 'src/app/interfaces/interfaces';
+import { WorldResult } from 'src/app/interfaces/world.interfaces';
 import { Asset } from 'src/app/model/asset.model';
 import { Key } from 'src/app/model/key.model';
 import { Tag } from 'src/app/model/tag.model';

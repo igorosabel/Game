@@ -1,42 +1,52 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-
 import {
   AssetInterface,
   AssetResult,
+  TagResult,
+} from 'src/app/interfaces/asset.interfaces';
+import {
   BackgroundCategoryInterface,
   BackgroundCategoryResult,
   BackgroundInterface,
   BackgroundResult,
+} from 'src/app/interfaces/background.interfaces';
+import {
   CharacterInterface,
   CharacterResult,
-  ConnectionInterface,
-  ConnectionResult,
+} from 'src/app/interfaces/character.interfaces';
+import {
   GameResult,
-  ItemInterface,
-  ItemResult,
+  NewGameInterface,
+  PlayResult,
+} from 'src/app/interfaces/game.interfaces';
+import {
   LoginData,
   LoginResult,
-  NewGameInterface,
-  PlayConnectionInterface,
-  PlayResult,
   RegisterData,
+  StatusIdResult,
+  StatusMessageResult,
+  StatusResult,
+} from 'src/app/interfaces/interfaces';
+import { ItemInterface, ItemResult } from 'src/app/interfaces/item.interfaces';
+import {
+  ConnectionInterface,
+  ConnectionResult,
+  PlayConnectionInterface,
   ScenarioDataInterface,
   ScenarioDataResult,
   ScenarioInterface,
   ScenarioObjectInterface,
   ScenarioObjectResult,
   ScenarioResult,
-  StatusIdResult,
-  StatusMessageResult,
-  StatusResult,
-  TagResult,
+} from 'src/app/interfaces/scenario.interfaces';
+import {
   WorldInterface,
   WorldResult,
   WorldStartInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/world.interfaces';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',

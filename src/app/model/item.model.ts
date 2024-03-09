@@ -1,7 +1,9 @@
-import { ItemInterface } from 'src/app/interfaces/interfaces';
+import {
+  ItemFrameInterface,
+  ItemInterface,
+} from 'src/app/interfaces/item.interfaces';
 import { ItemFrame } from 'src/app/model/item-frame.model';
 import { Utils } from 'src/app/modules/shared/utils.class';
-import { ItemFrameInterface } from './../interfaces/interfaces';
 
 export class Item {
   constructor(
@@ -22,7 +24,7 @@ export class Item {
   get allFrames(): string[] {
     const frameList: string[] = [];
     frameList.push(this.assetUrl);
-    for (let frame of this.frames) {
+    for (const frame of this.frames) {
       frameList.push(frame.assetUrl);
     }
     return frameList;

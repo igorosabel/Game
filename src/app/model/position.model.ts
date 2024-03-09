@@ -1,4 +1,4 @@
-import { PositionInterface } from 'src/app/interfaces/interfaces';
+import { PositionInterface } from 'src/app/interfaces/player.interfaces';
 
 export class Position {
   constructor(public x: number = null, public y: number = null) {}

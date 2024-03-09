@@ -2,7 +2,7 @@ import {
   CharacterFrameInterface,
   CharacterInterface,
   NarrativeInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/character.interfaces';
 import { CharacterFrame } from 'src/app/model/character-frame.model';
 import { Inventory } from 'src/app/model/inventory.model';
 import { Item } from 'src/app/model/item.model';
@@ -55,7 +55,7 @@ export class Character {
   getAllFrames(sent: string): string[] {
     const frameList: string[] = [];
     frameList.push(this['asset' + sent + 'Url']);
-    for (let frame of this['frames' + sent]) {
+    for (const frame of this['frames' + sent]) {
       frameList.push(frame.assetUrl);
     }
     return frameList;

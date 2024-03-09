@@ -5,8 +5,8 @@ import {
   AssetInterface,
   AssetResult,
   TagResult,
-  WorldResult,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/asset.interfaces';
+import { WorldResult } from 'src/app/interfaces/world.interfaces';
 import { Asset } from 'src/app/model/asset.model';
 import { Tag } from 'src/app/model/tag.model';
 import { World } from 'src/app/model/world.model';

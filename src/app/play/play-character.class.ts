@@ -1,5 +1,7 @@
 import { Constants } from 'src/app/constants';
-import { CharacterSizeInterface, NPCData } from 'src/app/interfaces/interfaces';
+import { CharacterSizeInterface } from 'src/app/interfaces/character.interfaces';
+import { NPCData } from 'src/app/interfaces/player.interfaces';
+import { ConnectionListInterface } from 'src/app/interfaces/scenario.interfaces';
 import { Character } from 'src/app/model/character.model';
 import { PositionSize } from 'src/app/model/position-size.model';
 import { Position } from 'src/app/model/position.model';
@@ -8,7 +10,6 @@ import { PlayConnection } from 'src/app/play/play-connection.class';
 import { PlayScenario } from 'src/app/play/play-scenario.class';
 import { PlayUtils } from 'src/app/play/play-utils.class';
 import { EventDispatcher } from 'strongly-typed-events';
-import { ConnectionListInterface } from './../interfaces/interfaces';
 import { PlayNPC } from './play-npc.class';
 
 export class PlayCharacter {

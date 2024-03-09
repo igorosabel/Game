@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { CharacterInterface } from 'src/app/interfaces/character.interfaces';
 import {
-  CharacterInterface,
   ConnectionListInterface,
   ScenarioObjectInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/scenario.interfaces';
 import { Character } from 'src/app/model/character.model';
 import { Game } from 'src/app/model/game.model';
 import { Key } from 'src/app/model/key.model';

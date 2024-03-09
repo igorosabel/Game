@@ -5,7 +5,7 @@ import {
   CharacterInterface,
   CharacterResult,
   CharacterTypeInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/character.interfaces';
 import { Character } from 'src/app/model/character.model';
 import { ApiService } from 'src/app/services/api.service';
 import { ClassMapperService } from 'src/app/services/class-mapper.service';

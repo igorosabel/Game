@@ -1,7 +1,9 @@
-import { AssetInterface } from 'src/app/interfaces/interfaces';
+import {
+  AssetInterface,
+  TagInterface,
+} from 'src/app/interfaces/asset.interfaces';
 import { Tag } from 'src/app/model/tag.model';
 import { Utils } from 'src/app/modules/shared/utils.class';
-import { TagInterface } from './../interfaces/interfaces';
 
 export class Asset {
   _tagList: string;
@@ -20,8 +22,8 @@ export class Asset {
 
   get tagList(): string {
     if (this._tagList === null) {
-      let str_tags: string[] = [];
-      for (let t of this.tags) {
+      const str_tags: string[] = [];
+      for (const t of this.tags) {
         str_tags.push(t.name);
       }
       this._tagList = str_tags.join(', ');

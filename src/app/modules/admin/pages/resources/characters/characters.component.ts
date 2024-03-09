@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
 import {
   AnimationImageInterface,
   AnimationNumInterface,
-  AssetInterface,
   CharacterResult,
   CharacterTypeInterface,
-  ItemInterface,
+} from 'src/app/interfaces/character.interfaces';
+import {
   StatusMessageResult,
   StatusResult,
 } from 'src/app/interfaces/interfaces';
+import { ItemInterface } from 'src/app/interfaces/item.interfaces';
 import { CharacterFrame } from 'src/app/model/character-frame.model';
 import { Character } from 'src/app/model/character.model';
 import { Key } from 'src/app/model/key.model';

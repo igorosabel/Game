@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BackgroundCategoryResult } from 'src/app/interfaces/background.interfaces';
 import {
-  BackgroundCategoryResult,
   StatusMessageResult,
   StatusResult,
 } from 'src/app/interfaces/interfaces';

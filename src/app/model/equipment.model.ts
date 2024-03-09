@@ -1,4 +1,4 @@
-import { EquipmentInterface } from 'src/app/interfaces/interfaces';
+import { EquipmentInterface } from 'src/app/interfaces/player.interfaces';
 import { Item } from 'src/app/model/item.model';
 
 export class Equipment {

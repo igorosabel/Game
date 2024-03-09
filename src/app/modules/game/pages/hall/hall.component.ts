@@ -5,9 +5,8 @@ import { Router } from '@angular/router';
 import {
   GameResult,
   NewGameInterface,
-  StatusIdResult,
-  StatusResult,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/game.interfaces';
+import { StatusIdResult, StatusResult } from 'src/app/interfaces/interfaces';
 import { Game } from 'src/app/model/game.model';
 import { ApiService } from 'src/app/services/api.service';
 import { ClassMapperService } from 'src/app/services/class-mapper.service';

@@ -1,4 +1,4 @@
-import { PlayConnectionInterface } from 'src/app/interfaces/interfaces';
+import { PlayConnectionInterface } from 'src/app/interfaces/scenario.interfaces';
 
 export class PlayConnection {
   constructor(

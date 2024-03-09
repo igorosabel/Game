@@ -3,19 +3,21 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Constants } from 'src/app/constants';
+import { BackgroundInterface } from 'src/app/interfaces/background.interfaces';
+import { CharacterInterface } from 'src/app/interfaces/character.interfaces';
 import {
-  BackgroundInterface,
-  CharacterInterface,
+  StatusIdResult,
+  StatusMessageResult,
+  StatusResult,
+} from 'src/app/interfaces/interfaces';
+import {
   ConnectionListInterface,
   ScenarioDataResult,
   ScenarioObjectInterface,
   ScenarioResult,
   SelectedScenarioDataInterface,
-  StatusIdResult,
-  StatusMessageResult,
-  StatusResult,
-  WorldStartInterface,
-} from 'src/app/interfaces/interfaces';
+} from 'src/app/interfaces/scenario.interfaces';
+import { WorldStartInterface } from 'src/app/interfaces/world.interfaces';
 import { Connection } from 'src/app/model/connection.model';
 import { Key } from 'src/app/model/key.model';
 import { ScenarioData } from 'src/app/model/scenario-data.model';

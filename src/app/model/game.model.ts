@@ -1,7 +1,5 @@
-import {
-  GameInterface,
-  InventoryInterface,
-} from 'src/app/interfaces/interfaces';
+import { GameInterface } from 'src/app/interfaces/game.interfaces';
+import { InventoryInterface } from 'src/app/interfaces/player.interfaces';
 import { Equipment } from 'src/app/model/equipment.model';
 import { Inventory } from 'src/app/model/inventory.model';
 import { Utils } from 'src/app/modules/shared/utils.class';

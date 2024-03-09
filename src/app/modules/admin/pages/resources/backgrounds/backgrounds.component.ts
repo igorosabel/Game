@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
 import {
-  AssetInterface,
   BackgroundCategoryResult,
   BackgroundResult,
+} from 'src/app/interfaces/background.interfaces';
+import {
   StatusMessageResult,
   StatusResult,
 } from 'src/app/interfaces/interfaces';

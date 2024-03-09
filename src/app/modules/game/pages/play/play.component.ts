@@ -3,15 +3,19 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Constants } from 'src/app/constants';
 import {
-  ConnectionListInterface,
-  ConnectionResult,
   KeyboardLayoutInterface,
-  LoadingStatusInterface,
   PlayResult,
+} from 'src/app/interfaces/game.interfaces';
+import {
+  LoadingStatusInterface,
   StatusIdResult,
   StatusResult,
-  WorldResult,
 } from 'src/app/interfaces/interfaces';
+import {
+  ConnectionListInterface,
+  ConnectionResult,
+} from 'src/app/interfaces/scenario.interfaces';
+import { WorldResult } from 'src/app/interfaces/world.interfaces';
 import { Character } from 'src/app/model/character.model';
 import { Connection } from 'src/app/model/connection.model';
 import { Game } from 'src/app/model/game.model';

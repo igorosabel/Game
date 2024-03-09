@@ -1,4 +1,4 @@
-import { ScenarioObjectDropInterface } from 'src/app/interfaces/interfaces';
+import { ScenarioObjectDropInterface } from 'src/app/interfaces/scenario.interfaces';
 import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class ScenarioObjectDrop {

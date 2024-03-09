@@ -1,4 +1,4 @@
-import { BackgroundInterface } from 'src/app/interfaces/interfaces';
+import { BackgroundInterface } from 'src/app/interfaces/background.interfaces';
 import { Utils } from 'src/app/modules/shared/utils.class';
 
 export class Background {

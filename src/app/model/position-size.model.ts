@@ -1,4 +1,4 @@
-import { PositionSizeInterface } from 'src/app/interfaces/interfaces';
+import { PositionSizeInterface } from 'src/app/interfaces/player.interfaces';
 import { Position } from 'src/app/model/position.model';
 
 export class PositionSize {
