@@ -1,5 +1,5 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -17,7 +17,7 @@ import { PlayPlayer } from 'src/app/play/play-player.class';
   selector: 'game-inventory',
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss'],
-  imports: [CommonModule, DragDropModule],
+  imports: [NgClass, DragDropModule],
 })
 export class InventoryComponent {
   @ViewChild('tooltip', { static: true }) tooltip: TooltipComponent;

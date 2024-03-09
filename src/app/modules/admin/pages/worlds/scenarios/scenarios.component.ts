@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Params, RouterModule } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { StatusResult } from 'src/app/interfaces/interfaces';
 import { ScenarioResult } from 'src/app/interfaces/scenario.interfaces';
 import { Key } from 'src/app/model/key.model';
@@ -16,7 +16,7 @@ import { PlayService } from 'src/app/services/play.service';
   selector: 'game-scenarios',
   templateUrl: './scenarios.component.html',
   styleUrls: ['../../scss/admin.scss'],
-  imports: [CommonModule, RouterModule, FormsModule, HeaderComponent],
+  imports: [NgClass, RouterLink, FormsModule, HeaderComponent],
 })
 export default class ScenariosComponent implements OnInit {
   worldId: number = null;

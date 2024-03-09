@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'game-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [NgClass, FormsModule, HeaderComponent],
 })
 export class LoginComponent {
   selectedTab: string = 'login';

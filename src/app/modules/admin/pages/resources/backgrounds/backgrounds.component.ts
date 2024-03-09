@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
@@ -25,7 +25,7 @@ import { PlayService } from 'src/app/services/play.service';
   selector: 'game-backgrounds',
   templateUrl: './backgrounds.component.html',
   styleUrls: ['./backgrounds.component.scss', '../../scss/resources.scss'],
-  imports: [CommonModule, FormsModule, HeaderComponent, AssetPickerComponent],
+  imports: [NgClass, FormsModule, HeaderComponent, AssetPickerComponent],
 })
 export default class BackgroundsComponent implements OnInit {
   backgroundCategoryFilter: number = null;

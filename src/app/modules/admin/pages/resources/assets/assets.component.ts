@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetResult, TagResult } from 'src/app/interfaces/asset.interfaces';
@@ -22,7 +22,7 @@ import { PlayService } from 'src/app/services/play.service';
   selector: 'game-assets',
   templateUrl: './assets.component.html',
   styleUrls: ['./assets.component.scss', '../../scss/resources.scss'],
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [NgClass, NgStyle, FormsModule, HeaderComponent],
 })
 export default class AssetsComponent implements OnInit {
   tagFilter: number = null;

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -37,7 +37,8 @@ import { PlayService } from 'src/app/services/play.service';
   templateUrl: './edit-scenario.component.html',
   styleUrls: ['./edit-scenario.component.scss'],
   imports: [
-    CommonModule,
+    NgClass,
+    NgStyle,
     FormsModule,
     HeaderComponent,
     BackgroundPickerComponent,

@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { StatusResult } from 'src/app/interfaces/interfaces';
 import { WorldResult } from 'src/app/interfaces/world.interfaces';
 import { Key } from 'src/app/model/key.model';
@@ -16,7 +16,7 @@ import { PlayService } from 'src/app/services/play.service';
   selector: 'game-worlds',
   templateUrl: './worlds.component.html',
   styleUrls: ['../../scss/admin.scss'],
-  imports: [CommonModule, RouterModule, FormsModule, HeaderComponent],
+  imports: [NgClass, RouterLink, FormsModule, HeaderComponent],
 })
 export default class WorldsComponent implements OnInit {
   worldList: World[] = [];

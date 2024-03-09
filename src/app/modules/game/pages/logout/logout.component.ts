@@ -5,8 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   standalone: true,
   selector: 'game-logout',
-  templateUrl: './logout.component.html',
-  styleUrls: [],
+  template: '',
 })
 export default class LogoutComponent implements OnInit {
   constructor(private user: UserService, private router: Router) {}

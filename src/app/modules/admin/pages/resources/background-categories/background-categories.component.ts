@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BackgroundCategoryResult } from 'src/app/interfaces/background.interfaces';
@@ -19,7 +19,7 @@ import { PlayService } from 'src/app/services/play.service';
   selector: 'game-background-categories',
   templateUrl: './background-categories.component.html',
   styleUrls: ['../../scss/admin.scss'],
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [NgClass, FormsModule, HeaderComponent],
 })
 export default class BackgroundCategoriesComponent implements OnInit {
   backgroundCategoryList: BackgroundCategory[] = [];

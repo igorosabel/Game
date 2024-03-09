@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { Component } from '@angular/core';
 import { Item } from 'src/app/model/item.model';
 
@@ -7,7 +7,7 @@ import { Item } from 'src/app/model/item.model';
   selector: 'game-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  imports: [CommonModule],
+  imports: [NgClass, NgStyle],
 })
 export class TooltipComponent {
   item: Item = null;

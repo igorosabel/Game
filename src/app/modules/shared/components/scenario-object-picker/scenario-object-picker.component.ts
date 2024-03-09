@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   ScenarioObjectInterface,
@@ -13,7 +13,7 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   selector: 'game-scenario-object-picker',
   templateUrl: './scenario-object-picker.component.html',
   styleUrls: ['./scenario-object-picker.component.scss'],
-  imports: [CommonModule],
+  imports: [NgClass],
 })
 export class ScenarioObjectPickerComponent implements OnInit {
   show: boolean = false;

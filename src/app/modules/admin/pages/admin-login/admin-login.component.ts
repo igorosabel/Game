@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'game-admin-login',
   templateUrl: './admin-login.component.html',
   styleUrls: ['./admin-login.component.scss'],
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent],
 })
 export default class AdminLoginComponent {
   loginData: LoginData = {

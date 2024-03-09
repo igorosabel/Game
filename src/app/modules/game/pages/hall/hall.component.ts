@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { DataShareService } from 'src/app/services/data-share.service';
   selector: 'game-hall',
   templateUrl: './hall.component.html',
   styleUrls: ['./hall.component.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
 })
 export default class HallComponent implements OnInit {
   games: Game[] = [];

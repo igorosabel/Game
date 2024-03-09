@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'game-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  imports: [RouterModule],
+  imports: [RouterLink],
 })
 export class HeaderComponent {
   @Input() leftUrl: string[] = [];

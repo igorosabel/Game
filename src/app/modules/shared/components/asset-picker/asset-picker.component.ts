@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -18,7 +18,7 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   selector: 'game-asset-picker',
   templateUrl: './asset-picker.component.html',
   styleUrls: ['./asset-picker.component.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
 })
 export class AssetPickerComponent implements OnInit {
   show: boolean = false;

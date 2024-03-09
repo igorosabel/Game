@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
@@ -33,7 +33,7 @@ import { PlayService } from 'src/app/services/play.service';
   templateUrl: './scenario-objects.component.html',
   styleUrls: ['./scenario-objects.component.scss', '../../scss/resources.scss'],
   imports: [
-    CommonModule,
+    NgClass,
     FormsModule,
     HeaderComponent,
     AssetPickerComponent,

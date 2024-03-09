@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -15,7 +15,7 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   selector: 'game-item-picker',
   templateUrl: './item-picker.component.html',
   styleUrls: ['./item-picker.component.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [NgClass, FormsModule],
 })
 export class ItemPickerComponent implements OnInit {
   show: boolean = false;
