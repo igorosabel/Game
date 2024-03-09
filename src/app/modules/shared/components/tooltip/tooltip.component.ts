@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
 import { Item } from 'src/app/model/item.model';
 
 @Component({
@@ -10,22 +10,22 @@ import { Item } from 'src/app/model/item.model';
   imports: [NgClass, NgStyle],
 })
 export class TooltipComponent {
-  item: Item = null;
-  showTooltip: boolean = false;
-  positionX: number = null;
-  positionY: number = null;
+  item: WritableSignal<Item> = signal<Item>(null);
+  showTooltip: WritableSignal<boolean> = signal<boolean>(false);
+  positionX: WritableSignal<number> = signal<number>(null);
+  positionY: WritableSignal<number> = signal<number>(null);
 
   load(item: Item): void {
-    this.item = item;
+    this.item.set(item);
     this.show(true);
   }
 
   show(mode: boolean): void {
-    this.showTooltip = mode;
+    this.showTooltip.set(mode);
   }
 
   move(ev: MouseEvent): void {
-    this.positionX = ev.clientX + 5;
-    this.positionY = ev.clientY + 5;
+    this.positionX.set(ev.clientX + 5);
+    this.positionY.set(ev.clientY + 5);
   }
 }

@@ -1,5 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AssetInterface,
@@ -21,7 +28,7 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   imports: [NgClass, FormsModule],
 })
 export class AssetPickerComponent implements OnInit {
-  show: boolean = false;
+  show: WritableSignal<boolean> = signal<boolean>(false);
   tagFilter: number = null;
   worldFilter: number = null;
   tagList: Tag[] = [];
@@ -43,7 +50,7 @@ export class AssetPickerComponent implements OnInit {
   }
 
   showPicker(): void {
-    this.show = true;
+    this.show.set(true);
   }
 
   loadTags(): void {
@@ -111,7 +118,7 @@ export class AssetPickerComponent implements OnInit {
     if (!this.nameCopy) {
       selectedAsset.name = '';
     }
-    this.show = false;
+    this.show.set(false);
     this.selectAssetEvent.emit(selectedAsset);
   }
 

@@ -1,6 +1,14 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Constants } from 'src/app/constants';
 import {
   ItemInterface,
   ItemResult,
@@ -18,17 +26,11 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   imports: [NgClass, FormsModule],
 })
 export class ItemPickerComponent implements OnInit {
-  show: boolean = false;
+  show: WritableSignal<boolean> = signal<boolean>(false);
   itemFilter: number = null;
-  typeList: ItemTypeInterface[] = [
-    { id: 0, name: 'Moneda' },
-    { id: 1, name: 'Arma' },
-    { id: 2, name: 'Poción' },
-    { id: 3, name: 'Equipamiento' },
-    { id: 4, name: 'Objeto' },
-  ];
+  typeList: ItemTypeInterface[] = Constants.ITEM_TYPE_LIST;
   itemList: Item[] = [];
-  itemListFiltered: Item[] = [];
+  itemListFiltered: WritableSignal<Item[]> = signal<Item[]>([]);
   selected: number = null;
 
   @Output() selectItemEvent: EventEmitter<ItemInterface> =
@@ -41,7 +43,7 @@ export class ItemPickerComponent implements OnInit {
   }
 
   showPicker(): void {
-    this.show = true;
+    this.show.set(true);
   }
 
   loadItems(): void {
@@ -62,13 +64,13 @@ export class ItemPickerComponent implements OnInit {
         (x: Item): boolean => x.type === this.itemFilter
       );
     }
-    this.itemListFiltered = filteredList;
+    this.itemListFiltered.set(filteredList);
   }
 
   selectItem(item: Item): void {
     this.selected = item.id;
     const selectedItem: ItemInterface = item.toInterface();
-    this.show = false;
+    this.show.set(false);
     this.selectItemEvent.emit(selectedItem);
   }
 

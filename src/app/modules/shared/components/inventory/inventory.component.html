@@ -1,4 +1,4 @@
-@if (showInventory) {
+@if (showInventory()) {
 <div class="inventory">
 	<div class="inventory-box">
 		<div class="inventory-header">
@@ -8,7 +8,7 @@
 		</div>
 		<div class="inventory-body">
 			<div class="inventory-list">
-				@for (item of inventoryList; track item.id) {
+				@for (item of inventoryList(); track item.id) {
 				<div class="inventory-item"
 					 (mouseover)="tooltip.load(item.item)"
 					 (mousemove)="tooltip.move($event)"
@@ -25,42 +25,42 @@
 					<div>
 						<div class="inventory-equipment-header">Equipo</div>
 						<div class="inventory-equipment-head"
-							 (mouseover)="tooltip.load(equipment.head)"
+							 (mouseover)="tooltip.load(equipment().head)"
 							 (mousemove)="tooltip.move($event)"
 							 (mouseout)="tooltip.show(false)"
 							 cdkDrop>
-							@if (equipment.head !== null) {
-							<img [src]="equipment.head.assetUrl"
+							@if (equipment().head !== null) {
+							<img [src]="equipment().head.assetUrl"
 								 alt="Cabeza">
 							}
 						</div>
 						<div class="inventory-equipment-necklace"
-							 (mouseover)="tooltip.load(equipment.necklace)"
+							 (mouseover)="tooltip.load(equipment().necklace)"
 							 (mousemove)="tooltip.move($event)"
 							 (mouseout)="tooltip.show(false)"
 							 cdkDrop>
-							@if (equipment.necklace !== null) {
-							<img [src]="equipment.necklace.assetUrl"
+							@if (equipment().necklace !== null) {
+							<img [src]="equipment().necklace.assetUrl"
 								 alt="Cuello">
 							}
 						</div>
 						<div class="inventory-equipment-body"
-							 (mouseover)="tooltip.load(equipment.body)"
+							 (mouseover)="tooltip.load(equipment().body)"
 							 (mousemove)="tooltip.move($event)"
 							 (mouseout)="tooltip.show(false)"
 							 cdkDrop>
-							@if (equipment.body !== null) {
-							<img [src]="equipment.body.assetUrl"
+							@if (equipment().body !== null) {
+							<img [src]="equipment().body.assetUrl"
 								 alt="Cuerpo">
 							}
 						</div>
 						<div class="inventory-equipment-boots"
-							 (mouseover)="tooltip.load(equipment.boots)"
+							 (mouseover)="tooltip.load(equipment().boots)"
 							 (mousemove)="tooltip.move($event)"
 							 (mouseout)="tooltip.show(false)"
 							 cdkDrop>
-							@if (equipment.boots !== null) {
-							<img [src]="equipment.boots.assetUrl"
+							@if (equipment().boots !== null) {
+							<img [src]="equipment().boots.assetUrl"
 								 alt="Botas">
 							}
 						</div>
@@ -68,12 +68,12 @@
 					<div>
 						<div class="inventory-equipment-header">Arma</div>
 						<div class="inventory-equipment-weapon"
-							 (mouseover)="tooltip.load(equipment.weapon)"
+							 (mouseover)="tooltip.load(equipment().weapon)"
 							 (mousemove)="tooltip.move($event)"
 							 (mouseout)="tooltip.show(false)"
 							 cdkDrop>
-							@if (equipment.weapon !== null) {
-							<img [src]="equipment.weapon.assetUrl"
+							@if (equipment().weapon !== null) {
+							<img [src]="equipment().weapon.assetUrl"
 								 alt="Arma">
 							}
 						</div>
@@ -83,19 +83,19 @@
 					<div class="inventory-equipment-header">Estadísticas</div>
 					<div class="inventory-stat">
 						<label>Salud</label>
-						<span>{{player.character.currentHealth}} / {{player.character.health}}</span>
+						<span>{{player().character.currentHealth}} / {{player().character.health}}</span>
 					</div>
 					<div class="inventory-stat">
 						<label>Ataque</label>
-						<span>{{player.character.attack}}</span>
+						<span>{{player().character.attack}}</span>
 					</div>
 					<div class="inventory-stat">
 						<label>Defensa</label>
-						<span>{{player.character.defense}}</span>
+						<span>{{player().character.defense}}</span>
 					</div>
 					<div class="inventory-stat">
 						<label>Velocidad</label>
-						<span>{{player.character.speed}}</span>
+						<span>{{player().character.speed}}</span>
 					</div>
 				</div>
 			</div>

@@ -1,6 +1,14 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Constants } from 'src/app/constants';
 import {
   CharacterInterface,
   CharacterResult,
@@ -18,14 +26,11 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   imports: [NgClass, FormsModule],
 })
 export class CharacterPickerComponent implements OnInit {
-  typeList: CharacterTypeInterface[] = [
-    { id: 0, name: 'NPC' },
-    { id: 1, name: 'Enemigo' },
-  ];
-  show: boolean = false;
+  typeList: CharacterTypeInterface[] = Constants.CHARACTER_TYPE_LIST;
+  show: WritableSignal<boolean> = signal<boolean>(false);
   characterFilter: number = null;
   characterList: Character[] = [];
-  characterListFiltered: Character[] = [];
+  characterListFiltered: WritableSignal<Character[]> = signal<Character[]>([]);
   selected: number = null;
 
   @Output() selectCharacterEvent: EventEmitter<CharacterInterface> =
@@ -38,12 +43,12 @@ export class CharacterPickerComponent implements OnInit {
   }
 
   showPicker(): void {
-    this.show = true;
+    this.show.set(true);
   }
 
   closePicker(ev: MouseEvent): void {
     ev && ev.preventDefault();
-    this.show = false;
+    this.show.set(false);
   }
 
   loadCharacters(): void {
@@ -64,13 +69,13 @@ export class CharacterPickerComponent implements OnInit {
         (x: Character): boolean => x.type === this.characterFilter
       );
     }
-    this.characterListFiltered = filteredList;
+    this.characterListFiltered.set(filteredList);
   }
 
   selectCharacter(character: Character): void {
     this.selected = character.id;
     const selectedCharacter: CharacterInterface = character.toInterface();
-    this.show = false;
+    this.show.set(false);
     this.selectCharacterEvent.emit(selectedCharacter);
   }
 

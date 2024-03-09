@@ -1,5 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import {
   ScenarioObjectInterface,
   ScenarioObjectResult,
@@ -16,7 +23,7 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   imports: [NgClass],
 })
 export class ScenarioObjectPickerComponent implements OnInit {
-  show: boolean = false;
+  show: WritableSignal<boolean> = signal<boolean>(false);
   scenarioObjectList: ScenarioObject[] = [];
   selected: number = null;
 
@@ -30,12 +37,12 @@ export class ScenarioObjectPickerComponent implements OnInit {
   }
 
   showPicker(): void {
-    this.show = true;
+    this.show.set(true);
   }
 
   closePicker(ev: MouseEvent): void {
     ev && ev.preventDefault();
-    this.show = false;
+    this.show.set(false);
   }
 
   loadScenarioObjects(): void {
@@ -52,7 +59,7 @@ export class ScenarioObjectPickerComponent implements OnInit {
     this.selected = scenarioObject.id;
     const selectedScenarioObject: ScenarioObjectInterface =
       scenarioObject.toInterface();
-    this.show = false;
+    this.show.set(false);
     this.selectScenarioObjectEvent.emit(selectedScenarioObject);
   }
 

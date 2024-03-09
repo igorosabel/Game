@@ -1,5 +1,5 @@
 <div class="character-picker"
-	 [ngClass]="{'character-picker-show': show}">
+	 [ngClass]="{'character-picker-show': show()}">
 	<div class="character-picker-box">
 		<div class="character-picker-header">
 			<div>
@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="character-list">
-			@for (character of characterListFiltered; track character.id) {
+			@for (character of characterListFiltered(); track character.id) {
 			<div class="character-item"
 				 [ngClass]="{'character-item-selected': character.id === selected}"
 				 (click)="selectCharacter(character)">

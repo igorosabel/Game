@@ -1,5 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   BackgroundCategoryResult,
@@ -19,11 +26,13 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   imports: [NgClass, FormsModule],
 })
 export class BackgroundPickerComponent implements OnInit {
-  show: boolean = false;
+  show: WritableSignal<boolean> = signal<boolean>(false);
   backgroundFilter: number = null;
   backgroundCategoryList: BackgroundCategory[] = [];
   backgroundList: Background[] = [];
-  backgroundListFiltered: Background[] = [];
+  backgroundListFiltered: WritableSignal<Background[]> = signal<Background[]>(
+    []
+  );
   selected: number = null;
 
   @Output() selectBackgroundEvent: EventEmitter<BackgroundInterface> =
@@ -37,12 +46,12 @@ export class BackgroundPickerComponent implements OnInit {
   }
 
   showPicker(): void {
-    this.show = true;
+    this.show.set(true);
   }
 
   closePicker(ev: MouseEvent): void {
     ev && ev.preventDefault();
-    this.show = false;
+    this.show.set(false);
   }
 
   loadBackgroundCategories(): void {
@@ -76,13 +85,13 @@ export class BackgroundPickerComponent implements OnInit {
           x.idBackgroundCategory === this.backgroundFilter
       );
     }
-    this.backgroundListFiltered = filteredList;
+    this.backgroundListFiltered.set(filteredList);
   }
 
   selectBackground(background: Background): void {
     this.selected = background.id;
     const selectedBackground: BackgroundInterface = background.toInterface();
-    this.show = false;
+    this.show.set(false);
     this.selectBackgroundEvent.emit(selectedBackground);
   }
 

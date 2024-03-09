@@ -3,9 +3,12 @@ import { NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
-  Input,
+  ModelSignal,
   Output,
   ViewChild,
+  WritableSignal,
+  model,
+  signal,
 } from '@angular/core';
 import { Equipment } from 'src/app/model/equipment.model';
 import { Inventory } from 'src/app/model/inventory.model';
@@ -21,31 +24,24 @@ import { PlayPlayer } from 'src/app/play/play-player.class';
 })
 export class InventoryComponent {
   @ViewChild('tooltip', { static: true }) tooltip: TooltipComponent;
-  @Input() inventoryList: Inventory[] = [];
-  @Output() inventoryListChange: EventEmitter<Inventory[]> = new EventEmitter<
-    Inventory[]
-  >();
-  @Input() equipment: Equipment = new Equipment();
-  @Output() equipmentChange: EventEmitter<Equipment> =
-    new EventEmitter<Equipment>();
-  @Input() player: PlayPlayer = null;
-  @Output() playerChange: EventEmitter<PlayPlayer> =
-    new EventEmitter<PlayPlayer>();
+  inventoryList: ModelSignal<Inventory[]> = model.required<Inventory[]>();
+  equipment: ModelSignal<Equipment> = model.required<Equipment>();
+  player: ModelSignal<PlayPlayer> = model.required<PlayPlayer>();
 
-  showInventory: boolean = false;
-  @Output() onClose: EventEmitter<boolean> = new EventEmitter<boolean>();
+  showInventory: WritableSignal<boolean> = signal<boolean>(false);
+  @Output() closed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   show(): void {
-    this.showInventory = true;
+    this.showInventory.set(true);
   }
 
   close(ev: MouseEvent = null): void {
     ev && ev.preventDefault();
-    this.showInventory = false;
-    this.onClose.emit(true);
+    this.showInventory.set(false);
+    this.closed.emit(true);
   }
 
   isOpened(): boolean {
-    return this.showInventory;
+    return this.showInventory();
   }
 }

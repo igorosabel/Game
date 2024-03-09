@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, InputSignal, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,10 +9,10 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
 })
 export class HeaderComponent {
-  @Input() leftUrl: string[] = [];
-  @Input() leftTitle: string = null;
-  @Input() img: string = null;
-  @Input() title: string = 'The Game';
-  @Input() rightUrl: string[] = [];
-  @Input() rightTitle: string = null;
+  leftUrl: InputSignal<string[]> = input<string[]>([]);
+  leftTitle: InputSignal<string> = input<string>(null);
+  img: InputSignal<string> = input<string>(null);
+  title: InputSignal<string> = input<string>('The Game');
+  rightUrl: InputSignal<string[]> = input<string[]>([]);
+  rightTitle: InputSignal<string> = input<string>(null);
 }

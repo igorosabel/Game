@@ -1,15 +1,15 @@
 <header>
 	@if (leftTitle) {
-	<a [routerLink]="leftUrl"
-	   class="header-left">{{leftTitle}}</a>
+	<a [routerLink]="leftUrl()"
+	   class="header-left">{{leftTitle()}}</a>
 	}
-	@if (img) {
-	<img [src]="img"
-		 [alt]="title">
+	@if (img()) {
+	<img [src]="img()"
+		 [alt]="title()">
 	}
-	{{title}}
+	{{title()}}
 	@if (rightTitle) {
-	<a [routerLink]="rightUrl"
-	   class="header-right">{{rightTitle}}</a>
+	<a [routerLink]="rightUrl()"
+	   class="header-right">{{rightTitle()}}</a>
 	}
 </header>

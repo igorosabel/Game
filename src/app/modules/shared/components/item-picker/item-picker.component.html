@@ -1,5 +1,5 @@
 <div class="item-picker"
-	 [ngClass]="{'item-picker-show': show}">
+	 [ngClass]="{'item-picker-show': show()}">
 	<div class="item-picker-box">
 		<div class="item-picker-header">
 			<div>
@@ -15,7 +15,7 @@
 		</div>
 
 		<div class="item-list">
-			@for (item of itemListFiltered; track item.id) {
+			@for (item of itemListFiltered(); track item.id) {
 			<div class="item-item"
 				 [ngClass]="{'item-item-selected': item.id === selected}"
 				 (click)="selectItem(item)">
