@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output,
+  OutputEmitterRef,
   WritableSignal,
+  output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -33,8 +33,7 @@ export class ItemPickerComponent implements OnInit {
   itemListFiltered: WritableSignal<Item[]> = signal<Item[]>([]);
   selected: number = null;
 
-  @Output() selectItemEvent: EventEmitter<ItemInterface> =
-    new EventEmitter<ItemInterface>();
+  selectItemEvent: OutputEmitterRef<ItemInterface> = output<ItemInterface>();
 
   constructor(private as: ApiService, private cms: ClassMapperService) {}
 

@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output,
+  OutputEmitterRef,
   WritableSignal,
+  output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -33,8 +33,8 @@ export class CharacterPickerComponent implements OnInit {
   characterListFiltered: WritableSignal<Character[]> = signal<Character[]>([]);
   selected: number = null;
 
-  @Output() selectCharacterEvent: EventEmitter<CharacterInterface> =
-    new EventEmitter<CharacterInterface>();
+  selectCharacterEvent: OutputEmitterRef<CharacterInterface> =
+    output<CharacterInterface>();
 
   constructor(private as: ApiService, private cms: ClassMapperService) {}
 

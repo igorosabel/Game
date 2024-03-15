@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output,
+  OutputEmitterRef,
   WritableSignal,
+  output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -35,8 +35,8 @@ export class BackgroundPickerComponent implements OnInit {
   );
   selected: number = null;
 
-  @Output() selectBackgroundEvent: EventEmitter<BackgroundInterface> =
-    new EventEmitter<BackgroundInterface>();
+  selectBackgroundEvent: OutputEmitterRef<BackgroundInterface> =
+    output<BackgroundInterface>();
 
   constructor(private as: ApiService, private cms: ClassMapperService) {}
 

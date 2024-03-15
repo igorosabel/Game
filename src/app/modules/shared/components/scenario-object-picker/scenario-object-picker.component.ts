@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output,
+  OutputEmitterRef,
   WritableSignal,
+  output,
   signal,
 } from '@angular/core';
 import {
@@ -27,8 +27,8 @@ export class ScenarioObjectPickerComponent implements OnInit {
   scenarioObjectList: ScenarioObject[] = [];
   selected: number = null;
 
-  @Output() selectScenarioObjectEvent: EventEmitter<ScenarioObjectInterface> =
-    new EventEmitter<ScenarioObjectInterface>();
+  selectScenarioObjectEvent: OutputEmitterRef<ScenarioObjectInterface> =
+    output<ScenarioObjectInterface>();
 
   constructor(private as: ApiService, private cms: ClassMapperService) {}
 

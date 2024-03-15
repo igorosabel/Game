@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   OnInit,
-  Output,
+  OutputEmitterRef,
   WritableSignal,
+  output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -38,8 +38,7 @@ export class AssetPickerComponent implements OnInit {
   nameCopy: boolean = true;
   selectedItem: number = null;
 
-  @Output() selectAssetEvent: EventEmitter<AssetInterface> =
-    new EventEmitter<AssetInterface>();
+  selectAssetEvent: OutputEmitterRef<AssetInterface> = output<AssetInterface>();
 
   constructor(private as: ApiService, private cms: ClassMapperService) {}
 

@@ -2,12 +2,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgClass } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   ModelSignal,
-  Output,
+  OutputEmitterRef,
   ViewChild,
   WritableSignal,
   model,
+  output,
   signal,
 } from '@angular/core';
 import { Equipment } from 'src/app/model/equipment.model';
@@ -29,7 +29,7 @@ export class InventoryComponent {
   player: ModelSignal<PlayPlayer> = model.required<PlayPlayer>();
 
   showInventory: WritableSignal<boolean> = signal<boolean>(false);
-  @Output() closed: EventEmitter<boolean> = new EventEmitter<boolean>();
+  closed: OutputEmitterRef<boolean> = output<boolean>();
 
   show(): void {
     this.showInventory.set(true);
