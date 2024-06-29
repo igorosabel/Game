@@ -1,7 +1,7 @@
-import { BackgroundCategoryInterface } from 'src/app/interfaces/background.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { BackgroundCategoryInterface } from '@interfaces/background.interfaces';
+import Utils from '@shared/utils.class';
 
-export class BackgroundCategory {
+export default class BackgroundCategory {
   constructor(public id: number = null, public name: string = null) {}
 
   fromInterface(bc: BackgroundCategoryInterface): BackgroundCategory {

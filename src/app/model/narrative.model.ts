@@ -1,7 +1,7 @@
-import { NarrativeInterface } from 'src/app/interfaces/character.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { NarrativeInterface } from '@interfaces/character.interfaces';
+import Utils from '@shared/utils.class';
 
-export class Narrative {
+export default class Narrative {
   constructor(
     public id: number = null,
     public dialog: string = null,

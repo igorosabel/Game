@@ -1,7 +1,7 @@
-import { PositionSizeInterface } from 'src/app/interfaces/player.interfaces';
-import { Position } from 'src/app/model/position.model';
+import { PositionSizeInterface } from '@interfaces/player.interfaces';
+import Position from '@model/position.model';
 
-export class PositionSize {
+export default class PositionSize {
   constructor(
     public x: number = null,
     public y: number = null,

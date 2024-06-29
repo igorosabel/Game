@@ -1,10 +1,10 @@
-import { Constants } from 'src/app/constants';
-import { PositionSize } from 'src/app/model/position-size.model';
-import { Position } from 'src/app/model/position.model';
-import { PlayNPC } from 'src/app/play/play-npc.class';
-import { PlayPlayer } from 'src/app/play/play-player.class';
+import Constants from '@app/constants';
+import PositionSize from '@model/position-size.model';
+import Position from '@model/position.model';
+import PlayNPC from '@play/play-npc.class';
+import PlayPlayer from '@play/play-player.class';
 
-export class PlayUtils {
+export default class PlayUtils {
   static collision(rect1: PositionSize, rect2: PositionSize): boolean {
     if (
       rect1.x < rect2.x + rect2.width &&

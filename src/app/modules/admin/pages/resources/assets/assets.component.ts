@@ -1,21 +1,18 @@
 import { NgClass, NgStyle } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AssetResult, TagResult } from 'src/app/interfaces/asset.interfaces';
-import {
-  StatusMessageResult,
-  StatusResult,
-} from 'src/app/interfaces/interfaces';
-import { WorldResult } from 'src/app/interfaces/world.interfaces';
-import { Asset } from 'src/app/model/asset.model';
-import { Key } from 'src/app/model/key.model';
-import { Tag } from 'src/app/model/tag.model';
-import { World } from 'src/app/model/world.model';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+import { AssetResult, TagResult } from '@interfaces/asset.interfaces';
+import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
+import { WorldResult } from '@interfaces/world.interfaces';
+import Asset from '@model/asset.model';
+import Key from '@model/key.model';
+import Tag from '@model/tag.model';
+import World from '@model/world.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import HeaderComponent from '@shared/components/header/header.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -25,6 +22,10 @@ import { PlayService } from 'src/app/services/play.service';
   imports: [NgClass, NgStyle, FormsModule, HeaderComponent],
 })
 export default class AssetsComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   tagFilter: number = null;
   worldFilter: number = null;
   filterListOption: string = 'items';
@@ -38,12 +39,6 @@ export default class AssetsComponent implements OnInit {
   assetDetailHeader: string = '';
   loadingFile: boolean = false;
   savingAsset: boolean = false;
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.loadTags();

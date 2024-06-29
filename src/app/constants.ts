@@ -1,7 +1,7 @@
-import { CharacterTypeInterface } from 'src/app/interfaces/character.interfaces';
-import { ItemTypeInterface } from 'src/app/interfaces/item.interfaces';
+import { CharacterTypeInterface } from '@interfaces/character.interfaces';
+import { ItemTypeInterface } from '@interfaces/item.interfaces';
 
-export class Constants {
+export default class Constants {
   public static DEBUG: boolean = true;
   public static SCENARIO_WIDTH: number = 800;
   public static SCENARIO_HEIGHT: number = 640;

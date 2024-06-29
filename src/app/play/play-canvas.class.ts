@@ -1,6 +1,6 @@
-import { Constants } from 'src/app/constants';
+import Constants from '@app/constants';
 
-export class PlayCanvas {
+export default class PlayCanvas {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 

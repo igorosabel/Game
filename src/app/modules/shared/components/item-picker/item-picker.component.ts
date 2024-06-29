@@ -4,19 +4,20 @@ import {
   OnInit,
   OutputEmitterRef,
   WritableSignal,
+  inject,
   output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Constants } from 'src/app/constants';
+import Constants from '@app/constants';
 import {
   ItemInterface,
   ItemResult,
   ItemTypeInterface,
-} from 'src/app/interfaces/item.interfaces';
-import { Item } from 'src/app/model/item.model';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
+} from '@interfaces/item.interfaces';
+import Item from '@model/item.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
   standalone: true,
@@ -25,7 +26,10 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   styleUrls: ['./item-picker.component.scss'],
   imports: [NgClass, FormsModule],
 })
-export class ItemPickerComponent implements OnInit {
+export default class ItemPickerComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+
   show: WritableSignal<boolean> = signal<boolean>(false);
   itemFilter: number = null;
   typeList: ItemTypeInterface[] = Constants.ITEM_TYPE_LIST;
@@ -34,8 +38,6 @@ export class ItemPickerComponent implements OnInit {
   selected: number = null;
 
   selectItemEvent: OutputEmitterRef<ItemInterface> = output<ItemInterface>();
-
-  constructor(private as: ApiService, private cms: ClassMapperService) {}
 
   ngOnInit(): void {
     this.loadItems();

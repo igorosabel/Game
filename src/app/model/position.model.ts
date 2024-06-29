@@ -1,6 +1,6 @@
-import { PositionInterface } from 'src/app/interfaces/player.interfaces';
+import { PositionInterface } from '@interfaces/player.interfaces';
 
-export class Position {
+export default class Position {
   constructor(public x: number = null, public y: number = null) {}
 
   fromInterface(p: PositionInterface): Position {

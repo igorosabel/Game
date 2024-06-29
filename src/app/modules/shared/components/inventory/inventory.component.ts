@@ -4,16 +4,17 @@ import {
   Component,
   ModelSignal,
   OutputEmitterRef,
-  ViewChild,
+  ViewContainerRef,
   WritableSignal,
+  inject,
   model,
   output,
   signal,
 } from '@angular/core';
-import { Equipment } from 'src/app/model/equipment.model';
-import { Inventory } from 'src/app/model/inventory.model';
-import { TooltipComponent } from 'src/app/modules/shared/components/tooltip/tooltip.component';
-import { PlayPlayer } from 'src/app/play/play-player.class';
+import Equipment from '@model/equipment.model';
+import Inventory from '@model/inventory.model';
+import PlayPlayer from '@play/play-player.class';
+import TooltipComponent from '@shared/components/tooltip/tooltip.component';
 
 @Component({
   standalone: true,
@@ -22,8 +23,11 @@ import { PlayPlayer } from 'src/app/play/play-player.class';
   styleUrls: ['./inventory.component.scss'],
   imports: [NgClass, DragDropModule],
 })
-export class InventoryComponent {
-  @ViewChild('tooltip', { static: true }) tooltip: TooltipComponent;
+export default class InventoryComponent {
+  private viewContainerRef: ViewContainerRef = inject(ViewContainerRef);
+  tooltip: TooltipComponent =
+    this.viewContainerRef.createComponent(TooltipComponent).instance;
+
   inventoryList: ModelSignal<Inventory[]> = model.required<Inventory[]>();
   equipment: ModelSignal<Equipment> = model.required<Equipment>();
   player: ModelSignal<PlayPlayer> = model.required<PlayPlayer>();

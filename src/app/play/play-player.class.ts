@@ -1,10 +1,10 @@
-import { Position } from 'src/app/model/position.model';
-import { PlayCharacter } from 'src/app/play/play-character.class';
-import { PlayConnection } from 'src/app/play/play-connection.class';
-import { PlayScenario } from 'src/app/play/play-scenario.class';
+import Position from '@model/position.model';
+import PlayCharacter from '@play/play-character.class';
+import PlayConnection from '@play/play-connection.class';
+import PlayScenario from '@play/play-scenario.class';
 import { EventDispatcher, IEvent } from 'strongly-typed-events';
 
-export class PlayPlayer extends PlayCharacter {
+export default class PlayPlayer extends PlayCharacter {
   private _onAction: EventDispatcher<PlayPlayer, Position> =
     new EventDispatcher<PlayPlayer, Position>();
   private _onHit: EventDispatcher<PlayPlayer, Position> = new EventDispatcher<

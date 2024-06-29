@@ -1,7 +1,7 @@
-import { InventoryInterface } from 'src/app/interfaces/player.interfaces';
-import { Item } from 'src/app/model/item.model';
+import { InventoryInterface } from '@interfaces/player.interfaces';
+import Item from '@model/item.model';
 
-export class Inventory {
+export default class Inventory {
   constructor(
     public id: number = null,
     public idGame: number = null,

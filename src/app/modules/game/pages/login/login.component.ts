@@ -1,16 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  LoginData,
-  LoginResult,
-  RegisterData,
-} from 'src/app/interfaces/interfaces';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { UserService } from 'src/app/services/user.service';
+import { LoginData, LoginResult, RegisterData } from '@interfaces/interfaces';
+import ApiService from '@services/api.service';
+import UserService from '@services/user.service';
+import HeaderComponent from '@shared/components/header/header.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -19,7 +15,11 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./login.component.scss'],
   imports: [NgClass, FormsModule, HeaderComponent],
 })
-export class LoginComponent {
+export default class LoginComponent {
+  private as: ApiService = inject(ApiService);
+  private user: UserService = inject(UserService);
+  private router: Router = inject(Router);
+
   selectedTab: string = 'login';
   loginData: LoginData = {
     email: '',
@@ -33,12 +33,6 @@ export class LoginComponent {
   loading: boolean = false;
   loginError: boolean = false;
   registerError: string = null;
-
-  constructor(
-    private as: ApiService,
-    private user: UserService,
-    private router: Router
-  ) {}
 
   selectTab(option: string): void {
     if (this.loading) {

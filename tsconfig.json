@@ -3,18 +3,30 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
+    "module": "ES2022",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2020", "dom"],
-    "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "lib": ["ES2022", "dom"],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@env/*": ["src/environments/*"],
+      "@interfaces/*": ["src/app/interfaces/*"],
+      "@model/*": ["src/app/model/*"],
+      "@modules/*": ["src/app/modules/*"],
+      "@admin/*": ["src/app/modules/admin/*"],
+      "@game/*": ["src/app/modules/game/*"],
+      "@shared/*": ["src/app/modules/shared/*"],
+      "@play/*": ["src/app/play/*"],
+      "@services/*": ["src/app/services/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,7 +1,7 @@
-import { ScenarioInterface } from 'src/app/interfaces/scenario.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { ScenarioInterface } from '@interfaces/scenario.interfaces';
+import Utils from '@shared/utils.class';
 
-export class Scenario {
+export default class Scenario {
   constructor(
     public id: number = null,
     public idWorld: number = null,

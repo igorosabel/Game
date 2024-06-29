@@ -1,18 +1,18 @@
-import { Constants } from 'src/app/constants';
-import { CharacterSizeInterface } from 'src/app/interfaces/character.interfaces';
-import { NPCData } from 'src/app/interfaces/player.interfaces';
-import { ConnectionListInterface } from 'src/app/interfaces/scenario.interfaces';
-import { Character } from 'src/app/model/character.model';
-import { PositionSize } from 'src/app/model/position-size.model';
-import { Position } from 'src/app/model/position.model';
-import { AssetCache } from 'src/app/play/asset-cache.class';
-import { PlayConnection } from 'src/app/play/play-connection.class';
-import { PlayScenario } from 'src/app/play/play-scenario.class';
-import { PlayUtils } from 'src/app/play/play-utils.class';
+import Constants from '@app/constants';
+import { CharacterSizeInterface } from '@interfaces/character.interfaces';
+import { NPCData } from '@interfaces/player.interfaces';
+import { ConnectionListInterface } from '@interfaces/scenario.interfaces';
+import Character from '@model/character.model';
+import PositionSize from '@model/position-size.model';
+import Position from '@model/position.model';
+import AssetCache from '@play/asset-cache.class';
+import PlayConnection from '@play/play-connection.class';
+import PlayNPC from '@play/play-npc.class';
+import PlayScenario from '@play/play-scenario.class';
+import PlayUtils from '@play/play-utils.class';
 import { EventDispatcher } from 'strongly-typed-events';
-import { PlayNPC } from './play-npc.class';
 
-export class PlayCharacter {
+export default class PlayCharacter {
   idScenarioData: number;
   orientation: string;
   orientationList: string[];
@@ -37,8 +37,7 @@ export class PlayCharacter {
   connections: ConnectionListInterface;
   npcData: NPCData;
 
-  _onConnection: EventDispatcher<PlayCharacter, PlayConnection> =
-    new EventDispatcher<PlayCharacter, PlayConnection>();
+  _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
   _onDie: EventDispatcher<PlayCharacter, number> = new EventDispatcher<
     PlayCharacter,
     number

@@ -1,7 +1,7 @@
-import { TagInterface } from 'src/app/interfaces/asset.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { TagInterface } from '@interfaces/asset.interfaces';
+import Utils from '@shared/utils.class';
 
-export class Tag {
+export default class Tag {
   constructor(public id: number = null, public name: string = null) {}
 
   fromInterface(t: TagInterface): Tag {

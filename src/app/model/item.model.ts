@@ -1,11 +1,8 @@
-import {
-  ItemFrameInterface,
-  ItemInterface,
-} from 'src/app/interfaces/item.interfaces';
-import { ItemFrame } from 'src/app/model/item-frame.model';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { ItemFrameInterface, ItemInterface } from '@interfaces/item.interfaces';
+import ItemFrame from '@model/item-frame.model';
+import Utils from '@shared/utils.class';
 
-export class Item {
+export default class Item {
   constructor(
     public id: number = null,
     public type: number = null,

@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./header.component.scss'],
   imports: [RouterLink],
 })
-export class HeaderComponent {
+export default class HeaderComponent {
   leftUrl: InputSignal<string[]> = input<string[]>([]);
   leftTitle: InputSignal<string> = input<string>(null);
   img: InputSignal<string> = input<string>(null);

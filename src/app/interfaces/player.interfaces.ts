@@ -1,4 +1,4 @@
-import { ItemInterface } from 'src/app/interfaces/item.interfaces';
+import { ItemInterface } from '@interfaces/item.interfaces';
 
 export interface InventoryInterface {
   id: number;

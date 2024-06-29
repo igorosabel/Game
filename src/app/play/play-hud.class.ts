@@ -1,7 +1,7 @@
-import { AssetCache } from 'src/app/play/asset-cache.class';
-import { PlayCanvas } from 'src/app/play/play-canvas.class';
+import AssetCache from '@play/asset-cache.class';
+import PlayCanvas from '@play/play-canvas.class';
 
-export class PlayHud {
+export default class PlayHud {
   health: number;
   currentHealth: number;
   money: number;
@@ -27,7 +27,7 @@ export class PlayHud {
     const posY = 20;
 
     // Money
-    ctx.drawImage(this.assets.get('/assets/hud/money.png'), 10, posY, 8, 10);
+    ctx.drawImage(this.assets.get('/hud/money.png'), 10, posY, 8, 10);
     ctx.font = "18px 'PressStart'";
     ctx.fillStyle = '#fff';
     ctx.fillText(this.money.toString(), 25, 32);
@@ -37,7 +37,7 @@ export class PlayHud {
     const posX = 60;
     for (let i: number = 0; i < hearts; i++) {
       ctx.drawImage(
-        this.assets.get('/assets/hud/heart_full.png'),
+        this.assets.get('/hud/heart_full.png'),
         posX + i * 20,
         posY,
         14,

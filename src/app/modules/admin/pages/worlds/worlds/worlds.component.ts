@@ -1,15 +1,15 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { StatusResult } from 'src/app/interfaces/interfaces';
-import { WorldResult } from 'src/app/interfaces/world.interfaces';
-import { Key } from 'src/app/model/key.model';
-import { World } from 'src/app/model/world.model';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+import { StatusResult } from '@interfaces/interfaces';
+import { WorldResult } from '@interfaces/world.interfaces';
+import Key from '@model/key.model';
+import World from '@model/world.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import HeaderComponent from '@shared/components/header/header.component';
 
 @Component({
   standalone: true,
@@ -19,17 +19,15 @@ import { PlayService } from 'src/app/services/play.service';
   imports: [NgClass, RouterLink, FormsModule, HeaderComponent],
 })
 export default class WorldsComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   worldList: World[] = [];
   message: string = null;
   loadedWorld: World = new World();
   showDetail: boolean = false;
   worldDetailHeader: string = '';
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.message = 'Cargando...';

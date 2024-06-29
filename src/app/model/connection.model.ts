@@ -1,7 +1,7 @@
-import { ConnectionInterface } from 'src/app/interfaces/scenario.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { ConnectionInterface } from '@interfaces/scenario.interfaces';
+import Utils from '@shared/utils.class';
 
-export class Connection {
+export default class Connection {
   constructor(
     public from: number = null,
     public fromName: string = null,

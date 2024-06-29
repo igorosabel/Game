@@ -1,10 +1,10 @@
-import { GameInterface } from 'src/app/interfaces/game.interfaces';
-import { InventoryInterface } from 'src/app/interfaces/player.interfaces';
-import { Equipment } from 'src/app/model/equipment.model';
-import { Inventory } from 'src/app/model/inventory.model';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { GameInterface } from '@interfaces/game.interfaces';
+import { InventoryInterface } from '@interfaces/player.interfaces';
+import Equipment from '@model/equipment.model';
+import Inventory from '@model/inventory.model';
+import Utils from '@shared/utils.class';
 
-export class Game {
+export default class Game {
   constructor(
     public id: number = null,
     public name: string = null,

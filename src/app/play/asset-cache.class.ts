@@ -1,8 +1,8 @@
-import { Character } from 'src/app/model/character.model';
-import { Equipment } from 'src/app/model/equipment.model';
-import { ScenarioObject } from 'src/app/model/scenario-object.model';
+import Character from '@model/character.model';
+import Equipment from '@model/equipment.model';
+import ScenarioObject from '@model/scenario-object.model';
 
-export class AssetCache {
+export default class AssetCache {
   _items: string[];
   _toLoad: number;
   _loaded: number;

@@ -1,15 +1,15 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
-import { StatusResult } from 'src/app/interfaces/interfaces';
-import { ScenarioResult } from 'src/app/interfaces/scenario.interfaces';
-import { Key } from 'src/app/model/key.model';
-import { Scenario } from 'src/app/model/scenario.model';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+import { StatusResult } from '@interfaces/interfaces';
+import { ScenarioResult } from '@interfaces/scenario.interfaces';
+import Key from '@model/key.model';
+import Scenario from '@model/scenario.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import HeaderComponent from '@shared/components/header/header.component';
 
 @Component({
   standalone: true,
@@ -19,19 +19,17 @@ import { PlayService } from 'src/app/services/play.service';
   imports: [NgClass, RouterLink, FormsModule, HeaderComponent],
 })
 export default class ScenariosComponent implements OnInit {
+  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   worldId: number = null;
   scenarioList: Scenario[] = [];
   message: string = null;
   loadedScenario: Scenario = new Scenario();
   showDetail: boolean = false;
   scenarioDetailHeader: string = '';
-
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params): void => {

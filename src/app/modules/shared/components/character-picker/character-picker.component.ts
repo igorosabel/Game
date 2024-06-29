@@ -4,19 +4,20 @@ import {
   OnInit,
   OutputEmitterRef,
   WritableSignal,
+  inject,
   output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Constants } from 'src/app/constants';
+import Constants from '@app/constants';
 import {
   CharacterInterface,
   CharacterResult,
   CharacterTypeInterface,
-} from 'src/app/interfaces/character.interfaces';
-import { Character } from 'src/app/model/character.model';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
+} from '@interfaces/character.interfaces';
+import Character from '@model/character.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
   standalone: true,
@@ -25,7 +26,10 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   styleUrls: ['./character-picker.component.scss'],
   imports: [NgClass, FormsModule],
 })
-export class CharacterPickerComponent implements OnInit {
+export default class CharacterPickerComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+
   typeList: CharacterTypeInterface[] = Constants.CHARACTER_TYPE_LIST;
   show: WritableSignal<boolean> = signal<boolean>(false);
   characterFilter: number = null;
@@ -35,8 +39,6 @@ export class CharacterPickerComponent implements OnInit {
 
   selectCharacterEvent: OutputEmitterRef<CharacterInterface> =
     output<CharacterInterface>();
-
-  constructor(private as: ApiService, private cms: ClassMapperService) {}
 
   ngOnInit(): void {
     this.loadCharacters();

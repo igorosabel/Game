@@ -1,28 +1,28 @@
-import { Injectable } from '@angular/core';
-import { CharacterInterface } from 'src/app/interfaces/character.interfaces';
+import { Injectable, inject } from '@angular/core';
+import { CharacterInterface } from '@interfaces/character.interfaces';
 import {
   ConnectionListInterface,
   ScenarioObjectInterface,
-} from 'src/app/interfaces/scenario.interfaces';
-import { Character } from 'src/app/model/character.model';
-import { Game } from 'src/app/model/game.model';
-import { Key } from 'src/app/model/key.model';
-import { Position } from 'src/app/model/position.model';
-import { ScenarioData } from 'src/app/model/scenario-data.model';
-import { AssetCache } from 'src/app/play/asset-cache.class';
-import { PlayCanvas } from 'src/app/play/play-canvas.class';
-import { PlayHud } from 'src/app/play/play-hud.class';
-import { PlayNPC } from 'src/app/play/play-npc.class';
-import { PlayObject } from 'src/app/play/play-object.class';
-import { PlayPlayer } from 'src/app/play/play-player.class';
-import { PlayScenario } from 'src/app/play/play-scenario.class';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
+} from '@interfaces/scenario.interfaces';
+import Character from '@model/character.model';
+import Game from '@model/game.model';
+import Key from '@model/key.model';
+import Position from '@model/position.model';
+import ScenarioData from '@model/scenario-data.model';
+import AssetCache from '@play/asset-cache.class';
+import PlayCanvas from '@play/play-canvas.class';
+import PlayHud from '@play/play-hud.class';
+import PlayNPC from '@play/play-npc.class';
+import PlayObject from '@play/play-object.class';
+import PlayPlayer from '@play/play-player.class';
+import PlayScenario from '@play/play-scenario.class';
+import ClassMapperService from '@services/class-mapper.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PlayService {
-  constructor(private cms: ClassMapperService) {}
+export default class PlayService {
+  private cms: ClassMapperService = inject(ClassMapperService);
 
   makeCanvas(): PlayCanvas {
     return new PlayCanvas();
@@ -109,18 +109,18 @@ export class PlayService {
     );
     playNPC.addCharacterSprites(assets);
     // Death sprites
-    playNPC.addSprite('death', assets.get('/assets/play/death-1.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-1.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-2.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-2.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-3.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-3.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-4.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-4.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-5.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-5.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-6.png'));
-    playNPC.addSprite('death', assets.get('/assets/play/death-6.png'));
+    playNPC.addSprite('death', assets.get('/play/death-1.png'));
+    playNPC.addSprite('death', assets.get('/play/death-1.png'));
+    playNPC.addSprite('death', assets.get('/play/death-2.png'));
+    playNPC.addSprite('death', assets.get('/play/death-2.png'));
+    playNPC.addSprite('death', assets.get('/play/death-3.png'));
+    playNPC.addSprite('death', assets.get('/play/death-3.png'));
+    playNPC.addSprite('death', assets.get('/play/death-4.png'));
+    playNPC.addSprite('death', assets.get('/play/death-4.png'));
+    playNPC.addSprite('death', assets.get('/play/death-5.png'));
+    playNPC.addSprite('death', assets.get('/play/death-5.png'));
+    playNPC.addSprite('death', assets.get('/play/death-6.png'));
+    playNPC.addSprite('death', assets.get('/play/death-6.png'));
 
     return playNPC;
   }

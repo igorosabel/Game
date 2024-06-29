@@ -1,16 +1,13 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  GameResult,
-  NewGameInterface,
-} from 'src/app/interfaces/game.interfaces';
-import { StatusIdResult, StatusResult } from 'src/app/interfaces/interfaces';
-import { Game } from 'src/app/model/game.model';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { DataShareService } from 'src/app/services/data-share.service';
+import { GameResult, NewGameInterface } from '@interfaces/game.interfaces';
+import { StatusIdResult, StatusResult } from '@interfaces/interfaces';
+import Game from '@model/game.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import DataShareService from '@services/data-share.service';
 
 @Component({
   standalone: true,
@@ -20,17 +17,15 @@ import { DataShareService } from 'src/app/services/data-share.service';
   imports: [NgClass, FormsModule],
 })
 export default class HallComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private dss: DataShareService = inject(DataShareService);
+  private router: Router = inject(Router);
+
   games: Game[] = [];
   gameSelected: number = 0;
   showNewGame: boolean = false;
   newGameName: string = null;
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private dss: DataShareService,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.loadGames();

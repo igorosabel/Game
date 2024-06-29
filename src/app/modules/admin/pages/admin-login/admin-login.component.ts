@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginData, LoginResult } from 'src/app/interfaces/interfaces';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { UserService } from 'src/app/services/user.service';
+import { LoginData, LoginResult } from '@interfaces/interfaces';
+import ApiService from '@services/api.service';
+import UserService from '@services/user.service';
+import HeaderComponent from '@shared/components/header/header.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -15,29 +15,27 @@ import { UserService } from 'src/app/services/user.service';
   imports: [FormsModule, HeaderComponent],
 })
 export default class AdminLoginComponent {
+  private as: ApiService = inject(ApiService);
+  private user: UserService = inject(UserService);
+  private router: Router = inject(Router);
+
   loginData: LoginData = {
     email: null,
     pass: null,
   };
-  loading: boolean = false;
-  loginError: boolean = false;
-
-  constructor(
-    private as: ApiService,
-    private user: UserService,
-    private router: Router
-  ) {}
+  loading: WritableSignal<boolean> = signal<boolean>(false);
+  loginError: WritableSignal<boolean> = signal<boolean>(false);
 
   doLogin(ev: MouseEvent): boolean {
     ev.preventDefault();
-    this.loginError = false;
+    this.loginError.set(false);
 
     if (this.loginData.email === '' || this.loginData.pass === '') {
-      this.loginError = true;
+      this.loginError.set(true);
       return false;
     }
 
-    this.loading = true;
+    this.loading.set(true);
     this.as
       .adminLogin(this.loginData)
       .subscribe((result: LoginResult): void => {
@@ -50,8 +48,8 @@ export default class AdminLoginComponent {
 
           this.router.navigate(['/admin/main']);
         } else {
-          this.loading = false;
-          this.loginError = true;
+          this.loading.set(false);
+          this.loginError.set(true);
         }
       });
   }

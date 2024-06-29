@@ -1,7 +1,7 @@
-import { ScenarioObjectFrameInterface } from 'src/app/interfaces/scenario.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { ScenarioObjectFrameInterface } from '@interfaces/scenario.interfaces';
+import Utils from '@shared/utils.class';
 
-export class ScenarioObjectFrame {
+export default class ScenarioObjectFrame {
   constructor(
     public id: number = null,
     public idAsset: number = null,

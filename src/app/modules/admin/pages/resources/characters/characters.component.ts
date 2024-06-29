@@ -1,29 +1,26 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
+import { AssetInterface } from '@interfaces/asset.interfaces';
 import {
   AnimationImageInterface,
   AnimationNumInterface,
   CharacterResult,
   CharacterTypeInterface,
-} from 'src/app/interfaces/character.interfaces';
-import {
-  StatusMessageResult,
-  StatusResult,
-} from 'src/app/interfaces/interfaces';
-import { ItemInterface } from 'src/app/interfaces/item.interfaces';
-import { CharacterFrame } from 'src/app/model/character-frame.model';
-import { Character } from 'src/app/model/character.model';
-import { Key } from 'src/app/model/key.model';
-import { Narrative } from 'src/app/model/narrative.model';
-import { AssetPickerComponent } from 'src/app/modules/shared/components/asset-picker/asset-picker.component';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { ItemPickerComponent } from 'src/app/modules/shared/components/item-picker/item-picker.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+} from '@interfaces/character.interfaces';
+import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
+import { ItemInterface } from '@interfaces/item.interfaces';
+import CharacterFrame from '@model/character-frame.model';
+import Character from '@model/character.model';
+import Key from '@model/key.model';
+import Narrative from '@model/narrative.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
+import HeaderComponent from '@shared/components/header/header.component';
+import ItemPickerComponent from '@shared/components/item-picker/item-picker.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -39,6 +36,10 @@ import { PlayService } from 'src/app/services/play.service';
   ],
 })
 export default class CharactersComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   characterFilter: number = null;
   filterListOption: string = 'items';
   typeList: CharacterTypeInterface[] = [
@@ -75,12 +76,6 @@ export default class CharactersComponent implements OnInit {
     left: null,
     right: null,
   };
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.loadCharacters();
@@ -124,16 +119,16 @@ export default class CharactersComponent implements OnInit {
     clearInterval(this.animationTimer.left);
     clearInterval(this.animationTimer.right);
     this.loadedCharacter = new Character();
-    this.loadedCharacter.dropAssetUrl = '/assets/admin/no-asset.svg';
+    this.loadedCharacter.dropAssetUrl = '/admin/no-asset.svg';
     this.dropItemName = 'Elige un item';
-    this.loadedCharacter.assetUpUrl = '/assets/admin/no-asset.svg';
-    this.animationImage.up = '/assets/admin/no-asset.svg';
-    this.loadedCharacter.assetDownUrl = '/assets/admin/no-asset.svg';
-    this.animationImage.down = '/assets/admin/no-asset.svg';
-    this.loadedCharacter.assetLeftUrl = '/assets/admin/no-asset.svg';
-    this.animationImage.left = '/assets/admin/no-asset.svg';
-    this.loadedCharacter.assetRightUrl = '/assets/admin/no-asset.svg';
-    this.animationImage.right = '/assets/admin/no-asset.svg';
+    this.loadedCharacter.assetUpUrl = '/admin/no-asset.svg';
+    this.animationImage.up = '/admin/no-asset.svg';
+    this.loadedCharacter.assetDownUrl = '/admin/no-asset.svg';
+    this.animationImage.down = '/admin/no-asset.svg';
+    this.loadedCharacter.assetLeftUrl = '/admin/no-asset.svg';
+    this.animationImage.left = '/admin/no-asset.svg';
+    this.loadedCharacter.assetRightUrl = '/admin/no-asset.svg';
+    this.animationImage.right = '/admin/no-asset.svg';
   }
 
   showAddCharacter(ev: MouseEvent = null): void {
@@ -167,7 +162,7 @@ export default class CharactersComponent implements OnInit {
   removeSelectedDropItem(ev: MouseEvent): void {
     ev && ev.preventDefault();
     this.loadedCharacter.dropIdItem = null;
-    this.loadedCharacter.dropAssetUrl = '/assets/admin/no-asset.svg';
+    this.loadedCharacter.dropAssetUrl = '/admin/no-asset.svg';
     this.dropItemName = 'Elige un item';
   }
 
@@ -484,17 +479,17 @@ export default class CharactersComponent implements OnInit {
       character.idAssetUp,
       character.assetUpUrl != null
         ? character.assetUpUrl
-        : '/assets/admin/no-asset.svg',
+        : '/admin/no-asset.svg',
       character.idAssetDown,
       character.assetDownUrl,
       character.idAssetLeft,
       character.assetLeftUrl != null
         ? character.assetLeftUrl
-        : '/assets/admin/no-asset.svg',
+        : '/admin/no-asset.svg',
       character.idAssetRight,
       character.assetRightUrl != null
         ? character.assetRightUrl
-        : '/assets/admin/no-asset.svg',
+        : '/admin/no-asset.svg',
       character.type,
       character.health,
       character.attack,
@@ -503,7 +498,7 @@ export default class CharactersComponent implements OnInit {
       character.dropIdItem,
       character.dropAssetUrl != null
         ? character.dropAssetUrl
-        : '/assets/admin/no-asset.svg',
+        : '/admin/no-asset.svg',
       character.dropChance,
       character.respawn,
       [],
@@ -521,7 +516,7 @@ export default class CharactersComponent implements OnInit {
       this.animationImage[sent.toLowerCase()] =
         this.loadedCharacter['asset' + sent + 'Url'] != null
           ? this.loadedCharacter['asset' + sent + 'Url']
-          : '/assets/admin/no-asset.svg';
+          : '/admin/no-asset.svg';
       this.animationInd[sent.toLowerCase()] = -1;
       clearInterval(this.animationTimer[sent.toLowerCase()]);
       this.animationTimer[sent.toLowerCase()] = null;

@@ -1,35 +1,35 @@
 import { NgClass, NgStyle } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Constants } from 'src/app/constants';
-import { BackgroundInterface } from 'src/app/interfaces/background.interfaces';
-import { CharacterInterface } from 'src/app/interfaces/character.interfaces';
+import Constants from '@app/constants';
+import { BackgroundInterface } from '@interfaces/background.interfaces';
+import { CharacterInterface } from '@interfaces/character.interfaces';
 import {
   StatusIdResult,
   StatusMessageResult,
   StatusResult,
-} from 'src/app/interfaces/interfaces';
+} from '@interfaces/interfaces';
 import {
   ConnectionListInterface,
   ScenarioDataResult,
   ScenarioObjectInterface,
   ScenarioResult,
   SelectedScenarioDataInterface,
-} from 'src/app/interfaces/scenario.interfaces';
-import { WorldStartInterface } from 'src/app/interfaces/world.interfaces';
-import { Connection } from 'src/app/model/connection.model';
-import { Key } from 'src/app/model/key.model';
-import { ScenarioData } from 'src/app/model/scenario-data.model';
-import { Scenario } from 'src/app/model/scenario.model';
-import { BackgroundPickerComponent } from 'src/app/modules/shared/components/background-picker/background-picker.component';
-import { CharacterPickerComponent } from 'src/app/modules/shared/components/character-picker/character-picker.component';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { ScenarioObjectPickerComponent } from 'src/app/modules/shared/components/scenario-object-picker/scenario-object-picker.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+} from '@interfaces/scenario.interfaces';
+import { WorldStartInterface } from '@interfaces/world.interfaces';
+import Connection from '@model/connection.model';
+import Key from '@model/key.model';
+import ScenarioData from '@model/scenario-data.model';
+import Scenario from '@model/scenario.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import BackgroundPickerComponent from '@shared/components/background-picker/background-picker.component';
+import CharacterPickerComponent from '@shared/components/character-picker/character-picker.component';
+import HeaderComponent from '@shared/components/header/header.component';
+import ScenarioObjectPickerComponent from '@shared/components/scenario-object-picker/scenario-object-picker.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -47,22 +47,28 @@ import { PlayService } from 'src/app/services/play.service';
   ],
 })
 export default class EditScenarioComponent implements OnInit {
+  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   selected: SelectedScenarioDataInterface = {
     selecting: null,
     idBackground: null,
-    backgroundAssetUrl: '/assets/admin/color-picker.svg',
+    backgroundAssetUrl: '/admin/color-picker.svg',
     idScenarioObject: null,
-    scenarioObjectAssetUrl: '/assets/admin/color-picker.svg',
+    scenarioObjectAssetUrl: '/admin/color-picker.svg',
     scenarioObjectWidth: null,
     scenarioObjectHeight: null,
     idCharacter: null,
-    characterAssetUrl: '/assets/admin/color-picker.svg',
+    characterAssetUrl: '/admin/color-picker.svg',
     characterWidth: null,
     characterHeight: null,
     characterHealth: null,
   };
   startSelecting: boolean = false;
-  mapGenerating: string = '/assets/admin/create-map.svg';
+  mapGenerating: string = '/admin/create-map.svg';
   showDebug: boolean = false;
   worldId: number = null;
   scenarioId: number = null;
@@ -88,14 +94,6 @@ export default class EditScenarioComponent implements OnInit {
   scenarioObjectPicker: ScenarioObjectPickerComponent;
   @ViewChild('characterPicker', { static: true })
   characterPicker: CharacterPickerComponent;
-
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params): void => {
@@ -167,7 +165,7 @@ export default class EditScenarioComponent implements OnInit {
     const firstUpper: string =
       mode.substring(0, 1).toUpperCase() + mode.substring(1);
     this.selected['id' + firstUpper] = null;
-    this.selected[mode + 'AssetUrl'] = '/assets/admin/color-picker.svg';
+    this.selected[mode + 'AssetUrl'] = '/admin/color-picker.svg';
     if (mode == 'scenarioObject' || mode == 'character') {
       this.selected[mode + 'Width'] = null;
       this.selected[mode + 'Height'] = null;
@@ -210,11 +208,11 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   createMap(): void {
-    this.mapGenerating = '/assets/loading.svg';
+    this.mapGenerating = '/img/loading.svg';
     this.as
       .generateMap(this.scenarioId)
       .subscribe((result: StatusResult): void => {
-        this.mapGenerating = '/assets/admin/create-map.svg';
+        this.mapGenerating = '/admin/create-map.svg';
         if (result.status == 'ok') {
           alert('¡Mapa creado!');
         } else {
@@ -257,12 +255,12 @@ export default class EditScenarioComponent implements OnInit {
         cell.idBackground != null ? cell.backgroundName : 'Sin fondo',
         cell.idBackground != null
           ? cell.backgroundAssetUrl
-          : '/assets/admin/no-asset.svg',
+          : '/admin/no-asset.svg',
         cell.idScenarioObject,
         cell.idScenarioObject != null ? cell.scenarioObjectName : 'Sin objeto',
         cell.idScenarioObject != null
           ? cell.scenarioObjectAssetUrl
-          : '/assets/admin/no-asset.svg',
+          : '/admin/no-asset.svg',
         cell.scenarioObjectWidth,
         cell.scenarioObjectHeight,
         cell.scenarioObjectBlockWidth,
@@ -271,7 +269,7 @@ export default class EditScenarioComponent implements OnInit {
         cell.idCharacter != null ? cell.characterName : 'Sin personaje',
         cell.idCharacter != null
           ? cell.characterAssetUrl
-          : '/assets/admin/no-asset.svg',
+          : '/admin/no-asset.svg',
         cell.characterWidth,
         cell.characterHeight,
         cell.characterBlockWidth,
@@ -326,7 +324,7 @@ export default class EditScenarioComponent implements OnInit {
   deleteBackground(ev: MouseEvent): void {
     ev && ev.preventDefault();
     this.loadedCell.idBackground = null;
-    this.loadedCell.backgroundAssetUrl = '/assets/admin/no-asset.svg';
+    this.loadedCell.backgroundAssetUrl = '/admin/no-asset.svg';
     this.loadedCell.backgroundName = 'Sin fondo';
   }
 
@@ -351,7 +349,7 @@ export default class EditScenarioComponent implements OnInit {
   deleteScenarioObject(ev: MouseEvent): void {
     ev && ev.preventDefault();
     this.loadedCell.idScenarioObject = null;
-    this.loadedCell.scenarioObjectAssetUrl = '/assets/admin/no-asset.svg';
+    this.loadedCell.scenarioObjectAssetUrl = '/admin/no-asset.svg';
     this.loadedCell.scenarioObjectName = 'Sin objeto';
   }
 
@@ -377,7 +375,7 @@ export default class EditScenarioComponent implements OnInit {
   deleteCharacter(ev: MouseEvent): void {
     ev && ev.preventDefault();
     this.loadedCell.idCharacter = null;
-    this.loadedCell.characterAssetUrl = '/assets/admin/no-asset.svg';
+    this.loadedCell.characterAssetUrl = '/admin/no-asset.svg';
     this.loadedCell.characterName = 'Sin personaje';
   }
 

@@ -19,14 +19,14 @@
 	   class="filter-option"
 	   [ngClass]="{'filter-option-selected': filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
-		<img src="/assets/admin/list-items.svg"
+		<img src="/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
 	   [ngClass]="{'filter-option-selected': filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
-		<img src="/assets/admin/list-list.svg"
+		<img src="/admin/list-list.svg"
 			 alt="Lista">
 	</a>
 	<a routerLink="/admin/resources/backgrounds/categories">Categorías</a>
@@ -39,18 +39,18 @@
 		<img [src]="background.assetUrl"
 			 [alt]="background.name">
 		@if (!background.crossable) {
-		<img src="/assets/admin/cant-cross.svg"
+		<img src="/admin/cant-cross.svg"
 			 class="cant-cross"
 			 alt="No se puede cruzar">
 		}
 		<div class="info">
 			<span [title]="background.name">{{ background.name }}</span>
-			<img src="/assets/admin/edit.svg"
+			<img src="/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
 				 class="background-edit"
 				 (click)="editBackground(background)">
-			<img src="/assets/admin/delete.svg"
+			<img src="/admin/delete.svg"
 				 alt="Borrar"
 				 title="Borrar"
 				 class="background-delete"

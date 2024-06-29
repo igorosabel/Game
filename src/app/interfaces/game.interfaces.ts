@@ -1,14 +1,14 @@
-import { CharacterInterface } from 'src/app/interfaces/character.interfaces';
+import { CharacterInterface } from '@interfaces/character.interfaces';
 import {
   EquipmentInterface,
   InventoryInterface,
   PositionInterface,
-} from 'src/app/interfaces/player.interfaces';
+} from '@interfaces/player.interfaces';
 import {
   ScenarioDataInterface,
   ScenarioObjectInterface,
-} from 'src/app/interfaces/scenario.interfaces';
-import { Key } from 'src/app/model/key.model';
+} from '@interfaces/scenario.interfaces';
+import Key from '@model/key.model';
 
 export interface GameInterface {
   id: number;

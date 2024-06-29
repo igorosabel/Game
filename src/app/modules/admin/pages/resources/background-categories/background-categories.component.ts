@@ -1,18 +1,15 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BackgroundCategoryResult } from 'src/app/interfaces/background.interfaces';
-import {
-  StatusMessageResult,
-  StatusResult,
-} from 'src/app/interfaces/interfaces';
-import { BackgroundCategory } from 'src/app/model/background-category.model';
-import { Key } from 'src/app/model/key.model';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+import { BackgroundCategoryResult } from '@interfaces/background.interfaces';
+import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
+import BackgroundCategory from '@model/background-category.model';
+import Key from '@model/key.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import HeaderComponent from '@shared/components/header/header.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -22,17 +19,15 @@ import { PlayService } from 'src/app/services/play.service';
   imports: [NgClass, FormsModule, HeaderComponent],
 })
 export default class BackgroundCategoriesComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   backgroundCategoryList: BackgroundCategory[] = [];
   message: string = null;
   loadedBackgroundCategory: BackgroundCategory = new BackgroundCategory();
   showDetail: boolean = false;
   backgroundCategoryDetailHeader: string = '';
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.message = 'Cargando...';

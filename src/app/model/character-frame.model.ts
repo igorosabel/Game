@@ -1,7 +1,7 @@
-import { CharacterFrameInterface } from 'src/app/interfaces/character.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { CharacterFrameInterface } from '@interfaces/character.interfaces';
+import Utils from '@shared/utils.class';
 
-export class CharacterFrame {
+export default class CharacterFrame {
   constructor(
     public id: number = null,
     public idAsset: number = null,

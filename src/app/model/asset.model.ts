@@ -1,11 +1,8 @@
-import {
-  AssetInterface,
-  TagInterface,
-} from 'src/app/interfaces/asset.interfaces';
-import { Tag } from 'src/app/model/tag.model';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { AssetInterface, TagInterface } from '@interfaces/asset.interfaces';
+import Tag from '@model/tag.model';
+import Utils from '@shared/utils.class';
 
-export class Asset {
+export default class Asset {
   _tagList: string;
   modified: boolean;
 

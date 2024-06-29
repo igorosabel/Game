@@ -1,7 +1,7 @@
-import { ItemFrameInterface } from 'src/app/interfaces/item.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { ItemFrameInterface } from '@interfaces/item.interfaces';
+import Utils from '@shared/utils.class';
 
-export class ItemFrame {
+export default class ItemFrame {
   constructor(
     public id: number = null,
     public idAsset: number = null,

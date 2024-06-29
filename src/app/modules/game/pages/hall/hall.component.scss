@@ -2,7 +2,7 @@
 	width: 100%;
 	height: 100%;
 	position: relative;
-	background: url('/assets/hall/game-bg.png');
+	background: url('/hall/game-bg.png');
 
 	.player-select-title {
 		position: absolute;
@@ -14,7 +14,7 @@
 		position: absolute;
 		width: 80%;
 		height: 66%;
-		background: url(/assets/hall/player-select-bg.png) no-repeat center center transparent;
+		background: url('/hall/player-select-bg.png') no-repeat center center transparent;
 		background-size: 100% 100%;
 		top: 200px;
 		left: 10%;
@@ -57,7 +57,7 @@
 		}
 
 		.player-select-game-selected {
-			background: url(/assets/hall/fairy.png) no-repeat 40px center transparent;
+			background: url('/hall/fairy.png') no-repeat 40px center transparent;
 		}
 	}
 

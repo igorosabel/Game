@@ -1,5 +1,5 @@
 <div class="player-select-bg">
-	<img src="/assets/hall/player-select.png"
+	<img src="/hall/player-select.png"
 		 class="player-select-title"
 		 alt="">
 
@@ -9,7 +9,7 @@
 			 [ngClass]="{'player-select-game-selected': gameSelected === i}"
 			 (mouseover)="changeSelectedGame(game)"
 			 (click)="selectGame(game)">
-			<img [src]="'/assets/hall/player-' + (i + 1) + '.png'"
+			<img [src]="'/hall/player-' + (i + 1) + '.png'"
 				 alt="">
 			<div class="player-select-name">{{game.name}}</div>
 			@if (game.idScenario !== null) {
@@ -32,7 +32,7 @@
 					   (click)="closeNewGame($event)">x</a>
 				</div>
 				<div class="new-game-info">
-					<img src="/assets/player/link-down.png"
+					<img src="/player/link-down.png"
 						 alt="">
 					<input type="text"
 						   name="new-game-name"

@@ -1,21 +1,18 @@
 import { Route, Routes } from '@angular/router';
-import { LoginComponent } from 'src/app/modules/game/pages/login/login.component';
+import LoginComponent from '@game/pages/login/login.component';
 
-export const routes: Routes = [
+const routes: Routes = [
   { path: '', component: LoginComponent },
   {
     path: 'admin',
     loadChildren: () =>
-      import('src/app/modules/admin/admin-routes').then(
-        (m): Route[] => m.ADMIN_ROUTES
-      ),
+      import('@admin/admin-routes').then((m): Route[] => m.default),
   },
   {
     path: 'game',
     loadChildren: () =>
-      import('src/app/modules/game/game-routes').then(
-        (m): Route[] => m.GAME_ROUTES
-      ),
+      import('@game/game-routes').then((m): Route[] => m.default),
   },
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
+export default routes;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
+import HeaderComponent from '@shared/components/header/header.component';
 
 @Component({
   standalone: true,

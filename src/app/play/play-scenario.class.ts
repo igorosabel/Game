@@ -1,14 +1,14 @@
-import { Constants } from 'src/app/constants';
-import { Position } from 'src/app/model/position.model';
-import { PlayCanvas } from 'src/app/play/play-canvas.class';
-import { PlayConnection } from 'src/app/play/play-connection.class';
-import { PlayNPC } from 'src/app/play/play-npc.class';
-import { PlayObject } from 'src/app/play/play-object.class';
-import { PlayPlayer } from 'src/app/play/play-player.class';
+import Constants from '@app/constants';
+import Position from '@model/position.model';
+import PlayCanvas from '@play/play-canvas.class';
+import PlayCharacter from '@play/play-character.class';
+import PlayConnection from '@play/play-connection.class';
+import PlayNPC from '@play/play-npc.class';
+import PlayObject from '@play/play-object.class';
+import PlayPlayer from '@play/play-player.class';
 import { EventDispatcher, IEvent } from 'strongly-typed-events';
-import { PlayCharacter } from './play-character.class';
 
-export class PlayScenario {
+export default class PlayScenario {
   debug: boolean;
   canvas: PlayCanvas;
   mapBackground: any;

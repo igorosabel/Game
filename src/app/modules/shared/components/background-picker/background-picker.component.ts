@@ -4,6 +4,7 @@ import {
   OnInit,
   OutputEmitterRef,
   WritableSignal,
+  inject,
   output,
   signal,
 } from '@angular/core';
@@ -12,11 +13,11 @@ import {
   BackgroundCategoryResult,
   BackgroundInterface,
   BackgroundResult,
-} from 'src/app/interfaces/background.interfaces';
-import { BackgroundCategory } from 'src/app/model/background-category.model';
-import { Background } from 'src/app/model/background.model';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
+} from '@interfaces/background.interfaces';
+import BackgroundCategory from '@model/background-category.model';
+import Background from '@model/background.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
   standalone: true,
@@ -25,7 +26,10 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   styleUrls: ['./background-picker.component.scss'],
   imports: [NgClass, FormsModule],
 })
-export class BackgroundPickerComponent implements OnInit {
+export default class BackgroundPickerComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+
   show: WritableSignal<boolean> = signal<boolean>(false);
   backgroundFilter: number = null;
   backgroundCategoryList: BackgroundCategory[] = [];
@@ -37,8 +41,6 @@ export class BackgroundPickerComponent implements OnInit {
 
   selectBackgroundEvent: OutputEmitterRef<BackgroundInterface> =
     output<BackgroundInterface>();
-
-  constructor(private as: ApiService, private cms: ClassMapperService) {}
 
   ngOnInit(): void {
     this.loadBackgroundCategories();

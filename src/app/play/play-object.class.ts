@@ -1,9 +1,9 @@
-import { Constants } from 'src/app/constants';
-import { PositionSize } from 'src/app/model/position-size.model';
-import { ScenarioObject } from 'src/app/model/scenario-object.model';
-import { AssetCache } from 'src/app/play/asset-cache.class';
+import Constants from '@app/constants';
+import PositionSize from '@model/position-size.model';
+import ScenarioObject from '@model/scenario-object.model';
+import AssetCache from '@play/asset-cache.class';
 
-export class PlayObject {
+export default class PlayObject {
   blockPos: PositionSize;
   object: ScenarioObject;
   currentFrame: number;

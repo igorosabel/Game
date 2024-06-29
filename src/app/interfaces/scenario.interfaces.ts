@@ -1,4 +1,4 @@
-import { Connection } from 'src/app/model/connection.model';
+import Connection from '@model/connection.model';
 
 export interface ScenarioTriggerTypeInterface {
   id: number;

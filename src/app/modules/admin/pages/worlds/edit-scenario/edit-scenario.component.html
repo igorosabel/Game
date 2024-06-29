@@ -42,7 +42,7 @@
 	</div>
 	<div class="start-picker">
 		<label>Inicio</label>
-		<img src="/assets/admin/start-location.svg"
+		<img src="/admin/start-location.svg"
 			 [ngClass]="{'start-selecting': startSelecting}"
 			 (click)="selectStart()"
 			 alt="">
@@ -65,7 +65,7 @@
 <div class="edit-scenario-container">
 	<div class="edit-scenario-with-connections">
 		<div class="edit-scenario-upbottom">
-			<img src="/assets/admin/go-up.svg"
+			<img src="/admin/go-up.svg"
 				 title="Conectar escenario por arriba"
 				 (click)="connect('up')"
 				 alt="Arriba">
@@ -79,7 +79,7 @@
 		</div>
 		<div class="edit-scenario-main">
 			<div class="edit-scenario-side">
-				<img src="/assets/admin/go-left.svg"
+				<img src="/admin/go-left.svg"
 					 title="Conectar escenario por la izquierda"
 					 (click)="connect('left')"
 					 alt="Izquierda">
@@ -122,7 +122,7 @@
 				}
 			</div>
 			<div class="edit-scenario-side">
-				<img src="/assets/admin/go-right.svg"
+				<img src="/admin/go-right.svg"
 					 title="Conectar escenario por la derecha"
 					 (click)="connect('right')"
 					 alt="Derecha">
@@ -136,7 +136,7 @@
 			</div>
 		</div>
 		<div class="edit-scenario-upbottom">
-			<img src="/assets/admin/go-down.svg"
+			<img src="/admin/go-down.svg"
 				 title="Conectar escenario por abajo"
 				 (click)="connect('down')"
 				 alt="Abajo">
@@ -169,7 +169,7 @@
 					@if (loadedCell.idBackground !== null) {
 					<a href="#"
 					   (click)="deleteBackground($event)">
-						<img src="/assets/admin/cant-cross.svg"
+						<img src="/admin/cant-cross.svg"
 							 alt="">
 					</a>
 					}
@@ -187,7 +187,7 @@
 					@if (loadedCell.idScenarioObject !== null) {
 					<a href="#"
 					   (click)="deleteScenarioObject($event)">
-						<img src="/assets/admin/cant-cross.svg"
+						<img src="/admin/cant-cross.svg"
 							 alt="">
 					</a>
 					}
@@ -205,7 +205,7 @@
 					@if (loadedCell.idCharacter !== null) {
 					<a href="#"
 					   (click)="deleteCharacter($event)">
-						<img src="/assets/admin/cant-cross.svg"
+						<img src="/admin/cant-cross.svg"
 							 alt="">
 					</a>
 					}

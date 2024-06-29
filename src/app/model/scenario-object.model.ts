@@ -2,12 +2,12 @@ import {
   ScenarioObjectDropInterface,
   ScenarioObjectFrameInterface,
   ScenarioObjectInterface,
-} from 'src/app/interfaces/scenario.interfaces';
-import { ScenarioObjectDrop } from 'src/app/model/scenario-object-drop.model';
-import { ScenarioObjectFrame } from 'src/app/model/scenario-object-frame.model';
-import { Utils } from 'src/app/modules/shared/utils.class';
+} from '@interfaces/scenario.interfaces';
+import ScenarioObjectDrop from '@model/scenario-object-drop.model';
+import ScenarioObjectFrame from '@model/scenario-object-frame.model';
+import Utils from '@shared/utils.class';
 
-export class ScenarioObject {
+export default class ScenarioObject {
   constructor(
     public id: number = null,
     public name: string = null,

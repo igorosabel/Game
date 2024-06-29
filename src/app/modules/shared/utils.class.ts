@@ -1,4 +1,4 @@
-export class Utils {
+export default class Utils {
   static urldecode(str: string): string {
     if (!str) {
       return '';

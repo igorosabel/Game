@@ -1,8 +1,8 @@
-import { Character } from 'src/app/model/character.model';
-import { PlayCharacter } from 'src/app/play/play-character.class';
-import { PlayScenario } from 'src/app/play/play-scenario.class';
+import Character from '@model/character.model';
+import PlayCharacter from '@play/play-character.class';
+import PlayScenario from '@play/play-scenario.class';
 
-export class PlayNPC extends PlayCharacter {
+export default class PlayNPC extends PlayCharacter {
   constructor(
     x: number,
     y: number,

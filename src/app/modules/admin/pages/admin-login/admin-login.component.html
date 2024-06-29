@@ -20,15 +20,15 @@
 			</div>
 		</div>
 		<div class="footer">
-			@if (!loading) {
+			@if (!loading()) {
 			<input type="submit"
 				   value="Continuar">
 			}
-			@if (loading) {
+			@if (loading()) {
 			<button disabled="disabled">Iniciando sesión...</button>
 			}
 		</div>
-		@if (loginError) {
+		@if (loginError()) {
 		<div class="error">Email o contraseña incorrecto</div>
 		}
 	</div>

@@ -1,6 +1,6 @@
 import { NgClass, NgStyle } from '@angular/common';
 import { Component, WritableSignal, signal } from '@angular/core';
-import { Item } from 'src/app/model/item.model';
+import Item from '@model/item.model';
 
 @Component({
   standalone: true,
@@ -9,7 +9,7 @@ import { Item } from 'src/app/model/item.model';
   styleUrls: ['./tooltip.component.scss'],
   imports: [NgClass, NgStyle],
 })
-export class TooltipComponent {
+export default class TooltipComponent {
   item: WritableSignal<Item> = signal<Item>(null);
   showTooltip: WritableSignal<boolean> = signal<boolean>(false);
   positionX: WritableSignal<number> = signal<number>(null);

@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { LoginResult } from 'src/app/interfaces/interfaces';
-import { DataShareService } from 'src/app/services/data-share.service';
+import { Injectable, inject } from '@angular/core';
+import { LoginResult } from '@interfaces/interfaces';
+import DataShareService from '@services/data-share.service';
 
 @Injectable()
-export class UserService {
+export default class UserService {
+  private dss: DataShareService = inject(DataShareService);
+
   logged: boolean = false;
   id: number = null;
   email: string = null;
   token: string = null;
-
-  constructor(private dss: DataShareService) {}
 
   loadLogin(): void {
     const loginObj: LoginResult = this.dss.getGlobal('login');

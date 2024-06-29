@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { DataShareGlobals } from '@interfaces/interfaces';
 
 @Injectable()
-export class DataShareService {
+export default class DataShareService {
   saveLocalStorage: boolean = true;
-  globals: {} = {};
+  globals: DataShareGlobals = {};
 
   setSaveLocalStorage(mode: boolean): void {
     this.saveLocalStorage = mode;
@@ -46,7 +47,9 @@ export class DataShareService {
       if (this.globals[key]) {
         return this.globals[key];
       }
-      const obj: any = JSON.parse(localStorage.getItem(key));
+      const obj = localStorage.getItem(key)
+        ? JSON.parse(localStorage.getItem(key) || '{}')
+        : null;
       if (!obj) {
         return null;
       }

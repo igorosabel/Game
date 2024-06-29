@@ -1,24 +1,21 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
+import { AssetInterface } from '@interfaces/asset.interfaces';
 import {
   BackgroundCategoryResult,
   BackgroundResult,
-} from 'src/app/interfaces/background.interfaces';
-import {
-  StatusMessageResult,
-  StatusResult,
-} from 'src/app/interfaces/interfaces';
-import { BackgroundCategory } from 'src/app/model/background-category.model';
-import { Background } from 'src/app/model/background.model';
-import { Key } from 'src/app/model/key.model';
-import { AssetPickerComponent } from 'src/app/modules/shared/components/asset-picker/asset-picker.component';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+} from '@interfaces/background.interfaces';
+import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
+import BackgroundCategory from '@model/background-category.model';
+import Background from '@model/background.model';
+import Key from '@model/key.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
+import HeaderComponent from '@shared/components/header/header.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -28,6 +25,10 @@ import { PlayService } from 'src/app/services/play.service';
   imports: [NgClass, FormsModule, HeaderComponent, AssetPickerComponent],
 })
 export default class BackgroundsComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   backgroundCategoryFilter: number = null;
   filterListOption: string = 'items';
   backgroundCategoryList: BackgroundCategory[] = [];
@@ -39,12 +40,6 @@ export default class BackgroundsComponent implements OnInit {
   backgroundDetailHeader: string = '';
   savingBackground: boolean = false;
   @ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.loadBackgroundCategories();
@@ -98,7 +93,7 @@ export default class BackgroundsComponent implements OnInit {
 
   resetLoadedBackground(): void {
     this.loadedBackground = new Background();
-    this.loadedBackground.assetUrl = '/assets/admin/no-asset.svg';
+    this.loadedBackground.assetUrl = '/admin/no-asset.svg';
   }
 
   showAddBackground(ev: MouseEvent = null): void {

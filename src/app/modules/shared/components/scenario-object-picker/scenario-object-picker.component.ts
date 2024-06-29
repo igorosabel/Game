@@ -4,16 +4,17 @@ import {
   OnInit,
   OutputEmitterRef,
   WritableSignal,
+  inject,
   output,
   signal,
 } from '@angular/core';
 import {
   ScenarioObjectInterface,
   ScenarioObjectResult,
-} from 'src/app/interfaces/scenario.interfaces';
-import { ScenarioObject } from 'src/app/model/scenario-object.model';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
+} from '@interfaces/scenario.interfaces';
+import ScenarioObject from '@model/scenario-object.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
   standalone: true,
@@ -22,15 +23,16 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   styleUrls: ['./scenario-object-picker.component.scss'],
   imports: [NgClass],
 })
-export class ScenarioObjectPickerComponent implements OnInit {
+export default class ScenarioObjectPickerComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+
   show: WritableSignal<boolean> = signal<boolean>(false);
   scenarioObjectList: ScenarioObject[] = [];
   selected: number = null;
 
   selectScenarioObjectEvent: OutputEmitterRef<ScenarioObjectInterface> =
     output<ScenarioObjectInterface>();
-
-  constructor(private as: ApiService, private cms: ClassMapperService) {}
 
   ngOnInit(): void {
     this.loadScenarioObjects();

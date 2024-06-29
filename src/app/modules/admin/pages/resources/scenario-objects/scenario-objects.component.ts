@@ -1,31 +1,28 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AssetInterface } from 'src/app/interfaces/asset.interfaces';
-import {
-  StatusMessageResult,
-  StatusResult,
-} from 'src/app/interfaces/interfaces';
-import { ItemInterface } from 'src/app/interfaces/item.interfaces';
+import { AssetInterface } from '@interfaces/asset.interfaces';
+import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
+import { ItemInterface } from '@interfaces/item.interfaces';
 import {
   ScenarioObjectResult,
   ScenarioResult,
   ScenarioTriggerTypeInterface,
-} from 'src/app/interfaces/scenario.interfaces';
-import { WorldResult } from 'src/app/interfaces/world.interfaces';
-import { Key } from 'src/app/model/key.model';
-import { ScenarioObjectDrop } from 'src/app/model/scenario-object-drop.model';
-import { ScenarioObjectFrame } from 'src/app/model/scenario-object-frame.model';
-import { ScenarioObject } from 'src/app/model/scenario-object.model';
-import { Scenario } from 'src/app/model/scenario.model';
-import { World } from 'src/app/model/world.model';
-import { AssetPickerComponent } from 'src/app/modules/shared/components/asset-picker/asset-picker.component';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { ItemPickerComponent } from 'src/app/modules/shared/components/item-picker/item-picker.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { PlayService } from 'src/app/services/play.service';
+} from '@interfaces/scenario.interfaces';
+import { WorldResult } from '@interfaces/world.interfaces';
+import Key from '@model/key.model';
+import ScenarioObjectDrop from '@model/scenario-object-drop.model';
+import ScenarioObjectFrame from '@model/scenario-object-frame.model';
+import ScenarioObject from '@model/scenario-object.model';
+import Scenario from '@model/scenario.model';
+import World from '@model/world.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import PlayService from '@services/play.service';
+import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
+import HeaderComponent from '@shared/components/header/header.component';
+import ItemPickerComponent from '@shared/components/item-picker/item-picker.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -41,6 +38,10 @@ import { PlayService } from 'src/app/services/play.service';
   ],
 })
 export default class ScenarioObjectsComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private play: PlayService = inject(PlayService);
+
   worldList: World[] = [];
   scenarioList: Scenario[] = [];
   filterListOption: string = 'items';
@@ -64,12 +65,6 @@ export default class ScenarioObjectsComponent implements OnInit {
   savingScenarioObject: boolean = false;
   @ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
   @ViewChild('itemPicker', { static: true }) itemPicker: ItemPickerComponent;
-
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private play: PlayService
-  ) {}
 
   ngOnInit(): void {
     this.loadWorlds();
@@ -108,9 +103,9 @@ export default class ScenarioObjectsComponent implements OnInit {
   resetLoadedScenarioObject(): void {
     clearInterval(this.animationTimer);
     this.loadedScenarioObject = new ScenarioObject();
-    this.loadedScenarioObject.assetUrl = '/assets/admin/no-asset.svg';
-    this.loadedScenarioObject.assetActiveUrl = '/assets/admin/no-asset.svg';
-    this.animationImage = '/assets/admin/no-asset.svg';
+    this.loadedScenarioObject.assetUrl = '/admin/no-asset.svg';
+    this.loadedScenarioObject.assetActiveUrl = '/admin/no-asset.svg';
+    this.animationImage = '/admin/no-asset.svg';
     this.activeTriggerWorld = null;
     this.scenarioList = [];
   }
@@ -206,7 +201,7 @@ export default class ScenarioObjectsComponent implements OnInit {
       this.loadedScenarioObject.activeTrigger = null;
       this.loadedScenarioObject.activeTriggerCustom = null;
       this.loadedScenarioObject.idAssetActive = null;
-      this.loadedScenarioObject.assetActiveUrl = '/assets/admin/no-asset.svg';
+      this.loadedScenarioObject.assetActiveUrl = '/admin/no-asset.svg';
       this.loadedScenarioObject.crossable = false;
       this.loadedScenarioObject.grabbable = false;
       this.loadedScenarioObject.breakable = false;
@@ -476,7 +471,7 @@ export default class ScenarioObjectsComponent implements OnInit {
     this.animationImage =
       this.loadedScenarioObject.assetUrl != null
         ? this.loadedScenarioObject.assetUrl
-        : '/assets/admin/no-asset.svg';
+        : '/admin/no-asset.svg';
     this.animationInd = -1;
     clearInterval(this.animationTimer);
     this.animationTimer = null;

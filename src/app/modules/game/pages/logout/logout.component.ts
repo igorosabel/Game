@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
+import UserService from '@services/user.service';
 
 @Component({
   standalone: true,
@@ -8,7 +8,8 @@ import { UserService } from 'src/app/services/user.service';
   template: '',
 })
 export default class LogoutComponent implements OnInit {
-  constructor(private user: UserService, private router: Router) {}
+  private user: UserService = inject(UserService);
+  private router: Router = inject(Router);
 
   ngOnInit(): void {
     this.user.logout();

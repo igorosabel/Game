@@ -1,7 +1,7 @@
-import { WorldInterface } from 'src/app/interfaces/world.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { WorldInterface } from '@interfaces/world.interfaces';
+import Utils from '@shared/utils.class';
 
-export class World {
+export default class World {
   constructor(
     public id: number = null,
     public name: string = null,

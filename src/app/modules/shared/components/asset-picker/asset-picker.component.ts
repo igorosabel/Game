@@ -4,6 +4,7 @@ import {
   OnInit,
   OutputEmitterRef,
   WritableSignal,
+  inject,
   output,
   signal,
 } from '@angular/core';
@@ -12,13 +13,13 @@ import {
   AssetInterface,
   AssetResult,
   TagResult,
-} from 'src/app/interfaces/asset.interfaces';
-import { WorldResult } from 'src/app/interfaces/world.interfaces';
-import { Asset } from 'src/app/model/asset.model';
-import { Tag } from 'src/app/model/tag.model';
-import { World } from 'src/app/model/world.model';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
+} from '@interfaces/asset.interfaces';
+import { WorldResult } from '@interfaces/world.interfaces';
+import Asset from '@model/asset.model';
+import Tag from '@model/tag.model';
+import World from '@model/world.model';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
   standalone: true,
@@ -27,7 +28,10 @@ import { ClassMapperService } from 'src/app/services/class-mapper.service';
   styleUrls: ['./asset-picker.component.scss'],
   imports: [NgClass, FormsModule],
 })
-export class AssetPickerComponent implements OnInit {
+export default class AssetPickerComponent implements OnInit {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+
   show: WritableSignal<boolean> = signal<boolean>(false);
   tagFilter: number = null;
   worldFilter: number = null;
@@ -39,8 +43,6 @@ export class AssetPickerComponent implements OnInit {
   selectedItem: number = null;
 
   selectAssetEvent: OutputEmitterRef<AssetInterface> = output<AssetInterface>();
-
-  constructor(private as: ApiService, private cms: ClassMapperService) {}
 
   ngOnInit(): void {
     this.loadTags();

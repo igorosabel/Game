@@ -1,45 +1,45 @@
 import { NgClass } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Constants } from 'src/app/constants';
+import Constants from '@app/constants';
 import {
   KeyboardLayoutInterface,
   PlayResult,
-} from 'src/app/interfaces/game.interfaces';
+} from '@interfaces/game.interfaces';
 import {
   LoadingStatusInterface,
   StatusIdResult,
   StatusResult,
-} from 'src/app/interfaces/interfaces';
+} from '@interfaces/interfaces';
 import {
   ConnectionListInterface,
   ConnectionResult,
-} from 'src/app/interfaces/scenario.interfaces';
-import { WorldResult } from 'src/app/interfaces/world.interfaces';
-import { Character } from 'src/app/model/character.model';
-import { Connection } from 'src/app/model/connection.model';
-import { Game } from 'src/app/model/game.model';
-import { Inventory } from 'src/app/model/inventory.model';
-import { Position } from 'src/app/model/position.model';
-import { ScenarioData } from 'src/app/model/scenario-data.model';
-import { ScenarioObject } from 'src/app/model/scenario-object.model';
-import { World } from 'src/app/model/world.model';
-import { HeaderComponent } from 'src/app/modules/shared/components/header/header.component';
-import { InventoryComponent } from 'src/app/modules/shared/components/inventory/inventory.component';
-import { Utils } from 'src/app/modules/shared/utils.class';
-import { AssetCache } from 'src/app/play/asset-cache.class';
-import { PlayCanvas } from 'src/app/play/play-canvas.class';
-import { PlayConnection } from 'src/app/play/play-connection.class';
-import { PlayHud } from 'src/app/play/play-hud.class';
-import { PlayNPC } from 'src/app/play/play-npc.class';
-import { PlayObject } from 'src/app/play/play-object.class';
-import { PlayPlayer } from 'src/app/play/play-player.class';
-import { PlayScenario } from 'src/app/play/play-scenario.class';
-import { PlayUtils } from 'src/app/play/play-utils.class';
-import { ApiService } from 'src/app/services/api.service';
-import { ClassMapperService } from 'src/app/services/class-mapper.service';
-import { DataShareService } from 'src/app/services/data-share.service';
-import { PlayService } from 'src/app/services/play.service';
+} from '@interfaces/scenario.interfaces';
+import { WorldResult } from '@interfaces/world.interfaces';
+import Character from '@model/character.model';
+import Connection from '@model/connection.model';
+import Game from '@model/game.model';
+import Inventory from '@model/inventory.model';
+import Position from '@model/position.model';
+import ScenarioData from '@model/scenario-data.model';
+import ScenarioObject from '@model/scenario-object.model';
+import World from '@model/world.model';
+import AssetCache from '@play/asset-cache.class';
+import PlayCanvas from '@play/play-canvas.class';
+import PlayConnection from '@play/play-connection.class';
+import PlayHud from '@play/play-hud.class';
+import PlayNPC from '@play/play-npc.class';
+import PlayObject from '@play/play-object.class';
+import PlayPlayer from '@play/play-player.class';
+import PlayScenario from '@play/play-scenario.class';
+import PlayUtils from '@play/play-utils.class';
+import ApiService from '@services/api.service';
+import ClassMapperService from '@services/class-mapper.service';
+import DataShareService from '@services/data-share.service';
+import PlayService from '@services/play.service';
+import HeaderComponent from '@shared/components/header/header.component';
+import InventoryComponent from '@shared/components/inventory/inventory.component';
+import Utils from '@shared/utils.class';
 
 @Component({
   standalone: true,
@@ -49,6 +49,11 @@ import { PlayService } from 'src/app/services/play.service';
   imports: [NgClass, FormsModule, HeaderComponent, InventoryComponent],
 })
 export default class PlayComponent implements OnInit, OnDestroy {
+  private as: ApiService = inject(ApiService);
+  private cms: ClassMapperService = inject(ClassMapperService);
+  private dss: DataShareService = inject(DataShareService);
+  private play: PlayService = inject(PlayService);
+
   loading: boolean = true;
   allLoaded: LoadingStatusInterface = {
     assets: false,
@@ -105,13 +110,6 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   @ViewChild('inventory', { static: false }) inventory: InventoryComponent;
 
-  constructor(
-    private as: ApiService,
-    private cms: ClassMapperService,
-    private dss: DataShareService,
-    private play: PlayService
-  ) {}
-
   ngOnInit(): void {
     this.getPlayData();
   }
@@ -143,10 +141,10 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.assetCache.add(this.mapBackground);
 
       // Hud
-      this.assetCache.add('/assets/hud/heart_empty.png');
-      this.assetCache.add('/assets/hud/heart_full.png');
-      this.assetCache.add('/assets/hud/heart_half.png');
-      this.assetCache.add('/assets/hud/money.png');
+      this.assetCache.add('/hud/heart_empty.png');
+      this.assetCache.add('/hud/heart_full.png');
+      this.assetCache.add('/hud/heart_half.png');
+      this.assetCache.add('/hud/money.png');
 
       // Equipment
       this.assetCache.addEquipment(this.game.equipment);
@@ -161,12 +159,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.assetCache.addCharacters(this.cms.getCharacters(result.characters));
 
       // Effects
-      this.assetCache.add('/assets/play/death-1.png');
-      this.assetCache.add('/assets/play/death-2.png');
-      this.assetCache.add('/assets/play/death-3.png');
-      this.assetCache.add('/assets/play/death-4.png');
-      this.assetCache.add('/assets/play/death-5.png');
-      this.assetCache.add('/assets/play/death-6.png');
+      this.assetCache.add('/play/death-1.png');
+      this.assetCache.add('/play/death-2.png');
+      this.assetCache.add('/play/death-3.png');
+      this.assetCache.add('/play/death-4.png');
+      this.assetCache.add('/play/death-5.png');
+      this.assetCache.add('/play/death-6.png');
 
       this.assetCache.load().then((): void => {
         this.allLoaded.assets = true;
@@ -212,154 +210,154 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   loadPlayerAssets(): void {
-    this.assetCache.add('/assets/player/down-walking-1.png');
-    this.assetCache.add('/assets/player/down-walking-2.png');
-    this.assetCache.add('/assets/player/down-walking-3.png');
-    this.assetCache.add('/assets/player/down-walking-4.png');
-    this.assetCache.add('/assets/player/down-walking-5.png');
-    this.assetCache.add('/assets/player/down-walking-6.png');
-    this.assetCache.add('/assets/player/down-walking-7.png');
-    this.assetCache.add('/assets/player/left-walking-1.png');
-    this.assetCache.add('/assets/player/left-walking-2.png');
-    this.assetCache.add('/assets/player/left-walking-3.png');
-    this.assetCache.add('/assets/player/left-walking-4.png');
-    this.assetCache.add('/assets/player/left-walking-5.png');
-    this.assetCache.add('/assets/player/left-walking-6.png');
-    this.assetCache.add('/assets/player/left-walking-7.png');
-    this.assetCache.add('/assets/player/right-walking-1.png');
-    this.assetCache.add('/assets/player/right-walking-2.png');
-    this.assetCache.add('/assets/player/right-walking-3.png');
-    this.assetCache.add('/assets/player/right-walking-4.png');
-    this.assetCache.add('/assets/player/right-walking-5.png');
-    this.assetCache.add('/assets/player/right-walking-6.png');
-    this.assetCache.add('/assets/player/right-walking-7.png');
-    this.assetCache.add('/assets/player/up-walking-1.png');
-    this.assetCache.add('/assets/player/up-walking-2.png');
-    this.assetCache.add('/assets/player/up-walking-3.png');
-    this.assetCache.add('/assets/player/up-walking-4.png');
-    this.assetCache.add('/assets/player/up-walking-5.png');
-    this.assetCache.add('/assets/player/up-walking-6.png');
-    this.assetCache.add('/assets/player/up-walking-7.png');
-    this.assetCache.add('/assets/player/link-down.png');
-    this.assetCache.add('/assets/player/link-left.png');
-    this.assetCache.add('/assets/player/link-right.png');
-    this.assetCache.add('/assets/player/link-up.png');
-    this.assetCache.add('/assets/player/down-hit-1.png');
-    this.assetCache.add('/assets/player/down-hit-2.png');
-    this.assetCache.add('/assets/player/down-hit-3.png');
-    this.assetCache.add('/assets/player/down-hit-4.png');
-    this.assetCache.add('/assets/player/down-hit-5.png');
-    this.assetCache.add('/assets/player/down-hit-6.png');
-    this.assetCache.add('/assets/player/left-hit-1.png');
-    this.assetCache.add('/assets/player/left-hit-2.png');
-    this.assetCache.add('/assets/player/left-hit-3.png');
-    this.assetCache.add('/assets/player/left-hit-4.png');
-    this.assetCache.add('/assets/player/left-hit-5.png');
-    this.assetCache.add('/assets/player/left-hit-6.png');
-    this.assetCache.add('/assets/player/left-hit-7.png');
-    this.assetCache.add('/assets/player/left-hit-8.png');
-    this.assetCache.add('/assets/player/left-hit-9.png');
-    this.assetCache.add('/assets/player/right-hit-1.png');
-    this.assetCache.add('/assets/player/right-hit-2.png');
-    this.assetCache.add('/assets/player/right-hit-3.png');
-    this.assetCache.add('/assets/player/right-hit-4.png');
-    this.assetCache.add('/assets/player/right-hit-5.png');
-    this.assetCache.add('/assets/player/right-hit-6.png');
-    this.assetCache.add('/assets/player/right-hit-7.png');
-    this.assetCache.add('/assets/player/right-hit-8.png');
-    this.assetCache.add('/assets/player/right-hit-9.png');
-    this.assetCache.add('/assets/player/up-hit-1.png');
-    this.assetCache.add('/assets/player/up-hit-2.png');
-    this.assetCache.add('/assets/player/up-hit-3.png');
-    this.assetCache.add('/assets/player/up-hit-4.png');
-    this.assetCache.add('/assets/player/up-hit-5.png');
-    this.assetCache.add('/assets/player/up-hit-6.png');
-    this.assetCache.add('/assets/player/up-hit-7.png');
-    this.assetCache.add('/assets/player/up-hit-8.png');
-    this.assetCache.add('/assets/player/up-hit-9.png');
+    this.assetCache.add('/player/down-walking-1.png');
+    this.assetCache.add('/player/down-walking-2.png');
+    this.assetCache.add('/player/down-walking-3.png');
+    this.assetCache.add('/player/down-walking-4.png');
+    this.assetCache.add('/player/down-walking-5.png');
+    this.assetCache.add('/player/down-walking-6.png');
+    this.assetCache.add('/player/down-walking-7.png');
+    this.assetCache.add('/player/left-walking-1.png');
+    this.assetCache.add('/player/left-walking-2.png');
+    this.assetCache.add('/player/left-walking-3.png');
+    this.assetCache.add('/player/left-walking-4.png');
+    this.assetCache.add('/player/left-walking-5.png');
+    this.assetCache.add('/player/left-walking-6.png');
+    this.assetCache.add('/player/left-walking-7.png');
+    this.assetCache.add('/player/right-walking-1.png');
+    this.assetCache.add('/player/right-walking-2.png');
+    this.assetCache.add('/player/right-walking-3.png');
+    this.assetCache.add('/player/right-walking-4.png');
+    this.assetCache.add('/player/right-walking-5.png');
+    this.assetCache.add('/player/right-walking-6.png');
+    this.assetCache.add('/player/right-walking-7.png');
+    this.assetCache.add('/player/up-walking-1.png');
+    this.assetCache.add('/player/up-walking-2.png');
+    this.assetCache.add('/player/up-walking-3.png');
+    this.assetCache.add('/player/up-walking-4.png');
+    this.assetCache.add('/player/up-walking-5.png');
+    this.assetCache.add('/player/up-walking-6.png');
+    this.assetCache.add('/player/up-walking-7.png');
+    this.assetCache.add('/player/link-down.png');
+    this.assetCache.add('/player/link-left.png');
+    this.assetCache.add('/player/link-right.png');
+    this.assetCache.add('/player/link-up.png');
+    this.assetCache.add('/player/down-hit-1.png');
+    this.assetCache.add('/player/down-hit-2.png');
+    this.assetCache.add('/player/down-hit-3.png');
+    this.assetCache.add('/player/down-hit-4.png');
+    this.assetCache.add('/player/down-hit-5.png');
+    this.assetCache.add('/player/down-hit-6.png');
+    this.assetCache.add('/player/left-hit-1.png');
+    this.assetCache.add('/player/left-hit-2.png');
+    this.assetCache.add('/player/left-hit-3.png');
+    this.assetCache.add('/player/left-hit-4.png');
+    this.assetCache.add('/player/left-hit-5.png');
+    this.assetCache.add('/player/left-hit-6.png');
+    this.assetCache.add('/player/left-hit-7.png');
+    this.assetCache.add('/player/left-hit-8.png');
+    this.assetCache.add('/player/left-hit-9.png');
+    this.assetCache.add('/player/right-hit-1.png');
+    this.assetCache.add('/player/right-hit-2.png');
+    this.assetCache.add('/player/right-hit-3.png');
+    this.assetCache.add('/player/right-hit-4.png');
+    this.assetCache.add('/player/right-hit-5.png');
+    this.assetCache.add('/player/right-hit-6.png');
+    this.assetCache.add('/player/right-hit-7.png');
+    this.assetCache.add('/player/right-hit-8.png');
+    this.assetCache.add('/player/right-hit-9.png');
+    this.assetCache.add('/player/up-hit-1.png');
+    this.assetCache.add('/player/up-hit-2.png');
+    this.assetCache.add('/player/up-hit-3.png');
+    this.assetCache.add('/player/up-hit-4.png');
+    this.assetCache.add('/player/up-hit-5.png');
+    this.assetCache.add('/player/up-hit-6.png');
+    this.assetCache.add('/player/up-hit-7.png');
+    this.assetCache.add('/player/up-hit-8.png');
+    this.assetCache.add('/player/up-hit-9.png');
   }
 
   updatePlayerAssets(player: PlayPlayer): PlayPlayer {
     player.sprites['up'] = [
-      this.assetCache.get('/assets/player/link-up.png'),
-      this.assetCache.get('/assets/player/up-walking-1.png'),
-      this.assetCache.get('/assets/player/up-walking-2.png'),
-      this.assetCache.get('/assets/player/up-walking-3.png'),
-      this.assetCache.get('/assets/player/up-walking-4.png'),
-      this.assetCache.get('/assets/player/up-walking-5.png'),
-      this.assetCache.get('/assets/player/up-walking-6.png'),
-      this.assetCache.get('/assets/player/up-walking-7.png'),
+      this.assetCache.get('/player/link-up.png'),
+      this.assetCache.get('/player/up-walking-1.png'),
+      this.assetCache.get('/player/up-walking-2.png'),
+      this.assetCache.get('/player/up-walking-3.png'),
+      this.assetCache.get('/player/up-walking-4.png'),
+      this.assetCache.get('/player/up-walking-5.png'),
+      this.assetCache.get('/player/up-walking-6.png'),
+      this.assetCache.get('/player/up-walking-7.png'),
     ];
     player.sprites['down'] = [
-      this.assetCache.get('/assets/player/link-down.png'),
-      this.assetCache.get('/assets/player/down-walking-1.png'),
-      this.assetCache.get('/assets/player/down-walking-2.png'),
-      this.assetCache.get('/assets/player/down-walking-3.png'),
-      this.assetCache.get('/assets/player/down-walking-4.png'),
-      this.assetCache.get('/assets/player/down-walking-5.png'),
-      this.assetCache.get('/assets/player/down-walking-6.png'),
-      this.assetCache.get('/assets/player/down-walking-7.png'),
+      this.assetCache.get('/player/link-down.png'),
+      this.assetCache.get('/player/down-walking-1.png'),
+      this.assetCache.get('/player/down-walking-2.png'),
+      this.assetCache.get('/player/down-walking-3.png'),
+      this.assetCache.get('/player/down-walking-4.png'),
+      this.assetCache.get('/player/down-walking-5.png'),
+      this.assetCache.get('/player/down-walking-6.png'),
+      this.assetCache.get('/player/down-walking-7.png'),
     ];
     player.sprites['left'] = [
-      this.assetCache.get('/assets/player/link-left.png'),
-      this.assetCache.get('/assets/player/left-walking-1.png'),
-      this.assetCache.get('/assets/player/left-walking-2.png'),
-      this.assetCache.get('/assets/player/left-walking-3.png'),
-      this.assetCache.get('/assets/player/left-walking-4.png'),
-      this.assetCache.get('/assets/player/left-walking-5.png'),
-      this.assetCache.get('/assets/player/left-walking-6.png'),
-      this.assetCache.get('/assets/player/left-walking-7.png'),
+      this.assetCache.get('/player/link-left.png'),
+      this.assetCache.get('/player/left-walking-1.png'),
+      this.assetCache.get('/player/left-walking-2.png'),
+      this.assetCache.get('/player/left-walking-3.png'),
+      this.assetCache.get('/player/left-walking-4.png'),
+      this.assetCache.get('/player/left-walking-5.png'),
+      this.assetCache.get('/player/left-walking-6.png'),
+      this.assetCache.get('/player/left-walking-7.png'),
     ];
     player.sprites['right'] = [
-      this.assetCache.get('/assets/player/link-right.png'),
-      this.assetCache.get('/assets/player/right-walking-1.png'),
-      this.assetCache.get('/assets/player/right-walking-2.png'),
-      this.assetCache.get('/assets/player/right-walking-3.png'),
-      this.assetCache.get('/assets/player/right-walking-4.png'),
-      this.assetCache.get('/assets/player/right-walking-5.png'),
-      this.assetCache.get('/assets/player/right-walking-6.png'),
-      this.assetCache.get('/assets/player/right-walking-7.png'),
+      this.assetCache.get('/player/link-right.png'),
+      this.assetCache.get('/player/right-walking-1.png'),
+      this.assetCache.get('/player/right-walking-2.png'),
+      this.assetCache.get('/player/right-walking-3.png'),
+      this.assetCache.get('/player/right-walking-4.png'),
+      this.assetCache.get('/player/right-walking-5.png'),
+      this.assetCache.get('/player/right-walking-6.png'),
+      this.assetCache.get('/player/right-walking-7.png'),
     ];
     player.sprites['hit-up'] = [
-      this.assetCache.get('/assets/player/up-hit-1.png'),
-      this.assetCache.get('/assets/player/up-hit-2.png'),
-      this.assetCache.get('/assets/player/up-hit-3.png'),
-      this.assetCache.get('/assets/player/up-hit-4.png'),
-      this.assetCache.get('/assets/player/up-hit-5.png'),
-      this.assetCache.get('/assets/player/up-hit-6.png'),
-      this.assetCache.get('/assets/player/up-hit-7.png'),
-      this.assetCache.get('/assets/player/up-hit-8.png'),
-      this.assetCache.get('/assets/player/up-hit-9.png'),
+      this.assetCache.get('/player/up-hit-1.png'),
+      this.assetCache.get('/player/up-hit-2.png'),
+      this.assetCache.get('/player/up-hit-3.png'),
+      this.assetCache.get('/player/up-hit-4.png'),
+      this.assetCache.get('/player/up-hit-5.png'),
+      this.assetCache.get('/player/up-hit-6.png'),
+      this.assetCache.get('/player/up-hit-7.png'),
+      this.assetCache.get('/player/up-hit-8.png'),
+      this.assetCache.get('/player/up-hit-9.png'),
     ];
     player.sprites['hit-down'] = [
-      this.assetCache.get('/assets/player/down-hit-1.png'),
-      this.assetCache.get('/assets/player/down-hit-2.png'),
-      this.assetCache.get('/assets/player/down-hit-3.png'),
-      this.assetCache.get('/assets/player/down-hit-4.png'),
-      this.assetCache.get('/assets/player/down-hit-5.png'),
-      this.assetCache.get('/assets/player/down-hit-6.png'),
+      this.assetCache.get('/player/down-hit-1.png'),
+      this.assetCache.get('/player/down-hit-2.png'),
+      this.assetCache.get('/player/down-hit-3.png'),
+      this.assetCache.get('/player/down-hit-4.png'),
+      this.assetCache.get('/player/down-hit-5.png'),
+      this.assetCache.get('/player/down-hit-6.png'),
     ];
     player.sprites['hit-left'] = [
-      this.assetCache.get('/assets/player/left-hit-1.png'),
-      this.assetCache.get('/assets/player/left-hit-2.png'),
-      this.assetCache.get('/assets/player/left-hit-3.png'),
-      this.assetCache.get('/assets/player/left-hit-4.png'),
-      this.assetCache.get('/assets/player/left-hit-5.png'),
-      this.assetCache.get('/assets/player/left-hit-6.png'),
-      this.assetCache.get('/assets/player/left-hit-7.png'),
-      this.assetCache.get('/assets/player/left-hit-8.png'),
-      this.assetCache.get('/assets/player/left-hit-9.png'),
+      this.assetCache.get('/player/left-hit-1.png'),
+      this.assetCache.get('/player/left-hit-2.png'),
+      this.assetCache.get('/player/left-hit-3.png'),
+      this.assetCache.get('/player/left-hit-4.png'),
+      this.assetCache.get('/player/left-hit-5.png'),
+      this.assetCache.get('/player/left-hit-6.png'),
+      this.assetCache.get('/player/left-hit-7.png'),
+      this.assetCache.get('/player/left-hit-8.png'),
+      this.assetCache.get('/player/left-hit-9.png'),
     ];
     player.sprites['hit-right'] = [
-      this.assetCache.get('/assets/player/right-hit-1.png'),
-      this.assetCache.get('/assets/player/right-hit-2.png'),
-      this.assetCache.get('/assets/player/right-hit-3.png'),
-      this.assetCache.get('/assets/player/right-hit-4.png'),
-      this.assetCache.get('/assets/player/right-hit-5.png'),
-      this.assetCache.get('/assets/player/right-hit-6.png'),
-      this.assetCache.get('/assets/player/right-hit-7.png'),
-      this.assetCache.get('/assets/player/right-hit-8.png'),
-      this.assetCache.get('/assets/player/right-hit-9.png'),
+      this.assetCache.get('/player/right-hit-1.png'),
+      this.assetCache.get('/player/right-hit-2.png'),
+      this.assetCache.get('/player/right-hit-3.png'),
+      this.assetCache.get('/player/right-hit-4.png'),
+      this.assetCache.get('/player/right-hit-5.png'),
+      this.assetCache.get('/player/right-hit-6.png'),
+      this.assetCache.get('/player/right-hit-7.png'),
+      this.assetCache.get('/player/right-hit-8.png'),
+      this.assetCache.get('/player/right-hit-9.png'),
     ];
 
     return player;

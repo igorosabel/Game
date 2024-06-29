@@ -2,14 +2,14 @@ import {
   CharacterFrameInterface,
   CharacterInterface,
   NarrativeInterface,
-} from 'src/app/interfaces/character.interfaces';
-import { CharacterFrame } from 'src/app/model/character-frame.model';
-import { Inventory } from 'src/app/model/inventory.model';
-import { Item } from 'src/app/model/item.model';
-import { Narrative } from 'src/app/model/narrative.model';
-import { Utils } from 'src/app/modules/shared/utils.class';
+} from '@interfaces/character.interfaces';
+import CharacterFrame from '@model/character-frame.model';
+import Inventory from '@model/inventory.model';
+import Item from '@model/item.model';
+import Narrative from '@model/narrative.model';
+import Utils from '@shared/utils.class';
 
-export class Character {
+export default class Character {
   currentHealth: number = null;
   money: number = null;
   items: Item[] = null;

@@ -1,6 +1,6 @@
-import { PlayConnectionInterface } from 'src/app/interfaces/scenario.interfaces';
+import { PlayConnectionInterface } from '@interfaces/scenario.interfaces';
 
-export class PlayConnection {
+export default class PlayConnection {
   constructor(
     public to: number = null,
     public x: number = null,

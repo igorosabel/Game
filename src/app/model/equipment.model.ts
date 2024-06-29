@@ -1,7 +1,7 @@
-import { EquipmentInterface } from 'src/app/interfaces/player.interfaces';
-import { Item } from 'src/app/model/item.model';
+import { EquipmentInterface } from '@interfaces/player.interfaces';
+import Item from '@model/item.model';
 
-export class Equipment {
+export default class Equipment {
   constructor(
     public head: Item = null,
     public necklace: Item = null,

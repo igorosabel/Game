@@ -1,26 +1,26 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { environment } from '@env/environment';
 import {
   AssetInterface,
   AssetResult,
   TagResult,
-} from 'src/app/interfaces/asset.interfaces';
+} from '@interfaces/asset.interfaces';
 import {
   BackgroundCategoryInterface,
   BackgroundCategoryResult,
   BackgroundInterface,
   BackgroundResult,
-} from 'src/app/interfaces/background.interfaces';
+} from '@interfaces/background.interfaces';
 import {
   CharacterInterface,
   CharacterResult,
-} from 'src/app/interfaces/character.interfaces';
+} from '@interfaces/character.interfaces';
 import {
   GameResult,
   NewGameInterface,
   PlayResult,
-} from 'src/app/interfaces/game.interfaces';
+} from '@interfaces/game.interfaces';
 import {
   LoginData,
   LoginResult,
@@ -28,8 +28,8 @@ import {
   StatusIdResult,
   StatusMessageResult,
   StatusResult,
-} from 'src/app/interfaces/interfaces';
-import { ItemInterface, ItemResult } from 'src/app/interfaces/item.interfaces';
+} from '@interfaces/interfaces';
+import { ItemInterface, ItemResult } from '@interfaces/item.interfaces';
 import {
   ConnectionInterface,
   ConnectionResult,
@@ -40,21 +40,21 @@ import {
   ScenarioObjectInterface,
   ScenarioObjectResult,
   ScenarioResult,
-} from 'src/app/interfaces/scenario.interfaces';
+} from '@interfaces/scenario.interfaces';
 import {
   WorldInterface,
   WorldResult,
   WorldStartInterface,
-} from 'src/app/interfaces/world.interfaces';
-import { environment } from 'src/environments/environment';
+} from '@interfaces/world.interfaces';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
-  url: string = environment.url;
+export default class ApiService {
+  private http: HttpClient = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  url: string = environment.url;
 
   login(data: LoginData): Observable<LoginResult> {
     return this.http.post<LoginResult>(this.url + 'api/login', data);

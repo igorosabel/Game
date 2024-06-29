@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import AuthService from '@services/auth.service';
 import { Observable, tap } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 
-export const isLoggedGuardFn: CanActivateFn = (): Observable<boolean> => {
+const isLoggedGuardFn: CanActivateFn = (): Observable<boolean> => {
   const router = inject(Router);
   return inject(AuthService)
     .isAuthenticated()
@@ -14,3 +14,4 @@ export const isLoggedGuardFn: CanActivateFn = (): Observable<boolean> => {
       )
     );
 };
+export default isLoggedGuardFn;

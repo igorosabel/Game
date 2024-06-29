@@ -10,12 +10,12 @@
 		@for (world of worldList; track world.id) {
 		<div class="row">
 			<a [routerLink]="['/admin', 'world', world.id, 'scenarios']">{{world.name}}</a>
-			<img src="/assets/admin/edit.svg"
+			<img src="/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
 				 class="edit"
 				 (click)="editWorld(world)">
-			<img src="/assets/admin/delete.svg"
+			<img src="/admin/delete.svg"
 				 alt="Borrar"
 				 title="Borrar"
 				 class="delete"

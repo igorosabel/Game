@@ -1,7 +1,7 @@
-import { ScenarioObjectDropInterface } from 'src/app/interfaces/scenario.interfaces';
-import { Utils } from 'src/app/modules/shared/utils.class';
+import { ScenarioObjectDropInterface } from '@interfaces/scenario.interfaces';
+import Utils from '@shared/utils.class';
 
-export class ScenarioObjectDrop {
+export default class ScenarioObjectDrop {
   constructor(
     public id: number = null,
     public idItem: number = null,
