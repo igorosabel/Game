@@ -27,14 +27,14 @@
 	   class="filter-option"
 	   [ngClass]="{'filter-option-selected':filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
-		<img src="/admin/list-items.svg"
+		<img src="/img/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
 	   [ngClass]="{'filter-option-selected':filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
-		<img src="/admin/list-list.svg"
+		<img src="/img/admin/list-list.svg"
 			 alt="Lista">
 	</a>
 </div>
@@ -47,11 +47,11 @@
 			 [alt]="asset.name">
 		<div class="info">
 			<span [title]="asset.name">{{ asset.name }}</span>
-			<img src="/admin/edit.svg"
+			<img src="/img/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
 				 (click)="editAsset(asset)">
-			<img src="/admin/delete.svg"
+			<img src="/img/admin/delete.svg"
 				 alt="Borrar"
 				 title="Borrar"
 				 (click)="deleteAsset(asset)">

@@ -10,12 +10,12 @@
 		@for (scenario of scenarioList; track scenario.id) {
 		<div class="row">
 			<a [routerLink]="['/admin', 'world', scenario.idWorld, 'scenario', scenario.id]">{{scenario.name}}</a>
-			<img src="/admin/edit.svg"
+			<img src="/img/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
 				 class="edit"
 				 (click)="editScenario(scenario)">
-			<img src="/admin/delete.svg"
+			<img src="/img/admin/delete.svg"
 				 alt="Borrar"
 				 title="Borrar"
 				 class="delete"

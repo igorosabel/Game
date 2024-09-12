@@ -9,14 +9,14 @@
 	   class="filter-option"
 	   [ngClass]="{'filter-option-selected': filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
-		<img src="/admin/list-items.svg"
+		<img src="/img/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
 	   [ngClass]="{'filter-option-selected': filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
-		<img src="/admin/list-list.svg"
+		<img src="/img/admin/list-list.svg"
 			 alt="Lista">
 	</a>
 </div>
@@ -29,12 +29,12 @@
 			 [alt]="scenarioObject.name">
 		<div class="info">
 			<span [title]="scenarioObject.name">{{ scenarioObject.name }}</span>
-			<img src="/admin/edit.svg"
+			<img src="/img/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
 				 class="edit"
 				 (click)="editScenarioObject(scenarioObject)">
-			<img src="/admin/delete.svg"
+			<img src="/img/admin/delete.svg"
 				 alt="Borrar"
 				 title="Borrar"
 				 class="delete"
@@ -257,20 +257,20 @@
 				<div class="animation-frame">
 					<button class="animation-delete"
 							(click)="frameDelete(frame)">
-						<img src="/admin/frame-delete.svg"
+						<img src="/img/admin/frame-delete.svg"
 							 alt="Borrar">
 					</button>
 					@if (ind !== 0) {
 					<button class="animation-left"
 							(click)="frameLeft(frame)">
-						<img src="/admin/frame-left.svg"
+						<img src="/img/admin/frame-left.svg"
 							 alt="Izquierda">
 					</button>
 					}
 					@if (ind !== loadedScenarioObject.frames.length-1) {
 					<button class="animation-right"
 							(click)="frameRight(frame)">
-						<img src="/admin/frame-right.svg"
+						<img src="/img/admin/frame-right.svg"
 							 alt="Derecha">
 					</button>
 					}
@@ -279,7 +279,7 @@
 				</div>
 				}
 				<div class="animation-frame animation-frame-add">
-					<img src="/admin/add-frame.svg"
+					<img src="/img/admin/add-frame.svg"
 						 (click)="openAssetPicker('frames')"
 						 alt="">
 				</div>
