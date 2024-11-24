@@ -1,5 +1,4 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NgClass } from '@angular/common';
 import {
   Component,
   ModelSignal,
@@ -17,11 +16,10 @@ import PlayPlayer from '@play/play-player.class';
 import TooltipComponent from '@shared/components/tooltip/tooltip.component';
 
 @Component({
-  standalone: true,
   selector: 'game-inventory',
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss'],
-  imports: [NgClass, DragDropModule],
+  imports: [DragDropModule],
 })
 export default class InventoryComponent {
   private viewContainerRef: ViewContainerRef = inject(ViewContainerRef);

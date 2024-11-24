@@ -17,7 +17,6 @@ import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
-  standalone: true,
   selector: 'game-scenario-object-picker',
   templateUrl: './scenario-object-picker.component.html',
   styleUrls: ['./scenario-object-picker.component.scss'],

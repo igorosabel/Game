@@ -20,7 +20,6 @@ import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
-  standalone: true,
   selector: 'game-background-picker',
   templateUrl: './background-picker.component.html',
   styleUrls: ['./background-picker.component.scss'],

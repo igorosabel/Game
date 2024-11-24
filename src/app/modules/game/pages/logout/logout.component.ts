@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import UserService from '@services/user.service';
 
 @Component({
-  standalone: true,
   selector: 'game-logout',
   template: '',
 })

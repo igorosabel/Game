@@ -25,7 +25,6 @@ import ItemPickerComponent from '@shared/components/item-picker/item-picker.comp
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-scenario-objects',
   templateUrl: './scenario-objects.component.html',
   styleUrls: ['./scenario-objects.component.scss', '../../scss/resources.scss'],

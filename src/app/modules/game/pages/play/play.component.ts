@@ -42,7 +42,6 @@ import InventoryComponent from '@shared/components/inventory/inventory.component
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-play',
   templateUrl: './play.component.html',
   styleUrls: ['./play.component.scss'],

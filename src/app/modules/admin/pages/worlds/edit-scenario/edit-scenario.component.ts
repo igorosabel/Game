@@ -32,7 +32,6 @@ import ScenarioObjectPickerComponent from '@shared/components/scenario-object-pi
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-edit-scenario',
   templateUrl: './edit-scenario.component.html',
   styleUrls: ['./edit-scenario.component.scss'],

@@ -12,7 +12,6 @@ import HeaderComponent from '@shared/components/header/header.component';
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-background-categories',
   templateUrl: './background-categories.component.html',
   styleUrls: ['../../scss/admin.scss'],

@@ -20,7 +20,6 @@ import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
-  standalone: true,
   selector: 'game-item-picker',
   templateUrl: './item-picker.component.html',
   styleUrls: ['./item-picker.component.scss'],

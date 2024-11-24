@@ -3,7 +3,6 @@ import { Component, WritableSignal, signal } from '@angular/core';
 import Item from '@model/item.model';
 
 @Component({
-  standalone: true,
   selector: 'game-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],

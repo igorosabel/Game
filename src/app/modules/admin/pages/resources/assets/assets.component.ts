@@ -15,7 +15,6 @@ import HeaderComponent from '@shared/components/header/header.component';
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-assets',
   templateUrl: './assets.component.html',
   styleUrls: ['./assets.component.scss', '../../scss/resources.scss'],

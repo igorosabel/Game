@@ -9,7 +9,6 @@ import HeaderComponent from '@shared/components/header/header.component';
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],

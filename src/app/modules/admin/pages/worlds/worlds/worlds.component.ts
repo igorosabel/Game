@@ -12,7 +12,6 @@ import PlayService from '@services/play.service';
 import HeaderComponent from '@shared/components/header/header.component';
 
 @Component({
-  standalone: true,
   selector: 'game-worlds',
   templateUrl: './worlds.component.html',
   styleUrls: ['../../scss/admin.scss'],

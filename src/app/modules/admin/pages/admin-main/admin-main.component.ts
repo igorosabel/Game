@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import HeaderComponent from '@shared/components/header/header.component';
 
 @Component({
-  standalone: true,
   selector: 'game-admin-main',
   templateUrl: './admin-main.component.html',
   styleUrls: ['../scss/admin.scss'],

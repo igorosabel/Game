@@ -22,7 +22,6 @@ import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 
 @Component({
-  standalone: true,
   selector: 'game-asset-picker',
   templateUrl: './asset-picker.component.html',
   styleUrls: ['./asset-picker.component.scss'],

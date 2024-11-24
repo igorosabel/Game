@@ -2,7 +2,6 @@ import { Component, InputSignal, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  standalone: true,
   selector: 'game-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],

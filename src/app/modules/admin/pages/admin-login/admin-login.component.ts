@@ -8,7 +8,6 @@ import HeaderComponent from '@shared/components/header/header.component';
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-admin-login',
   templateUrl: './admin-login.component.html',
   styleUrls: ['./admin-login.component.scss'],

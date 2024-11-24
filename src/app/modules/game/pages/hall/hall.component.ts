@@ -10,7 +10,6 @@ import ClassMapperService from '@services/class-mapper.service';
 import DataShareService from '@services/data-share.service';
 
 @Component({
-  standalone: true,
   selector: 'game-hall',
   templateUrl: './hall.component.html',
   styleUrls: ['./hall.component.scss'],

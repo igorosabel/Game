@@ -23,7 +23,6 @@ import ItemPickerComponent from '@shared/components/item-picker/item-picker.comp
 import Utils from '@shared/utils.class';
 
 @Component({
-  standalone: true,
   selector: 'game-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss', '../../scss/resources.scss'],
