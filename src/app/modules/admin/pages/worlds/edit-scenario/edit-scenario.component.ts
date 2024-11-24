@@ -22,6 +22,7 @@ import Connection from '@model/connection.model';
 import Key from '@model/key.model';
 import ScenarioData from '@model/scenario-data.model';
 import Scenario from '@model/scenario.model';
+import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 import PlayService from '@services/play.service';
@@ -29,7 +30,6 @@ import BackgroundPickerComponent from '@shared/components/background-picker/back
 import CharacterPickerComponent from '@shared/components/character-picker/character-picker.component';
 import HeaderComponent from '@shared/components/header/header.component';
 import ScenarioObjectPickerComponent from '@shared/components/scenario-object-picker/scenario-object-picker.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-edit-scenario',
@@ -188,7 +188,7 @@ export default class EditScenarioComponent implements OnInit {
         if (result.status == 'in-use') {
           const conf: boolean = confirm(
             '¡Atención! Este mundo tiene ya un punto de inicio en otro escenario ("' +
-              Utils.urldecode(result.message) +
+              urldecode(result.message) +
               '"). ¿Estás seguro de querer marcar este punto como inicio?'
           );
           if (conf) {

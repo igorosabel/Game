@@ -24,6 +24,7 @@ import Position from '@model/position.model';
 import ScenarioData from '@model/scenario-data.model';
 import ScenarioObject from '@model/scenario-object.model';
 import World from '@model/world.model';
+import { urldecode } from '@osumi/tools';
 import AssetCache from '@play/asset-cache.class';
 import PlayCanvas from '@play/play-canvas.class';
 import PlayConnection from '@play/play-connection.class';
@@ -39,7 +40,6 @@ import DataShareService from '@services/data-share.service';
 import PlayService from '@services/play.service';
 import HeaderComponent from '@shared/components/header/header.component';
 import InventoryComponent from '@shared/components/inventory/inventory.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-play',
@@ -120,7 +120,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.scenarioId = result.idScenario;
       this.game = this.cms.getGame(result.game);
       this.blockers = this.cms.getPositions(result.blockers);
-      this.mapBackground = Utils.urldecode(result.mapBackground);
+      this.mapBackground = urldecode(result.mapBackground);
       this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
       this.scenarioObjects = this.cms.getScenarioObjects(
         result.scenarioObjects

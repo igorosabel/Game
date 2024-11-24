@@ -2,10 +2,10 @@ import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginData, LoginResult } from '@interfaces/interfaces';
+import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
 import UserService from '@services/user.service';
 import HeaderComponent from '@shared/components/header/header.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-admin-login',
@@ -41,8 +41,8 @@ export default class AdminLoginComponent {
         if (result.status === 'ok') {
           this.user.logged = true;
           this.user.id = result.id;
-          this.user.email = Utils.urldecode(result.email);
-          this.user.token = Utils.urldecode(result.token);
+          this.user.email = urldecode(result.email);
+          this.user.token = urldecode(result.token);
           this.user.saveLogin();
 
           this.router.navigate(['/admin/main']);

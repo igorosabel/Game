@@ -31,7 +31,10 @@
             ],
             "styles": ["src/styles.scss"],
             "scripts": [],
-            "allowedCommonJsDependencies": ["strongly-typed-events"]
+            "allowedCommonJsDependencies": [
+              "strongly-typed-events",
+              "@osumi/tools"
+            ]
           },
           "configurations": {
             "production": {

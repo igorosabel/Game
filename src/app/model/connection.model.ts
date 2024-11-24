@@ -1,5 +1,5 @@
 import { ConnectionInterface } from '@interfaces/scenario.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Connection {
   constructor(
@@ -12,9 +12,9 @@ export default class Connection {
 
   fromInterface(c: ConnectionInterface): Connection {
     this.from = c.from;
-    this.fromName = Utils.urldecode(c.fromName);
+    this.fromName = urldecode(c.fromName);
     this.to = c.to;
-    this.toName = Utils.urldecode(c.toName);
+    this.toName = urldecode(c.toName);
     this.orientation = c.orientation;
 
     return this;
@@ -23,9 +23,9 @@ export default class Connection {
   toInterface(): ConnectionInterface {
     return {
       from: this.from,
-      fromName: Utils.urlencode(this.fromName),
+      fromName: urlencode(this.fromName),
       to: this.to,
-      toName: Utils.urlencode(this.toName),
+      toName: urlencode(this.toName),
       orientation: this.orientation,
     };
   }

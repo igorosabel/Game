@@ -16,13 +16,13 @@ import ScenarioObjectFrame from '@model/scenario-object-frame.model';
 import ScenarioObject from '@model/scenario-object.model';
 import Scenario from '@model/scenario.model';
 import World from '@model/world.model';
+import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 import PlayService from '@services/play.service';
 import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
 import HeaderComponent from '@shared/components/header/header.component';
 import ItemPickerComponent from '@shared/components/item-picker/item-picker.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-scenario-objects',
@@ -497,7 +497,7 @@ export default class ScenarioObjectsComponent implements OnInit {
           if (result.status == 'in-use') {
             alert(
               'El objeto de escenario está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n' +
-                Utils.urldecode(result.message)
+                urldecode(result.message)
             );
           }
           if (result.status == 'error') {

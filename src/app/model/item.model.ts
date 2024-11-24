@@ -1,6 +1,6 @@
 import { ItemFrameInterface, ItemInterface } from '@interfaces/item.interfaces';
 import ItemFrame from '@model/item-frame.model';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Item {
   constructor(
@@ -31,8 +31,8 @@ export default class Item {
     this.id = i.id;
     this.type = i.type;
     this.idAsset = i.idAsset;
-    this.assetUrl = Utils.urldecode(i.assetUrl);
-    this.name = Utils.urldecode(i.name);
+    this.assetUrl = urldecode(i.assetUrl);
+    this.name = urldecode(i.name);
     this.money = i.money;
     this.health = i.health;
     this.attack = i.attack;
@@ -51,8 +51,8 @@ export default class Item {
       id: this.id,
       type: this.type,
       idAsset: this.idAsset,
-      assetUrl: Utils.urlencode(this.assetUrl),
-      name: Utils.urlencode(this.name),
+      assetUrl: urlencode(this.assetUrl),
+      name: urlencode(this.name),
       money: this.money,
       health: this.health,
       attack: this.attack,

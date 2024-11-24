@@ -1,5 +1,5 @@
 import { ScenarioInterface } from '@interfaces/scenario.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Scenario {
   constructor(
@@ -15,7 +15,7 @@ export default class Scenario {
   fromInterface(s: ScenarioInterface): Scenario {
     this.id = s.id;
     this.idWorld = s.idWorld;
-    this.name = Utils.urldecode(s.name);
+    this.name = urldecode(s.name);
     this.startX = s.startX;
     this.startY = s.startY;
     this.initial = s.initial;
@@ -28,7 +28,7 @@ export default class Scenario {
     return {
       id: this.id,
       idWorld: this.idWorld,
-      name: Utils.urlencode(this.name),
+      name: urlencode(this.name),
       startX: this.startX,
       startY: this.startY,
       initial: this.initial,

@@ -1,5 +1,5 @@
 import { ScenarioDataInterface } from '@interfaces/scenario.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ScenarioData {
   constructor(
@@ -33,18 +33,18 @@ export default class ScenarioData {
     this.x = sd.x;
     this.y = sd.y;
     this.idBackground = sd.idBackground;
-    this.backgroundName = Utils.urldecode(sd.backgroundName);
-    this.backgroundAssetUrl = Utils.urldecode(sd.backgroundAssetUrl);
+    this.backgroundName = urldecode(sd.backgroundName);
+    this.backgroundAssetUrl = urldecode(sd.backgroundAssetUrl);
     this.idScenarioObject = sd.idScenarioObject;
-    this.scenarioObjectName = Utils.urldecode(sd.scenarioObjectName);
-    this.scenarioObjectAssetUrl = Utils.urldecode(sd.scenarioObjectAssetUrl);
+    this.scenarioObjectName = urldecode(sd.scenarioObjectName);
+    this.scenarioObjectAssetUrl = urldecode(sd.scenarioObjectAssetUrl);
     this.scenarioObjectWidth = sd.scenarioObjectWidth;
     this.scenarioObjectHeight = sd.scenarioObjectHeight;
     this.scenarioObjectBlockWidth = sd.scenarioObjectBlockWidth;
     this.scenarioObjectBlockHeight = sd.scenarioObjectBlockHeight;
     this.idCharacter = sd.idCharacter;
-    this.characterName = Utils.urldecode(sd.characterName);
-    this.characterAssetUrl = Utils.urldecode(sd.characterAssetUrl);
+    this.characterName = urldecode(sd.characterName);
+    this.characterAssetUrl = urldecode(sd.characterAssetUrl);
     this.characterWidth = sd.characterWidth;
     this.characterHeight = sd.characterHeight;
     this.characterBlockWidth = sd.characterBlockWidth;
@@ -61,18 +61,18 @@ export default class ScenarioData {
       x: this.x,
       y: this.y,
       idBackground: this.idBackground,
-      backgroundName: this.backgroundName,
-      backgroundAssetUrl: this.backgroundAssetUrl,
+      backgroundName: urlencode(this.backgroundName),
+      backgroundAssetUrl: urlencode(this.backgroundAssetUrl),
       idScenarioObject: this.idScenarioObject,
-      scenarioObjectName: this.scenarioObjectName,
-      scenarioObjectAssetUrl: this.scenarioObjectAssetUrl,
+      scenarioObjectName: urlencode(this.scenarioObjectName),
+      scenarioObjectAssetUrl: urlencode(this.scenarioObjectAssetUrl),
       scenarioObjectWidth: this.scenarioObjectWidth,
       scenarioObjectHeight: this.scenarioObjectHeight,
       scenarioObjectBlockWidth: this.scenarioObjectBlockWidth,
       scenarioObjectBlockHeight: this.scenarioObjectBlockHeight,
       idCharacter: this.idCharacter,
-      characterName: this.characterName,
-      characterAssetUrl: this.characterAssetUrl,
+      characterName: urlencode(this.characterName),
+      characterAssetUrl: urlencode(this.characterAssetUrl),
       characterWidth: this.characterWidth,
       characterHeight: this.characterHeight,
       characterBlockWidth: this.characterBlockWidth,

@@ -7,12 +7,12 @@ import { ItemResult, ItemTypeInterface } from '@interfaces/item.interfaces';
 import ItemFrame from '@model/item-frame.model';
 import Item from '@model/item.model';
 import Key from '@model/key.model';
+import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 import PlayService from '@services/play.service';
 import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
 import HeaderComponent from '@shared/components/header/header.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-items',
@@ -367,7 +367,7 @@ export default class ItemsComponent implements OnInit {
           if (result.status == 'in-use') {
             alert(
               'El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n' +
-                Utils.urldecode(result.message)
+                urldecode(result.message)
             );
           }
           if (result.status == 'error') {

@@ -2,7 +2,7 @@ import { GameInterface } from '@interfaces/game.interfaces';
 import { InventoryInterface } from '@interfaces/player.interfaces';
 import Equipment from '@model/equipment.model';
 import Inventory from '@model/inventory.model';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Game {
   constructor(
@@ -24,7 +24,7 @@ export default class Game {
 
   fromInterface(g: GameInterface): Game {
     this.id = g.id;
-    this.name = Utils.urldecode(g.name);
+    this.name = urldecode(g.name);
     this.idScenario = g.idScenario;
     this.positionX = g.positionX;
     this.positionY = g.positionY;
@@ -46,7 +46,7 @@ export default class Game {
   toInterface(): GameInterface {
     return {
       id: this.id,
-      name: Utils.urlencode(this.name),
+      name: urlencode(this.name),
       idScenario: this.idScenario,
       positionX: this.positionX,
       positionY: this.positionY,

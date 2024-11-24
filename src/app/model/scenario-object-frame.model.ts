@@ -1,5 +1,5 @@
 import { ScenarioObjectFrameInterface } from '@interfaces/scenario.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ScenarioObjectFrame {
   constructor(
@@ -12,7 +12,7 @@ export default class ScenarioObjectFrame {
   fromInterface(sof: ScenarioObjectFrameInterface): ScenarioObjectFrame {
     this.id = sof.id;
     this.idAsset = sof.idAsset;
-    this.assetUrl = Utils.urldecode(sof.assetUrl);
+    this.assetUrl = urldecode(sof.assetUrl);
     this.order = sof.order;
 
     return this;
@@ -22,7 +22,7 @@ export default class ScenarioObjectFrame {
     return {
       id: this.id,
       idAsset: this.idAsset,
-      assetUrl: Utils.urlencode(this.assetUrl),
+      assetUrl: urlencode(this.assetUrl),
       order: this.order,
     };
   }

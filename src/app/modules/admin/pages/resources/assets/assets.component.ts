@@ -8,11 +8,11 @@ import Asset from '@model/asset.model';
 import Key from '@model/key.model';
 import Tag from '@model/tag.model';
 import World from '@model/world.model';
+import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 import PlayService from '@services/play.service';
 import HeaderComponent from '@shared/components/header/header.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-assets',
@@ -205,7 +205,7 @@ export default class AssetsComponent implements OnInit {
           } else {
             alert(
               '¡Ocurrio un error al borrar el recurso!\n\n' +
-                Utils.urldecode(result.message)
+                urldecode(result.message)
             );
             this.message = 'ERROR: Ocurrió un error al borrar el recurso.';
           }

@@ -10,12 +10,12 @@ import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
 import BackgroundCategory from '@model/background-category.model';
 import Background from '@model/background.model';
 import Key from '@model/key.model';
+import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
 import PlayService from '@services/play.service';
 import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
 import HeaderComponent from '@shared/components/header/header.component';
-import Utils from '@shared/utils.class';
 
 @Component({
   selector: 'game-backgrounds',
@@ -180,7 +180,7 @@ export default class BackgroundsComponent implements OnInit {
           if (result.status == 'in-use') {
             alert(
               'El fondo está siendo usado en un escenario. Cámbialo o bórralo antes de poder borrar este fondo\n\n' +
-                Utils.urldecode(result.message)
+                urldecode(result.message)
             );
           }
           if (result.status == 'error') {

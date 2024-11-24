@@ -1,5 +1,5 @@
 import { NarrativeInterface } from '@interfaces/character.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Narrative {
   constructor(
@@ -10,7 +10,7 @@ export default class Narrative {
 
   fromInterface(n: NarrativeInterface): Narrative {
     this.id = n.id;
-    this.dialog = Utils.urldecode(n.dialog);
+    this.dialog = urldecode(n.dialog);
     this.order = n.order;
 
     return this;
@@ -19,7 +19,7 @@ export default class Narrative {
   toInterface(): NarrativeInterface {
     return {
       id: this.id,
-      dialog: Utils.urlencode(this.dialog),
+      dialog: urlencode(this.dialog),
       order: this.order,
     };
   }

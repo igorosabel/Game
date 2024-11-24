@@ -1,5 +1,5 @@
 import { WorldInterface } from '@interfaces/world.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class World {
   constructor(
@@ -14,11 +14,11 @@ export default class World {
 
   fromInterface(w: WorldInterface): World {
     this.id = w.id;
-    this.name = Utils.urldecode(w.name);
-    this.description = Utils.urldecode(w.description);
-    this.wordOne = Utils.urldecode(w.wordOne);
-    this.wordTwo = Utils.urldecode(w.wordTwo);
-    this.wordThree = Utils.urldecode(w.wordThree);
+    this.name = urldecode(w.name);
+    this.description = urldecode(w.description);
+    this.wordOne = urldecode(w.wordOne);
+    this.wordTwo = urldecode(w.wordTwo);
+    this.wordThree = urldecode(w.wordThree);
     this.friendly = w.friendly;
 
     return this;
@@ -27,11 +27,11 @@ export default class World {
   toInterface(): WorldInterface {
     const world: WorldInterface = {
       id: this.id,
-      name: this.name,
-      description: this.description,
-      wordOne: this.wordOne,
-      wordTwo: this.wordTwo,
-      wordThree: this.wordThree,
+      name: urlencode(this.name),
+      description: urlencode(this.description),
+      wordOne: urlencode(this.wordOne),
+      wordTwo: urlencode(this.wordTwo),
+      wordThree: urlencode(this.wordThree),
       friendly: this.friendly,
     };
     return world;

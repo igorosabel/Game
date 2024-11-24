@@ -1,5 +1,5 @@
 import { ItemFrameInterface } from '@interfaces/item.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ItemFrame {
   constructor(
@@ -12,7 +12,7 @@ export default class ItemFrame {
   fromInterface(itf: ItemFrameInterface): ItemFrame {
     this.id = itf.id;
     this.idAsset = itf.idAsset;
-    this.assetUrl = Utils.urldecode(itf.assetUrl);
+    this.assetUrl = urldecode(itf.assetUrl);
     this.order = itf.order;
 
     return this;
@@ -22,7 +22,7 @@ export default class ItemFrame {
     return {
       id: this.id,
       idAsset: this.idAsset,
-      assetUrl: Utils.urlencode(this.assetUrl),
+      assetUrl: urlencode(this.assetUrl),
       order: this.order,
     };
   }

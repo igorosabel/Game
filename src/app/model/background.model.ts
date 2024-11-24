@@ -1,5 +1,5 @@
 import { BackgroundInterface } from '@interfaces/background.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Background {
   constructor(
@@ -15,8 +15,8 @@ export default class Background {
     this.id = b.id;
     this.idBackgroundCategory = b.idBackgroundCategory;
     this.idAsset = b.idAsset;
-    this.assetUrl = Utils.urldecode(b.assetUrl);
-    this.name = Utils.urldecode(b.name);
+    this.assetUrl = urldecode(b.assetUrl);
+    this.name = urldecode(b.name);
     this.crossable = b.crossable;
 
     return this;
@@ -27,8 +27,8 @@ export default class Background {
       id: this.id,
       idBackgroundCategory: this.idBackgroundCategory,
       idAsset: this.idAsset,
-      assetUrl: Utils.urlencode(this.assetUrl),
-      name: Utils.urlencode(this.name),
+      assetUrl: urlencode(this.assetUrl),
+      name: urlencode(this.name),
       crossable: this.crossable,
     };
   }

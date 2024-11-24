@@ -1,5 +1,5 @@
 import { ScenarioObjectDropInterface } from '@interfaces/scenario.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ScenarioObjectDrop {
   constructor(
@@ -13,8 +13,8 @@ export default class ScenarioObjectDrop {
   fromInterface(sod: ScenarioObjectDropInterface): ScenarioObjectDrop {
     this.id = sod.id;
     this.idItem = sod.idItem;
-    this.itemName = Utils.urldecode(sod.itemName);
-    this.assetUrl = Utils.urldecode(sod.assetUrl);
+    this.itemName = urldecode(sod.itemName);
+    this.assetUrl = urldecode(sod.assetUrl);
     this.num = sod.num;
 
     return this;
@@ -24,8 +24,8 @@ export default class ScenarioObjectDrop {
     return {
       id: this.id,
       idItem: this.idItem,
-      itemName: Utils.urlencode(this.itemName),
-      assetUrl: Utils.urlencode(this.assetUrl),
+      itemName: urlencode(this.itemName),
+      assetUrl: urlencode(this.assetUrl),
       num: this.num,
     };
   }

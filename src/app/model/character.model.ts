@@ -7,7 +7,7 @@ import CharacterFrame from '@model/character-frame.model';
 import Inventory from '@model/inventory.model';
 import Item from '@model/item.model';
 import Narrative from '@model/narrative.model';
-import Utils from '@shared/utils.class';
+import { urldecode } from '@osumi/tools';
 
 export default class Character {
   currentHealth: number = null;
@@ -79,27 +79,27 @@ export default class Character {
 
   fromInterface(c: CharacterInterface): Character {
     this.id = c.id;
-    this.name = Utils.urldecode(c.name);
+    this.name = urldecode(c.name);
     this.width = c.width;
     this.blockWidth = c.blockWidth;
     this.height = c.height;
     this.blockHeight = c.blockHeight;
     this.fixedPosition = c.fixedPosition;
     this.idAssetUp = c.idAssetUp;
-    this.assetUpUrl = Utils.urldecode(c.assetUpUrl);
+    this.assetUpUrl = urldecode(c.assetUpUrl);
     this.idAssetDown = c.idAssetDown;
-    this.assetDownUrl = Utils.urldecode(c.assetDownUrl);
+    this.assetDownUrl = urldecode(c.assetDownUrl);
     this.idAssetLeft = c.idAssetLeft;
-    this.assetLeftUrl = Utils.urldecode(c.assetLeftUrl);
+    this.assetLeftUrl = urldecode(c.assetLeftUrl);
     this.idAssetRight = c.idAssetRight;
-    this.assetRightUrl = Utils.urldecode(c.assetRightUrl);
+    this.assetRightUrl = urldecode(c.assetRightUrl);
     this.type = c.type;
     this.health = c.health;
     this.attack = c.attack;
     this.defense = c.defense;
     this.speed = c.speed;
     this.dropIdItem = c.dropIdItem;
-    this.dropAssetUrl = Utils.urldecode(c.dropAssetUrl);
+    this.dropAssetUrl = urldecode(c.dropAssetUrl);
     this.dropChance = c.dropChance;
     this.respawn = c.respawn;
     this.framesUp = c.framesUp.map((cf: CharacterFrame): CharacterFrame => {

@@ -1,12 +1,12 @@
 import { BackgroundCategoryInterface } from '@interfaces/background.interfaces';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class BackgroundCategory {
   constructor(public id: number = null, public name: string = null) {}
 
   fromInterface(bc: BackgroundCategoryInterface): BackgroundCategory {
     this.id = bc.id;
-    this.name = Utils.urldecode(bc.name);
+    this.name = urldecode(bc.name);
 
     return this;
   }
@@ -14,7 +14,7 @@ export default class BackgroundCategory {
   toInterface(): BackgroundCategoryInterface {
     return {
       id: this.id,
-      name: Utils.urlencode(this.name),
+      name: urlencode(this.name),
     };
   }
 }

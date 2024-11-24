@@ -1,6 +1,6 @@
 import { AssetInterface, TagInterface } from '@interfaces/asset.interfaces';
 import Tag from '@model/tag.model';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Asset {
   _tagList: string;
@@ -48,8 +48,8 @@ export default class Asset {
   fromInterface(a: AssetInterface): Asset {
     this.id = a.id;
     this.idWorld = a.idWorld;
-    this.name = Utils.urldecode(a.name);
-    this.url = Utils.urldecode(a.url);
+    this.name = urldecode(a.name);
+    this.url = urldecode(a.url);
     this.tags = a.tags.map((t: TagInterface): Tag => {
       return new Tag().fromInterface(t);
     });
@@ -61,8 +61,8 @@ export default class Asset {
     return {
       id: this.id,
       idWorld: this.idWorld,
-      name: Utils.urlencode(this.name),
-      url: this.modified || withUrl ? Utils.urlencode(this.url) : null,
+      name: urlencode(this.name),
+      url: this.modified || withUrl ? urlencode(this.url) : null,
       tags: this.tags.map((t: Tag): TagInterface => {
         return t.toInterface();
       }),

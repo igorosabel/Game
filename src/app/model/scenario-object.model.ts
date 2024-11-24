@@ -5,7 +5,7 @@ import {
 } from '@interfaces/scenario.interfaces';
 import ScenarioObjectDrop from '@model/scenario-object-drop.model';
 import ScenarioObjectFrame from '@model/scenario-object-frame.model';
-import Utils from '@shared/utils.class';
+import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ScenarioObject {
   constructor(
@@ -42,9 +42,9 @@ export default class ScenarioObject {
 
   fromInterface(so: ScenarioObjectInterface): ScenarioObject {
     this.id = so.id;
-    this.name = Utils.urldecode(so.name);
+    this.name = urldecode(so.name);
     this.idAsset = so.idAsset;
-    this.assetUrl = Utils.urldecode(so.assetUrl);
+    this.assetUrl = urldecode(so.assetUrl);
     this.width = so.width;
     this.blockWidth = so.blockWidth;
     this.height = so.height;
@@ -52,13 +52,11 @@ export default class ScenarioObject {
     this.crossable = so.crossable;
     this.activable = so.activable;
     this.idAssetActive = so.idAssetActive;
-    this.assetActiveUrl = Utils.urldecode(so.assetActiveUrl);
+    this.assetActiveUrl = urldecode(so.assetActiveUrl);
     this.activeTime = so.activeTime;
     this.activeTrigger = so.activeTrigger;
     this.activeTriggerCustom =
-      so.activeTriggerCustom != null
-        ? Utils.urldecode(so.activeTriggerCustom)
-        : null;
+      so.activeTriggerCustom != null ? urldecode(so.activeTriggerCustom) : null;
     this.pickable = so.pickable;
     this.grabbable = so.grabbable;
     this.breakable = so.breakable;
@@ -79,9 +77,9 @@ export default class ScenarioObject {
   toInterface(): ScenarioObjectInterface {
     return {
       id: this.id,
-      name: Utils.urlencode(this.name),
+      name: urlencode(this.name),
       idAsset: this.idAsset,
-      assetUrl: Utils.urlencode(this.assetUrl),
+      assetUrl: urlencode(this.assetUrl),
       width: this.width,
       blockWidth: this.blockWidth,
       height: this.height,
@@ -89,12 +87,12 @@ export default class ScenarioObject {
       crossable: this.crossable,
       activable: this.activable,
       idAssetActive: this.idAssetActive,
-      assetActiveUrl: Utils.urlencode(this.assetActiveUrl),
+      assetActiveUrl: urlencode(this.assetActiveUrl),
       activeTime: this.activeTime,
       activeTrigger: this.activeTrigger,
       activeTriggerCustom:
         this.activeTriggerCustom !== null
-          ? Utils.urlencode(this.activeTriggerCustom)
+          ? urlencode(this.activeTriggerCustom)
           : null,
       pickable: this.pickable,
       grabbable: this.grabbable,
