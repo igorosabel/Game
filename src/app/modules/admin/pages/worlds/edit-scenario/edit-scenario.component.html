@@ -9,7 +9,7 @@
 		<div>
 			<label>Fondo</label>
 			<img [src]="selected.backgroundAssetUrl"
-				 [ngClass]="{'selecting': selected.selecting === 'background'}"
+				 [class]="{'selecting': selected.selecting === 'background'}"
 				 (click)="copyCell('background')"
 				 alt="">
 			@if (selected.idBackground !== null) {
@@ -20,7 +20,7 @@
 		<div>
 			<label>Objeto</label>
 			<img [src]="selected.scenarioObjectAssetUrl"
-				 [ngClass]="{'selecting': selected.selecting === 'scenarioObject'}"
+				 [class]="{'selecting': selected.selecting === 'scenarioObject'}"
 				 (click)="copyCell('scenarioObject')"
 				 alt="">
 			@if (selected.idScenarioObject !== null) {
@@ -31,7 +31,7 @@
 		<div>
 			<label>Personaje</label>
 			<img [src]="selected.characterAssetUrl"
-				 [ngClass]="{'selecting': selected.selecting === 'character'}"
+				 [class]="{'selecting': selected.selecting === 'character'}"
 				 (click)="copyCell('character')"
 				 alt="">
 			@if (selected.idCharacter !== null) {
@@ -43,7 +43,7 @@
 	<div class="start-picker">
 		<label>Inicio</label>
 		<img src="/img/admin/start-location.svg"
-			 [ngClass]="{'start-selecting': startSelecting}"
+			 [class]="{'start-selecting': startSelecting}"
 			 (click)="selectStart()"
 			 alt="">
 	</div>
@@ -96,7 +96,7 @@
 				<div class="edit-scenario-row">
 					@for (cell of row; track cell) {
 					<div class="edit-scenario-cell"
-						 [ngClass]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario.startX && cell.y === loadedScenario.startY}"
+						 [class]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario.startX && cell.y === loadedScenario.startY}"
 						 (click)="openCell(null, cell)">
 						@if (cell.idBackground !== null) {
 						<img [src]="cell.backgroundAssetUrl"
@@ -106,13 +106,13 @@
 						@if (cell.idScenarioObject !== null) {
 						<img [src]="cell.scenarioObjectAssetUrl"
 							 class="edit-scenario-cell-over"
-							 [ngStyle]="{'width': (100*cell.scenarioObjectWidth)+'%', 'height': (100*cell.scenarioObjectHeight)+'%'}"
+							 [style]="{'width': (100 * cell.scenarioObjectWidth) + '%', 'height': (100 * cell.scenarioObjectHeight) + '%'}"
 							 alt="">
 						}
 						@if (cell.idCharacter !== null) {
 						<img [src]="cell.characterAssetUrl"
 							 class="edit-scenario-cell-over"
-							 [ngStyle]="{'width': (100*cell.characterWidth)+'%', 'height': (100*cell.characterHeight)+'%'}"
+							 [style]="{'width': (100 * cell.characterWidth) + '%', 'height': (100 * cell.characterHeight) + '%'}"
 							 alt="">
 						}
 						<span>{{cell.x}} - {{cell.y}}</span>
@@ -152,7 +152,7 @@
 </div>
 
 <div class="cell-detail"
-	 [ngClass]="{'cell-detail-show': showCellDetail}">
+	 [class]="{'cell-detail-show': showCellDetail}">
 	<div class="box">
 		<div class="header">
 			Casilla {{loadedCell.x}} - {{loadedCell.y}}
@@ -235,7 +235,7 @@
 </div>
 
 <div class="connections-detail"
-	 [ngClass]="{'connections-detail-show': showConnectionsDetail}">
+	 [class]="{'connections-detail-show': showConnectionsDetail}">
 	<div class="box">
 		<div class="header">
 			Elige escenario

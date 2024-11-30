@@ -25,14 +25,14 @@
 	</div>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected':filterListOption === 'items'}"
+	   [class]="{'filter-option-selected':filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
 		<img src="/img/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected':filterListOption === 'list'}"
+	   [class]="{'filter-option-selected':filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
 		<img src="/img/admin/list-list.svg"
 			 alt="Lista">
@@ -40,9 +40,9 @@
 </div>
 
 <div class="list"
-	 [ngClass]="{'list-list': filterListOption === 'list'}">
+	 [class]="{'list-list': filterListOption === 'list'}">
 	@for (asset of assetListFiltered; track asset.id) {
-	<div [ngClass]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
+	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="asset.url"
 			 [alt]="asset.name">
 		<div class="info">
@@ -71,7 +71,7 @@
    (click)="showAddAsset($event)">+</a>
 
 <div class="asset-detail"
-	 [ngClass]="{'asset-detail-show':showDetail}">
+	 [class]="{'asset-detail-show':showDetail}">
 	<div class="box">
 		<div class="header">
 			<span>{{assetDetailHeader}}</span>
@@ -96,7 +96,7 @@
 		<div class="row row-image">
 			<div class="asset-preview"
 				 id="asset-image"
-				 [ngStyle]="{background:loadedAsset.style}"></div>
+				 [style]="{background: loadedAsset.style}"></div>
 			@if (!loadingFile) {
 			<button (click)="openFile()">Elegir archivo</button>
 			}

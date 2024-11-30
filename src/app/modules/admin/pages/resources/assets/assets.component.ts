@@ -1,4 +1,3 @@
-import { NgClass, NgStyle } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetResult, TagResult } from '@interfaces/asset.interfaces';
@@ -18,7 +17,7 @@ import HeaderComponent from '@shared/components/header/header.component';
   selector: 'game-assets',
   templateUrl: './assets.component.html',
   styleUrls: ['./assets.component.scss', '../../scss/resources.scss'],
-  imports: [NgClass, NgStyle, FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent],
 })
 export default class AssetsComponent implements OnInit {
   private as: ApiService = inject(ApiService);

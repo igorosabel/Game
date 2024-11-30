@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
@@ -15,7 +14,7 @@ import HeaderComponent from '@shared/components/header/header.component';
   selector: 'game-scenarios',
   templateUrl: './scenarios.component.html',
   styleUrls: ['../../scss/admin.scss'],
-  imports: [NgClass, RouterLink, FormsModule, HeaderComponent],
+  imports: [RouterLink, FormsModule, HeaderComponent],
 })
 export default class ScenariosComponent implements OnInit {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);

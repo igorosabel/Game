@@ -7,14 +7,14 @@
 <div class="section-header section-header-right">
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected': filterListOption === 'items'}"
+	   [class]="{'filter-option-selected': filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
 		<img src="/img/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected': filterListOption === 'list'}"
+	   [class]="{'filter-option-selected': filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
 		<img src="/img/admin/list-list.svg"
 			 alt="Lista">
@@ -22,9 +22,9 @@
 </div>
 
 <div class="list"
-	 [ngClass]="{'list-list': filterListOption === 'list'}">
+	 [class]="{'list-list': filterListOption === 'list'}">
 	@for (scenarioObject of scenarioObjectList; track scenarioObject.id) {
-	<div [ngClass]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
+	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="scenarioObject.assetUrl"
 			 [alt]="scenarioObject.name">
 		<div class="info">
@@ -55,7 +55,7 @@
    (click)="showAddScenarioObject($event)">+</a>
 
 <div class="scenario-object-detail"
-	 [ngClass]="{'scenario-object-detail-show':showDetail}">
+	 [class]="{'scenario-object-detail-show':showDetail}">
 	<div class="box">
 		<div class="header">
 			<span>{{scenarioObjectDetailHeader}}</span>
@@ -64,20 +64,20 @@
 		</div>
 		<div class="tabs">
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'data'}"
+				 [class]="{'tab-active': detailtTab === 'data'}"
 				 (click)="changeTab('data')">Datos</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'animation'}"
+				 [class]="{'tab-active': detailtTab === 'animation'}"
 				 (click)="changeTab('animation')">Animación</div>
 			@if (loadedScenarioObject.pickable || loadedScenarioObject.activeTrigger === 3) {
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'drops'}"
+				 [class]="{'tab-active': detailtTab === 'drops'}"
 				 (click)="changeTab('drops')">Items</div>
 			}
 		</div>
 		<!-- Datos -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'data'}">
+			 [class]="{'body-show': detailtTab === 'data'}">
 			<div class="row cols">
 				<div class="col">
 					<label>Nombre del objeto</label>
@@ -231,7 +231,7 @@
 		</div>
 		<!-- Animación -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'animation'}">
+			 [class]="{'body-show': detailtTab === 'animation'}">
 			<div class="row cols cols-column">
 				<div class="col picker">
 					<img [src]="loadedScenarioObject.assetUrl"
@@ -287,7 +287,7 @@
 		</div>
 		<!-- Items -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'drops'}">
+			 [class]="{'body-show': detailtTab === 'drops'}">
 			<div class="scenario-object-drops">
 				<div class="scenario-object-add-drop">
 					<button (click)="openItemPicker()">Añadir item</button>

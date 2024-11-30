@@ -1,7 +1,7 @@
 @if (item() !== null) {
 <div class="tooltip"
-	 [ngClass]="{'tooltip-show': showTooltip()}"
-	 [ngStyle]="{'top': positionY() + 'px', 'left': positionX() + 'px'}">
+	 [class]="{'tooltip-show': showTooltip()}"
+	 [style]="{'top': positionY() + 'px', 'left': positionX() + 'px'}">
 	<img [src]="item().assetUrl"
 		 [alt]="item().name">
 	<div class="tooltip-info">

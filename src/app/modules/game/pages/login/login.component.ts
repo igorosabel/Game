@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,7 +11,7 @@ import HeaderComponent from '@shared/components/header/header.component';
   selector: 'game-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [NgClass, FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent],
 })
 export default class LoginComponent {
   private as: ApiService = inject(ApiService);

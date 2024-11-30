@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Constants from '@app/constants';
@@ -45,7 +44,7 @@ import InventoryComponent from '@shared/components/inventory/inventory.component
   selector: 'game-play',
   templateUrl: './play.component.html',
   styleUrls: ['./play.component.scss'],
-  imports: [NgClass, FormsModule, HeaderComponent, InventoryComponent],
+  imports: [FormsModule, HeaderComponent, InventoryComponent],
 })
 export default class PlayComponent implements OnInit, OnDestroy {
   private as: ApiService = inject(ApiService);

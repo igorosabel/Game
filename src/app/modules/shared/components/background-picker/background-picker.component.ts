@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -23,7 +22,7 @@ import ClassMapperService from '@services/class-mapper.service';
   selector: 'game-background-picker',
   templateUrl: './background-picker.component.html',
   styleUrls: ['./background-picker.component.scss'],
-  imports: [NgClass, FormsModule],
+  imports: [FormsModule],
 })
 export default class BackgroundPickerComponent implements OnInit {
   private as: ApiService = inject(ApiService);

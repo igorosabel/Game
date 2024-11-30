@@ -17,14 +17,14 @@
 	</div>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected': filterListOption === 'items'}"
+	   [class]="{'filter-option-selected': filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
 		<img src="/img/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected': filterListOption === 'list'}"
+	   [class]="{'filter-option-selected': filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
 		<img src="/img/admin/list-list.svg"
 			 alt="Lista">
@@ -32,9 +32,9 @@
 </div>
 
 <div class="list"
-	 [ngClass]="{'list-list': filterListOption === 'list'}">
+	 [class]="{'list-list': filterListOption === 'list'}">
 	@for (character of characterListFiltered; track character.id) {
-	<div [ngClass]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
+	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="character.assetDownUrl"
 			 [alt]="character.name">
 		<div class="info">
@@ -63,7 +63,7 @@
    (click)="showAddCharacter($event)">+</a>
 
 <div class="character-detail"
-	 [ngClass]="{'character-detail-show':showDetail}">
+	 [class]="{'character-detail-show': showDetail}">
 	<div class="box">
 		<div class="header">
 			<span>{{characterDetailHeader}}</span>
@@ -72,29 +72,29 @@
 		</div>
 		<div class="tabs">
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'data'}"
+				 [class]="{'tab-active': detailtTab === 'data'}"
 				 (click)="changeTab('data')">Datos</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'down'}"
+				 [class]="{'tab-active': detailtTab === 'down'}"
 				 (click)="changeTab('down')">Abajo</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'up'}"
+				 [class]="{'tab-active': detailtTab === 'up'}"
 				 (click)="changeTab('up')">Arriba</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'left'}"
+				 [class]="{'tab-active': detailtTab === 'left'}"
 				 (click)="changeTab('left')">Izquierda</div>
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'right'}"
+				 [class]="{'tab-active': detailtTab === 'right'}"
 				 (click)="changeTab('right')">Derecha</div>
 			@if (loadedCharacter.type === 0) {
 			<div class="tab"
-				 [ngClass]="{'tab-active': detailtTab === 'narratives'}"
+				 [class]="{'tab-active': detailtTab === 'narratives'}"
 				 (click)="changeTab('narratives')">Narrativas</div>
 			}
 		</div>
 		<!-- Datos -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'data'}">
+			 [class]="{'body-show': detailtTab === 'data'}">
 			<div class="row cols">
 				<div class="col">
 					<label>Tipo de personaje</label>
@@ -240,7 +240,7 @@
 		</div>
 		<!-- Abajo -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'down'}">
+			 [class]="{'body-show': detailtTab === 'down'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetDownUrl"
@@ -288,7 +288,7 @@
 		</div>
 		<!-- Arriba -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'up'}">
+			 [class]="{'body-show': detailtTab === 'up'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetUpUrl"
@@ -336,7 +336,7 @@
 		</div>
 		<!-- Izquierda -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'left'}">
+			 [class]="{'body-show': detailtTab === 'left'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetLeftUrl"
@@ -383,7 +383,7 @@
 		</div>
 		<!-- Derecha -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'right'}">
+			 [class]="{'body-show': detailtTab === 'right'}">
 			<div class="row cols">
 				<div class="col picker">
 					<img [src]="loadedCharacter.assetRightUrl"
@@ -431,7 +431,7 @@
 		</div>
 		<!-- Narrativas -->
 		<div class="body"
-			 [ngClass]="{'body-show': detailtTab === 'narratives'}">
+			 [class]="{'body-show': detailtTab === 'narratives'}">
 			<div class="narratives-header">
 				Narrativas
 				<button (click)="addNarrative()">Añadir</button>

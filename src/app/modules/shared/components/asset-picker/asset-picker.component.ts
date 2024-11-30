@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -25,7 +24,7 @@ import ClassMapperService from '@services/class-mapper.service';
   selector: 'game-asset-picker',
   templateUrl: './asset-picker.component.html',
   styleUrls: ['./asset-picker.component.scss'],
-  imports: [NgClass, FormsModule],
+  imports: [FormsModule],
 })
 export default class AssetPickerComponent implements OnInit {
   private as: ApiService = inject(ApiService);

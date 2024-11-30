@@ -1,4 +1,3 @@
-import { NgClass, NgStyle } from '@angular/common';
 import { Component, WritableSignal, signal } from '@angular/core';
 import Item from '@model/item.model';
 
@@ -6,7 +5,7 @@ import Item from '@model/item.model';
   selector: 'game-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  imports: [NgClass, NgStyle],
+  imports: [],
 })
 export default class TooltipComponent {
   item: WritableSignal<Item> = signal<Item>(null);

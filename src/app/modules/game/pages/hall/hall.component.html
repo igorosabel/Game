@@ -6,7 +6,7 @@
 	<div class="player-select">
 		@for (game of games; track game.id; let i = $index) {
 		<div class="player-select-game"
-			 [ngClass]="{'player-select-game-selected': gameSelected === i}"
+			 [class]="{'player-select-game-selected': gameSelected === i}"
 			 (mouseover)="changeSelectedGame(game)"
 			 (click)="selectGame(game)">
 			<img [src]="'/hall/player-' + (i + 1) + '.png'"
@@ -24,7 +24,7 @@
 		  action="#"
 		  (ngSubmit)="newGame($event)">
 		<div class="new-game"
-			 [ngClass]="{'new-game-show': showNewGame}">
+			 [class]="{'new-game-show': showNewGame}">
 			<div class="new-game-box">
 				<div class="new-game-header">
 					Nueva partida

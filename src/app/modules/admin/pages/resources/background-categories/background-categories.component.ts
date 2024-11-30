@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BackgroundCategoryResult } from '@interfaces/background.interfaces';
@@ -15,7 +14,7 @@ import HeaderComponent from '@shared/components/header/header.component';
   selector: 'game-background-categories',
   templateUrl: './background-categories.component.html',
   styleUrls: ['../../scss/admin.scss'],
-  imports: [NgClass, FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent],
 })
 export default class BackgroundCategoriesComponent implements OnInit {
   private as: ApiService = inject(ApiService);

@@ -1,5 +1,5 @@
 <div class="scenario-object-picker"
-	 [ngClass]="{'scenario-object-picker-show': show()}">
+	 [class]="{'scenario-object-picker-show': show()}">
 	<div class="scenario-object-picker-box">
 		<div class="scenario-object-picker-header">
 			<a href="#"
@@ -9,7 +9,7 @@
 		<div class="scenario-object-list">
 			@for (scenarioObject of scenarioObjectList; track scenarioObject.id) {
 			<div class="scenario-object-item"
-				 [ngClass]="{'scenario-object-item-selected': scenarioObject.id === selected}"
+				 [class]="{'scenario-object-item-selected': scenarioObject.id === selected}"
 				 (click)="selectScenarioObject(scenarioObject)">
 				<img [src]="scenarioObject.assetUrl"
 					 [alt]="scenarioObject.name">

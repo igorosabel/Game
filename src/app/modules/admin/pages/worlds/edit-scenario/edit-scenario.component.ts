@@ -1,4 +1,3 @@
-import { NgClass, NgStyle } from '@angular/common';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -36,8 +35,6 @@ import ScenarioObjectPickerComponent from '@shared/components/scenario-object-pi
   templateUrl: './edit-scenario.component.html',
   styleUrls: ['./edit-scenario.component.scss'],
   imports: [
-    NgClass,
-    NgStyle,
     FormsModule,
     HeaderComponent,
     BackgroundPickerComponent,

@@ -17,14 +17,14 @@
 	</div>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected': filterListOption === 'items'}"
+	   [class]="{'filter-option-selected': filterListOption === 'items'}"
 	   (click)="changeFilterListOption($event, 'items')">
 		<img src="/img/admin/list-items.svg"
 			 alt="Items">
 	</a>
 	<a href="#"
 	   class="filter-option"
-	   [ngClass]="{'filter-option-selected': filterListOption === 'list'}"
+	   [class]="{'filter-option-selected': filterListOption === 'list'}"
 	   (click)="changeFilterListOption($event, 'list')">
 		<img src="/img/admin/list-list.svg"
 			 alt="Lista">
@@ -32,9 +32,9 @@
 </div>
 
 <div class="list"
-	 [ngClass]="{'list-list': filterListOption === 'list'}">
+	 [class]="{'list-list': filterListOption === 'list'}">
 	@for (item of itemListFiltered; track item.id) {
-	<div [ngClass]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
+	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="item.assetUrl"
 			 [alt]="item.name">
 		<div class="info">
@@ -65,7 +65,7 @@
    (click)="showAddItem($event)">+</a>
 
 <div class="item-detail"
-	 [ngClass]="{'item-detail-show': showDetail}">
+	 [class]="{'item-detail-show': showDetail}">
 	<div class="box">
 		<div class="header">
 			<span>{{itemDetailHeader}}</span>
@@ -80,15 +80,15 @@
 			<div class="main-col">
 				<div class="tabs">
 					<div class="tab"
-						 [ngClass]="{'tab-active': detailtTab === 'data'}"
+						 [class]="{'tab-active': detailtTab === 'data'}"
 						 (click)="changeTab('data')">Datos</div>
 					<div class="tab"
-						 [ngClass]="{'tab-active': detailtTab === 'animate'}"
+						 [class]="{'tab-active': detailtTab === 'animate'}"
 						 (click)="changeTab('animate')">Animación</div>
 				</div>
 				<!-- Datos del item -->
 				<div class="body"
-					 [ngClass]="{'body-show': detailtTab === 'data'}">
+					 [class]="{'body-show': detailtTab === 'data'}">
 					<div class="row">
 						<label>Nombre del item</label>
 						<input type="text"
@@ -182,7 +182,7 @@
 				</div>
 				<!-- Frames de la animación -->
 				<div class="body"
-					 [ngClass]="{'body-show': detailtTab === 'animate'}">
+					 [class]="{'body-show': detailtTab === 'animate'}">
 					<div class="animation-slider">
 						@for (frame of loadedItem.frames; track frame.id; let ind = $index) {
 						<div class="animation-frame">

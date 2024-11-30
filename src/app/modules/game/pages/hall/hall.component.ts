@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +12,7 @@ import DataShareService from '@services/data-share.service';
   selector: 'game-hall',
   templateUrl: './hall.component.html',
   styleUrls: ['./hall.component.scss'],
-  imports: [NgClass, FormsModule],
+  imports: [FormsModule],
 })
 export default class HallComponent implements OnInit {
   private as: ApiService = inject(ApiService);

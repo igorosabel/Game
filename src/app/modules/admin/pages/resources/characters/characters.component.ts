@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetInterface } from '@interfaces/asset.interfaces';
@@ -27,7 +26,6 @@ import ItemPickerComponent from '@shared/components/item-picker/item-picker.comp
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss', '../../scss/resources.scss'],
   imports: [
-    NgClass,
     FormsModule,
     HeaderComponent,
     AssetPickerComponent,

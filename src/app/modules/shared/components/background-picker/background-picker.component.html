@@ -1,5 +1,5 @@
 <div class="background-picker"
-	 [ngClass]="{'background-picker-show': show()}">
+	 [class]="{'background-picker-show': show()}">
 	<div class="background-picker-box">
 		<div class="background-picker-header">
 			<div>
@@ -19,7 +19,7 @@
 		<div class="background-list">
 			@for (background of backgroundListFiltered(); track background.id) {
 			<div class="background-item"
-				 [ngClass]="{'background-item-selected': background.id === selected}"
+				 [class]="{'background-item-selected': background.id === selected}"
 				 (click)="selectBackground(background)">
 				<img [src]="background.assetUrl"
 					 [alt]="background.name">

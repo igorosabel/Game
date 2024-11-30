@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -20,7 +19,7 @@ import ClassMapperService from '@services/class-mapper.service';
   selector: 'game-scenario-object-picker',
   templateUrl: './scenario-object-picker.component.html',
   styleUrls: ['./scenario-object-picker.component.scss'],
-  imports: [NgClass],
+  imports: [],
 })
 export default class ScenarioObjectPickerComponent implements OnInit {
   private as: ApiService = inject(ApiService);

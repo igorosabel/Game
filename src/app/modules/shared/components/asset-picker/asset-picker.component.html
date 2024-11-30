@@ -1,5 +1,5 @@
 <div class="asset-picker"
-	 [ngClass]="{'asset-picker-show': show()}">
+	 [class]="{'asset-picker-show': show()}">
 	<div class="asset-picker-box">
 		<div class="asset-picker-header">
 			<div>
@@ -32,7 +32,7 @@
 		<div class="asset-list">
 			@for (asset of assetListFiltered; track asset.id) {
 			<div class="asset-item"
-				 [ngClass]="{'asset-item-selected': asset.id === selectedItem}"
+				 [class]="{'asset-item-selected': asset.id === selectedItem}"
 				 (click)="selectAsset(asset)">
 				<img [src]="asset.url"
 					 [alt]="asset.name">

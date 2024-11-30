@@ -84,7 +84,7 @@
 			<div class="portal-list">
 				@for (world of unlockedWorlds; track world.id) {
 				<div class="item"
-					 [ngClass]="{'current': world.id === worldId}"
+					 [class]="{'current': world.id === worldId}"
 					 (click)="portalTravel(world)">
 					<div class="header">{{world.name}}</div>
 					<div class="description">{{world.description}}</div>

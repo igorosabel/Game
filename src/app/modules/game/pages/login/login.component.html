@@ -4,14 +4,14 @@
 <div class="home-box">
 	<div class="home-tabs">
 		<div class="home-tab"
-			 [ngClass]="{'home-tab-selected': selectedTab === 'login'}"
+			 [class]="{'home-tab-selected': selectedTab === 'login'}"
 			 (click)="selectTab('login')">Iniciar sesión</div>
 		<div class="home-tab"
-			 [ngClass]="{'home-tab-selected': selectedTab === 'register'}"
+			 [class]="{'home-tab-selected': selectedTab === 'register'}"
 			 (click)="selectTab('register')">Registro</div>
 	</div>
 	<div class="home-tab-content"
-		 [ngClass]="{'home-tab-content-selected': selectedTab === 'login'}">
+		 [class]="{'home-tab-content-selected': selectedTab === 'login'}">
 		<form action="#"
 			  (ngSubmit)="checkLogin($event)">
 			<div class="home-row">
@@ -38,7 +38,7 @@
 		</form>
 	</div>
 	<div class="home-tab-content"
-		 [ngClass]="{'home-tab-content-selected': selectedTab === 'register'}">
+		 [class]="{'home-tab-content-selected': selectedTab === 'register'}">
 		<form action="#"
 			  (ngSubmit)="checkRegister($event)">
 			<div class="home-row">
