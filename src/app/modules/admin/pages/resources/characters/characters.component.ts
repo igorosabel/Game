@@ -106,7 +106,9 @@ export default class CharactersComponent implements OnInit {
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.filterListOption = option;
   }
 
@@ -129,7 +131,9 @@ export default class CharactersComponent implements OnInit {
   }
 
   showAddCharacter(ev: MouseEvent = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedCharacter();
       this.characterDetailHeader = 'Nuevo personaje';
@@ -157,7 +161,9 @@ export default class CharactersComponent implements OnInit {
   }
 
   removeSelectedDropItem(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.loadedCharacter.dropIdItem = null;
     this.loadedCharacter.dropAssetUrl = '/admin/no-asset.svg';
     this.dropItemName = 'Elige un item';

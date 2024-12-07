@@ -38,7 +38,9 @@ export default class InventoryComponent {
   }
 
   close(ev: MouseEvent = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.showInventory.set(false);
     this.closed.emit(true);
   }

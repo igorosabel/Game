@@ -52,12 +52,16 @@ export default class HallComponent implements OnInit {
   }
 
   closeNewGame(ev = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.showNewGame = false;
   }
 
   newGame(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (this.newGameName === null) {
       alert('¡No puedes dejar el nombre del personaje en blanco!');
       return;

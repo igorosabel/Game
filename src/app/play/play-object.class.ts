@@ -6,10 +6,10 @@ import AssetCache from '@play/asset-cache.class';
 export default class PlayObject {
   blockPos: PositionSize;
   object: ScenarioObject;
-  currentFrame: number;
+  currentFrame: number = 0;
   interval: number;
-  sprites: any[];
-  playing: boolean;
+  sprites: any[] = [];
+  playing: boolean = false;
 
   constructor(
     x: number,
@@ -25,10 +25,6 @@ export default class PlayObject {
       height * Constants.TILE_HEIGHT
     );
     this.object = object;
-
-    this.currentFrame = 0;
-    this.playing = false;
-    this.sprites = [];
   }
 
   addObjectSprites(assets: AssetCache): void {

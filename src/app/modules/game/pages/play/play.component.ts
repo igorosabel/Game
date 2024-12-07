@@ -772,7 +772,9 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   closePortal(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.disableKeyboard(false);
     this.showPortal = false;
     this.showOver = false;

@@ -93,7 +93,9 @@ export default class ScenarioObjectsComponent implements OnInit {
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.filterListOption = option;
   }
 
@@ -108,7 +110,9 @@ export default class ScenarioObjectsComponent implements OnInit {
   }
 
   showAddScenarioObject(ev = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedScenarioObject();
       this.scenarioObjectDetailHeader = 'Nuevo objeto de escenario';
@@ -286,7 +290,9 @@ export default class ScenarioObjectsComponent implements OnInit {
   }
 
   deleteDrop(ev: MouseEvent, drop: ScenarioObjectDrop): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     const conf: boolean = confirm(
       '¿Estás seguro de querer borrar el item "' + drop.itemName + '"?'
     );

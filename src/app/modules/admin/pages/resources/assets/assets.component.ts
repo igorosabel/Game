@@ -110,7 +110,9 @@ export default class AssetsComponent implements OnInit {
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.filterListOption = option;
   }
 
@@ -119,7 +121,9 @@ export default class AssetsComponent implements OnInit {
   }
 
   showAddAsset(ev = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedAsset();
       this.assetDetailHeader = 'Nuevo recurso';
@@ -136,16 +140,14 @@ export default class AssetsComponent implements OnInit {
 
   onFileChange(event: Event): void {
     const reader: FileReader = new FileReader();
-    if (
-      (<HTMLInputElement>event.target).files &&
-      (<HTMLInputElement>event.target).files.length > 0
-    ) {
+    const files: FileList = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
       this.loadingFile = true;
-      const file = (<HTMLInputElement>event.target).files[0];
+      const file = files[0];
       reader.readAsDataURL(file);
       reader.onload = (): void => {
         this.loadedAsset.file = reader.result as string;
-        (<HTMLInputElement>document.getElementById('asset-file')).value = '';
+        (document.getElementById('asset-file') as HTMLInputElement).value = '';
         this.loadingFile = false;
       };
     }

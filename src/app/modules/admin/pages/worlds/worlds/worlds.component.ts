@@ -55,7 +55,9 @@ export default class WorldsComponent implements OnInit {
   }
 
   showAddWorld(ev: MouseEvent = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedWorld();
       this.worldDetailHeader = 'Nuevo mundo';

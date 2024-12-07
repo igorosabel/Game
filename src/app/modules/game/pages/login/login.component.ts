@@ -40,7 +40,9 @@ export default class LoginComponent {
   }
 
   checkLogin(ev: Event): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.loginError = false;
 
     if (this.loginData.email == '') {
@@ -71,7 +73,9 @@ export default class LoginComponent {
   }
 
   checkRegister(ev: Event): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.registerError = null;
     if (this.registerData.email == '') {
       alert('¡No puedes dejar el email en blanco!');

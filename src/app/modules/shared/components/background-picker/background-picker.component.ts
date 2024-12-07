@@ -50,7 +50,9 @@ export default class BackgroundPickerComponent implements OnInit {
   }
 
   closePicker(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.show.set(false);
   }
 

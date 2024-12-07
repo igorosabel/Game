@@ -63,7 +63,9 @@ export default class ScenariosComponent implements OnInit {
   }
 
   showAddScenario(ev: MouseEvent = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedScenario();
       this.scenarioDetailHeader = 'Nuevo escenario';

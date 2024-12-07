@@ -157,7 +157,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   cancelCopyCell(ev: MouseEvent, mode: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     const firstUpper: string =
       mode.substring(0, 1).toUpperCase() + mode.substring(1);
     this.selected['id' + firstUpper] = null;
@@ -218,7 +220,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   openCell(ev = null, cell: ScenarioData = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (cell != null) {
       if (this.startSelecting) {
         this.selectWorldStart(cell);
@@ -318,7 +322,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   deleteBackground(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.loadedCell.idBackground = null;
     this.loadedCell.backgroundAssetUrl = '/admin/no-asset.svg';
     this.loadedCell.backgroundName = 'Sin fondo';
@@ -343,7 +349,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   deleteScenarioObject(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.loadedCell.idScenarioObject = null;
     this.loadedCell.scenarioObjectAssetUrl = '/admin/no-asset.svg';
     this.loadedCell.scenarioObjectName = 'Sin objeto';
@@ -369,7 +377,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   deleteCharacter(ev: MouseEvent): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.loadedCell.idCharacter = null;
     this.loadedCell.characterAssetUrl = '/admin/no-asset.svg';
     this.loadedCell.characterName = 'Sin personaje';
@@ -406,7 +416,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   deleteConnection(ev: MouseEvent, sent: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.as
       .deleteConnection(this.connections[sent].toInterface())
       .subscribe((result: StatusResult): void => {
@@ -419,7 +431,9 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   showConnectionDetail(ev: MouseEvent = null, mode = false): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.showConnectionsDetail = mode;
   }
 

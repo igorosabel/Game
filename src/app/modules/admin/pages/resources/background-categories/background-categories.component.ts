@@ -60,7 +60,9 @@ export default class BackgroundCategoriesComponent implements OnInit {
   }
 
   showAddBackgroundCategory(ev = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedBackgroundCategory();
       this.backgroundCategoryDetailHeader = 'Nueva categoría de fondo';

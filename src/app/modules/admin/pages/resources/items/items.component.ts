@@ -85,7 +85,9 @@ export default class ItemsComponent implements OnInit {
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.filterListOption = option;
   }
 
@@ -103,7 +105,9 @@ export default class ItemsComponent implements OnInit {
   }
 
   showAddItem(ev = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedItem();
       this.itemDetailHeader = 'Nuevo item';

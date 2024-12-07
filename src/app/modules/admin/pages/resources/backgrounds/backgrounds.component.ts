@@ -85,7 +85,9 @@ export default class BackgroundsComponent implements OnInit {
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     this.filterListOption = option;
   }
 
@@ -95,7 +97,9 @@ export default class BackgroundsComponent implements OnInit {
   }
 
   showAddBackground(ev: MouseEvent = null): void {
-    ev && ev.preventDefault();
+    if (ev) {
+      ev.preventDefault();
+    }
     if (!this.showDetail) {
       this.resetLoadedBackground();
       this.backgroundDetailHeader = 'Nuevo fondo';

@@ -3,17 +3,10 @@ import Equipment from '@model/equipment.model';
 import ScenarioObject from '@model/scenario-object.model';
 
 export default class AssetCache {
-  _items: string[];
-  _toLoad: number;
-  _loaded: number;
-  _list;
-
-  constructor() {
-    this._items = [];
-    this._toLoad = 0;
-    this._loaded = 0;
-    this._list = {};
-  }
+  _items: string[] = [];
+  _toLoad: number = 0;
+  _loaded: number = 0;
+  _list = {};
 
   add(item: string): void {
     if (item === null || item === '') {
