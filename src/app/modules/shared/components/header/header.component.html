@@ -1,5 +1,5 @@
 <header>
-	@if (leftTitle) {
+	@if (leftTitle()) {
 	<a [routerLink]="leftUrl()"
 	   class="header-left">{{leftTitle()}}</a>
 	}
@@ -8,7 +8,7 @@
 		 [alt]="title()">
 	}
 	{{title()}}
-	@if (rightTitle) {
+	@if (rightTitle()) {
 	<a [routerLink]="rightUrl()"
 	   class="header-right">{{rightTitle()}}</a>
 	}
