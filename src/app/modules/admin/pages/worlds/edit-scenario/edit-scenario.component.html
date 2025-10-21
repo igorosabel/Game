@@ -1,4 +1,4 @@
-<game-header [leftUrl]="['/admin', 'world', worldId.toString(), 'scenarios']"
+<game-header [leftUrl]="['/admin', 'world', worldId().toString(), 'scenarios']"
 			 leftTitle="&lt; Escenarios"
 			 title="Editar"
 			 [rightUrl]="['/admin','logout']"
@@ -43,12 +43,12 @@
 	<div class="start-picker">
 		<label>Inicio</label>
 		<img src="/img/admin/start-location.svg"
-			 [class]="{'start-selecting': startSelecting}"
+			 [class]="{'start-selecting': startSelecting()}"
 			 (click)="selectStart()"
 			 alt="">
 	</div>
 	<div class="map-generate">
-		<a href="https://apigame.osumi.es/maps/{{worldId}}-{{scenarioId}}.png"
+		<a [href]="`https://apigame.osumi.es/maps/${worldId()}-${scenarioId()}.png`"
 		   target="_blank">Mapa</a>
 		<img [src]="mapGenerating"
 			 (click)="createMap()"
@@ -92,7 +92,7 @@
 				}
 			</div>
 			<div class="edit-scenario">
-				@for (row of scenario; track row) {
+				@for (row of scenario(); track row) {
 				<div class="edit-scenario-row">
 					@for (cell of row; track cell) {
 					<div class="edit-scenario-cell"
@@ -155,7 +155,7 @@
 	 [class]="{'cell-detail-show': showCellDetail}">
 	<div class="box">
 		<div class="header">
-			Casilla {{loadedCell.x}} - {{loadedCell.y}}
+			Casilla {{ loadedCell.x }} - {{ loadedCell.y }}
 			<a href="#"
 			   (click)="openCell($event)">X</a>
 		</div>
@@ -175,7 +175,7 @@
 					}
 				</main>
 				<footer>
-					{{loadedCell.backgroundName}}
+					{{ loadedCell.backgroundName }}
 				</footer>
 			</div>
 			<div class="cell-option">
@@ -219,15 +219,15 @@
 						   [(ngModel)]="loadedCell.characterHealth"
 						   placeholder="Salud actual">
 					}
-					{{loadedCell.characterName}}
+					{{ loadedCell.characterName }}
 				</footer>
 			</div>
 		</div>
 		<div class="footer">
-			@if (!savingCell) {
+			@if (!savingCell()) {
 			<button (click)="saveCell()">Continuar</button>
 			}
-			@if (savingCell) {
+			@else {
 			<button disabled="disabled">Guardando...</button>
 			}
 		</div>
@@ -235,7 +235,7 @@
 </div>
 
 <div class="connections-detail"
-	 [class]="{'connections-detail-show': showConnectionsDetail}">
+	 [class]="{'connections-detail-show': showConnectionsDetail()}">
 	<div class="box">
 		<div class="header">
 			Elige escenario
@@ -243,10 +243,10 @@
 			   (click)="showConnectionDetail($event)">X</a>
 		</div>
 		<div class="body">
-			@for (scenario of scenarioList; track scenario.id) {
+			@for (scenario of scenarioList(); track scenario.id) {
 			<div class="row"
 				 (click)="selectScenarioConnection(scenario)">
-				{{scenario.name}}
+				{{ scenario.name }}
 			</div>
 			}
 			@empty {

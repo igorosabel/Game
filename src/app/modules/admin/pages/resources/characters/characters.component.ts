@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetInterface } from '@interfaces/asset.interfaces';
 import {
@@ -44,17 +52,19 @@ export default class CharactersComponent implements OnInit {
     { id: 1, name: 'Enemigo' },
   ];
   characterList: Character[] = [];
-  characterListFiltered: Character[] = [];
-  message: string = null;
+  characterListFiltered: WritableSignal<Character[]> = signal<Character[]>([]);
+  message: WritableSignal<string> = signal<string>(null);
   loadedCharacter: Character = new Character();
-  showDetail: boolean = false;
+  showDetail: WritableSignal<boolean> = signal<boolean>(false);
   detailtTab: string = 'data';
-  characterDetailHeader: string = '';
-  dropItemName: string = '';
-  savingCharacter: boolean = false;
+  characterDetailHeader: WritableSignal<string> = signal<string>('');
+  dropItemName: WritableSignal<string> = signal<string>('');
+  savingCharacter: WritableSignal<boolean> = signal<boolean>(false);
   assetPickerWhere: string = null;
-  @ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
-  @ViewChild('itemPicker', { static: true }) itemPicker: ItemPickerComponent;
+  assetPicker: Signal<AssetPickerComponent> =
+    viewChild.required<AssetPickerComponent>('assetPicker');
+  itemPicker: Signal<ItemPickerComponent> =
+    viewChild.required<ItemPickerComponent>('itemPicker');
   animationImage: AnimationImageInterface = {
     up: '',
     down: '',
@@ -86,7 +96,7 @@ export default class CharactersComponent implements OnInit {
 
   loadCharacters(): void {
     this.as.getCharacters().subscribe((result: CharacterResult): void => {
-      if (result.status == 'ok') {
+      if (result.status === 'ok') {
         this.characterList = this.cms.getCharacters(result.list);
         this.updateFilteredList();
       }
@@ -102,7 +112,7 @@ export default class CharactersComponent implements OnInit {
         (x: Character): boolean => x.type === this.characterFilter
       );
     }
-    this.characterListFiltered = filteredList;
+    this.characterListFiltered.set(filteredList);
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
@@ -119,7 +129,7 @@ export default class CharactersComponent implements OnInit {
     clearInterval(this.animationTimer.right);
     this.loadedCharacter = new Character();
     this.loadedCharacter.dropAssetUrl = '/admin/no-asset.svg';
-    this.dropItemName = 'Elige un item';
+    this.dropItemName.set('Elige un item');
     this.loadedCharacter.assetUpUrl = '/admin/no-asset.svg';
     this.animationImage.up = '/admin/no-asset.svg';
     this.loadedCharacter.assetDownUrl = '/admin/no-asset.svg';
@@ -134,14 +144,14 @@ export default class CharactersComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    if (!this.showDetail) {
+    if (!this.showDetail()) {
       this.resetLoadedCharacter();
-      this.characterDetailHeader = 'Nuevo personaje';
+      this.characterDetailHeader.set('Nuevo personaje');
       this.detailtTab = 'data';
 
-      this.showDetail = true;
+      this.showDetail.set(true);
     } else {
-      this.showDetail = false;
+      this.showDetail.set(false);
       this.resetLoadedCharacter();
     }
   }
@@ -151,13 +161,13 @@ export default class CharactersComponent implements OnInit {
   }
 
   openItemPicker(): void {
-    this.itemPicker.showPicker();
+    this.itemPicker().showPicker();
   }
 
   selectedItem(selectedItem: ItemInterface): void {
     this.loadedCharacter.dropIdItem = selectedItem.id;
     this.loadedCharacter.dropAssetUrl = selectedItem.assetUrl;
-    this.dropItemName = selectedItem.name;
+    this.dropItemName.set(selectedItem.name);
   }
 
   removeSelectedDropItem(ev: MouseEvent): void {
@@ -166,15 +176,15 @@ export default class CharactersComponent implements OnInit {
     }
     this.loadedCharacter.dropIdItem = null;
     this.loadedCharacter.dropAssetUrl = '/admin/no-asset.svg';
-    this.dropItemName = 'Elige un item';
+    this.dropItemName.set('Elige un item');
   }
 
   openAssetPicker(where: string): void {
-    if (where.indexOf('frames') != -1) {
+    if (where.indexOf('frames') !== -1) {
       const orientation: string = where.replace('frames', '').toLowerCase();
       const whereCheck: string =
         orientation.substring(0, 1).toUpperCase() + orientation.substring(1);
-      if (this.loadedCharacter['idAsset' + whereCheck] == null) {
+      if (this.loadedCharacter['idAsset' + whereCheck] === null) {
         alert(
           'Antes de añadir un frame tienes que elegir una imagen principal.'
         );
@@ -182,11 +192,11 @@ export default class CharactersComponent implements OnInit {
       }
     }
     this.assetPickerWhere = where;
-    this.assetPicker.showPicker();
+    this.assetPicker().showPicker();
   }
 
   selectedAsset(selectedAsset: AssetInterface): void {
-    if (this.assetPickerWhere.indexOf('frames') != -1) {
+    if (this.assetPickerWhere.indexOf('frames') !== -1) {
       const orientation: string = this.assetPickerWhere
         .replace('frames', '')
         .toLowerCase();
@@ -247,7 +257,7 @@ export default class CharactersComponent implements OnInit {
         sent.substring(0, 1).toUpperCase() + sent.substring(1);
       const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
         (x: CharacterFrame): boolean =>
-          x.id + x.idAsset.toString() == frame.id + frame.idAsset.toString()
+          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
       );
       this.loadedCharacter['frames' + sentUpper].splice(ind, 1);
       this.updateFrameOrders(sentUpper);
@@ -259,9 +269,9 @@ export default class CharactersComponent implements OnInit {
       sent.substring(0, 1).toUpperCase() + sent.substring(1);
     const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
       (x: CharacterFrame): boolean =>
-        x.id + x.idAsset.toString() == frame.id + frame.idAsset.toString()
+        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
     );
-    if (ind == 0) {
+    if (ind === 0) {
       return;
     }
     const aux: CharacterFrame = this.loadedCharacter['frames' + sentUpper][ind];
@@ -276,9 +286,9 @@ export default class CharactersComponent implements OnInit {
       sent.substring(0, 1).toUpperCase() + sent.substring(1);
     const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
       (x: CharacterFrame): boolean =>
-        x.id + x.idAsset.toString() == frame.id + frame.idAsset.toString()
+        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
     );
-    if (ind == this.loadedCharacter['frames' + sentUpper].length - 1) {
+    if (ind === this.loadedCharacter['frames' + sentUpper].length - 1) {
       return;
     }
     const aux: CharacterFrame = this.loadedCharacter['frames' + sentUpper][ind];
@@ -306,16 +316,16 @@ export default class CharactersComponent implements OnInit {
       (x: Narrative): boolean => x.order == narrative.order
     );
     const aux: Narrative = this.loadedCharacter.narratives[ind];
-    if (sent == 'up') {
-      if (ind == 0) {
+    if (sent === 'up') {
+      if (ind === 0) {
         return;
       }
       this.loadedCharacter.narratives[ind] =
         this.loadedCharacter.narratives[ind - 1];
       this.loadedCharacter.narratives[ind - 1] = aux;
     }
-    if (sent == 'down') {
-      if (ind == this.loadedCharacter.narratives.length - 1) {
+    if (sent === 'down') {
+      if (ind === this.loadedCharacter.narratives.length - 1) {
         return;
       }
       this.loadedCharacter.narratives[ind] =
@@ -331,7 +341,7 @@ export default class CharactersComponent implements OnInit {
     );
     if (conf) {
       const ind: number = this.loadedCharacter.narratives.findIndex(
-        (x: Narrative): boolean => x.order == narrative.order
+        (x: Narrative): boolean => x.order === narrative.order
       );
       this.loadedCharacter.narratives.splice(ind, 1);
       this.updateNarrativeOrders();
@@ -347,48 +357,48 @@ export default class CharactersComponent implements OnInit {
 
   saveCharacter(): void {
     let validate: boolean = true;
-    if (this.loadedCharacter.type == null) {
+    if (this.loadedCharacter.type === null) {
       alert('¡Tienes que elegir el tipo de personaje!');
       validate = false;
     }
 
-    if (validate && this.loadedCharacter.name == null) {
+    if (validate && this.loadedCharacter.name === null) {
       alert('¡No puedes dejar el nombre del personaje en blanco!');
       validate = false;
     }
 
-    if (validate && this.loadedCharacter.width == null) {
+    if (validate && this.loadedCharacter.width === null) {
       alert('¡No puedes dejar la anchura del personaje en blanco!');
       validate = false;
     }
 
-    if (validate && this.loadedCharacter.height == null) {
+    if (validate && this.loadedCharacter.height === null) {
       alert('¡No puedes dejar la altura del personaje en blanco!');
       validate = false;
     }
 
-    if (this.loadedCharacter.type == 1) {
-      if (validate && this.loadedCharacter.health == null) {
+    if (this.loadedCharacter.type === 1) {
+      if (validate && this.loadedCharacter.health === null) {
         alert('¡No puedes dejar la salud del enemigo en blanco!');
         validate = false;
       }
 
-      if (validate && this.loadedCharacter.attack == null) {
+      if (validate && this.loadedCharacter.attack === null) {
         alert('¡No puedes dejar el ataque del enemigo en blanco!');
         validate = false;
       }
 
-      if (validate && this.loadedCharacter.defense == null) {
+      if (validate && this.loadedCharacter.defense === null) {
         alert('¡No puedes dejar la defensa del enemigo en blanco!');
         validate = false;
       }
 
-      if (validate && this.loadedCharacter.speed == null) {
+      if (validate && this.loadedCharacter.speed === null) {
         alert('¡No puedes dejar la velocidad del enemigo en blanco!');
         validate = false;
       }
 
-      if (validate && this.loadedCharacter.respawn == null) {
+      if (validate && this.loadedCharacter.respawn === null) {
         alert(
           '¡No puedes dejar el tiempo de reaparición del enemigo en blanco!'
         );
@@ -397,8 +407,8 @@ export default class CharactersComponent implements OnInit {
 
       if (
         validate &&
-        this.loadedCharacter.dropIdItem != null &&
-        this.loadedCharacter.dropChance == null
+        this.loadedCharacter.dropIdItem !== null &&
+        this.loadedCharacter.dropChance === null
       ) {
         alert(
           '¡Has elegido un item para el enemigo, pero no has indicado el porcentaje de obtención!'
@@ -408,8 +418,8 @@ export default class CharactersComponent implements OnInit {
 
       if (
         validate &&
-        this.loadedCharacter.dropChance != null &&
-        this.loadedCharacter.dropIdItem == null
+        this.loadedCharacter.dropChance !== null &&
+        this.loadedCharacter.dropIdItem === null
       ) {
         alert(
           '¡Has indicado el porcentaje de obtención de un item pero no has elegido ninguno!'
@@ -419,7 +429,7 @@ export default class CharactersComponent implements OnInit {
 
       if (
         validate &&
-        this.loadedCharacter.dropChance != null &&
+        this.loadedCharacter.dropChance !== null &&
         this.loadedCharacter.dropChance > 100
       ) {
         alert(
@@ -430,7 +440,7 @@ export default class CharactersComponent implements OnInit {
       }
     }
 
-    if (validate && this.loadedCharacter.idAssetDown == null) {
+    if (validate && this.loadedCharacter.idAssetDown === null) {
       alert(
         'Tienes que elegir por lo menos una imagen hacia abajo para el personaje'
       );
@@ -439,11 +449,11 @@ export default class CharactersComponent implements OnInit {
 
     if (
       validate &&
-      this.loadedCharacter.type == 1 &&
-      (this.loadedCharacter.idAssetDown == null ||
-        this.loadedCharacter.idAssetUp == null ||
-        this.loadedCharacter.idAssetLeft == null ||
-        this.loadedCharacter.idAssetRight == null)
+      this.loadedCharacter.type === 1 &&
+      (this.loadedCharacter.idAssetDown === null ||
+        this.loadedCharacter.idAssetUp === null ||
+        this.loadedCharacter.idAssetLeft === null ||
+        this.loadedCharacter.idAssetRight === null)
     ) {
       alert(
         'Para un enemigo tienes que elegir por lo menos una imagen en cada sentido.'
@@ -452,21 +462,28 @@ export default class CharactersComponent implements OnInit {
     }
 
     if (validate) {
-      this.savingCharacter = true;
-      this.as
-        .saveCharacter(this.loadedCharacter.toInterface())
-        .subscribe((result: StatusResult): void => {
-          this.savingCharacter = false;
-          if (result.status == 'ok') {
+      this.savingCharacter.set(true);
+      this.as.saveCharacter(this.loadedCharacter.toInterface()).subscribe({
+        next: (result: StatusResult): void => {
+          this.savingCharacter.set(false);
+          if (result.status === 'ok') {
             this.showAddCharacter();
             this.loadCharacters();
-            this.itemPicker.resetSelected();
-            this.assetPicker.resetSelected();
+            this.itemPicker().resetSelected();
+            this.assetPicker().resetSelected();
           } else {
             alert('¡Ocurrió un error al guardar el personaje!');
-            this.message = 'ERROR: Ocurrió un error al guardar el personaje.';
+            this.message.set(
+              'ERROR: Ocurrió un error al guardar el personaje.'
+            );
           }
-        });
+        },
+        error: (): void => {
+          this.savingCharacter.set(false);
+          alert('¡Ocurrió un error al guardar el personaje!');
+          this.message.set('ERROR: Ocurrió un error al guardar el personaje.');
+        },
+      });
     }
   }
 
@@ -480,17 +497,17 @@ export default class CharactersComponent implements OnInit {
       character.blockHeight,
       character.fixedPosition,
       character.idAssetUp,
-      character.assetUpUrl != null
+      character.assetUpUrl !== null
         ? character.assetUpUrl
         : '/admin/no-asset.svg',
       character.idAssetDown,
       character.assetDownUrl,
       character.idAssetLeft,
-      character.assetLeftUrl != null
+      character.assetLeftUrl !== null
         ? character.assetLeftUrl
         : '/admin/no-asset.svg',
       character.idAssetRight,
-      character.assetRightUrl != null
+      character.assetRightUrl !== null
         ? character.assetRightUrl
         : '/admin/no-asset.svg',
       character.type,
@@ -499,7 +516,7 @@ export default class CharactersComponent implements OnInit {
       character.defense,
       character.speed,
       character.dropIdItem,
-      character.dropAssetUrl != null
+      character.dropAssetUrl !== null
         ? character.dropAssetUrl
         : '/admin/no-asset.svg',
       character.dropChance,
@@ -517,7 +534,7 @@ export default class CharactersComponent implements OnInit {
       }
 
       this.animationImage[sent.toLowerCase()] =
-        this.loadedCharacter['asset' + sent + 'Url'] != null
+        this.loadedCharacter['asset' + sent + 'Url'] !== null
           ? this.loadedCharacter['asset' + sent + 'Url']
           : '/admin/no-asset.svg';
       this.animationInd[sent.toLowerCase()] = -1;
@@ -530,16 +547,16 @@ export default class CharactersComponent implements OnInit {
     this.startAnimation();
 
     if (character.dropIdItem !== null) {
-      const dropItem: ItemInterface = this.itemPicker.getItemById(
+      const dropItem: ItemInterface = this.itemPicker().getItemById(
         character.dropIdItem
       );
-      this.dropItemName = dropItem.name;
+      this.dropItemName.set(dropItem.name);
     } else {
-      this.dropItemName = 'Elige un item';
+      this.dropItemName.set('Elige un item');
     }
 
-    this.characterDetailHeader = 'Editar personaje';
-    this.showDetail = true;
+    this.characterDetailHeader.set('Editar personaje');
+    this.showDetail.set(true);
   }
 
   deleteCharacter(character: Character): void {
@@ -547,23 +564,27 @@ export default class CharactersComponent implements OnInit {
       '¿Estás seguro de querer borrar el personaje "' + character.name + '"?'
     );
     if (conf) {
-      this.as
-        .deleteCharacter(character.id)
-        .subscribe((result: StatusMessageResult): void => {
-          if (result.status == 'ok') {
+      this.as.deleteCharacter(character.id).subscribe({
+        next: (result: StatusMessageResult): void => {
+          if (result.status === 'ok') {
             this.loadCharacters();
           }
-          if (result.status == 'in-use') {
+          if (result.status === 'in-use') {
             alert(
               'El personaje está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n' +
                 urldecode(result.message)
             );
           }
-          if (result.status == 'error') {
+          if (result.status === 'error') {
             alert('¡Ocurrio un error al borrar el personaje!');
-            this.message = 'ERROR: Ocurrió un error al borrar el personaje.';
+            this.message.set('ERROR: Ocurrió un error al borrar el personaje.');
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrio un error al borrar el personaje!');
+          this.message.set('ERROR: Ocurrió un error al borrar el personaje.');
+        },
+      });
     }
   }
 }

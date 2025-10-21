@@ -1,4 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetResult, TagResult } from '@interfaces/asset.interfaces';
 import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
@@ -30,13 +36,13 @@ export default class AssetsComponent implements OnInit {
   tagList: Tag[] = [];
   worldList: World[] = [];
   assetList: Asset[] = [];
-  assetListFiltered: Asset[] = [];
-  message: string = null;
+  assetListFiltered: WritableSignal<Asset[]> = signal<Asset[]>([]);
+  message: WritableSignal<string> = signal<string>(null);
   loadedAsset: Asset = new Asset();
-  showDetail: boolean = false;
-  assetDetailHeader: string = '';
-  loadingFile: boolean = false;
-  savingAsset: boolean = false;
+  showDetail: WritableSignal<boolean> = signal<boolean>(false);
+  assetDetailHeader: WritableSignal<string> = signal<string>('');
+  loadingFile: WritableSignal<boolean> = signal<boolean>(false);
+  savingAsset: WritableSignal<boolean> = signal<boolean>(false);
 
   ngOnInit(): void {
     this.loadTags();
@@ -52,7 +58,7 @@ export default class AssetsComponent implements OnInit {
 
   loadTags(): void {
     this.as.getTags().subscribe((result: TagResult): void => {
-      if (result.status == 'ok') {
+      if (result.status === 'ok') {
         this.tagList = this.cms.getTags(result.list);
       }
     });
@@ -60,7 +66,7 @@ export default class AssetsComponent implements OnInit {
 
   loadWorlds(): void {
     this.as.getWorlds().subscribe((result: WorldResult): void => {
-      if (result.status == 'ok') {
+      if (result.status === 'ok') {
         this.worldList = this.cms.getWorlds(result.list);
       }
     });
@@ -68,7 +74,7 @@ export default class AssetsComponent implements OnInit {
 
   loadAssets(): void {
     this.as.getAssets().subscribe((result: AssetResult): void => {
-      if (result.status == 'ok') {
+      if (result.status === 'ok') {
         this.assetList = this.cms.getAssets(result.list);
         this.updateFilteredList();
       }
@@ -106,7 +112,7 @@ export default class AssetsComponent implements OnInit {
         }
       }
     }
-    this.assetListFiltered = filteredList;
+    this.assetListFiltered.set(filteredList);
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
@@ -124,13 +130,13 @@ export default class AssetsComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    if (!this.showDetail) {
+    if (!this.showDetail()) {
       this.resetLoadedAsset();
-      this.assetDetailHeader = 'Nuevo recurso';
+      this.assetDetailHeader.set('Nuevo recurso');
 
-      this.showDetail = true;
+      this.showDetail.set(true);
     } else {
-      this.showDetail = false;
+      this.showDetail.set(false);
     }
   }
 
@@ -142,38 +148,43 @@ export default class AssetsComponent implements OnInit {
     const reader: FileReader = new FileReader();
     const files: FileList = (event.target as HTMLInputElement).files;
     if (files && files.length > 0) {
-      this.loadingFile = true;
+      this.loadingFile.set(true);
       const file = files[0];
       reader.readAsDataURL(file);
       reader.onload = (): void => {
         this.loadedAsset.file = reader.result as string;
         (document.getElementById('asset-file') as HTMLInputElement).value = '';
-        this.loadingFile = false;
+        this.loadingFile.set(false);
       };
     }
   }
 
   saveAsset(): void {
     let validate: boolean = true;
-    if (this.loadedAsset.name == '') {
+    if (this.loadedAsset.name === '') {
       validate = false;
       alert('¡No puedes dejar el nombre del recurso en blanco!');
     }
 
     if (validate) {
-      this.savingAsset = true;
-      this.as
-        .saveAsset(this.loadedAsset.toInterface())
-        .subscribe((result: StatusResult): void => {
-          this.savingAsset = false;
-          if (result.status == 'ok') {
+      this.savingAsset.set(true);
+      this.as.saveAsset(this.loadedAsset.toInterface()).subscribe({
+        next: (result: StatusResult): void => {
+          this.savingAsset.set(false);
+          if (result.status === 'ok') {
             this.showAddAsset();
             this.loadAssets();
           } else {
             alert('¡Ocurrió un error al guardar el recurso!');
-            this.message = 'ERROR: Ocurrió un error al guardar el recurso.';
+            this.message.set('ERROR: Ocurrió un error al guardar el recurso.');
           }
-        });
+        },
+        error: (): void => {
+          this.savingAsset.set(false);
+          alert('¡Ocurrió un error al guardar el recurso!');
+          this.message.set('ERROR: Ocurrió un error al guardar el recurso.');
+        },
+      });
     }
   }
 
@@ -189,8 +200,8 @@ export default class AssetsComponent implements OnInit {
       this.loadedAsset.tags.push(new Tag(t.id, t.name));
     }
 
-    this.assetDetailHeader = 'Editar mundo';
-    this.showDetail = true;
+    this.assetDetailHeader.set('Editar mundo');
+    this.showDetail.set(true);
   }
 
   deleteAsset(asset: Asset): void {
@@ -198,19 +209,23 @@ export default class AssetsComponent implements OnInit {
       '¿Estás seguro de querer borrar el recurso "' + asset.name + '"?'
     );
     if (conf) {
-      this.as
-        .deleteAsset(asset.id)
-        .subscribe((result: StatusMessageResult): void => {
-          if (result.status == 'ok') {
+      this.as.deleteAsset(asset.id).subscribe({
+        next: (result: StatusMessageResult): void => {
+          if (result.status === 'ok') {
             this.loadAssets();
           } else {
             alert(
               '¡Ocurrio un error al borrar el recurso!\n\n' +
                 urldecode(result.message)
             );
-            this.message = 'ERROR: Ocurrió un error al borrar el recurso.';
+            this.message.set('ERROR: Ocurrió un error al borrar el recurso.');
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrio un error al borrar el recurso!');
+          this.message.set('ERROR: Ocurrió un error al borrar el recurso.');
+        },
+      });
     }
   }
 }

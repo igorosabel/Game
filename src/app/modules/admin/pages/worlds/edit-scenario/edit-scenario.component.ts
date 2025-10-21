@@ -1,6 +1,17 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  InputSignalWithTransform,
+  OnInit,
+  Signal,
+  WritableSignal,
+  inject,
+  input,
+  numberAttribute,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import Constants from '@app/constants';
 import { BackgroundInterface } from '@interfaces/background.interfaces';
 import { CharacterInterface } from '@interfaces/character.interfaces';
@@ -43,7 +54,6 @@ import ScenarioObjectPickerComponent from '@shared/components/scenario-object-pi
   ],
 })
 export default class EditScenarioComponent implements OnInit {
-  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
   private as: ApiService = inject(ApiService);
   private cms: ClassMapperService = inject(ClassMapperService);
@@ -52,75 +62,86 @@ export default class EditScenarioComponent implements OnInit {
   selected: SelectedScenarioDataInterface = {
     selecting: null,
     idBackground: null,
-    backgroundAssetUrl: '/admin/color-picker.svg',
+    backgroundAssetUrl: '/img/admin/color-picker.svg',
     idScenarioObject: null,
-    scenarioObjectAssetUrl: '/admin/color-picker.svg',
+    scenarioObjectAssetUrl: '/img/admin/color-picker.svg',
     scenarioObjectWidth: null,
     scenarioObjectHeight: null,
     idCharacter: null,
-    characterAssetUrl: '/admin/color-picker.svg',
+    characterAssetUrl: '/img/admin/color-picker.svg',
     characterWidth: null,
     characterHeight: null,
     characterHealth: null,
   };
-  startSelecting: boolean = false;
-  mapGenerating: string = '/admin/create-map.svg';
+  startSelecting: WritableSignal<boolean> = signal<boolean>(false);
+  mapGenerating: string = '/img/admin/create-map.svg';
   showDebug: boolean = false;
-  worldId: number = null;
-  scenarioId: number = null;
+  worldId: InputSignalWithTransform<number, unknown> = input.required<
+    number,
+    unknown
+  >({
+    transform: numberAttribute,
+  });
+  scenarioId: InputSignalWithTransform<number, unknown> = input.required<
+    number,
+    unknown
+  >({
+    transform: numberAttribute,
+  });
   scenarioWidth: number = Constants.SCENARIO_COLS;
   scenarioHeight: number = Constants.SCENARIO_ROWS;
-  scenario: ScenarioData[][] = [];
+  scenario: WritableSignal<ScenarioData[][]> = signal<ScenarioData[][]>([]);
   loadedScenario: Scenario = null;
   loadedCell: ScenarioData = new ScenarioData();
   showCellDetail: boolean = false;
-  savingCell: boolean = false;
+  savingCell: WritableSignal<boolean> = signal<boolean>(false);
   connections: ConnectionListInterface = {
     up: null,
     down: null,
     left: null,
     right: null,
   };
-  scenarioList: Scenario[] = [];
-  showConnectionsDetail: boolean = false;
+  scenarioList: WritableSignal<Scenario[]> = signal<Scenario[]>([]);
+  showConnectionsDetail: WritableSignal<boolean> = signal<boolean>(false);
   connectWhere: string = null;
-  @ViewChild('backgroundPicker', { static: true })
-  backgroundPicker: BackgroundPickerComponent;
-  @ViewChild('scenarioObjectPicker', { static: true })
-  scenarioObjectPicker: ScenarioObjectPickerComponent;
-  @ViewChild('characterPicker', { static: true })
-  characterPicker: CharacterPickerComponent;
+  backgroundPicker: Signal<BackgroundPickerComponent> =
+    viewChild.required<BackgroundPickerComponent>('backgroundPicker');
+  scenarioObjectPicker: Signal<ScenarioObjectPickerComponent> =
+    viewChild.required<ScenarioObjectPickerComponent>('scenarioObjectPicker');
+  characterPicker: Signal<CharacterPickerComponent> =
+    viewChild.required<CharacterPickerComponent>('characterPicker');
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((params: Params): void => {
-      this.worldId = params.id_world;
-      this.scenarioId = params.id_scenario;
-      this.loadScenario();
-      this.loadScenarioList();
+    this.loadScenario();
+    this.loadScenarioList();
 
-      const esc: Key = this.play.keyboard('Escape');
-      esc.press = (): void => {
-        this.openCell();
-      };
-    });
+    const esc: Key = this.play.keyboard('Escape');
+    esc.press = (): void => {
+      this.openCell();
+    };
   }
 
   loadScenario(): void {
     this.as
-      .getScenario(this.scenarioId)
+      .getScenario(this.scenarioId())
       .subscribe((result: ScenarioDataResult): void => {
         this.loadedScenario = this.cms.getScenario(result.scenario);
+        const scenario: ScenarioData[][] = [];
         for (let y: number = 0; y < this.scenarioHeight; y++) {
-          this.scenario[y] = [];
+          scenario[y] = [];
           for (let x: number = 0; x < this.scenarioWidth; x++) {
-            this.scenario[y][x] = new ScenarioData(null, this.scenarioId, x, y);
+            scenario[y][x] = new ScenarioData(null, this.scenarioId(), x, y);
           }
         }
+        this.scenario.set(scenario);
         const scenarioDataList: ScenarioData[] = this.cms.getScenarioDatas(
           result.data
         );
         for (const scenarioData of scenarioDataList) {
-          this.scenario[scenarioData.y][scenarioData.x] = scenarioData;
+          this.scenario.update((value: ScenarioData[][]): ScenarioData[][] => {
+            value[scenarioData.y][scenarioData.x] = scenarioData;
+            return value;
+          });
         }
         this.connections = {
           up: null,
@@ -139,11 +160,11 @@ export default class EditScenarioComponent implements OnInit {
 
   loadScenarioList(): void {
     this.as
-      .getScenarios(this.worldId)
+      .getScenarios(this.worldId())
       .subscribe((result: ScenarioResult): void => {
         const scenarios: Scenario[] = this.cms.getScenarios(result.list);
-        this.scenarioList = scenarios.filter(
-          (x: Scenario): boolean => x.id != this.scenarioId
+        this.scenarioList.set(
+          scenarios.filter((x: Scenario): boolean => x.id !== this.scenarioId())
         );
       });
   }
@@ -163,7 +184,7 @@ export default class EditScenarioComponent implements OnInit {
     const firstUpper: string =
       mode.substring(0, 1).toUpperCase() + mode.substring(1);
     this.selected['id' + firstUpper] = null;
-    this.selected[mode + 'AssetUrl'] = '/admin/color-picker.svg';
+    this.selected[mode + 'AssetUrl'] = '/img/admin/color-picker.svg';
     if (mode == 'scenarioObject' || mode == 'character') {
       this.selected[mode + 'Width'] = null;
       this.selected[mode + 'Height'] = null;
@@ -171,12 +192,12 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   selectStart(): void {
-    this.startSelecting = !this.startSelecting;
+    this.startSelecting.update((value: boolean) => !value);
   }
 
   selectWorldStart(cell: ScenarioData, check: boolean = true): void {
     const params: WorldStartInterface = {
-      idScenario: this.scenarioId,
+      idScenario: this.scenarioId(),
       x: cell.x,
       y: cell.y,
       check: check,
@@ -184,7 +205,7 @@ export default class EditScenarioComponent implements OnInit {
     this.as
       .selectWorldStart(params)
       .subscribe((result: StatusMessageResult): void => {
-        if (result.status == 'in-use') {
+        if (result.status === 'in-use') {
           const conf: boolean = confirm(
             '¡Atención! Este mundo tiene ya un punto de inicio en otro escenario ("' +
               urldecode(result.message) +
@@ -194,10 +215,10 @@ export default class EditScenarioComponent implements OnInit {
             this.selectWorldStart(cell, false);
           }
         }
-        if (result.status == 'ok') {
+        if (result.status === 'ok') {
           this.loadedScenario.startX = cell.x;
           this.loadedScenario.startY = cell.y;
-          this.startSelecting = false;
+          this.startSelecting.set(false);
         }
         if (result.status == 'error') {
           alert('ERROR: Ocurrió un error al marcar el punto de inicio.');
@@ -208,9 +229,9 @@ export default class EditScenarioComponent implements OnInit {
   createMap(): void {
     this.mapGenerating = '/img/loading.svg';
     this.as
-      .generateMap(this.scenarioId)
+      .generateMap(this.scenarioId())
       .subscribe((result: StatusResult): void => {
-        this.mapGenerating = '/admin/create-map.svg';
+        this.mapGenerating = '/img/admin/create-map.svg';
         if (result.status == 'ok') {
           alert('¡Mapa creado!');
         } else {
@@ -224,7 +245,7 @@ export default class EditScenarioComponent implements OnInit {
       ev.preventDefault();
     }
     if (cell != null) {
-      if (this.startSelecting) {
+      if (this.startSelecting()) {
         this.selectWorldStart(cell);
         return;
       }
@@ -255,12 +276,12 @@ export default class EditScenarioComponent implements OnInit {
         cell.idBackground != null ? cell.backgroundName : 'Sin fondo',
         cell.idBackground != null
           ? cell.backgroundAssetUrl
-          : '/admin/no-asset.svg',
+          : '/img/admin/no-asset.svg',
         cell.idScenarioObject,
         cell.idScenarioObject != null ? cell.scenarioObjectName : 'Sin objeto',
         cell.idScenarioObject != null
           ? cell.scenarioObjectAssetUrl
-          : '/admin/no-asset.svg',
+          : '/img/admin/no-asset.svg',
         cell.scenarioObjectWidth,
         cell.scenarioObjectHeight,
         cell.scenarioObjectBlockWidth,
@@ -269,7 +290,7 @@ export default class EditScenarioComponent implements OnInit {
         cell.idCharacter != null ? cell.characterName : 'Sin personaje',
         cell.idCharacter != null
           ? cell.characterAssetUrl
-          : '/admin/no-asset.svg',
+          : '/img/admin/no-asset.svg',
         cell.characterWidth,
         cell.characterHeight,
         cell.characterBlockWidth,
@@ -312,7 +333,7 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   openBackgroundPicker(): void {
-    this.backgroundPicker.showPicker();
+    this.backgroundPicker().showPicker();
   }
 
   selectedBackground(background: BackgroundInterface): void {
@@ -326,7 +347,7 @@ export default class EditScenarioComponent implements OnInit {
       ev.preventDefault();
     }
     this.loadedCell.idBackground = null;
-    this.loadedCell.backgroundAssetUrl = '/admin/no-asset.svg';
+    this.loadedCell.backgroundAssetUrl = '/img/admin/no-asset.svg';
     this.loadedCell.backgroundName = 'Sin fondo';
   }
 
@@ -337,7 +358,7 @@ export default class EditScenarioComponent implements OnInit {
       );
       return;
     }
-    this.scenarioObjectPicker.showPicker();
+    this.scenarioObjectPicker().showPicker();
   }
 
   selectedScenarioObject(scenarioObject: ScenarioObjectInterface): void {
@@ -353,7 +374,7 @@ export default class EditScenarioComponent implements OnInit {
       ev.preventDefault();
     }
     this.loadedCell.idScenarioObject = null;
-    this.loadedCell.scenarioObjectAssetUrl = '/admin/no-asset.svg';
+    this.loadedCell.scenarioObjectAssetUrl = '/img/admin/no-asset.svg';
     this.loadedCell.scenarioObjectName = 'Sin objeto';
   }
 
@@ -364,7 +385,7 @@ export default class EditScenarioComponent implements OnInit {
       );
       return;
     }
-    this.characterPicker.showPicker();
+    this.characterPicker().showPicker();
   }
 
   selectedCharacter(character: CharacterInterface): void {
@@ -381,19 +402,22 @@ export default class EditScenarioComponent implements OnInit {
       ev.preventDefault();
     }
     this.loadedCell.idCharacter = null;
-    this.loadedCell.characterAssetUrl = '/admin/no-asset.svg';
+    this.loadedCell.characterAssetUrl = '/img/admin/no-asset.svg';
     this.loadedCell.characterName = 'Sin personaje';
   }
 
   saveCell(): void {
-    this.savingCell = true;
+    this.savingCell.set(true);
     this.as
       .saveScenarioData(this.loadedCell.toInterface())
       .subscribe((result: StatusIdResult): void => {
         if (result.status == 'ok') {
           this.loadedCell.id = result.id;
-          this.scenario[this.loadedCell.y][this.loadedCell.x] = this.loadedCell;
-          this.savingCell = false;
+          this.scenario.update((value: ScenarioData[][]): ScenarioData[][] => {
+            value[this.loadedCell.y][this.loadedCell.x] = this.loadedCell;
+            return value;
+          });
+          this.savingCell.set(false);
           this.openCell();
         }
       });
@@ -434,7 +458,7 @@ export default class EditScenarioComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    this.showConnectionsDetail = mode;
+    this.showConnectionsDetail.set(mode);
   }
 
   selectScenarioConnection(scenario: Scenario): void {

@@ -33,7 +33,7 @@
 
 <div class="list"
 	 [class]="{'list-list': filterListOption === 'list'}">
-	@for (character of characterListFiltered; track character.id) {
+	@for (character of characterListFiltered(); track character.id) {
 	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="character.assetDownUrl"
 			 [alt]="character.name">
@@ -50,9 +50,9 @@
 		</div>
 	</div>
 	}
-	@if (message !== null) {
+	@if (message() !== null) {
 	<div class="message">
-		{{message}}
+		{{ message() }}
 	</div>
 	}
 </div>
@@ -63,10 +63,10 @@
    (click)="showAddCharacter($event)">+</a>
 
 <div class="character-detail"
-	 [class]="{'character-detail-show': showDetail}">
+	 [class]="{'character-detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{characterDetailHeader}}</span>
+			<span>{{ characterDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddCharacter($event)">X</a>
 		</div>
@@ -218,7 +218,7 @@
 						 (click)="openItemPicker()"
 						 alt="">
 					<div>
-						{{dropItemName}}
+						{{ dropItemName() }}
 						@if (loadedCharacter.dropIdItem) {
 						<a href="#"
 						   (click)="removeSelectedDropItem($event)">(x)</a>
@@ -464,10 +464,10 @@
 			</div>
 		</div>
 		<div class="footer">
-			@if (!savingCharacter) {
+			@if (!savingCharacter()) {
 			<button (click)="saveCharacter()">Continuar</button>
 			}
-			@if (savingCharacter) {
+			@else {
 			<button disabled="disabled">Guardando...</button>
 			}
 		</div>

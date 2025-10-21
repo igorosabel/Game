@@ -7,7 +7,7 @@
 <div class="admin-list">
 	<div class="header">Categorías de fondos</div>
 	<div>
-		@for (backgroundCategory of backgroundCategoryList; track backgroundCategory.id) {
+		@for (backgroundCategory of backgroundCategoryList(); track backgroundCategory.id) {
 		<div class="row">
 			<span>{{backgroundCategory.name}}</span>
 			<img src="/img/admin/edit.svg"
@@ -22,8 +22,8 @@
 				 (click)="deleteBackgroundCategory(backgroundCategory)">
 		</div>
 		}
-		@if (message !== null) {
-		<div class="row center">{{message}}</div>
+		@if (message() !== null) {
+		<div class="row center">{{ message() }}</div>
 		}
 	</div>
 </div>
@@ -34,10 +34,10 @@
    (click)="showAddBackgroundCategory($event)">+</a>
 
 <div class="detail"
-	 [class]="{'detail-show': showDetail}">
+	 [class]="{'detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{backgroundCategoryDetailHeader}}</span>
+			<span>{{ backgroundCategoryDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddBackgroundCategory($event)">X</a>
 		</div>

@@ -1,4 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { StatusResult } from '@interfaces/interfaces';
@@ -21,14 +27,13 @@ export default class WorldsComponent implements OnInit {
   private cms: ClassMapperService = inject(ClassMapperService);
   private play: PlayService = inject(PlayService);
 
-  worldList: World[] = [];
-  message: string = null;
+  worldList: WritableSignal<World[]> = signal<World[]>([]);
+  message: WritableSignal<string> = signal<string>('Cargando...');
   loadedWorld: World = new World();
-  showDetail: boolean = false;
-  worldDetailHeader: string = '';
+  showDetail: WritableSignal<boolean> = signal<boolean>(false);
+  worldDetailHeader: WritableSignal<string> = signal<string>('');
 
   ngOnInit(): void {
-    this.message = 'Cargando...';
     this.loadWorlds();
 
     const esc: Key = this.play.keyboard('Escape');
@@ -39,14 +44,23 @@ export default class WorldsComponent implements OnInit {
   }
 
   loadWorlds(): void {
-    this.message = 'Cargando...';
-    this.as.getWorlds().subscribe((result: WorldResult): void => {
-      if (result.status == 'ok') {
-        this.message = null;
-        this.worldList = this.cms.getWorlds(result.list);
-      } else {
-        this.message = 'ERROR: Ocurrió un error al obtener la lista de mundos.';
-      }
+    this.message.set('Cargando...');
+    this.as.getWorlds().subscribe({
+      next: (result: WorldResult): void => {
+        if (result.status === 'ok') {
+          this.message.set(null);
+          this.worldList.set(this.cms.getWorlds(result.list));
+        } else {
+          this.message.set(
+            'ERROR: Ocurrió un error al obtener la lista de mundos.'
+          );
+        }
+      },
+      error: (): void => {
+        this.message.set(
+          'ERROR: Ocurrió un error al obtener la lista de mundos.'
+        );
+      },
     });
   }
 
@@ -58,50 +72,64 @@ export default class WorldsComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    if (!this.showDetail) {
+    if (!this.showDetail()) {
       this.resetLoadedWorld();
-      this.worldDetailHeader = 'Nuevo mundo';
+      this.worldDetailHeader.set('Nuevo mundo');
 
-      this.showDetail = true;
+      this.showDetail.set(true);
     } else {
-      this.showDetail = false;
+      this.showDetail.set(false);
     }
   }
 
   saveWorld(): void {
     let validate: boolean = true;
-    if (this.loadedWorld.name == '') {
+    console.log(this.loadedWorld);
+    if (this.loadedWorld.name === null || this.loadedWorld.name === '') {
       validate = false;
       alert('¡No puedes dejar el nombre del mundo en blanco!');
     }
 
-    if (validate && this.loadedWorld.wordOne == '') {
+    if (
+      (validate && this.loadedWorld.wordOne === null) ||
+      this.loadedWorld.wordOne === ''
+    ) {
       validate = false;
       alert('¡No puedes dejar la primera palabra en blanco!');
     }
 
-    if (validate && this.loadedWorld.wordTwo == '') {
+    if (
+      (validate && this.loadedWorld.wordTwo === null) ||
+      this.loadedWorld.wordTwo === ''
+    ) {
       validate = false;
       alert('¡No puedes dejar la segunda palabra en blanco!');
     }
 
-    if (validate && this.loadedWorld.wordThree == '') {
+    if (
+      (validate && this.loadedWorld.wordThree === null) ||
+      this.loadedWorld.wordThree === ''
+    ) {
       validate = false;
       alert('¡No puedes dejar la tercera palabra en blanco!');
     }
 
     if (validate) {
-      this.as
-        .saveWorld(this.loadedWorld.toInterface())
-        .subscribe((result: StatusResult): void => {
+      this.as.saveWorld(this.loadedWorld.toInterface()).subscribe({
+        next: (result: StatusResult): void => {
           if (result.status == 'ok') {
             this.showAddWorld();
             this.loadWorlds();
           } else {
             alert('¡Ocurrió un error al guardar el mundo!');
-            this.message = 'ERROR: Ocurrió un error al guardar el mundo.';
+            this.message.set('ERROR: Ocurrió un error al guardar el mundo.');
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrió un error al guardar el mundo!');
+          this.message.set('ERROR: Ocurrió un error al guardar el mundo.');
+        },
+      });
     }
   }
 
@@ -116,8 +144,8 @@ export default class WorldsComponent implements OnInit {
       world.friendly
     );
 
-    this.worldDetailHeader = 'Editar mundo';
-    this.showDetail = true;
+    this.worldDetailHeader.set('Editar mundo');
+    this.showDetail.set(true);
   }
 
   deleteWorld(world: World): void {
@@ -130,7 +158,7 @@ export default class WorldsComponent implements OnInit {
           this.loadWorlds();
         } else {
           alert('¡Ocurrio un error al borrar el mundo!');
-          this.message = 'ERROR: Ocurrió un error al borrar el mundo.';
+          this.message.set('ERROR: Ocurrió un error al borrar el mundo.');
         }
       });
     }

@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetInterface } from '@interfaces/asset.interfaces';
 import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
@@ -40,14 +48,15 @@ export default class ItemsComponent implements OnInit {
     { id: 3, name: 'Botas' },
   ];
   itemList: Item[] = [];
-  itemListFiltered: Item[] = [];
-  message: string = null;
+  itemListFiltered: WritableSignal<Item[]> = signal<Item[]>([]);
+  message: WritableSignal<string> = signal<string>(null);
   loadedItem: Item = new Item();
-  showDetail: boolean = false;
+  showDetail: WritableSignal<boolean> = signal<boolean>(false);
   detailtTab: string = 'data';
-  itemDetailHeader: string = '';
-  savingItem: boolean = false;
-  @ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
+  itemDetailHeader: WritableSignal<string> = signal<string>('');
+  savingItem: WritableSignal<boolean> = signal<boolean>(false);
+  assetPicker: Signal<AssetPickerComponent> =
+    viewChild.required<AssetPickerComponent>('assetPicker');
   assetPickerWhere: string = null;
   animationImage: string = null;
   animationInd: number = -1;
@@ -65,7 +74,7 @@ export default class ItemsComponent implements OnInit {
 
   loadItems(): void {
     this.as.getItems().subscribe((result: ItemResult): void => {
-      if (result.status == 'ok') {
+      if (result.status === 'ok') {
         this.itemList = this.cms.getItems(result.list);
         this.updateFilteredList();
       }
@@ -81,7 +90,7 @@ export default class ItemsComponent implements OnInit {
         (x: Item): boolean => x.type === this.itemFilter
       );
     }
-    this.itemListFiltered = filteredList;
+    this.itemListFiltered.set(filteredList);
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
@@ -93,8 +102,8 @@ export default class ItemsComponent implements OnInit {
 
   resetLoadedItem(): void {
     this.loadedItem = new Item();
-    this.loadedItem.assetUrl = '/admin/no-asset.svg';
-    this.animationImage = '/admin/no-asset.svg';
+    this.loadedItem.assetUrl = '/img/admin/no-asset.svg';
+    this.animationImage = '/img/admin/no-asset.svg';
     this.assetPickerWhere = null;
     this.changeTab('data');
     this.animationInd = -1;
@@ -108,13 +117,13 @@ export default class ItemsComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    if (!this.showDetail) {
+    if (!this.showDetail()) {
       this.resetLoadedItem();
-      this.itemDetailHeader = 'Nuevo item';
+      this.itemDetailHeader.set('Nuevo item');
 
-      this.showDetail = true;
+      this.showDetail.set(true);
     } else {
-      this.showDetail = false;
+      this.showDetail.set(false);
       this.resetLoadedItem();
     }
   }
@@ -124,25 +133,25 @@ export default class ItemsComponent implements OnInit {
   }
 
   openAssetPicker(type: string): void {
-    if (type == 'frame' && this.loadedItem.idAsset == null) {
+    if (type === 'frame' && this.loadedItem.idAsset === null) {
       alert(
         'Primero tienes que elegir un recurso para el item. Una vez hecho esto podrás añadir frames a la animación.'
       );
       return;
     }
     this.assetPickerWhere = type;
-    this.assetPicker.showPicker();
+    this.assetPicker().showPicker();
   }
 
   selectedAsset(selectedAsset: AssetInterface): void {
-    if (this.assetPickerWhere == 'item') {
+    if (this.assetPickerWhere === 'item') {
       this.loadedItem.idAsset = selectedAsset.id;
       this.loadedItem.assetUrl = selectedAsset.url;
-      if (selectedAsset.name != '') {
+      if (selectedAsset.name !== '') {
         this.loadedItem.name = selectedAsset.name;
       }
     }
-    if (this.assetPickerWhere == 'frame') {
+    if (this.assetPickerWhere === 'frame') {
       const frame: ItemFrame = new ItemFrame(
         null,
         selectedAsset.id,
@@ -158,7 +167,7 @@ export default class ItemsComponent implements OnInit {
     }
     this.startAnimation();
 
-    this.assetPicker.resetSelected();
+    this.assetPicker().resetSelected();
   }
 
   startAnimation(): void {
@@ -184,7 +193,7 @@ export default class ItemsComponent implements OnInit {
     if (conf) {
       const ind: number = this.loadedItem.frames.findIndex(
         (x: ItemFrame): boolean =>
-          x.id + x.idAsset.toString() == frame.id + frame.idAsset.toString()
+          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
       );
       this.loadedItem.frames.splice(ind, 1);
       this.updateFrameOrders();
@@ -194,9 +203,9 @@ export default class ItemsComponent implements OnInit {
   frameLeft(frame: ItemFrame): void {
     const ind: number = this.loadedItem.frames.findIndex(
       (x: ItemFrame): boolean =>
-        x.id + x.idAsset.toString() == frame.id + frame.idAsset.toString()
+        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
     );
-    if (ind == 0) {
+    if (ind === 0) {
       return;
     }
     const aux: ItemFrame = this.loadedItem.frames[ind];
@@ -208,9 +217,9 @@ export default class ItemsComponent implements OnInit {
   frameRight(frame: ItemFrame): void {
     const ind: number = this.loadedItem.frames.findIndex(
       (x: ItemFrame): boolean =>
-        x.id + x.idAsset.toString() == frame.id + frame.idAsset.toString()
+        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
     );
-    if (ind == this.loadedItem.frames.length - 1) {
+    if (ind === this.loadedItem.frames.length - 1) {
       return;
     }
     const aux: ItemFrame = this.loadedItem.frames[ind];
@@ -227,7 +236,7 @@ export default class ItemsComponent implements OnInit {
 
   saveItem(): void {
     let validate: boolean = true;
-    if (this.loadedItem.name == '') {
+    if (this.loadedItem.name === '') {
       validate = false;
       alert('¡No puedes dejar el nombre del item en blanco!');
     }
@@ -237,14 +246,14 @@ export default class ItemsComponent implements OnInit {
       alert('¡No has elegido ningún recurso para el item!');
     }
 
-    if (validate && this.loadedItem.type == null) {
+    if (validate && this.loadedItem.type === null) {
       validate = false;
       alert('¡No has elegido ningún tipo!');
     }
 
     if (
       validate &&
-      this.loadedItem.type == 1 &&
+      this.loadedItem.type === 1 &&
       this.loadedItem.attack === null
     ) {
       validate = false;
@@ -255,7 +264,7 @@ export default class ItemsComponent implements OnInit {
 
     if (
       validate &&
-      this.loadedItem.type == 2 &&
+      this.loadedItem.type === 2 &&
       this.loadedItem.health === null
     ) {
       validate = false;
@@ -266,10 +275,10 @@ export default class ItemsComponent implements OnInit {
 
     if (
       validate &&
-      this.loadedItem.type == 3 &&
+      this.loadedItem.type === 3 &&
       (this.loadedItem.defense === null ||
         this.loadedItem.speed === null ||
-        this.loadedItem.wearable == null)
+        this.loadedItem.wearable === null)
     ) {
       validate = false;
       alert(
@@ -279,26 +288,26 @@ export default class ItemsComponent implements OnInit {
 
     if (validate) {
       // Arma
-      if (this.loadedItem.type == 1) {
+      if (this.loadedItem.type === 1) {
         this.loadedItem.health = null;
         this.loadedItem.defense = null;
         this.loadedItem.speed = null;
         this.loadedItem.wearable = null;
       }
       // Poción
-      if (this.loadedItem.type == 2) {
+      if (this.loadedItem.type === 2) {
         this.loadedItem.attack = null;
         this.loadedItem.defense = null;
         this.loadedItem.speed = null;
         this.loadedItem.wearable = null;
       }
       // Equipo
-      if (this.loadedItem.type == 3) {
+      if (this.loadedItem.type === 3) {
         this.loadedItem.attack = null;
         this.loadedItem.health = null;
       }
       // Objeto
-      if (this.loadedItem.type == 4) {
+      if (this.loadedItem.type === 4) {
         this.loadedItem.attack = null;
         this.loadedItem.health = null;
         this.loadedItem.defense = null;
@@ -306,18 +315,22 @@ export default class ItemsComponent implements OnInit {
         this.loadedItem.wearable = null;
       }
 
-      this.as
-        .saveItem(this.loadedItem.toInterface())
-        .subscribe((result: StatusResult): void => {
-          if (result.status == 'ok') {
+      this.as.saveItem(this.loadedItem.toInterface()).subscribe({
+        next: (result: StatusResult): void => {
+          if (result.status === 'ok') {
             this.showAddItem();
             this.loadItems();
-            this.assetPicker.resetSelected();
+            this.assetPicker().resetSelected();
           } else {
             alert('¡Ocurrió un error al guardar el item!');
-            this.message = 'ERROR: Ocurrió un error al guardar el item.';
+            this.message.set('ERROR: Ocurrió un error al guardar el item.');
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrió un error al guardar el item!');
+          this.message.set('ERROR: Ocurrió un error al guardar el item.');
+        },
+      });
     }
   }
 
@@ -352,8 +365,8 @@ export default class ItemsComponent implements OnInit {
       this.startAnimation();
     }
 
-    this.itemDetailHeader = 'Editar item';
-    this.showDetail = true;
+    this.itemDetailHeader.set('Editar item');
+    this.showDetail.set(true);
   }
 
   deleteItem(item: Item): void {
@@ -361,23 +374,27 @@ export default class ItemsComponent implements OnInit {
       '¿Estás seguro de querer borrar el item "' + item.name + '"?'
     );
     if (conf) {
-      this.as
-        .deleteItem(item.id)
-        .subscribe((result: StatusMessageResult): void => {
-          if (result.status == 'ok') {
+      this.as.deleteItem(item.id).subscribe({
+        next: (result: StatusMessageResult): void => {
+          if (result.status === 'ok') {
             this.loadItems();
           }
-          if (result.status == 'in-use') {
+          if (result.status === 'in-use') {
             alert(
               'El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n' +
                 urldecode(result.message)
             );
           }
-          if (result.status == 'error') {
+          if (result.status === 'error') {
             alert('¡Ocurrio un error al borrar el item!');
-            this.message = 'ERROR: Ocurrió un error al borrar el item.';
+            this.message.set('ERROR: Ocurrió un error al borrar el item.');
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrio un error al borrar el item!');
+          this.message.set('ERROR: Ocurrió un error al borrar el item.');
+        },
+      });
     }
   }
 }

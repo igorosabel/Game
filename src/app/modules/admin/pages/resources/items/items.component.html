@@ -33,7 +33,7 @@
 
 <div class="list"
 	 [class]="{'list-list': filterListOption === 'list'}">
-	@for (item of itemListFiltered; track item.id) {
+	@for (item of itemListFiltered(); track item.id) {
 	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="item.assetUrl"
 			 [alt]="item.name">
@@ -52,9 +52,9 @@
 		</div>
 	</div>
 	}
-	@if (message !== null) {
+	@if (message() !== null) {
 	<div class="message">
-		{{message}}
+		{{ message() }}
 	</div>
 	}
 </div>
@@ -65,10 +65,10 @@
    (click)="showAddItem($event)">+</a>
 
 <div class="item-detail"
-	 [class]="{'item-detail-show': showDetail}">
+	 [class]="{'item-detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{itemDetailHeader}}</span>
+			<span>{{ itemDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddItem($event)">X</a>
 		</div>
@@ -217,10 +217,10 @@
 					</div>
 				</div>
 				<div class="footer">
-					@if (!savingItem) {
+					@if (!savingItem()) {
 					<button (click)="saveItem()">Continuar</button>
 					}
-					@if (savingItem) {
+					@else {
 					<button disabled="disabled">Guardando...</button>
 					}
 				</div>

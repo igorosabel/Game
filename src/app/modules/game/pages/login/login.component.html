@@ -4,14 +4,14 @@
 <div class="home-box">
 	<div class="home-tabs">
 		<div class="home-tab"
-			 [class]="{'home-tab-selected': selectedTab === 'login'}"
+			 [class]="{'home-tab-selected': selectedTab() === 'login'}"
 			 (click)="selectTab('login')">Iniciar sesión</div>
 		<div class="home-tab"
-			 [class]="{'home-tab-selected': selectedTab === 'register'}"
+			 [class]="{'home-tab-selected': selectedTab() === 'register'}"
 			 (click)="selectTab('register')">Registro</div>
 	</div>
 	<div class="home-tab-content"
-		 [class]="{'home-tab-content-selected': selectedTab === 'login'}">
+		 [class]="{'home-tab-content-selected': selectedTab() === 'login'}">
 		<form action="#"
 			  (ngSubmit)="checkLogin($event)">
 			<div class="home-row">
@@ -33,12 +33,12 @@
 				<input type="submit"
 					   class="home-btn"
 					   value="Continuar"
-					   [disabled]="loading">
+					   [disabled]="loading()">
 			</div>
 		</form>
 	</div>
 	<div class="home-tab-content"
-		 [class]="{'home-tab-content-selected': selectedTab === 'register'}">
+		 [class]="{'home-tab-content-selected': selectedTab() === 'register'}">
 		<form action="#"
 			  (ngSubmit)="checkRegister($event)">
 			<div class="home-row">
@@ -67,21 +67,21 @@
 					   class="home-btn"
 					   id="register-go"
 					   value="Continuar"
-					   [disabled]="loading">
+					   [disabled]="loading()">
 			</div>
 		</form>
 	</div>
-	@if (loginError) {
+	@if (loginError()) {
 	<div class="home-error">
 		Email o contraseña incorrectos.
 	</div>
 	}
-	@if (registerError === 'in-use') {
+	@if (registerError() === 'in-use') {
 	<div class="home-error">
 		El e-mail introducido ya está registrado.
 	</div>
 	}
-	@if (registerError === 'error') {
+	@if (registerError() === 'error') {
 	<div class="home-error">
 		Ocurrió un error al realizar el registro.
 	</div>

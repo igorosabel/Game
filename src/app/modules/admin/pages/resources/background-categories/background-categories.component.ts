@@ -1,4 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BackgroundCategoryResult } from '@interfaces/background.interfaces';
 import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
@@ -21,14 +27,16 @@ export default class BackgroundCategoriesComponent implements OnInit {
   private cms: ClassMapperService = inject(ClassMapperService);
   private play: PlayService = inject(PlayService);
 
-  backgroundCategoryList: BackgroundCategory[] = [];
-  message: string = null;
+  backgroundCategoryList: WritableSignal<BackgroundCategory[]> = signal<
+    BackgroundCategory[]
+  >([]);
+  message: WritableSignal<string> = signal<string>(null);
   loadedBackgroundCategory: BackgroundCategory = new BackgroundCategory();
-  showDetail: boolean = false;
-  backgroundCategoryDetailHeader: string = '';
+  showDetail: WritableSignal<boolean> = signal<boolean>(false);
+  backgroundCategoryDetailHeader: WritableSignal<string> = signal<string>('');
 
   ngOnInit(): void {
-    this.message = 'Cargando...';
+    this.message.set('Cargando...');
     this.loadBackgroundCategories();
 
     const esc: Key = this.play.keyboard('Escape');
@@ -39,20 +47,26 @@ export default class BackgroundCategoriesComponent implements OnInit {
   }
 
   loadBackgroundCategories(): void {
-    this.message = 'Cargando...';
-    this.as
-      .getBackgroundCategories()
-      .subscribe((result: BackgroundCategoryResult): void => {
-        if (result.status == 'ok') {
-          this.message = null;
-          this.backgroundCategoryList = this.cms.getBackgroundCategories(
-            result.list
+    this.message.set('Cargando...');
+    this.as.getBackgroundCategories().subscribe({
+      next: (result: BackgroundCategoryResult): void => {
+        if (result.status === 'ok') {
+          this.message.set(null);
+          this.backgroundCategoryList.set(
+            this.cms.getBackgroundCategories(result.list)
           );
         } else {
-          this.message =
-            'ERROR: Ocurrió un error al obtener la lista de categorías de fondos.';
+          this.message.set(
+            'ERROR: Ocurrió un error al obtener la lista de categorías de fondos.'
+          );
         }
-      });
+      },
+      error: (): void => {
+        this.message.set(
+          'ERROR: Ocurrió un error al obtener la lista de categorías de fondos.'
+        );
+      },
+    });
   }
 
   resetLoadedBackgroundCategory(): void {
@@ -63,19 +77,22 @@ export default class BackgroundCategoriesComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    if (!this.showDetail) {
+    if (!this.showDetail()) {
       this.resetLoadedBackgroundCategory();
-      this.backgroundCategoryDetailHeader = 'Nueva categoría de fondo';
+      this.backgroundCategoryDetailHeader.set('Nueva categoría de fondo');
 
-      this.showDetail = true;
+      this.showDetail.set(true);
     } else {
-      this.showDetail = false;
+      this.showDetail.set(false);
     }
   }
 
   saveBackgroundCategory(): void {
     let validate: boolean = true;
-    if (this.loadedBackgroundCategory.name == '') {
+    if (
+      this.loadedBackgroundCategory.name === null ||
+      this.loadedBackgroundCategory.name === ''
+    ) {
       validate = false;
       alert('¡No puedes dejar el nombre de la categoría de fondo en blanco!');
     }
@@ -83,15 +100,24 @@ export default class BackgroundCategoriesComponent implements OnInit {
     if (validate) {
       this.as
         .saveBackgroundCategory(this.loadedBackgroundCategory.toInterface())
-        .subscribe((result: StatusResult): void => {
-          if (result.status == 'ok') {
-            this.showAddBackgroundCategory();
-            this.loadBackgroundCategories();
-          } else {
+        .subscribe({
+          next: (result: StatusResult): void => {
+            if (result.status == 'ok') {
+              this.showAddBackgroundCategory();
+              this.loadBackgroundCategories();
+            } else {
+              alert('¡Ocurrió un error al guardar la categoría de fondo!');
+              this.message.set(
+                'ERROR: Ocurrió un error al guardar la categoría de fondo.'
+              );
+            }
+          },
+          error: (): void => {
             alert('¡Ocurrió un error al guardar la categoría de fondo!');
-            this.message =
-              'ERROR: Ocurrió un error al guardar la categoría de fondo.';
-          }
+            this.message.set(
+              'ERROR: Ocurrió un error al guardar la categoría de fondo.'
+            );
+          },
         });
     }
   }
@@ -102,8 +128,8 @@ export default class BackgroundCategoriesComponent implements OnInit {
       backgroundCategory.name
     );
 
-    this.backgroundCategoryDetailHeader = 'Editar categoría de fondo';
-    this.showDetail = true;
+    this.backgroundCategoryDetailHeader.set('Editar categoría de fondo');
+    this.showDetail.set(true);
   }
 
   deleteBackgroundCategory(backgroundCategory: BackgroundCategory): void {
@@ -113,24 +139,31 @@ export default class BackgroundCategoriesComponent implements OnInit {
         '"?'
     );
     if (conf) {
-      this.as
-        .deleteBackgroundCategory(backgroundCategory.id)
-        .subscribe((result: StatusMessageResult): void => {
-          if (result.status == 'ok') {
+      this.as.deleteBackgroundCategory(backgroundCategory.id).subscribe({
+        next: (result: StatusMessageResult): void => {
+          if (result.status === 'ok') {
             this.loadBackgroundCategories();
           }
-          if (result.status == 'in-use') {
+          if (result.status === 'in-use') {
             alert(
               '¡Atención! La categoría está asignada a algún fondo. Cambia la categoría a esos fondos antes de borrarla\n\n' +
                 urldecode(result.message)
             );
           }
-          if (result.status == 'error') {
+          if (result.status === 'error') {
             alert('¡Ocurrio un error al borrar la categoría de fondo!');
-            this.message =
-              'ERROR: Ocurrió un error al borrar la categoría de fondo.';
+            this.message.set(
+              'ERROR: Ocurrió un error al borrar la categoría de fondo.'
+            );
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrio un error al borrar la categoría de fondo!');
+          this.message.set(
+            'ERROR: Ocurrió un error al borrar la categoría de fondo.'
+          );
+        },
+      });
     }
   }
 }

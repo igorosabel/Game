@@ -7,9 +7,9 @@
 <div class="admin-list">
 	<div class="header">Mundos</div>
 	<div>
-		@for (world of worldList; track world.id) {
+		@for (world of worldList(); track world.id) {
 		<div class="row">
-			<a [routerLink]="['/admin', 'world', world.id, 'scenarios']">{{world.name}}</a>
+			<a [routerLink]="['/admin', 'world', world.id, 'scenarios']">{{ world.name }}</a>
 			<img src="/img/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
@@ -22,8 +22,8 @@
 				 (click)="deleteWorld(world)">
 		</div>
 		}
-		@if (message !== null) {
-		<div class="row center">{{message}}</div>
+		@if (message() !== null) {
+		<div class="row center">{{ message() }}</div>
 		}
 	</div>
 </div>
@@ -34,10 +34,10 @@
    (click)="showAddWorld($event)">+</a>
 
 <div class="detail"
-	 [class]="{'detail-show': showDetail}">
+	 [class]="{'detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{worldDetailHeader}}</span>
+			<span>{{ worldDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddWorld($event)">X</a>
 		</div>

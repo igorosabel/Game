@@ -2,7 +2,7 @@
 			 [rightUrl]="['/game','logout']"
 			 rightTitle="Salir" />
 
-@if (loading) {
+@if (loading()) {
 <div class="loading">
 	<img src="/img/loading.svg"
 		 alt="">
@@ -12,7 +12,7 @@
 
 <div class="game"></div>
 
-@if (showNarratives) {
+@if (showNarratives()) {
 <div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
@@ -34,7 +34,7 @@
 </div>
 }
 
-@if (showMessage) {
+@if (showMessage()) {
 <div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
@@ -51,7 +51,7 @@
 </div>
 }
 
-@if (showPortal) {
+@if (showPortal()) {
 <div class="portal">
 	<div class="portal-box">
 		<div class="portal-header">
@@ -82,7 +82,7 @@
 				</div>
 			</div>
 			<div class="portal-list">
-				@for (world of unlockedWorlds; track world.id) {
+				@for (world of unlockedWorlds(); track world.id) {
 				<div class="item"
 					 [class]="{'current': world.id === worldId}"
 					 (click)="portalTravel(world)">

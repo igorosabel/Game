@@ -34,7 +34,7 @@
 
 <div class="list"
 	 [class]="{'list-list': filterListOption === 'list'}">
-	@for (background of backgroundListFiltered; track background.id) {
+	@for (background of backgroundListFiltered(); track background.id) {
 	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="background.assetUrl"
 			 [alt]="background.name">
@@ -58,9 +58,9 @@
 		</div>
 	</div>
 	}
-	@if (message !== null) {
+	@if (message() !== null) {
 	<div class="message">
-		{{message}}
+		{{ message() }}
 	</div>
 	}
 </div>
@@ -71,10 +71,10 @@
    (click)="showAddBackground($event)">+</a>
 
 <div class="background-detail"
-	 [class]="{'background-detail-show': showDetail}">
+	 [class]="{'background-detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{backgroundDetailHeader}}</span>
+			<span>{{ backgroundDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddBackground($event)">X</a>
 		</div>
@@ -111,10 +111,10 @@
 
 		</div>
 		<div class="footer">
-			@if (!savingBackground) {
+			@if (!savingBackground()) {
 			<button (click)="saveBackground()">Continuar</button>
 			}
-			@if (savingBackground) {
+			@else {
 			<button disabled="disabled">Guardando...</button>
 			}
 		</div>

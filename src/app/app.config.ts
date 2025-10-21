@@ -1,12 +1,16 @@
-import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
-  InMemoryScrollingFeature,
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
+import {
   InMemoryScrollingOptions,
   provideRouter,
+  withComponentInputBinding,
   withInMemoryScrolling,
+  withViewTransitions,
 } from '@angular/router';
-
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import routes from '@app/app.routes';
 import TokenInterceptor from '@app/interceptors/token.interceptor';
 import provideCore from '@modules/core';
@@ -15,12 +19,17 @@ const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
   anchorScrolling: 'enabled',
 };
-const inMemoryScrollingFeature: InMemoryScrollingFeature =
-  withInMemoryScrolling(scrollConfig);
 
 const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, inMemoryScrollingFeature),
+    provideRouter(
+      routes,
+      withViewTransitions(),
+      withInMemoryScrolling(scrollConfig),
+      withComponentInputBinding()
+    ),
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
     provideHttpClient(withInterceptors([TokenInterceptor])),
     provideCore(),
   ],

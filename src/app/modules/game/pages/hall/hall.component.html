@@ -4,7 +4,7 @@
 		 alt="">
 
 	<div class="player-select">
-		@for (game of games; track game.id; let i = $index) {
+		@for (game of games(); track game.id; let i = $index) {
 		<div class="player-select-game"
 			 [class]="{'player-select-game-selected': gameSelected === i}"
 			 (mouseover)="changeSelectedGame(game)"
@@ -24,7 +24,7 @@
 		  action="#"
 		  (ngSubmit)="newGame($event)">
 		<div class="new-game"
-			 [class]="{'new-game-show': showNewGame}">
+			 [class]="{'new-game-show': showNewGame()}">
 			<div class="new-game-box">
 				<div class="new-game-header">
 					Nueva partida

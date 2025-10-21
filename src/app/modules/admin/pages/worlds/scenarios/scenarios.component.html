@@ -7,9 +7,9 @@
 <div class="admin-list">
 	<div class="header">Escenarios</div>
 	<div>
-		@for (scenario of scenarioList; track scenario.id) {
+		@for (scenario of scenarioList(); track scenario.id) {
 		<div class="row">
-			<a [routerLink]="['/admin', 'world', scenario.idWorld, 'scenario', scenario.id]">{{scenario.name}}</a>
+			<a [routerLink]="['/admin', 'world', scenario.idWorld, 'scenario', scenario.id]">{{ scenario.name }}</a>
 			<img src="/img/admin/edit.svg"
 				 alt="Editar"
 				 title="Editar"
@@ -22,8 +22,8 @@
 				 (click)="deleteScenario(scenario)">
 		</div>
 		}
-		@if (message !== null) {
-		<div class="row center">{{message}}</div>
+		@if (message() !== null) {
+		<div class="row center">{{ message() }}</div>
 		}
 	</div>
 </div>
@@ -34,10 +34,10 @@
    (click)="showAddScenario($event)">+</a>
 
 <div class="detail"
-	 [class]="{'detail-show': showDetail}">
+	 [class]="{'detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{scenarioDetailHeader}}</span>
+			<span>{{ scenarioDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddScenario($event)">X</a>
 		</div>

@@ -1,5 +1,14 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AssetInterface } from '@interfaces/asset.interfaces';
 import {
   BackgroundCategoryResult,
@@ -20,7 +29,7 @@ import HeaderComponent from '@shared/components/header/header.component';
   selector: 'game-backgrounds',
   templateUrl: './backgrounds.component.html',
   styleUrls: ['./backgrounds.component.scss', '../../scss/resources.scss'],
-  imports: [FormsModule, HeaderComponent, AssetPickerComponent],
+  imports: [FormsModule, HeaderComponent, AssetPickerComponent, RouterLink],
 })
 export default class BackgroundsComponent implements OnInit {
   private as: ApiService = inject(ApiService);
@@ -31,13 +40,16 @@ export default class BackgroundsComponent implements OnInit {
   filterListOption: string = 'items';
   backgroundCategoryList: BackgroundCategory[] = [];
   backgroundList: Background[] = [];
-  backgroundListFiltered: Background[] = [];
-  message: string = null;
+  backgroundListFiltered: WritableSignal<Background[]> = signal<Background[]>(
+    []
+  );
+  message: WritableSignal<string> = signal<string>(null);
   loadedBackground: Background = new Background();
-  showDetail: boolean = false;
-  backgroundDetailHeader: string = '';
-  savingBackground: boolean = false;
-  @ViewChild('assetPicker', { static: true }) assetPicker: AssetPickerComponent;
+  showDetail: WritableSignal<boolean> = signal<boolean>(false);
+  backgroundDetailHeader: WritableSignal<string> = signal<string>('');
+  savingBackground: WritableSignal<boolean> = signal<boolean>(false);
+  assetPicker: Signal<AssetPickerComponent> =
+    viewChild.required<AssetPickerComponent>('assetPicker');
 
   ngOnInit(): void {
     this.loadBackgroundCategories();
@@ -81,7 +93,7 @@ export default class BackgroundsComponent implements OnInit {
           x.idBackgroundCategory === this.backgroundCategoryFilter
       );
     }
-    this.backgroundListFiltered = filteredList;
+    this.backgroundListFiltered.set(filteredList);
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
@@ -100,18 +112,18 @@ export default class BackgroundsComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    if (!this.showDetail) {
+    if (!this.showDetail()) {
       this.resetLoadedBackground();
-      this.backgroundDetailHeader = 'Nuevo fondo';
+      this.backgroundDetailHeader.set('Nuevo fondo');
 
-      this.showDetail = true;
+      this.showDetail.set(true);
     } else {
-      this.showDetail = false;
+      this.showDetail.set(false);
     }
   }
 
   openAssetPicker(): void {
-    this.assetPicker.showPicker();
+    this.assetPicker().showPicker();
   }
 
   selectedAsset(selectedAsset: AssetInterface): void {
@@ -124,7 +136,10 @@ export default class BackgroundsComponent implements OnInit {
 
   saveBackground(): void {
     let validate: boolean = true;
-    if (this.loadedBackground.name == '') {
+    if (
+      this.loadedBackground.name === null ||
+      this.loadedBackground.name === ''
+    ) {
       validate = false;
       alert('¡No puedes dejar el nombre del fondo en blanco!');
     }
@@ -140,18 +155,25 @@ export default class BackgroundsComponent implements OnInit {
     }
 
     if (validate) {
-      this.as
-        .saveBackground(this.loadedBackground.toInterface())
-        .subscribe((result: StatusResult): void => {
-          if (result.status == 'ok') {
+      this.savingBackground.set(true);
+      this.as.saveBackground(this.loadedBackground.toInterface()).subscribe({
+        next: (result: StatusResult): void => {
+          this.savingBackground.set(false);
+          if (result.status === 'ok') {
             this.showAddBackground();
             this.loadBackgrounds();
-            this.assetPicker.resetSelected();
+            this.assetPicker().resetSelected();
           } else {
             alert('¡Ocurrió un error al guardar el fondo!');
-            this.message = 'ERROR: Ocurrió un error al guardar el fondo.';
+            this.message.set('ERROR: Ocurrió un error al guardar el fondo.');
           }
-        });
+        },
+        error: (): void => {
+          this.savingBackground.set(false);
+          alert('¡Ocurrió un error al guardar el fondo!');
+          this.message.set('ERROR: Ocurrió un error al guardar el fondo.');
+        },
+      });
     }
   }
 
@@ -165,8 +187,8 @@ export default class BackgroundsComponent implements OnInit {
       background.crossable
     );
 
-    this.backgroundDetailHeader = 'Editar fondo';
-    this.showDetail = true;
+    this.backgroundDetailHeader.set('Editar fondo');
+    this.showDetail.set(true);
   }
 
   deleteBackground(background: Background): void {
@@ -174,23 +196,27 @@ export default class BackgroundsComponent implements OnInit {
       '¿Estás seguro de querer borrar el fondo "' + background.name + '"?'
     );
     if (conf) {
-      this.as
-        .deleteBackground(background.id)
-        .subscribe((result: StatusMessageResult): void => {
-          if (result.status == 'ok') {
+      this.as.deleteBackground(background.id).subscribe({
+        next: (result: StatusMessageResult): void => {
+          if (result.status === 'ok') {
             this.loadBackgrounds();
           }
-          if (result.status == 'in-use') {
+          if (result.status === 'in-use') {
             alert(
               'El fondo está siendo usado en un escenario. Cámbialo o bórralo antes de poder borrar este fondo\n\n' +
                 urldecode(result.message)
             );
           }
-          if (result.status == 'error') {
+          if (result.status === 'error') {
             alert('¡Ocurrio un error al borrar el fondo!');
-            this.message = 'ERROR: Ocurrió un error al borrar el fondo.';
+            this.message.set('ERROR: Ocurrió un error al borrar el fondo.');
           }
-        });
+        },
+        error: (): void => {
+          alert('¡Ocurrio un error al borrar el fondo!');
+          this.message.set('ERROR: Ocurrió un error al borrar el fondo.');
+        },
+      });
     }
   }
 }

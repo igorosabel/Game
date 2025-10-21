@@ -41,7 +41,7 @@
 
 <div class="list"
 	 [class]="{'list-list': filterListOption === 'list'}">
-	@for (asset of assetListFiltered; track asset.id) {
+	@for (asset of assetListFiltered(); track asset.id) {
 	<div [class]="{'item': filterListOption === 'items', 'list-item': filterListOption === 'list'}">
 		<img [src]="asset.url"
 			 [alt]="asset.name">
@@ -58,9 +58,9 @@
 		</div>
 	</div>
 	}
-	@if (message !== null) {
+	@if (message() !== null) {
 	<div class="message">
-		{{message}}
+		{{ message() }}
 	</div>
 	}
 </div>
@@ -71,10 +71,10 @@
    (click)="showAddAsset($event)">+</a>
 
 <div class="asset-detail"
-	 [class]="{'asset-detail-show':showDetail}">
+	 [class]="{'asset-detail-show': showDetail()}">
 	<div class="box">
 		<div class="header">
-			<span>{{assetDetailHeader}}</span>
+			<span>{{ assetDetailHeader() }}</span>
 			<a href="#"
 			   (click)="showAddAsset($event)">X</a>
 		</div>
@@ -97,11 +97,11 @@
 			<div class="asset-preview"
 				 id="asset-image"
 				 [style]="{background: loadedAsset.style}"></div>
-			@if (!loadingFile) {
+			@if (!loadingFile()) {
 			<button (click)="openFile()">Elegir archivo</button>
 			}
-			@if (loadingFile) {
-			<button disabled="disabled">Cargando...</button>
+			@else {
+			<button disabled>Cargando...</button>
 			}
 			<input type="file"
 				   id="asset-file"
@@ -116,10 +116,10 @@
 				   placeholder="Tags del recurso">
 		</div>
 		<div class="footer">
-			@if (!savingAsset) {
+			@if (!savingAsset()) {
 			<button (click)="saveAsset()">Continuar</button>
 			}
-			@if (savingAsset) {
+			@else {
 			<button disabled="disabled">Guardando...</button>
 			}
 		</div>

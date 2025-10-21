@@ -1,4 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameResult, NewGameInterface } from '@interfaces/game.interfaces';
@@ -20,10 +26,10 @@ export default class HallComponent implements OnInit {
   private dss: DataShareService = inject(DataShareService);
   private router: Router = inject(Router);
 
-  games: Game[] = [];
+  games: WritableSignal<Game[]> = signal<Game[]>([]);
   gameSelected: number = 0;
-  showNewGame: boolean = false;
-  newGameName: string = null;
+  showNewGame: WritableSignal<boolean> = signal<boolean>(false);
+  newGameName: WritableSignal<string> = signal<string>(null);
 
   ngOnInit(): void {
     this.loadGames();
@@ -31,20 +37,20 @@ export default class HallComponent implements OnInit {
 
   loadGames(): void {
     this.as.getGames().subscribe((result: GameResult): void => {
-      this.games = this.cms.getGames(result.list);
+      this.games.set(this.cms.getGames(result.list));
     });
   }
 
   changeSelectedGame(game: Game): void {
-    this.gameSelected = this.games.findIndex(
+    this.gameSelected = this.games().findIndex(
       (x: Game): boolean => x.id === game.id
     );
   }
 
   selectGame(game: Game): void {
     if (game.idScenario === null) {
-      this.newGameName = null;
-      this.showNewGame = true;
+      this.newGameName.set(null);
+      this.showNewGame.set(true);
     } else {
       this.dss.setGlobal('idGame', game.id);
       this.router.navigate(['/game/play']);
@@ -55,20 +61,20 @@ export default class HallComponent implements OnInit {
     if (ev) {
       ev.preventDefault();
     }
-    this.showNewGame = false;
+    this.showNewGame.set(false);
   }
 
   newGame(ev: MouseEvent): void {
     if (ev) {
       ev.preventDefault();
     }
-    if (this.newGameName === null) {
+    if (this.newGameName() === null) {
       alert('¡No puedes dejar el nombre del personaje en blanco!');
       return;
     }
     const params: NewGameInterface = {
       idGame: this.games[this.gameSelected].id,
-      name: this.newGameName,
+      name: this.newGameName(),
     };
 
     this.as.newGame(params).subscribe((result: StatusIdResult): void => {
@@ -91,7 +97,7 @@ export default class HallComponent implements OnInit {
     );
     if (conf) {
       this.as.deleteGame(game.id).subscribe((result: StatusResult): void => {
-        if (result.status == 'ok') {
+        if (result.status === 'ok') {
           this.loadGames();
         } else {
           alert('¡Ocurrió un error al borrar la partida!');

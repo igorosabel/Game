@@ -24,13 +24,13 @@ const ADMIN_ROUTES: Route[] = [
     canActivate: [isLoggedGuardFn],
   },
   {
-    path: 'world/:id_world/scenarios',
+    path: 'world/:worldId/scenarios',
     loadComponent: () =>
       import('@admin/pages/worlds/scenarios/scenarios.component'),
     canActivate: [isLoggedGuardFn],
   },
   {
-    path: 'world/:id_world/scenario/:id_scenario',
+    path: 'world/:worldId/scenario/:scenarioId',
     loadComponent: () =>
       import('@admin/pages/worlds/edit-scenario/edit-scenario.component'),
     canActivate: [isLoggedGuardFn],

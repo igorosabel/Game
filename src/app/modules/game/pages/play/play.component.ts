@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Constants from '@app/constants';
 import {
@@ -52,7 +60,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   private dss: DataShareService = inject(DataShareService);
   private play: PlayService = inject(PlayService);
 
-  loading: boolean = true;
+  loading: WritableSignal<boolean> = signal<boolean>(true);
   allLoaded: LoadingStatusInterface = {
     assets: false,
     unlockedWorlds: false,
@@ -94,16 +102,16 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   showOver: boolean = false;
 
-  showNarratives: boolean = false;
+  showNarratives: WritableSignal<boolean> = signal<boolean>(false);
   currentCharacter: PlayNPC = null;
   currentNarrative: number = 0;
 
-  showPortal: boolean = false;
+  showPortal: WritableSignal<boolean> = signal<boolean>(false);
   portalWorld: World = new World();
-  unlockedWorlds: World[] = [];
+  unlockedWorlds: WritableSignal<World[]> = signal<World[]>([]);
   travelling: boolean = false;
 
-  showMessage: boolean = false;
+  showMessage: WritableSignal<boolean> = signal<boolean>(false);
   currentObject: PlayObject = null;
 
   @ViewChild('inventory', { static: false }) inventory: InventoryComponent;
@@ -172,7 +180,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.as
         .getUnlockedWorlds(this.gameId)
         .subscribe((result: WorldResult): void => {
-          this.unlockedWorlds = this.cms.getWorlds(result.list);
+          this.unlockedWorlds.set(this.cms.getWorlds(result.list));
           this.allLoaded.unlockedWorlds = true;
           this.checkAllLoaded();
         });
@@ -456,7 +464,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
     // Bucle del juego
     this.gameLoop();
-    this.loading = false;
+    this.loading.set(false);
     this.playerUpdateTimer = window.setInterval(
       this.updatePlayerPosition.bind(this),
       Constants.PLAYER_UPDATE_TIME
@@ -542,11 +550,11 @@ export default class PlayComponent implements OnInit, OnDestroy {
       // E - Acción
       this.keyboard.doAction = this.play.keyboard('e');
       this.keyboard.doAction.press = (): void => {
-        if (this.showNarratives) {
+        if (this.showNarratives()) {
           this.nextNarrative();
           return;
         }
-        if (this.showMessage) {
+        if (this.showMessage()) {
           this.closeMessage();
           return;
         }
@@ -570,11 +578,11 @@ export default class PlayComponent implements OnInit, OnDestroy {
       // Espacio - Golpe
       this.keyboard.hit = this.play.keyboard(' ');
       this.keyboard.hit.press = (): void => {
-        if (this.showNarratives) {
+        if (this.showNarratives()) {
           this.nextNarrative();
           return;
         }
-        if (this.showMessage) {
+        if (this.showMessage()) {
           this.closeMessage();
           return;
         }
@@ -586,9 +594,9 @@ export default class PlayComponent implements OnInit, OnDestroy {
       // Escape - Cancelar
       this.keyboard.esc = this.play.keyboard('Escape');
       this.keyboard.esc.press = (): void => {
-        this.showNarratives = false;
-        this.showPortal = false;
-        this.showMessage = false;
+        this.showNarratives.set(false);
+        this.showPortal.set(false);
+        this.showMessage.set(false);
         this.showOver = false;
         this.disableKeyboard(false);
         this.inventory.close();
@@ -688,7 +696,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   openNarratives(character: PlayNPC): void {
     this.showOver = true;
-    this.showNarratives = true;
+    this.showNarratives.set(true);
     this.currentNarrative = 0;
     this.currentCharacter = character;
   }
@@ -698,7 +706,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.currentCharacter.character.narratives.length ==
       this.currentNarrative + 1
     ) {
-      this.showNarratives = false;
+      this.showNarratives.set(false);
       this.showOver = false;
       this.currentNarrative = 0;
     } else {
@@ -707,7 +715,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   closeMessage(): void {
-    this.showMessage = false;
+    this.showMessage.set(false);
     this.showOver = false;
     this.disableKeyboard(false);
   }
@@ -720,7 +728,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
         playObject.object.activeTriggerCustom === null
       ) {
         this.portalWorld = new World();
-        this.showPortal = true;
+        this.showPortal.set(true);
         this.showOver = true;
         this.escKeyboard(true);
       }
@@ -730,7 +738,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
         playObject.object.activeTriggerCustom !== null
       ) {
         this.currentObject = playObject;
-        this.showMessage = true;
+        this.showMessage.set(true);
         this.showOver = true;
       }
     }
@@ -751,16 +759,16 @@ export default class PlayComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const currentWorldInd: number = this.unlockedWorlds.findIndex(
+    const currentWorldInd: number = this.unlockedWorlds().findIndex(
       (x: World): boolean => x.id === this.worldId
     );
     if (
       this.portalWorld.wordOne ==
-        this.unlockedWorlds[currentWorldInd].wordOne ||
+        this.unlockedWorlds()[currentWorldInd].wordOne ||
       this.portalWorld.wordTwo ==
-        this.unlockedWorlds[currentWorldInd].wordTwo ||
+        this.unlockedWorlds()[currentWorldInd].wordTwo ||
       this.portalWorld.wordThree ==
-        this.unlockedWorlds[currentWorldInd].wordThree
+        this.unlockedWorlds()[currentWorldInd].wordThree
     ) {
       alert(
         'Las palabras introducidas corresponden al mundo en el que te encuentras ahora.'
@@ -776,7 +784,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       ev.preventDefault();
     }
     this.disableKeyboard(false);
-    this.showPortal = false;
+    this.showPortal.set(false);
     this.showOver = false;
   }
 
@@ -815,7 +823,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   changeScenario(connection: PlayConnection): void {
     connection.idGame = this.gameId;
-    this.loading = true;
+    this.loading.set(true);
     this.disableKeyboard(true);
     this.as
       .changeScenario(connection.toInterface())
@@ -823,7 +831,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
         if (result.status == 'ok') {
           this.getPlayData();
         } else {
-          this.loading = false;
+          this.loading.set(false);
           alert('¡Ocurrió un error!');
         }
       });
