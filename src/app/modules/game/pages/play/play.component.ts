@@ -9,19 +9,9 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Constants from '@app/constants';
-import {
-  KeyboardLayoutInterface,
-  PlayResult,
-} from '@interfaces/game.interfaces';
-import {
-  LoadingStatusInterface,
-  StatusIdResult,
-  StatusResult,
-} from '@interfaces/interfaces';
-import {
-  ConnectionListInterface,
-  ConnectionResult,
-} from '@interfaces/scenario.interfaces';
+import { KeyboardLayoutInterface, PlayResult } from '@interfaces/game.interfaces';
+import { LoadingStatusInterface, StatusIdResult, StatusResult } from '@interfaces/interfaces';
+import { ConnectionListInterface, ConnectionResult } from '@interfaces/scenario.interfaces';
 import { WorldResult } from '@interfaces/world.interfaces';
 import Character from '@model/character.model';
 import Connection from '@model/connection.model';
@@ -129,17 +119,11 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.blockers = this.cms.getPositions(result.blockers);
       this.mapBackground = urldecode(result.mapBackground);
       this.scenarioDatas = this.cms.getScenarioDatas(result.scenarioDatas);
-      this.scenarioObjects = this.cms.getScenarioObjects(
-        result.scenarioObjects
-      );
+      this.scenarioObjects = this.cms.getScenarioObjects(result.scenarioObjects);
       this.characters = this.cms.getCharacters(result.characters);
 
       // Inventory
-      for (
-        let i: number = this.game.items.length;
-        i < Constants.INVENTORY_SIZE;
-        i++
-      ) {
+      for (let i: number = this.game.items.length; i < Constants.INVENTORY_SIZE; i++) {
         this.game.items.push(new Inventory());
       }
 
@@ -177,13 +161,11 @@ export default class PlayComponent implements OnInit, OnDestroy {
         this.checkAllLoaded();
       });
 
-      this.as
-        .getUnlockedWorlds(this.gameId)
-        .subscribe((result: WorldResult): void => {
-          this.unlockedWorlds.set(this.cms.getWorlds(result.list));
-          this.allLoaded.unlockedWorlds = true;
-          this.checkAllLoaded();
-        });
+      this.as.getUnlockedWorlds(this.gameId).subscribe((result: WorldResult): void => {
+        this.unlockedWorlds.set(this.cms.getWorlds(result.list));
+        this.allLoaded.unlockedWorlds = true;
+        this.checkAllLoaded();
+      });
       this.as
         .getScenarioConnections(this.scenarioId)
         .subscribe((result: ConnectionResult): void => {
@@ -193,9 +175,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
             left: null,
             right: null,
           };
-          const connections: Connection[] = this.cms.getConnections(
-            result.list
-          );
+          const connections: Connection[] = this.cms.getConnections(result.list);
           for (const connection of connections) {
             this.connections[connection.orientation] = connection;
           }
@@ -206,11 +186,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   checkAllLoaded(): void {
-    if (
-      this.allLoaded.assets &&
-      this.allLoaded.unlockedWorlds &&
-      this.allLoaded.connections
-    ) {
+    if (this.allLoaded.assets && this.allLoaded.unlockedWorlds && this.allLoaded.connections) {
       this.setup();
     }
   }
@@ -385,17 +361,11 @@ export default class PlayComponent implements OnInit, OnDestroy {
           (x: ScenarioObject): boolean => x.id === data.idScenarioObject
         );
         this.scenario.addObject(
-          this.play.makePlayObject(
-            this.scenarioObjects[ind].toInterface(),
-            data,
-            this.assetCache
-          )
+          this.play.makePlayObject(this.scenarioObjects[ind].toInterface(), data, this.assetCache)
         );
       }
       if (data.idCharacter !== null) {
-        ind = this.characters.findIndex(
-          (x: Character): boolean => x.id === data.idCharacter
-        );
+        ind = this.characters.findIndex((x: Character): boolean => x.id === data.idCharacter);
         this.scenario.addNPC(
           this.play.makePlayNPC(
             this.characters[ind].toInterface(),
@@ -420,29 +390,23 @@ export default class PlayComponent implements OnInit, OnDestroy {
     this.scenario.addPlayer(player);
 
     // Eventos de personajes y objetos
-    this.scenario.onNPCAction.subscribe(
-      (c: PlayScenario, npc: PlayNPC): void => {
-        this.openNarratives(npc);
-      }
-    );
+    this.scenario.onNPCAction.subscribe((c: PlayScenario, npc: PlayNPC): void => {
+      this.openNarratives(npc);
+    });
     this.scenario.onNPCDie.subscribe((c: PlayScenario, npc: PlayNPC): void => {
       this.enemyKilled(npc);
     });
-    this.scenario.onObjectAction.subscribe(
-      (c: PlayScenario, object: PlayObject): void => {
-        this.activateObject(object);
-      }
-    );
+    this.scenario.onObjectAction.subscribe((c: PlayScenario, object: PlayObject): void => {
+      this.activateObject(object);
+    });
     this.scenario.onPlayerConnection.subscribe(
       (c: PlayScenario, connection: PlayConnection): void => {
         this.changeScenario(connection);
       }
     );
-    this.scenario.onPlayerHit.subscribe(
-      (c: PlayScenario, npc: PlayNPC): void => {
-        this.playerHit(npc);
-      }
-    );
+    this.scenario.onPlayerHit.subscribe((c: PlayScenario, npc: PlayNPC): void => {
+      this.playerHit(npc);
+    });
 
     this.hud = this.play.makeHud(
       player.character.health,
@@ -476,7 +440,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     if (timestamp >= this.start) {
       this.scenario.render();
       this.scenario.player.move();
-      this.scenario.npcs.forEach((npc: PlayNPC): boolean => npc.move());
+      this.scenario.npcs.forEach((npc: PlayNPC): void => npc.move());
       this.scenario.renderItems();
       this.hud.render();
 
@@ -673,23 +637,13 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   updatePlayerPosition(): void {
     const pos: Position = PlayUtils.getTile(
-      new Position(
-        this.scenario.player.blockPos.x,
-        this.scenario.player.blockPos.y
-      )
+      new Position(this.scenario.player.blockPos.x, this.scenario.player.blockPos.y)
     );
     this.as
-      .updatePosition(
-        this.gameId,
-        pos.x,
-        pos.y,
-        this.scenario.player.orientation
-      )
+      .updatePosition(this.gameId, pos.x, pos.y, this.scenario.player.orientation)
       .subscribe((result: StatusResult): void => {
         if (result.status == 'error') {
-          alert(
-            '¡Ocurrió un error al actualizar la última posición del jugador!'
-          );
+          alert('¡Ocurrió un error al actualizar la última posición del jugador!');
         }
       });
   }
@@ -702,10 +656,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   nextNarrative(): void {
-    if (
-      this.currentCharacter.character.narratives.length ==
-      this.currentNarrative + 1
-    ) {
+    if (this.currentCharacter.character.narratives.length == this.currentNarrative + 1) {
       this.showNarratives.set(false);
       this.showOver = false;
       this.currentNarrative = 0;
@@ -723,20 +674,14 @@ export default class PlayComponent implements OnInit, OnDestroy {
   activateObject(playObject: PlayObject): void {
     if (playObject.object.activable) {
       // Portal
-      if (
-        playObject.object.activeTrigger == 1 &&
-        playObject.object.activeTriggerCustom === null
-      ) {
+      if (playObject.object.activeTrigger == 1 && playObject.object.activeTriggerCustom === null) {
         this.portalWorld = new World();
         this.showPortal.set(true);
         this.showOver = true;
         this.escKeyboard(true);
       }
       // Mensaje
-      if (
-        playObject.object.activeTrigger == 0 &&
-        playObject.object.activeTriggerCustom !== null
-      ) {
+      if (playObject.object.activeTrigger == 0 && playObject.object.activeTriggerCustom !== null) {
         this.currentObject = playObject;
         this.showMessage.set(true);
         this.showOver = true;
@@ -753,9 +698,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.portalWorld.wordThree == null ||
       this.portalWorld.wordThree == ''
     ) {
-      alert(
-        'Tienes que introducir las tres palabras del mundo al que quieres viajar.'
-      );
+      alert('Tienes que introducir las tres palabras del mundo al que quieres viajar.');
       return;
     }
 
@@ -763,16 +706,11 @@ export default class PlayComponent implements OnInit, OnDestroy {
       (x: World): boolean => x.id === this.worldId
     );
     if (
-      this.portalWorld.wordOne ==
-        this.unlockedWorlds()[currentWorldInd].wordOne ||
-      this.portalWorld.wordTwo ==
-        this.unlockedWorlds()[currentWorldInd].wordTwo ||
-      this.portalWorld.wordThree ==
-        this.unlockedWorlds()[currentWorldInd].wordThree
+      this.portalWorld.wordOne == this.unlockedWorlds()[currentWorldInd].wordOne ||
+      this.portalWorld.wordTwo == this.unlockedWorlds()[currentWorldInd].wordTwo ||
+      this.portalWorld.wordThree == this.unlockedWorlds()[currentWorldInd].wordThree
     ) {
-      alert(
-        'Las palabras introducidas corresponden al mundo en el que te encuentras ahora.'
-      );
+      alert('Las palabras introducidas corresponden al mundo en el que te encuentras ahora.');
       return;
     }
 
@@ -794,13 +732,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     }
     this.travelling = true;
     this.as
-      .travel(
-        this.gameId,
-        world.id,
-        world.wordOne,
-        world.wordTwo,
-        world.wordThree
-      )
+      .travel(this.gameId, world.id, world.wordOne, world.wordTwo, world.wordThree)
       .subscribe((result: StatusIdResult): void => {
         if (result.status !== 'ok') {
           alert('¡No existe ningún mundo con las palabras indicadas!');
@@ -825,16 +757,14 @@ export default class PlayComponent implements OnInit, OnDestroy {
     connection.idGame = this.gameId;
     this.loading.set(true);
     this.disableKeyboard(true);
-    this.as
-      .changeScenario(connection.toInterface())
-      .subscribe((result: StatusResult): void => {
-        if (result.status == 'ok') {
-          this.getPlayData();
-        } else {
-          this.loading.set(false);
-          alert('¡Ocurrió un error!');
-        }
-      });
+    this.as.changeScenario(connection.toInterface()).subscribe((result: StatusResult): void => {
+      if (result.status == 'ok') {
+        this.getPlayData();
+      } else {
+        this.loading.set(false);
+        alert('¡Ocurrió un error!');
+      }
+    });
   }
 
   playerHit(enemy: PlayNPC): void {

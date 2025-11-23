@@ -38,10 +38,7 @@ export default class PlayCharacter {
   npcData: NPCData;
 
   _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
-  _onDie: EventDispatcher<PlayCharacter, number> = new EventDispatcher<
-    PlayCharacter,
-    number
-  >();
+  _onDie: EventDispatcher<PlayCharacter, number> = new EventDispatcher<PlayCharacter, number>();
 
   constructor(
     x: number,
@@ -245,10 +242,7 @@ export default class PlayCharacter {
   playAnimation(): void {
     if (!this.playing) {
       this.playing = true;
-      this.interval = window.setInterval(
-        this.updateAnimation.bind(this),
-        Constants.FRAME_DURATION
-      );
+      this.interval = window.setInterval(this.updateAnimation.bind(this), Constants.FRAME_DURATION);
     }
   }
 
@@ -270,10 +264,7 @@ export default class PlayCharacter {
         this.currentFrame++;
       }
     } else {
-      if (
-        this.currentHitFrame ===
-        this.sprites['hit-' + this.orientation].length - 1
-      ) {
+      if (this.currentHitFrame === this.sprites['hit-' + this.orientation].length - 1) {
         this.currentHitFrame = 0;
         this.hitting = false;
         this.stopHitting = true;
@@ -349,16 +340,11 @@ export default class PlayCharacter {
     return this._onDie.asEvent();
   }
 
-  move(): boolean {
+  move(): void {
     if (this.dying) {
       return;
     }
-    if (
-      this.moving.up ||
-      this.moving.down ||
-      this.moving.right ||
-      this.moving.left
-    ) {
+    if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
       const newPosX: number = this.blockPos.x + this.vx;
       const newPosY: number = this.blockPos.y + this.vy;
       // Colisión con los bordes de la pantalla
@@ -407,7 +393,7 @@ export default class PlayCharacter {
         } else {
           this.stopNPC();
         }
-        return false;
+        return;
       }
 
       // Colisión con fondos y objetos
@@ -449,7 +435,7 @@ export default class PlayCharacter {
         if (this.npcData.isNPC) {
           this.stopNPC();
         }
-        return false;
+        return;
       }
 
       // Actualizo posición
@@ -534,13 +520,7 @@ export default class PlayCharacter {
       const deathPosX: number = centerX - deathImg.width / 2;
       const deathPosY: number = centerY - deathImg.height / 2;
 
-      ctx.drawImage(
-        deathImg,
-        deathPosX,
-        deathPosY,
-        deathImg.width,
-        deathImg.height
-      );
+      ctx.drawImage(deathImg, deathPosX, deathPosY, deathImg.width, deathImg.height);
     }
     /*ctx.globalAlpha = 0.62;
 		ctx.globalCompositeOperation = 'source-atop';
@@ -552,12 +532,7 @@ export default class PlayCharacter {
       ctx.strokeRect(posX, posY, img.width, img.height);
       ctx.strokeStyle = '#00f';
       ctx.lineWidth = 1;
-      ctx.strokeRect(
-        this.blockPos.x,
-        this.blockPos.y,
-        this.blockPos.width,
-        this.blockPos.height
-      );
+      ctx.strokeRect(this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);
     }
   }
 }

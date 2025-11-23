@@ -25,31 +25,29 @@ export default class AdminLoginComponent {
   loading: WritableSignal<boolean> = signal<boolean>(false);
   loginError: WritableSignal<boolean> = signal<boolean>(false);
 
-  doLogin(ev: MouseEvent): boolean {
+  doLogin(ev: MouseEvent): void {
     ev.preventDefault();
     this.loginError.set(false);
 
     if (this.loginData.email === '' || this.loginData.pass === '') {
       this.loginError.set(true);
-      return false;
+      return;
     }
 
     this.loading.set(true);
-    this.as
-      .adminLogin(this.loginData)
-      .subscribe((result: LoginResult): void => {
-        if (result.status === 'ok') {
-          this.user.logged = true;
-          this.user.id = result.id;
-          this.user.email = urldecode(result.email);
-          this.user.token = urldecode(result.token);
-          this.user.saveLogin();
+    this.as.adminLogin(this.loginData).subscribe((result: LoginResult): void => {
+      if (result.status === 'ok') {
+        this.user.logged = true;
+        this.user.id = result.id;
+        this.user.email = urldecode(result.email);
+        this.user.token = urldecode(result.token);
+        this.user.saveLogin();
 
-          this.router.navigate(['/admin/main']);
-        } else {
-          this.loading.set(false);
-          this.loginError.set(true);
-        }
-      });
+        this.router.navigate(['/admin/main']);
+      } else {
+        this.loading.set(false);
+        this.loginError.set(true);
+      }
+    });
   }
 }
