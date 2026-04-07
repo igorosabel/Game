@@ -21,7 +21,7 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": ["strongly-typed-events", "@osumi/tools"],
+            "allowedCommonJsDependencies": ["strongly-typed-events"],
             "assets": [
               {
                 "glob": "**/*",
