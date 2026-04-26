@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetResult, TagResult } from '@interfaces/asset.interfaces';
 import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
@@ -26,18 +20,18 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [FormsModule, HeaderComponent],
 })
 export default class AssetsComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
-  tagFilter: number = null;
-  worldFilter: number = null;
+  tagFilter: number | null = null;
+  worldFilter: number | null = null;
   filterListOption: string = 'items';
   tagList: Tag[] = [];
   worldList: World[] = [];
   assetList: Asset[] = [];
   assetListFiltered: WritableSignal<Asset[]> = signal<Asset[]>([]);
-  message: WritableSignal<string> = signal<string>(null);
+  message: WritableSignal<string | null> = signal<string | null>(null);
   loadedAsset: Asset = new Asset();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   assetDetailHeader: WritableSignal<string> = signal<string>('');
@@ -88,26 +82,20 @@ export default class AssetsComponent implements OnInit {
     } else {
       if (this.tagFilter !== null && this.worldFilter !== null) {
         filteredList = this.assetList.filter((x: Asset): boolean => {
-          const tagsFiltered: Tag[] = x.tags.filter(
-            (t: Tag): boolean => t.id === this.tagFilter
-          );
+          const tagsFiltered: Tag[] = x.tags.filter((t: Tag): boolean => t.id === this.tagFilter);
           return tagsFiltered.length > 0;
         });
-        filteredList = filteredList.filter(
-          (x: Asset): boolean => x.idWorld === this.worldFilter
-        );
+        filteredList = filteredList.filter((x: Asset): boolean => x.idWorld === this.worldFilter);
       } else {
         if (this.tagFilter !== null) {
           filteredList = this.assetList.filter((x: Asset): boolean => {
-            const tagsFiltered: Tag[] = x.tags.filter(
-              (t: Tag): boolean => t.id === this.tagFilter
-            );
+            const tagsFiltered: Tag[] = x.tags.filter((t: Tag): boolean => t.id === this.tagFilter);
             return tagsFiltered.length > 0;
           });
         }
         if (this.worldFilter !== null) {
           filteredList = this.assetList.filter(
-            (x: Asset): boolean => x.idWorld === this.worldFilter
+            (x: Asset): boolean => x.idWorld === this.worldFilter,
           );
         }
       }
@@ -126,7 +114,7 @@ export default class AssetsComponent implements OnInit {
     this.loadedAsset = new Asset();
   }
 
-  showAddAsset(ev = null): void {
+  showAddAsset(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -141,12 +129,13 @@ export default class AssetsComponent implements OnInit {
   }
 
   openFile(): void {
-    document.getElementById('asset-file').click();
+    const fileObj: HTMLElement | null = document.getElementById('asset-file');
+    fileObj?.click();
   }
 
   onFileChange(event: Event): void {
     const reader: FileReader = new FileReader();
-    const files: FileList = (event.target as HTMLInputElement).files;
+    const files: FileList | null = (event.target as HTMLInputElement).files;
     if (files && files.length > 0) {
       this.loadingFile.set(true);
       const file = files[0];
@@ -189,13 +178,7 @@ export default class AssetsComponent implements OnInit {
   }
 
   editAsset(asset: Asset): void {
-    this.loadedAsset = new Asset(
-      asset.id,
-      asset.idWorld,
-      asset.name,
-      asset.url,
-      []
-    );
+    this.loadedAsset = new Asset(asset.id, asset.idWorld, asset.name, asset.url, []);
     for (const t of asset.tags) {
       this.loadedAsset.tags.push(new Tag(t.id, t.name));
     }
@@ -206,18 +189,15 @@ export default class AssetsComponent implements OnInit {
 
   deleteAsset(asset: Asset): void {
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el recurso "' + asset.name + '"?'
+      '¿Estás seguro de querer borrar el recurso "' + asset.name + '"?',
     );
     if (conf) {
-      this.as.deleteAsset(asset.id).subscribe({
+      this.as.deleteAsset(asset.id as number).subscribe({
         next: (result: StatusMessageResult): void => {
           if (result.status === 'ok') {
             this.loadAssets();
           } else {
-            alert(
-              '¡Ocurrio un error al borrar el recurso!\n\n' +
-                urldecode(result.message)
-            );
+            alert('¡Ocurrio un error al borrar el recurso!\n\n' + urldecode(result.message));
             this.message.set('ERROR: Ocurrió un error al borrar el recurso.');
           }
         },

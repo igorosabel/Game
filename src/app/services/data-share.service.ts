@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { DataShareGlobals } from '@interfaces/interfaces';
 
 @Injectable()
 export default class DataShareService {
   saveLocalStorage: boolean = true;
-  globals: DataShareGlobals = {};
+  globals: Record<string, unknown> = {};
 
   setSaveLocalStorage(mode: boolean): void {
     this.saveLocalStorage = mode;
   }
 
-  setGlobal(key: string, value: any): void {
+  setGlobal(key: string, value: unknown): void {
     this.globals[key] = value;
     if (this.saveLocalStorage) {
       const d = new Date();
@@ -24,7 +23,7 @@ export default class DataShareService {
         case 'number':
         case 'boolean':
           {
-            obj.value = value.toString();
+            obj.value = (value as boolean).toString();
           }
           break;
         case 'object':
@@ -37,7 +36,7 @@ export default class DataShareService {
     }
   }
 
-  getGlobal(key: string): any {
+  getGlobal(key: string): unknown {
     if (!this.saveLocalStorage) {
       if (!this.globals[key]) {
         return null;
@@ -47,9 +46,7 @@ export default class DataShareService {
       if (this.globals[key]) {
         return this.globals[key];
       }
-      const obj = localStorage.getItem(key)
-        ? JSON.parse(localStorage.getItem(key) || '{}')
-        : null;
+      const obj = localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key) || '{}') : null;
       if (!obj) {
         return null;
       }

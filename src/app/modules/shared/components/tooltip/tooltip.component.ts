@@ -8,10 +8,10 @@ import Item from '@model/item.model';
   imports: [],
 })
 export default class TooltipComponent {
-  item: WritableSignal<Item> = signal<Item>(null);
+  item: WritableSignal<Item | null> = signal<Item | null>(null);
   showTooltip: WritableSignal<boolean> = signal<boolean>(false);
-  positionX: WritableSignal<number> = signal<number>(null);
-  positionY: WritableSignal<number> = signal<number>(null);
+  positionX: WritableSignal<number | null> = signal<number | null>(null);
+  positionY: WritableSignal<number | null> = signal<number | null>(null);
 
   load(item: Item): void {
     this.item.set(item);

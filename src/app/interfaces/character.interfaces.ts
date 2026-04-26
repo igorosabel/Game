@@ -1,15 +1,15 @@
 export interface CharacterFrameInterface {
-  id: number;
-  idAsset: number;
-  assetUrl: string;
-  orientation: string;
-  order: number;
+  id: number | null;
+  idAsset: number | null;
+  assetUrl: string | null;
+  orientation: string | null;
+  order: number | null;
 }
 
 export interface NarrativeInterface {
-  id: number;
-  dialog: string;
-  order: number;
+  id: number | null;
+  dialog: string | null;
+  order: number | null;
 }
 
 export interface AnimationImageInterface {
@@ -20,10 +20,10 @@ export interface AnimationImageInterface {
 }
 
 export interface AnimationNumInterface {
-  up: number;
-  down: number;
-  left: number;
-  right: number;
+  up: number | undefined;
+  down: number | undefined;
+  left: number | undefined;
+  right: number | undefined;
 }
 
 export interface CharacterTypeInterface {
@@ -37,36 +37,49 @@ export interface CharacterSizeInterface {
 }
 
 export interface CharacterInterface {
-  id: number;
-  name: string;
-  width: number;
-  blockWidth: number;
-  height: number;
-  blockHeight: number;
+  id: number | null;
+  name: string | null;
+  width: number | null;
+  blockWidth: number | null;
+  height: number | null;
+  blockHeight: number | null;
   fixedPosition: boolean;
-  idAssetUp: number;
-  assetUpUrl: string;
-  idAssetDown: number;
-  assetDownUrl: string;
-  idAssetLeft: number;
-  assetLeftUrl: string;
-  idAssetRight: number;
-  assetRightUrl: string;
-  type: number;
-  health: number;
-  attack: number;
-  defense: number;
-  speed: number;
-  dropIdItem: number;
-  dropChance: number;
-  dropAssetUrl: string;
-  respawn: number;
+  idAssetUp: number | null;
+  assetUpUrl: string | null;
+  idAssetDown: number | null;
+  assetDownUrl: string | null;
+  idAssetLeft: number | null;
+  assetLeftUrl: string | null;
+  idAssetRight: number | null;
+  assetRightUrl: string | null;
+  type: number | null;
+  health: number | null;
+  attack: number | null;
+  defense: number | null;
+  speed: number | null;
+  dropIdItem: number | null;
+  dropChance: number | null;
+  dropAssetUrl: string | null;
+  respawn: number | null;
   framesUp: CharacterFrameInterface[];
   framesDown: CharacterFrameInterface[];
   framesLeft: CharacterFrameInterface[];
   framesRight: CharacterFrameInterface[];
   narratives: NarrativeInterface[];
 }
+
+export type CharacterFrameDirection = 'Up' | 'Down' | 'Left' | 'Right';
+
+export type CharacterSpriteOption =
+  | 'up'
+  | 'down'
+  | 'left'
+  | 'right'
+  | 'death'
+  | 'hit-up'
+  | 'hit-down'
+  | 'hit-left'
+  | 'hit-right';
 
 export interface CharacterResult {
   status: string;

@@ -3,9 +3,9 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Narrative {
   constructor(
-    public id: number = null,
-    public dialog: string = null,
-    public order: number = null
+    public id: number | null = null,
+    public dialog: string | null = null,
+    public order: number | null = null,
   ) {}
 
   fromInterface(n: NarrativeInterface): Narrative {

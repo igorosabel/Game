@@ -29,16 +29,13 @@ export default class BackgroundPickerComponent implements OnInit {
   private cms: ClassMapperService = inject(ClassMapperService);
 
   show: WritableSignal<boolean> = signal<boolean>(false);
-  backgroundFilter: number = null;
+  backgroundFilter: number | null = null;
   backgroundCategoryList: BackgroundCategory[] = [];
   backgroundList: Background[] = [];
-  backgroundListFiltered: WritableSignal<Background[]> = signal<Background[]>(
-    []
-  );
-  selected: number = null;
+  backgroundListFiltered: WritableSignal<Background[]> = signal<Background[]>([]);
+  selected: number | null = null;
 
-  selectBackgroundEvent: OutputEmitterRef<BackgroundInterface> =
-    output<BackgroundInterface>();
+  selectBackgroundEvent: OutputEmitterRef<BackgroundInterface> = output<BackgroundInterface>();
 
   ngOnInit(): void {
     this.loadBackgroundCategories();
@@ -57,15 +54,11 @@ export default class BackgroundPickerComponent implements OnInit {
   }
 
   loadBackgroundCategories(): void {
-    this.as
-      .getBackgroundCategories()
-      .subscribe((result: BackgroundCategoryResult): void => {
-        if (result.status == 'ok') {
-          this.backgroundCategoryList = this.cms.getBackgroundCategories(
-            result.list
-          );
-        }
-      });
+    this.as.getBackgroundCategories().subscribe((result: BackgroundCategoryResult): void => {
+      if (result.status == 'ok') {
+        this.backgroundCategoryList = this.cms.getBackgroundCategories(result.list);
+      }
+    });
   }
 
   loadBackgrounds(): void {
@@ -83,8 +76,7 @@ export default class BackgroundPickerComponent implements OnInit {
       filteredList = this.backgroundList;
     } else {
       filteredList = this.backgroundList.filter(
-        (x: Background): boolean =>
-          x.idBackgroundCategory === this.backgroundFilter
+        (x: Background): boolean => x.idBackgroundCategory === this.backgroundFilter,
       );
     }
     this.backgroundListFiltered.set(filteredList);
@@ -103,9 +95,9 @@ export default class BackgroundPickerComponent implements OnInit {
     this.updateFilteredList();
   }
 
-  getBackgroundById(id: number): BackgroundInterface {
+  getBackgroundById(id: number): BackgroundInterface | null {
     const backgroundFind: Background[] = this.backgroundList.filter(
-      (x: Background): boolean => x.id === id
+      (x: Background): boolean => x.id === id,
     );
     if (backgroundFind.length == 0) {
       return null;

@@ -1,6 +1,6 @@
 export interface TagInterface {
-  id: number;
-  name: string;
+  id: number | null;
+  name: string | null;
 }
 
 export interface TagResult {
@@ -9,10 +9,10 @@ export interface TagResult {
 }
 
 export interface AssetInterface {
-  id: number;
-  idWorld: number;
-  name: string;
-  url: string;
+  id: number | null;
+  idWorld: number | null;
+  name: string | null;
+  url: string | null;
   tags: TagInterface[];
   tagList?: string;
 }

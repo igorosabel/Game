@@ -3,23 +3,21 @@ import Position from '@model/position.model';
 
 export default class PositionSize {
   constructor(
-    public x: number = null,
-    public y: number = null,
-    public width: number = null,
-    public height: number = null
+    public x: number | null = null,
+    public y: number | null = null,
+    public width: number | null = null,
+    public height: number | null = null,
   ) {}
 
   getCenter(): Position {
-    return new Position(this.x + this.width / 2, this.y + this.height / 2);
+    return new Position(this.x! + this.width! / 2, this.y! + this.height! / 2);
   }
 
   distance(pos2: PositionSize): number {
     const obj1: Position = this.getCenter();
     const obj2: Position = pos2.getCenter();
 
-    return Math.sqrt(
-      Math.pow(obj2.x - obj1.x, 2) + Math.pow(obj2.y - obj1.y, 2)
-    );
+    return Math.sqrt(Math.pow(obj2.x! - obj1.x!, 2) + Math.pow(obj2.y! - obj1.y!, 2));
   }
 
   fromInterface(p: PositionSizeInterface): PositionSize {

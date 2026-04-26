@@ -11,8 +11,13 @@ import {
 import { FormsModule } from '@angular/forms';
 import Constants from '@app/constants';
 import { KeyboardLayoutInterface, PlayResult } from '@interfaces/game.interfaces';
-import { LoadingStatusInterface, StatusIdResult, StatusResult } from '@interfaces/interfaces';
-import { ConnectionListInterface, ConnectionResult } from '@interfaces/scenario.interfaces';
+import {
+  LoadingStatusInterface,
+  Orientation,
+  StatusIdResult,
+  StatusResult,
+} from '@interfaces/interfaces';
+import { ConnectionResult } from '@interfaces/scenario.interfaces';
 import { WorldResult } from '@interfaces/world.interfaces';
 import Character from '@model/character.model';
 import Connection from '@model/connection.model';
@@ -46,10 +51,10 @@ import InventoryComponent from '@shared/components/inventory/inventory.component
   imports: [FormsModule, HeaderComponent, InventoryComponent],
 })
 export default class PlayComponent implements OnInit, OnDestroy {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private dss: DataShareService = inject(DataShareService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly dss: DataShareService = inject(DataShareService);
+  private readonly play: PlayService = inject(PlayService);
 
   loading: WritableSignal<boolean> = signal<boolean>(true);
   allLoaded: LoadingStatusInterface = {
@@ -69,7 +74,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   scenarioDatas: ScenarioData[] = [];
   scenarioObjects: ScenarioObject[] = [];
   characters: Character[] = [];
-  connections: ConnectionListInterface = {
+  connections: Record<Orientation, Connection | null> = {
     up: null,
     down: null,
     left: null,
@@ -113,7 +118,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   getPlayData(): void {
-    this.gameId = this.dss.getGlobal('idGame');
+    this.gameId = this.dss.getGlobal('idGame') as number;
     this.as.getPlayData(this.gameId as number).subscribe((result: PlayResult): void => {
       this.worldId = result.idWorld;
       this.scenarioId = result.idScenario;
@@ -139,7 +144,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.assetCache.add('/hud/money.png');
 
       // Equipment
-      this.assetCache.addEquipment(this.game.equipment);
+      this.assetCache.addEquipment(this.game.equipment!);
 
       // Player
       this.loadPlayerAssets();
@@ -179,7 +184,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
           };
           const connections: Connection[] = this.cms.getConnections(result.list);
           for (const connection of connections) {
-            this.connections[connection.orientation!] = connection;
+            this.connections[connection.orientation as Orientation] = connection;
           }
           this.allLoaded.connections = true;
           this.checkAllLoaded();
@@ -351,7 +356,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     const canvas: PlayCanvas = this.play.makeCanvas();
     this.scenario = this.play.makeScenario(
       canvas,
-      this.assetCache.get(this.mapBackground),
+      this.assetCache.get(this.mapBackground!),
       this.blockers,
     );
     this.scenario.blockers = this.blockers;
@@ -411,9 +416,9 @@ export default class PlayComponent implements OnInit, OnDestroy {
     });
 
     this.hud = this.play.makeHud(
-      player.character.health,
-      player.character.currentHealth,
-      player.character.money,
+      player.character!.health!,
+      player.character!.currentHealth!,
+      player.character!.money!,
       canvas,
       this.assetCache,
     );
@@ -441,7 +446,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     requestAnimationFrame(this.gameLoop.bind(this));
     if (timestamp >= this.start) {
       this.scenario!.render();
-      this.scenario!.player.move();
+      this.scenario!.player!.move();
       this.scenario!.npcs.forEach((npc: PlayNPC): void => npc.move());
       this.scenario!.renderItems();
       this.hud!.render();
@@ -465,12 +470,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.up = this.play.keyboard('w');
       this.keyboard.up.press = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.up();
+          this.scenario!.player!.up();
         }
       };
       this.keyboard.up.release = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.stopUp();
+          this.scenario!.player!.stopUp();
         }
       };
 
@@ -478,12 +483,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.down = this.play.keyboard('s');
       this.keyboard.down.press = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.down();
+          this.scenario!.player!.down();
         }
       };
       this.keyboard.down.release = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.stopDown();
+          this.scenario!.player!.stopDown();
         }
       };
 
@@ -491,12 +496,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.right = this.play.keyboard('d');
       this.keyboard.right.press = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.right();
+          this.scenario!.player!.right();
         }
       };
       this.keyboard.right.release = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.stopRight();
+          this.scenario!.player!.stopRight();
         }
       };
 
@@ -504,12 +509,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.left = this.play.keyboard('a');
       this.keyboard.left.press = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.left();
+          this.scenario!.player!.left();
         }
       };
       this.keyboard.left.release = (): void => {
         if (!this.showOver) {
-          this.scenario!.player.stopLeft();
+          this.scenario!.player!.stopLeft();
         }
       };
 
@@ -525,7 +530,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
           return;
         }
         if (!this.showOver) {
-          this.scenario!.player.doAction();
+          this.scenario!.player!.doAction();
         }
       };
 
@@ -553,7 +558,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
           return;
         }
         if (!this.showOver) {
-          this.scenario!.player.hit();
+          this.scenario!.player!.hit();
         }
       };
 
@@ -639,10 +644,15 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   updatePlayerPosition(): void {
     const pos: Position = PlayUtils.getTile(
-      new Position(this.scenario!.player.blockPos.x, this.scenario!.player.blockPos.y),
+      new Position(this.scenario!.player!.blockPos.x, this.scenario!.player!.blockPos.y),
     );
     this.as
-      .updatePosition(this.gameId as number, pos.x, pos.y, this.scenario!.player.orientation)
+      .updatePosition(
+        this.gameId as number,
+        pos.x as number,
+        pos.y as number,
+        this.scenario!.player!.orientation,
+      )
       .subscribe((result: StatusResult): void => {
         if (result.status == 'error') {
           alert('¡Ocurrió un error al actualizar la última posición del jugador!');
@@ -658,7 +668,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   nextNarrative(): void {
-    if (this.currentCharacter!.character.narratives.length == this.currentNarrative + 1) {
+    if (this.currentCharacter!.character!.narratives.length == this.currentNarrative + 1) {
       this.showNarratives.set(false);
       this.showOver = false;
       this.currentNarrative = 0;
@@ -693,12 +703,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   portalActivate(): void {
     if (
-      this.portalWorld.wordOne == null ||
-      this.portalWorld.wordOne == '' ||
-      this.portalWorld.wordTwo == null ||
-      this.portalWorld.wordTwo == '' ||
-      this.portalWorld.wordThree == null ||
-      this.portalWorld.wordThree == ''
+      this.portalWorld.wordOne === null ||
+      this.portalWorld.wordOne === '' ||
+      this.portalWorld.wordTwo === null ||
+      this.portalWorld.wordTwo === '' ||
+      this.portalWorld.wordThree === null ||
+      this.portalWorld.wordThree === ''
     ) {
       alert('Tienes que introducir las tres palabras del mundo al que quieres viajar.');
       return;
@@ -708,9 +718,9 @@ export default class PlayComponent implements OnInit, OnDestroy {
       (x: World): boolean => x.id === this.worldId,
     );
     if (
-      this.portalWorld.wordOne == this.unlockedWorlds()[currentWorldInd].wordOne ||
-      this.portalWorld.wordTwo == this.unlockedWorlds()[currentWorldInd].wordTwo ||
-      this.portalWorld.wordThree == this.unlockedWorlds()[currentWorldInd].wordThree
+      this.portalWorld.wordOne === this.unlockedWorlds()[currentWorldInd].wordOne ||
+      this.portalWorld.wordTwo === this.unlockedWorlds()[currentWorldInd].wordTwo ||
+      this.portalWorld.wordThree === this.unlockedWorlds()[currentWorldInd].wordThree
     ) {
       alert('Las palabras introducidas corresponden al mundo en el que te encuentras ahora.');
       return;
@@ -734,7 +744,13 @@ export default class PlayComponent implements OnInit, OnDestroy {
     }
     this.travelling = true;
     this.as
-      .travel(this.gameId as number, world.id, world.wordOne, world.wordTwo, world.wordThree)
+      .travel(
+        this.gameId as number,
+        world.id as number,
+        world.wordOne as string,
+        world.wordTwo as string,
+        world.wordThree as string,
+      )
       .subscribe((result: StatusIdResult): void => {
         if (result.status !== 'ok') {
           alert('¡No existe ningún mundo con las palabras indicadas!');
@@ -773,10 +789,10 @@ export default class PlayComponent implements OnInit, OnDestroy {
     if (enemy.dying) {
       return;
     }
-    console.log(PlayUtils.getVector(this.scenario!.player, enemy));
-    enemy.character.currentHealth -=
-      this.scenario!.player.character.attack - enemy.character.defense;
-    if (enemy.character.currentHealth < 1) {
+    console.log(PlayUtils.getVector(this.scenario!.player!, enemy));
+    enemy.character!.currentHealth! -=
+      this.scenario!.player!.character!.attack! - enemy.character!.defense!;
+    if (enemy.character!.currentHealth! < 1) {
       enemy.die();
     }
 

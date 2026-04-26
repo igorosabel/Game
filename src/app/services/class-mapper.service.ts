@@ -134,9 +134,7 @@ export default class ClassMapperService {
     return new Asset().fromInterface(a);
   }
 
-  getBackgroundCategories(
-    bcs: BackgroundCategoryInterface[]
-  ): BackgroundCategory[] {
+  getBackgroundCategories(bcs: BackgroundCategoryInterface[]): BackgroundCategory[] {
     return bcs.map((bc: BackgroundCategoryInterface): BackgroundCategory => {
       return this.getBackgroundCategory(bc);
     });
@@ -206,25 +204,17 @@ export default class ClassMapperService {
     return new Character().fromInterface(c);
   }
 
-  getScenarioObjectFrames(
-    sofs: ScenarioObjectFrameInterface[]
-  ): ScenarioObjectFrame[] {
-    return sofs.map(
-      (sof: ScenarioObjectFrameInterface): ScenarioObjectFrame => {
-        return this.getScenarioObjectFrame(sof);
-      }
-    );
+  getScenarioObjectFrames(sofs: ScenarioObjectFrameInterface[]): ScenarioObjectFrame[] {
+    return sofs.map((sof: ScenarioObjectFrameInterface): ScenarioObjectFrame => {
+      return this.getScenarioObjectFrame(sof);
+    });
   }
 
-  getScenarioObjectFrame(
-    sof: ScenarioObjectFrameInterface
-  ): ScenarioObjectFrame {
+  getScenarioObjectFrame(sof: ScenarioObjectFrameInterface): ScenarioObjectFrame {
     return new ScenarioObjectFrame().fromInterface(sof);
   }
 
-  getScenarioObjectDrops(
-    sods: ScenarioObjectDropInterface[]
-  ): ScenarioObjectDrop[] {
+  getScenarioObjectDrops(sods: ScenarioObjectDropInterface[]): ScenarioObjectDrop[] {
     return sods.map((sod: ScenarioObjectDropInterface): ScenarioObjectDrop => {
       return this.getScenarioObjectDrop(sod);
     });

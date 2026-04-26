@@ -7,22 +7,16 @@ export default class PlayObject {
   blockPos: PositionSize;
   object: ScenarioObject;
   currentFrame: number = 0;
-  interval: number;
-  sprites: any[] = [];
+  interval: number | undefined = undefined;
+  sprites: (HTMLImageElement | null)[] = [];
   playing: boolean = false;
 
-  constructor(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    object: ScenarioObject
-  ) {
+  constructor(x: number, y: number, width: number, height: number, object: ScenarioObject) {
     this.blockPos = new PositionSize(
       x * Constants.TILE_WIDTH,
       y * Constants.TILE_HEIGHT - (height - 1) * Constants.TILE_HEIGHT,
       width * Constants.TILE_WIDTH,
-      height * Constants.TILE_HEIGHT
+      height * Constants.TILE_HEIGHT,
     );
     this.object = object;
   }
@@ -33,7 +27,7 @@ export default class PlayObject {
     }
   }
 
-  addSprite(sprite: any): void {
+  addSprite(sprite: HTMLImageElement | null): void {
     this.sprites.push(sprite);
   }
 
@@ -42,7 +36,7 @@ export default class PlayObject {
       this.playing = true;
       this.interval = window.setInterval(
         this.updateAnimation.bind(this),
-        Constants.FRAME_DURATION * 2
+        Constants.FRAME_DURATION * 2,
       );
     }
   }
@@ -57,22 +51,24 @@ export default class PlayObject {
 
   render(ctx: CanvasRenderingContext2D): void {
     this.playAnimation();
-    const frameImg: any = this.sprites[this.currentFrame];
-    ctx.drawImage(
-      frameImg,
-      this.blockPos.x,
-      this.blockPos.y,
-      this.blockPos.width,
-      this.blockPos.height
-    );
+    const frameImg: HTMLImageElement | null = this.sprites[this.currentFrame];
+    if (frameImg) {
+      ctx.drawImage(
+        frameImg,
+        this.blockPos!.x!,
+        this.blockPos!.y!,
+        this.blockPos!.width!,
+        this.blockPos!.height!,
+      );
+    }
     if (Constants.DEBUG) {
       ctx.strokeStyle = '#00f';
       ctx.lineWidth = 1;
       ctx.strokeRect(
-        this.blockPos.x,
-        this.blockPos.y,
-        this.blockPos.width,
-        this.blockPos.height
+        this.blockPos!.x!,
+        this.blockPos!.y!,
+        this.blockPos!.width!,
+        this.blockPos!.height!,
       );
     }
   }

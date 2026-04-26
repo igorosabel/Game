@@ -1,4 +1,5 @@
 import { GameInterface } from '@interfaces/game.interfaces';
+import { Orientation } from '@interfaces/interfaces';
 import { InventoryInterface } from '@interfaces/player.interfaces';
 import Equipment from '@model/equipment.model';
 import Inventory from '@model/inventory.model';
@@ -6,20 +7,20 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Game {
   constructor(
-    public id: number = null,
-    public name: string = null,
-    public idScenario: number = null,
-    public positionX: number = null,
-    public positionY: number = null,
-    public orientation: string = null,
-    public money: number = null,
-    public health: number = null,
-    public maxHealth: number = null,
-    public attack: number = null,
-    public defense: number = null,
-    public speed: number = null,
+    public id: number | null = null,
+    public name: string | null = null,
+    public idScenario: number | null = null,
+    public positionX: number | null = null,
+    public positionY: number | null = null,
+    public orientation: Orientation | null = null,
+    public money: number | null = null,
+    public health: number | null = null,
+    public maxHealth: number | null = null,
+    public attack: number | null = null,
+    public defense: number | null = null,
+    public speed: number | null = null,
     public items: Inventory[] = [],
-    public equipment: Equipment = null
+    public equipment: Equipment | null = null,
   ) {}
 
   fromInterface(g: GameInterface): Game {
@@ -38,7 +39,7 @@ export default class Game {
     this.items = g.items.map((i: InventoryInterface): Inventory => {
       return new Inventory().fromInterface(i);
     });
-    this.equipment = new Equipment().fromInterface(g.equipment);
+    this.equipment = g.equipment !== null ? new Equipment().fromInterface(g.equipment) : null;
 
     return this;
   }
@@ -60,7 +61,7 @@ export default class Game {
       items: this.items.map((i: Inventory): InventoryInterface => {
         return i.toInterface();
       }),
-      equipment: this.equipment.toInterface(),
+      equipment: this.equipment !== null ? this.equipment.toInterface() : null,
     };
   }
 }

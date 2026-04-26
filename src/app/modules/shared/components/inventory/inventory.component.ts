@@ -23,8 +23,7 @@ import TooltipComponent from '@shared/components/tooltip/tooltip.component';
 })
 export default class InventoryComponent {
   private viewContainerRef: ViewContainerRef = inject(ViewContainerRef);
-  tooltip: TooltipComponent =
-    this.viewContainerRef.createComponent(TooltipComponent).instance;
+  tooltip: TooltipComponent = this.viewContainerRef.createComponent(TooltipComponent).instance;
 
   inventoryList: ModelSignal<Inventory[]> = model.required<Inventory[]>();
   equipment: ModelSignal<Equipment> = model.required<Equipment>();
@@ -37,7 +36,7 @@ export default class InventoryComponent {
     this.showInventory.set(true);
   }
 
-  close(ev: MouseEvent = null): void {
+  close(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }

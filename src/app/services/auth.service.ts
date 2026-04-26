@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export default class AuthService {
-  private us: UserService = inject(UserService);
+  private readonly us: UserService = inject(UserService);
 
   public isAuthenticated(): Observable<boolean> {
     this.us.loadLogin();

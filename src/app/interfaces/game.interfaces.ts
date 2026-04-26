@@ -1,4 +1,5 @@
 import { CharacterInterface } from '@interfaces/character.interfaces';
+import { Orientation } from '@interfaces/interfaces';
 import {
   EquipmentInterface,
   InventoryInterface,
@@ -8,20 +9,20 @@ import { ScenarioDataInterface, ScenarioObjectInterface } from '@interfaces/scen
 import Key from '@model/key.model';
 
 export interface GameInterface {
-  id: number;
-  name: string;
-  idScenario: number;
-  positionX: number;
-  positionY: number;
-  orientation: string;
-  money: number;
-  health: number;
-  maxHealth: number;
-  attack: number;
-  defense: number;
-  speed: number;
+  id: number | null;
+  name: string | null;
+  idScenario: number | null;
+  positionX: number | null;
+  positionY: number | null;
+  orientation: Orientation | null;
+  money: number | null;
+  health: number | null;
+  maxHealth: number | null;
+  attack: number | null;
+  defense: number | null;
+  speed: number | null;
   items: InventoryInterface[];
-  equipment: EquipmentInterface;
+  equipment: EquipmentInterface | null;
 }
 
 export interface GameResult {

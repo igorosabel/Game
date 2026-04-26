@@ -1,26 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@env/environment';
-import {
-  AssetInterface,
-  AssetResult,
-  TagResult,
-} from '@interfaces/asset.interfaces';
+import { AssetInterface, AssetResult, TagResult } from '@interfaces/asset.interfaces';
 import {
   BackgroundCategoryInterface,
   BackgroundCategoryResult,
   BackgroundInterface,
   BackgroundResult,
 } from '@interfaces/background.interfaces';
-import {
-  CharacterInterface,
-  CharacterResult,
-} from '@interfaces/character.interfaces';
-import {
-  GameResult,
-  NewGameInterface,
-  PlayResult,
-} from '@interfaces/game.interfaces';
+import { CharacterInterface, CharacterResult } from '@interfaces/character.interfaces';
+import { GameResult, NewGameInterface, PlayResult } from '@interfaces/game.interfaces';
 import {
   LoginData,
   LoginResult,
@@ -41,11 +30,7 @@ import {
   ScenarioObjectResult,
   ScenarioResult,
 } from '@interfaces/scenario.interfaces';
-import {
-  WorldInterface,
-  WorldResult,
-  WorldStartInterface,
-} from '@interfaces/world.interfaces';
+import { WorldInterface, WorldResult, WorldStartInterface } from '@interfaces/world.interfaces';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -87,10 +72,7 @@ export default class ApiService {
   }
 
   getScenarioConnections(id: number): Observable<ConnectionResult> {
-    return this.http.post<ConnectionResult>(
-      this.url + 'api/get-scenario-connections',
-      { id }
-    );
+    return this.http.post<ConnectionResult>(this.url + 'api/get-scenario-connections', { id });
   }
 
   travel(
@@ -98,7 +80,7 @@ export default class ApiService {
     idWorld: number,
     wordOne: string,
     wordTwo: string,
-    wordThree: string
+    wordThree: string,
   ): Observable<StatusIdResult> {
     return this.http.post<StatusIdResult>(this.url + 'api/travel', {
       idGame,
@@ -109,13 +91,8 @@ export default class ApiService {
     });
   }
 
-  changeScenario(
-    connection: PlayConnectionInterface
-  ): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'api/change-scenario',
-      connection
-    );
+  changeScenario(connection: PlayConnectionInterface): Observable<StatusResult> {
+    return this.http.post<StatusResult>(this.url + 'api/change-scenario', connection);
   }
 
   hitEnemy(idGame: number, idScenarioData: number): Observable<StatusResult> {
@@ -129,7 +106,7 @@ export default class ApiService {
     idGame: number,
     x: number,
     y: number,
-    orientation: string
+    orientation: string,
   ): Observable<StatusResult> {
     return this.http.post<StatusResult>(this.url + 'api/update-position', {
       idGame,
@@ -164,10 +141,7 @@ export default class ApiService {
   }
 
   saveScenario(scenario: ScenarioInterface): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'admin/save-scenario',
-      scenario
-    );
+    return this.http.post<StatusResult>(this.url + 'admin/save-scenario', scenario);
   }
 
   deleteScenario(id: number): Observable<StatusResult> {
@@ -182,34 +156,20 @@ export default class ApiService {
     });
   }
 
-  saveScenarioData(
-    scenarioData: ScenarioDataInterface
-  ): Observable<StatusIdResult> {
-    return this.http.post<StatusIdResult>(
-      this.url + 'admin/save-scenario-data',
-      scenarioData
-    );
+  saveScenarioData(scenarioData: ScenarioDataInterface): Observable<StatusIdResult> {
+    return this.http.post<StatusIdResult>(this.url + 'admin/save-scenario-data', scenarioData);
   }
 
   saveConnection(connection: ConnectionInterface): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'admin/save-connection',
-      connection
-    );
+    return this.http.post<StatusResult>(this.url + 'admin/save-connection', connection);
   }
 
   deleteConnection(connection: ConnectionInterface): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'admin/delete-connection',
-      connection
-    );
+    return this.http.post<StatusResult>(this.url + 'admin/delete-connection', connection);
   }
 
   selectWorldStart(data: WorldStartInterface): Observable<StatusMessageResult> {
-    return this.http.post<StatusMessageResult>(
-      this.url + 'admin/select-world-start',
-      data
-    );
+    return this.http.post<StatusMessageResult>(this.url + 'admin/select-world-start', data);
   }
 
   generateMap(id: number): Observable<StatusResult> {
@@ -231,54 +191,41 @@ export default class ApiService {
   }
 
   deleteAsset(id: number): Observable<StatusMessageResult> {
-    return this.http.post<StatusMessageResult>(
-      this.url + 'admin/delete-asset',
-      { id }
-    );
+    return this.http.post<StatusMessageResult>(this.url + 'admin/delete-asset', { id });
   }
 
   getBackgroundCategories(): Observable<BackgroundCategoryResult> {
     return this.http.post<BackgroundCategoryResult>(
       this.url + 'admin/background-category-list',
-      {}
+      {},
     );
   }
 
   saveBackgroundCategory(
-    backgroundCategory: BackgroundCategoryInterface
+    backgroundCategory: BackgroundCategoryInterface,
   ): Observable<StatusResult> {
     return this.http.post<StatusResult>(
       this.url + 'admin/save-background-category',
-      backgroundCategory
+      backgroundCategory,
     );
   }
 
   deleteBackgroundCategory(id: number): Observable<StatusMessageResult> {
-    return this.http.post<StatusMessageResult>(
-      this.url + 'admin/delete-background-category',
-      { id }
-    );
+    return this.http.post<StatusMessageResult>(this.url + 'admin/delete-background-category', {
+      id,
+    });
   }
 
   getBackgrounds(): Observable<BackgroundResult> {
-    return this.http.post<BackgroundResult>(
-      this.url + 'admin/background-list',
-      {}
-    );
+    return this.http.post<BackgroundResult>(this.url + 'admin/background-list', {});
   }
 
   saveBackground(background: BackgroundInterface): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'admin/save-background',
-      background
-    );
+    return this.http.post<StatusResult>(this.url + 'admin/save-background', background);
   }
 
   deleteBackground(id: number): Observable<StatusMessageResult> {
-    return this.http.post<StatusMessageResult>(
-      this.url + 'admin/delete-background',
-      { id }
-    );
+    return this.http.post<StatusMessageResult>(this.url + 'admin/delete-background', { id });
   }
 
   getItems(): Observable<ItemResult> {
@@ -296,46 +243,26 @@ export default class ApiService {
   }
 
   getCharacters(): Observable<CharacterResult> {
-    return this.http.post<CharacterResult>(
-      this.url + 'admin/character-list',
-      {}
-    );
+    return this.http.post<CharacterResult>(this.url + 'admin/character-list', {});
   }
 
   saveCharacter(character: CharacterInterface): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'admin/save-character',
-      character
-    );
+    return this.http.post<StatusResult>(this.url + 'admin/save-character', character);
   }
 
   deleteCharacter(id: number): Observable<StatusMessageResult> {
-    return this.http.post<StatusMessageResult>(
-      this.url + 'admin/delete-character',
-      { id }
-    );
+    return this.http.post<StatusMessageResult>(this.url + 'admin/delete-character', { id });
   }
 
   getScenarioObjects(): Observable<ScenarioObjectResult> {
-    return this.http.post<ScenarioObjectResult>(
-      this.url + 'admin/scenario-object-list',
-      {}
-    );
+    return this.http.post<ScenarioObjectResult>(this.url + 'admin/scenario-object-list', {});
   }
 
-  saveScenarioObject(
-    scenarioObject: ScenarioObjectInterface
-  ): Observable<StatusResult> {
-    return this.http.post<StatusResult>(
-      this.url + 'admin/save-scenario-object',
-      scenarioObject
-    );
+  saveScenarioObject(scenarioObject: ScenarioObjectInterface): Observable<StatusResult> {
+    return this.http.post<StatusResult>(this.url + 'admin/save-scenario-object', scenarioObject);
   }
 
   deleteScenarioObject(id: number): Observable<StatusMessageResult> {
-    return this.http.post<StatusMessageResult>(
-      this.url + 'admin/delete-scenario-object',
-      { id }
-    );
+    return this.http.post<StatusMessageResult>(this.url + 'admin/delete-scenario-object', { id });
   }
 }

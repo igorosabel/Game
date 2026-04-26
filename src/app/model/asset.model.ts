@@ -3,19 +3,16 @@ import Tag from '@model/tag.model';
 import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Asset {
-  _tagList: string;
-  modified: boolean;
+  _tagList: string | null = null;
+  modified: boolean = false;
 
   constructor(
-    public id: number = null,
-    public idWorld: number = null,
-    public name: string = null,
-    public url: string = null,
-    public tags: Tag[] = []
-  ) {
-    this._tagList = null;
-    this.modified = false;
-  }
+    public id: number | null = null,
+    public idWorld: number | null = null,
+    public name: string | null = null,
+    public url: string | null = null,
+    public tags: Tag[] = [],
+  ) {}
 
   get tagList(): string {
     if (this._tagList === null) {

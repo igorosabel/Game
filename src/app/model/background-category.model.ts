@@ -2,7 +2,10 @@ import { BackgroundCategoryInterface } from '@interfaces/background.interfaces';
 import { urldecode, urlencode } from '@osumi/tools';
 
 export default class BackgroundCategory {
-  constructor(public id: number = null, public name: string = null) {}
+  constructor(
+    public id: number | null = null,
+    public name: string | null = null,
+  ) {}
 
   fromInterface(bc: BackgroundCategoryInterface): BackgroundCategory {
     this.id = bc.id;

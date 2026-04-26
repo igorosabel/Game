@@ -3,13 +3,13 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class World {
   constructor(
-    public id: number = null,
-    public name: string = null,
-    public description: string = null,
-    public wordOne: string = null,
-    public wordTwo: string = null,
-    public wordThree: string = null,
-    public friendly: boolean = false
+    public id: number | null = null,
+    public name: string | null = null,
+    public description: string | null = null,
+    public wordOne: string | null = null,
+    public wordTwo: string | null = null,
+    public wordThree: string | null = null,
+    public friendly: boolean = false,
   ) {}
 
   fromInterface(w: WorldInterface): World {
@@ -25,7 +25,7 @@ export default class World {
   }
 
   toInterface(): WorldInterface {
-    const world: WorldInterface = {
+    return {
       id: this.id,
       name: urlencode(this.name),
       description: urlencode(this.description),
@@ -34,6 +34,5 @@ export default class World {
       wordThree: urlencode(this.wordThree),
       friendly: this.friendly,
     };
-    return world;
   }
 }

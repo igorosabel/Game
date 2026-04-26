@@ -3,12 +3,12 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Background {
   constructor(
-    public id: number = null,
-    public idBackgroundCategory: number = null,
-    public idAsset: number = null,
-    public assetUrl: string = null,
-    public name: string = null,
-    public crossable: boolean = true
+    public id: number | null = null,
+    public idBackgroundCategory: number | null = null,
+    public idAsset: number | null = null,
+    public assetUrl: string | null = null,
+    public name: string | null = null,
+    public crossable: boolean = true,
   ) {}
 
   fromInterface(b: BackgroundInterface): Background {

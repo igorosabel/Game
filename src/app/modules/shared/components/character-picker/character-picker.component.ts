@@ -30,13 +30,12 @@ export default class CharacterPickerComponent implements OnInit {
 
   typeList: CharacterTypeInterface[] = Constants.CHARACTER_TYPE_LIST;
   show: WritableSignal<boolean> = signal<boolean>(false);
-  characterFilter: number = null;
+  characterFilter: number | null = null;
   characterList: Character[] = [];
   characterListFiltered: WritableSignal<Character[]> = signal<Character[]>([]);
-  selected: number = null;
+  selected: number | null = null;
 
-  selectCharacterEvent: OutputEmitterRef<CharacterInterface> =
-    output<CharacterInterface>();
+  selectCharacterEvent: OutputEmitterRef<CharacterInterface> = output<CharacterInterface>();
 
   ngOnInit(): void {
     this.loadCharacters();
@@ -68,7 +67,7 @@ export default class CharacterPickerComponent implements OnInit {
       filteredList = this.characterList;
     } else {
       filteredList = this.characterList.filter(
-        (x: Character): boolean => x.type === this.characterFilter
+        (x: Character): boolean => x.type === this.characterFilter,
       );
     }
     this.characterListFiltered.set(filteredList);
@@ -87,9 +86,9 @@ export default class CharacterPickerComponent implements OnInit {
     this.updateFilteredList();
   }
 
-  getCharacterById(id: number): CharacterInterface {
+  getCharacterById(id: number): CharacterInterface | null {
     const characterFind: Character[] = this.characterList.filter(
-      (x: Character): boolean => x.id === id
+      (x: Character): boolean => x.id === id,
     );
     if (characterFind.length == 0) {
       return null;

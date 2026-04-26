@@ -2,10 +2,10 @@ import { PlayConnectionInterface } from '@interfaces/scenario.interfaces';
 
 export default class PlayConnection {
   constructor(
-    public to: number = null,
-    public x: number = null,
-    public y: number = null,
-    public idGame: number = null
+    public to: number | null = null,
+    public x: number | null = null,
+    public y: number | null = null,
+    public idGame: number | null = null,
   ) {}
 
   toInterface(): PlayConnectionInterface {

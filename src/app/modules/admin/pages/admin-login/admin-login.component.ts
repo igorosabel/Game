@@ -14,13 +14,13 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [FormsModule, HeaderComponent],
 })
 export default class AdminLoginComponent {
-  private as: ApiService = inject(ApiService);
-  private user: UserService = inject(UserService);
-  private router: Router = inject(Router);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly user: UserService = inject(UserService);
+  private readonly router: Router = inject(Router);
 
   loginData: LoginData = {
-    email: null,
-    pass: null,
+    email: '',
+    pass: '',
   };
   loading: WritableSignal<boolean> = signal<boolean>(false);
   loginError: WritableSignal<boolean> = signal<boolean>(false);

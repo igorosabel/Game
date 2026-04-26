@@ -33,19 +33,14 @@ import ItemPickerComponent from '@shared/components/item-picker/item-picker.comp
   selector: 'game-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss', '../../scss/resources.scss'],
-  imports: [
-    FormsModule,
-    HeaderComponent,
-    AssetPickerComponent,
-    ItemPickerComponent,
-  ],
+  imports: [FormsModule, HeaderComponent, AssetPickerComponent, ItemPickerComponent],
 })
 export default class CharactersComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
-  characterFilter: number = null;
+  characterFilter: number | null = null;
   filterListOption: string = 'items';
   typeList: CharacterTypeInterface[] = [
     { id: 0, name: 'NPC' },
@@ -53,18 +48,17 @@ export default class CharactersComponent implements OnInit {
   ];
   characterList: Character[] = [];
   characterListFiltered: WritableSignal<Character[]> = signal<Character[]>([]);
-  message: WritableSignal<string> = signal<string>(null);
+  message: WritableSignal<string | null> = signal<string | null>(null);
   loadedCharacter: Character = new Character();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   detailtTab: string = 'data';
   characterDetailHeader: WritableSignal<string> = signal<string>('');
   dropItemName: WritableSignal<string> = signal<string>('');
   savingCharacter: WritableSignal<boolean> = signal<boolean>(false);
-  assetPickerWhere: string = null;
+  assetPickerWhere: string | null = null;
   assetPicker: Signal<AssetPickerComponent> =
     viewChild.required<AssetPickerComponent>('assetPicker');
-  itemPicker: Signal<ItemPickerComponent> =
-    viewChild.required<ItemPickerComponent>('itemPicker');
+  itemPicker: Signal<ItemPickerComponent> = viewChild.required<ItemPickerComponent>('itemPicker');
   animationImage: AnimationImageInterface = {
     up: '',
     down: '',
@@ -78,10 +72,10 @@ export default class CharactersComponent implements OnInit {
     right: -1,
   };
   animationTimer: AnimationNumInterface = {
-    up: null,
-    down: null,
-    left: null,
-    right: null,
+    up: undefined,
+    down: undefined,
+    left: undefined,
+    right: undefined,
   };
 
   ngOnInit(): void {
@@ -109,7 +103,7 @@ export default class CharactersComponent implements OnInit {
       filteredList = this.characterList;
     } else {
       filteredList = this.characterList.filter(
-        (x: Character): boolean => x.type === this.characterFilter
+        (x: Character): boolean => x.type === this.characterFilter,
       );
     }
     this.characterListFiltered.set(filteredList);
@@ -140,7 +134,7 @@ export default class CharactersComponent implements OnInit {
     this.animationImage.right = '/admin/no-asset.svg';
   }
 
-  showAddCharacter(ev: MouseEvent = null): void {
+  showAddCharacter(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -167,7 +161,7 @@ export default class CharactersComponent implements OnInit {
   selectedItem(selectedItem: ItemInterface): void {
     this.loadedCharacter.dropIdItem = selectedItem.id;
     this.loadedCharacter.dropAssetUrl = selectedItem.assetUrl;
-    this.dropItemName.set(selectedItem.name);
+    this.dropItemName.set(selectedItem.name as string);
   }
 
   removeSelectedDropItem(ev: MouseEvent): void {
@@ -185,9 +179,7 @@ export default class CharactersComponent implements OnInit {
       const whereCheck: string =
         orientation.substring(0, 1).toUpperCase() + orientation.substring(1);
       if (this.loadedCharacter['idAsset' + whereCheck] === null) {
-        alert(
-          'Antes de añadir un frame tienes que elegir una imagen principal.'
-        );
+        alert('Antes de añadir un frame tienes que elegir una imagen principal.');
         return;
       }
     }
@@ -197,21 +189,18 @@ export default class CharactersComponent implements OnInit {
 
   selectedAsset(selectedAsset: AssetInterface): void {
     if (this.assetPickerWhere.indexOf('frames') !== -1) {
-      const orientation: string = this.assetPickerWhere
-        .replace('frames', '')
-        .toLowerCase();
+      const orientation: string = this.assetPickerWhere.replace('frames', '').toLowerCase();
       const frame: CharacterFrame = new CharacterFrame(
         null,
         selectedAsset.id,
         selectedAsset.url,
         orientation,
-        this.loadedCharacter[this.assetPickerWhere].length
+        this.loadedCharacter[this.assetPickerWhere].length,
       );
       this.loadedCharacter[this.assetPickerWhere].push(frame);
     } else {
       const where: string =
-        this.assetPickerWhere.substring(0, 1).toUpperCase() +
-        this.assetPickerWhere.substring(1);
+        this.assetPickerWhere.substring(0, 1).toUpperCase() + this.assetPickerWhere.substring(1);
       this.loadedCharacter['idAsset' + where] = selectedAsset.id;
       this.loadedCharacter['asset' + where + 'Url'] = selectedAsset.url;
     }
@@ -222,28 +211,22 @@ export default class CharactersComponent implements OnInit {
     const sentList: string[] = ['up', 'down', 'left', 'right'];
     for (const sent of sentList) {
       clearInterval(this.animationTimer[sent]);
-      const sentUpper: string =
-        sent.substring(0, 1).toUpperCase() + sent.substring(1);
+      const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
 
       if (this.loadedCharacter['allFrames' + sentUpper].length > 1) {
         this.animationTimer[sent] = setInterval((): void => {
           this.animatePreview(sent);
         }, 300);
       } else {
-        this.animationImage[sent] =
-          this.loadedCharacter['asset' + sentUpper + 'Url'];
+        this.animationImage[sent] = this.loadedCharacter['asset' + sentUpper + 'Url'];
       }
     }
   }
 
   animatePreview(sent: string): void {
-    const sentUpper: string =
-      sent.substring(0, 1).toUpperCase() + sent.substring(1);
+    const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
     this.animationInd[sent]++;
-    if (
-      this.animationInd[sent] >=
-      this.loadedCharacter['allFrames' + sentUpper].length
-    ) {
+    if (this.animationInd[sent] >= this.loadedCharacter['allFrames' + sentUpper].length) {
       this.animationInd[sent] = 0;
     }
     this.animationImage[sent] =
@@ -253,11 +236,10 @@ export default class CharactersComponent implements OnInit {
   frameDelete(sent: string, frame: CharacterFrame): void {
     const conf: boolean = confirm('¿Estás seguro de querer borrar este frame?');
     if (conf) {
-      const sentUpper: string =
-        sent.substring(0, 1).toUpperCase() + sent.substring(1);
+      const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
       const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
         (x: CharacterFrame): boolean =>
-          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString(),
       );
       this.loadedCharacter['frames' + sentUpper].splice(ind, 1);
       this.updateFrameOrders(sentUpper);
@@ -265,11 +247,10 @@ export default class CharactersComponent implements OnInit {
   }
 
   frameLeft(sent: string, frame: CharacterFrame): void {
-    const sentUpper: string =
-      sent.substring(0, 1).toUpperCase() + sent.substring(1);
+    const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
     const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
       (x: CharacterFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString(),
     );
     if (ind === 0) {
       return;
@@ -282,11 +263,10 @@ export default class CharactersComponent implements OnInit {
   }
 
   frameRight(sent: string, frame: CharacterFrame): void {
-    const sentUpper: string =
-      sent.substring(0, 1).toUpperCase() + sent.substring(1);
+    const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
     const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
       (x: CharacterFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString(),
     );
     if (ind === this.loadedCharacter['frames' + sentUpper].length - 1) {
       return;
@@ -300,48 +280,43 @@ export default class CharactersComponent implements OnInit {
 
   updateFrameOrders(sent: string): void {
     for (const frameOrder in this.loadedCharacter['frames' + sent]) {
-      this.loadedCharacter['frames' + sent][frameOrder].order =
-        parseInt(frameOrder);
+      this.loadedCharacter['frames' + sent][frameOrder].order = parseInt(frameOrder);
     }
   }
 
   addNarrative(): void {
     this.loadedCharacter.narratives.push(
-      new Narrative(null, '', this.loadedCharacter.narratives.length + 1)
+      new Narrative(null, '', this.loadedCharacter.narratives.length + 1),
     );
   }
 
   moveNarrative(narrative: Narrative, sent: string): void {
     const ind: number = this.loadedCharacter.narratives.findIndex(
-      (x: Narrative): boolean => x.order == narrative.order
+      (x: Narrative): boolean => x.order == narrative.order,
     );
     const aux: Narrative = this.loadedCharacter.narratives[ind];
     if (sent === 'up') {
       if (ind === 0) {
         return;
       }
-      this.loadedCharacter.narratives[ind] =
-        this.loadedCharacter.narratives[ind - 1];
+      this.loadedCharacter.narratives[ind] = this.loadedCharacter.narratives[ind - 1];
       this.loadedCharacter.narratives[ind - 1] = aux;
     }
     if (sent === 'down') {
       if (ind === this.loadedCharacter.narratives.length - 1) {
         return;
       }
-      this.loadedCharacter.narratives[ind] =
-        this.loadedCharacter.narratives[ind + 1];
+      this.loadedCharacter.narratives[ind] = this.loadedCharacter.narratives[ind + 1];
       this.loadedCharacter.narratives[ind + 1] = aux;
     }
     this.updateNarrativeOrders();
   }
 
   deleteNarrative(narrative: Narrative): void {
-    const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar este diálogo?'
-    );
+    const conf: boolean = confirm('¿Estás seguro de querer borrar este diálogo?');
     if (conf) {
       const ind: number = this.loadedCharacter.narratives.findIndex(
-        (x: Narrative): boolean => x.order === narrative.order
+        (x: Narrative): boolean => x.order === narrative.order,
       );
       this.loadedCharacter.narratives.splice(ind, 1);
       this.updateNarrativeOrders();
@@ -350,8 +325,7 @@ export default class CharactersComponent implements OnInit {
 
   updateNarrativeOrders(): void {
     for (const narrativeOrder in this.loadedCharacter.narratives) {
-      this.loadedCharacter.narratives[narrativeOrder].order =
-        parseInt(narrativeOrder) + 1;
+      this.loadedCharacter.narratives[narrativeOrder].order = parseInt(narrativeOrder) + 1;
     }
   }
 
@@ -399,9 +373,7 @@ export default class CharactersComponent implements OnInit {
       }
 
       if (validate && this.loadedCharacter.respawn === null) {
-        alert(
-          '¡No puedes dejar el tiempo de reaparición del enemigo en blanco!'
-        );
+        alert('¡No puedes dejar el tiempo de reaparición del enemigo en blanco!');
         validate = false;
       }
 
@@ -411,7 +383,7 @@ export default class CharactersComponent implements OnInit {
         this.loadedCharacter.dropChance === null
       ) {
         alert(
-          '¡Has elegido un item para el enemigo, pero no has indicado el porcentaje de obtención!'
+          '¡Has elegido un item para el enemigo, pero no has indicado el porcentaje de obtención!',
         );
         validate = false;
       }
@@ -421,9 +393,7 @@ export default class CharactersComponent implements OnInit {
         this.loadedCharacter.dropChance !== null &&
         this.loadedCharacter.dropIdItem === null
       ) {
-        alert(
-          '¡Has indicado el porcentaje de obtención de un item pero no has elegido ninguno!'
-        );
+        alert('¡Has indicado el porcentaje de obtención de un item pero no has elegido ninguno!');
         validate = false;
       }
 
@@ -432,18 +402,14 @@ export default class CharactersComponent implements OnInit {
         this.loadedCharacter.dropChance !== null &&
         this.loadedCharacter.dropChance > 100
       ) {
-        alert(
-          '¡El porcentaje de obtención de un item no puede ser superior a 100%!'
-        );
+        alert('¡El porcentaje de obtención de un item no puede ser superior a 100%!');
         this.loadedCharacter.dropChance = 100;
         validate = false;
       }
     }
 
     if (validate && this.loadedCharacter.idAssetDown === null) {
-      alert(
-        'Tienes que elegir por lo menos una imagen hacia abajo para el personaje'
-      );
+      alert('Tienes que elegir por lo menos una imagen hacia abajo para el personaje');
       validate = false;
     }
 
@@ -455,9 +421,7 @@ export default class CharactersComponent implements OnInit {
         this.loadedCharacter.idAssetLeft === null ||
         this.loadedCharacter.idAssetRight === null)
     ) {
-      alert(
-        'Para un enemigo tienes que elegir por lo menos una imagen en cada sentido.'
-      );
+      alert('Para un enemigo tienes que elegir por lo menos una imagen en cada sentido.');
       validate = false;
     }
 
@@ -473,9 +437,7 @@ export default class CharactersComponent implements OnInit {
             this.assetPicker().resetSelected();
           } else {
             alert('¡Ocurrió un error al guardar el personaje!');
-            this.message.set(
-              'ERROR: Ocurrió un error al guardar el personaje.'
-            );
+            this.message.set('ERROR: Ocurrió un error al guardar el personaje.');
           }
         },
         error: (): void => {
@@ -497,35 +459,27 @@ export default class CharactersComponent implements OnInit {
       character.blockHeight,
       character.fixedPosition,
       character.idAssetUp,
-      character.assetUpUrl !== null
-        ? character.assetUpUrl
-        : '/admin/no-asset.svg',
+      character.assetUpUrl !== null ? character.assetUpUrl : '/admin/no-asset.svg',
       character.idAssetDown,
       character.assetDownUrl,
       character.idAssetLeft,
-      character.assetLeftUrl !== null
-        ? character.assetLeftUrl
-        : '/admin/no-asset.svg',
+      character.assetLeftUrl !== null ? character.assetLeftUrl : '/admin/no-asset.svg',
       character.idAssetRight,
-      character.assetRightUrl !== null
-        ? character.assetRightUrl
-        : '/admin/no-asset.svg',
+      character.assetRightUrl !== null ? character.assetRightUrl : '/admin/no-asset.svg',
       character.type,
       character.health,
       character.attack,
       character.defense,
       character.speed,
       character.dropIdItem,
-      character.dropAssetUrl !== null
-        ? character.dropAssetUrl
-        : '/admin/no-asset.svg',
+      character.dropAssetUrl !== null ? character.dropAssetUrl : '/admin/no-asset.svg',
       character.dropChance,
       character.respawn,
       [],
       [],
       [],
       [],
-      character.narratives
+      character.narratives,
     );
     const sentList: string[] = ['Up', 'Down', 'Left', 'Right'];
     for (const sent of sentList) {
@@ -547,9 +501,7 @@ export default class CharactersComponent implements OnInit {
     this.startAnimation();
 
     if (character.dropIdItem !== null) {
-      const dropItem: ItemInterface = this.itemPicker().getItemById(
-        character.dropIdItem
-      );
+      const dropItem: ItemInterface = this.itemPicker().getItemById(character.dropIdItem);
       this.dropItemName.set(dropItem.name);
     } else {
       this.dropItemName.set('Elige un item');
@@ -561,7 +513,7 @@ export default class CharactersComponent implements OnInit {
 
   deleteCharacter(character: Character): void {
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el personaje "' + character.name + '"?'
+      '¿Estás seguro de querer borrar el personaje "' + character.name + '"?',
     );
     if (conf) {
       this.as.deleteCharacter(character.id).subscribe({
@@ -572,7 +524,7 @@ export default class CharactersComponent implements OnInit {
           if (result.status === 'in-use') {
             alert(
               'El personaje está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n' +
-                urldecode(result.message)
+                urldecode(result.message),
             );
           }
           if (result.status === 'error') {

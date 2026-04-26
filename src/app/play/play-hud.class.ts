@@ -13,7 +13,7 @@ export default class PlayHud {
     currentHealth: number,
     money: number,
     canvas: PlayCanvas,
-    assets: AssetCache
+    assets: AssetCache,
   ) {
     this.health = health;
     this.currentHealth = currentHealth;
@@ -23,26 +23,26 @@ export default class PlayHud {
   }
 
   render(): void {
-    const ctx: CanvasRenderingContext2D = this.canvas.ctx;
+    const ctx: CanvasRenderingContext2D | null = this.canvas.ctx;
     const posY = 20;
+    const moneyIcon: HTMLImageElement | null = this.assets.get('/hud/money.png');
 
     // Money
-    ctx.drawImage(this.assets.get('/hud/money.png'), 10, posY, 8, 10);
-    ctx.font = "18px 'PressStart'";
-    ctx.fillStyle = '#fff';
-    ctx.fillText(this.money.toString(), 25, 32);
+    if (ctx && moneyIcon) {
+      ctx.drawImage(moneyIcon, 10, posY, 8, 10);
+      ctx.font = "18px 'PressStart'";
+      ctx.fillStyle = '#fff';
+      ctx.fillText(this.money.toString(), 25, 32);
+    }
 
     // Health
     const hearts: number = this.health / 20;
     const posX = 60;
-    for (let i: number = 0; i < hearts; i++) {
-      ctx.drawImage(
-        this.assets.get('/hud/heart_full.png'),
-        posX + i * 20,
-        posY,
-        14,
-        13
-      );
+    const heartIcon: HTMLImageElement | null = this.assets.get('/hud/heart_full.png');
+    if (ctx && heartIcon) {
+      for (let i: number = 0; i < hearts; i++) {
+        ctx.drawImage(heartIcon, posX + i * 20, posY, 14, 13);
+      }
     }
   }
 }

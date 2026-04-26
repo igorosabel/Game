@@ -1,10 +1,10 @@
 export interface WorldInterface {
-  id: number;
-  name: string;
-  description: string;
-  wordOne: string;
-  wordTwo: string;
-  wordThree: string;
+  id: number | null;
+  name: string | null;
+  description: string | null;
+  wordOne: string | null;
+  wordTwo: string | null;
+  wordThree: string | null;
   friendly: boolean;
 }
 

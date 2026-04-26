@@ -7,10 +7,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import {
-  ScenarioObjectInterface,
-  ScenarioObjectResult,
-} from '@interfaces/scenario.interfaces';
+import { ScenarioObjectInterface, ScenarioObjectResult } from '@interfaces/scenario.interfaces';
 import ScenarioObject from '@model/scenario-object.model';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
@@ -27,7 +24,7 @@ export default class ScenarioObjectPickerComponent implements OnInit {
 
   show: WritableSignal<boolean> = signal<boolean>(false);
   scenarioObjectList: ScenarioObject[] = [];
-  selected: number = null;
+  selected: number | null = null;
 
   selectScenarioObjectEvent: OutputEmitterRef<ScenarioObjectInterface> =
     output<ScenarioObjectInterface>();
@@ -48,19 +45,16 @@ export default class ScenarioObjectPickerComponent implements OnInit {
   }
 
   loadScenarioObjects(): void {
-    this.as
-      .getScenarioObjects()
-      .subscribe((result: ScenarioObjectResult): void => {
-        if (result.status == 'ok') {
-          this.scenarioObjectList = this.cms.getScenarioObjects(result.list);
-        }
-      });
+    this.as.getScenarioObjects().subscribe((result: ScenarioObjectResult): void => {
+      if (result.status == 'ok') {
+        this.scenarioObjectList = this.cms.getScenarioObjects(result.list);
+      }
+    });
   }
 
   selectScenarioObject(scenarioObject: ScenarioObject): void {
     this.selected = scenarioObject.id;
-    const selectedScenarioObject: ScenarioObjectInterface =
-      scenarioObject.toInterface();
+    const selectedScenarioObject: ScenarioObjectInterface = scenarioObject.toInterface();
     this.show.set(false);
     this.selectScenarioObjectEvent.emit(selectedScenarioObject);
   }
@@ -69,9 +63,9 @@ export default class ScenarioObjectPickerComponent implements OnInit {
     this.selected = null;
   }
 
-  getScenarioObjectById(id: number): ScenarioObjectInterface {
+  getScenarioObjectById(id: number): ScenarioObjectInterface | null {
     const scenarioObjectFind: ScenarioObject[] = this.scenarioObjectList.filter(
-      (x: ScenarioObject): boolean => x.id === id
+      (x: ScenarioObject): boolean => x.id === id,
     );
     if (scenarioObjectFind.length == 0) {
       return null;

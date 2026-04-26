@@ -1,4 +1,5 @@
 import {
+  CharacterFrameDirection,
   CharacterFrameInterface,
   CharacterInterface,
   NarrativeInterface,
@@ -10,41 +11,41 @@ import Narrative from '@model/narrative.model';
 import { urldecode } from '@osumi/tools';
 
 export default class Character {
-  currentHealth: number = null;
-  money: number = null;
-  items: Item[] = null;
-  inventory: Inventory[] = null;
+  currentHealth: number | null = null;
+  money: number | null = null;
+  items: Item[] | null = null;
+  inventory: Inventory[] | null = null;
 
   constructor(
-    public id: number = null,
-    public name: string = null,
-    public width: number = null,
-    public blockWidth: number = null,
-    public height: number = null,
-    public blockHeight: number = null,
+    public id: number | null = null,
+    public name: string | null = null,
+    public width: number | null = null,
+    public blockWidth: number | null = null,
+    public height: number | null = null,
+    public blockHeight: number | null = null,
     public fixedPosition: boolean = false,
-    public idAssetUp: number = null,
-    public assetUpUrl: string = null,
-    public idAssetDown: number = null,
-    public assetDownUrl: string = null,
-    public idAssetLeft: number = null,
-    public assetLeftUrl: string = null,
-    public idAssetRight: number = null,
-    public assetRightUrl: string = null,
-    public type: number = null,
-    public health: number = null,
-    public attack: number = null,
-    public defense: number = null,
-    public speed: number = null,
-    public dropIdItem: number = null,
-    public dropAssetUrl: string = null,
-    public dropChance: number = null,
-    public respawn: number = null,
+    public idAssetUp: number | null = null,
+    public assetUpUrl: string | null = null,
+    public idAssetDown: number | null = null,
+    public assetDownUrl: string | null = null,
+    public idAssetLeft: number | null = null,
+    public assetLeftUrl: string | null = null,
+    public idAssetRight: number | null = null,
+    public assetRightUrl: string | null = null,
+    public type: number | null = null,
+    public health: number | null = null,
+    public attack: number | null = null,
+    public defense: number | null = null,
+    public speed: number | null = null,
+    public dropIdItem: number | null = null,
+    public dropAssetUrl: string | null = null,
+    public dropChance: number | null = null,
+    public respawn: number | null = null,
     public framesUp: CharacterFrame[] = [],
     public framesDown: CharacterFrame[] = [],
     public framesLeft: CharacterFrame[] = [],
     public framesRight: CharacterFrame[] = [],
-    public narratives: Narrative[] = []
+    public narratives: Narrative[] = [],
   ) {
     this.currentHealth = health;
     this.money = 0;
@@ -52,12 +53,35 @@ export default class Character {
     this.inventory = [];
   }
 
-  getAllFrames(sent: string): string[] {
+  getAllFrames(direction: CharacterFrameDirection): string[] {
+    const assetUrlMap: Record<CharacterFrameDirection, string | null> = {
+      Up: this.assetUpUrl,
+      Down: this.assetDownUrl,
+      Left: this.assetLeftUrl,
+      Right: this.assetRightUrl,
+    };
+
+    const framesMap: Record<CharacterFrameDirection, CharacterFrame[]> = {
+      Up: this.framesUp,
+      Down: this.framesDown,
+      Left: this.framesLeft,
+      Right: this.framesRight,
+    };
+
     const frameList: string[] = [];
-    frameList.push(this['asset' + sent + 'Url']);
-    for (const frame of this['frames' + sent]) {
-      frameList.push(frame.assetUrl);
+
+    const assetUrl: string | null = assetUrlMap[direction];
+
+    if (assetUrl !== null) {
+      frameList.push(assetUrl);
     }
+
+    for (const frame of framesMap[direction]) {
+      if (frame.assetUrl !== null) {
+        frameList.push(frame.assetUrl);
+      }
+    }
+
     return frameList;
   }
 
@@ -102,20 +126,18 @@ export default class Character {
     this.dropAssetUrl = urldecode(c.dropAssetUrl);
     this.dropChance = c.dropChance;
     this.respawn = c.respawn;
-    this.framesUp = c.framesUp.map((cf: CharacterFrame): CharacterFrame => {
+    this.framesUp = c.framesUp.map((cf: CharacterFrameInterface): CharacterFrame => {
       return new CharacterFrame().fromInterface(cf);
     });
-    this.framesDown = c.framesDown.map((cf: CharacterFrame): CharacterFrame => {
+    this.framesDown = c.framesDown.map((cf: CharacterFrameInterface): CharacterFrame => {
       return new CharacterFrame().fromInterface(cf);
     });
-    this.framesLeft = c.framesLeft.map((cf: CharacterFrame): CharacterFrame => {
+    this.framesLeft = c.framesLeft.map((cf: CharacterFrameInterface): CharacterFrame => {
       return new CharacterFrame().fromInterface(cf);
     });
-    this.framesRight = c.framesRight.map(
-      (cf: CharacterFrame): CharacterFrame => {
-        return new CharacterFrame().fromInterface(cf);
-      }
-    );
+    this.framesRight = c.framesRight.map((cf: CharacterFrameInterface): CharacterFrame => {
+      return new CharacterFrame().fromInterface(cf);
+    });
     this.narratives = c.narratives.map((n: NarrativeInterface): Narrative => {
       return new Narrative().fromInterface(n);
     });
@@ -149,26 +171,18 @@ export default class Character {
       dropAssetUrl: this.dropAssetUrl,
       dropChance: this.dropChance,
       respawn: this.respawn,
-      framesUp: this.framesUp.map(
-        (cf: CharacterFrame): CharacterFrameInterface => {
-          return cf.toInterface();
-        }
-      ),
-      framesDown: this.framesDown.map(
-        (cf: CharacterFrame): CharacterFrameInterface => {
-          return cf.toInterface();
-        }
-      ),
-      framesLeft: this.framesLeft.map(
-        (cf: CharacterFrame): CharacterFrameInterface => {
-          return cf.toInterface();
-        }
-      ),
-      framesRight: this.framesRight.map(
-        (cf: CharacterFrame): CharacterFrameInterface => {
-          return cf.toInterface();
-        }
-      ),
+      framesUp: this.framesUp.map((cf: CharacterFrame): CharacterFrameInterface => {
+        return cf.toInterface();
+      }),
+      framesDown: this.framesDown.map((cf: CharacterFrame): CharacterFrameInterface => {
+        return cf.toInterface();
+      }),
+      framesLeft: this.framesLeft.map((cf: CharacterFrame): CharacterFrameInterface => {
+        return cf.toInterface();
+      }),
+      framesRight: this.framesRight.map((cf: CharacterFrame): CharacterFrameInterface => {
+        return cf.toInterface();
+      }),
       narratives: this.narratives.map((n: Narrative): NarrativeInterface => {
         return n.toInterface();
       }),

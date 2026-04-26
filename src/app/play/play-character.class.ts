@@ -1,7 +1,8 @@
 import Constants from '@app/constants';
-import { CharacterSizeInterface } from '@interfaces/character.interfaces';
+import { CharacterSizeInterface, CharacterSpriteOption } from '@interfaces/character.interfaces';
+import { Orientation } from '@interfaces/interfaces';
 import { NPCData } from '@interfaces/player.interfaces';
-import { ConnectionListInterface, Orientation } from '@interfaces/scenario.interfaces';
+import { ConnectionListInterface } from '@interfaces/scenario.interfaces';
 import Character from '@model/character.model';
 import PositionSize from '@model/position-size.model';
 import Position from '@model/position.model';
@@ -14,17 +15,21 @@ import { EventDispatcher } from 'strongly-typed-events';
 
 export default class PlayCharacter {
   idScenarioData: number | null = null;
-  orientation: string = 'down';
-  orientationList: string[] = [];
-  blockPos: PositionSize | null = null;
+  orientation: Orientation = 'down';
+  orientationList: Orientation[] = [];
+  blockPos: PositionSize = new PositionSize();
   originalSize: CharacterSizeInterface = { width: 0, height: 0 };
   center: Position = new Position();
-  sprites: Record<string, (HTMLImageElement | null)[]> = {
+  sprites: Record<CharacterSpriteOption, (HTMLImageElement | null)[]> = {
     up: [],
     right: [],
     down: [],
     left: [],
     death: [],
+    'hit-up': [],
+    'hit-right': [],
+    'hit-down': [],
+    'hit-left': [],
   };
   type: string | null = null;
   scenario: PlayScenario | null = null;
@@ -49,7 +54,7 @@ export default class PlayCharacter {
   playing: boolean = false;
   dying: boolean = false;
   currentDieFrame: number = 0;
-  interval: number | null = null;
+  interval: number | undefined = undefined;
   character: Character | null = null;
   connections: ConnectionListInterface | null = null;
   npcData: NPCData | null = null;
@@ -82,7 +87,7 @@ export default class PlayCharacter {
       isNPC: false,
       isEnemy: false,
       status: 'idle',
-      timer: null,
+      timer: undefined,
       remainingTime: 0,
     };
   }
@@ -104,7 +109,7 @@ export default class PlayCharacter {
     }
   }
 
-  addSprite(ind: Orientation, sprite: HTMLImageElement | null): void {
+  addSprite(ind: CharacterSpriteOption, sprite: HTMLImageElement | null): void {
     this.sprites[ind].push(sprite);
   }
 
@@ -118,22 +123,22 @@ export default class PlayCharacter {
     switch (this.orientation) {
       case 'up':
         {
-          newPos.y -= this.blockPos.height;
+          newPos.y! -= this.blockPos.height!;
         }
         break;
       case 'down':
         {
-          newPos.y += this.blockPos.height;
+          newPos.y! += this.blockPos.height!;
         }
         break;
       case 'left':
         {
-          newPos.x -= this.blockPos.width;
+          newPos.x! -= this.blockPos.width!;
         }
         break;
       case 'right':
         {
-          newPos.x += this.blockPos.width;
+          newPos.x! += this.blockPos.width!;
         }
         break;
     }
@@ -146,17 +151,17 @@ export default class PlayCharacter {
   }
 
   stop(): void {
-    this.moving.up = false;
-    this.moving.down = false;
-    this.moving.right = false;
-    this.moving.left = false;
+    this.moving['up'] = false;
+    this.moving['down'] = false;
+    this.moving['right'] = false;
+    this.moving['left'] = false;
     this.stopAnimation();
   }
 
   up(): void {
-    if (!this.moving.up) {
-      this.vy = -1 * Constants.DEFAULT_VY * this.character.speed;
-      this.moving.up = true;
+    if (!this.moving['up']) {
+      this.vy = -1 * Constants.DEFAULT_VY * this.character!.speed!;
+      this.moving['up'] = true;
       this.orientationList.push('up');
       this.playAnimation();
     }
@@ -164,8 +169,8 @@ export default class PlayCharacter {
   }
 
   stopUp(): void {
-    if (this.moving.up) {
-      this.moving.up = false;
+    if (this.moving['up']) {
+      this.moving['up'] = false;
       this.vy = 0;
       this.orientationList.splice(this.orientationList.indexOf('up'), 1);
     }
@@ -173,9 +178,9 @@ export default class PlayCharacter {
   }
 
   down(): void {
-    if (!this.moving.down) {
-      this.vy = Constants.DEFAULT_VY * this.character.speed;
-      this.moving.down = true;
+    if (!this.moving['down']) {
+      this.vy = Constants.DEFAULT_VY * this.character!.speed!;
+      this.moving['down'] = true;
       this.orientationList.push('down');
       this.playAnimation();
     }
@@ -183,8 +188,8 @@ export default class PlayCharacter {
   }
 
   stopDown(): void {
-    if (this.moving.down) {
-      this.moving.down = false;
+    if (this.moving['down']) {
+      this.moving['down'] = false;
       this.vy = 0;
       this.orientationList.splice(this.orientationList.indexOf('down'), 1);
     }
@@ -192,9 +197,9 @@ export default class PlayCharacter {
   }
 
   right(): void {
-    if (!this.moving.right) {
-      this.vx = Constants.DEFAULT_VX * this.character.speed;
-      this.moving.right = true;
+    if (!this.moving['right']) {
+      this.vx = Constants.DEFAULT_VX * this.character!.speed!;
+      this.moving['right'] = true;
       this.orientationList.push('right');
       this.playAnimation();
     }
@@ -202,8 +207,8 @@ export default class PlayCharacter {
   }
 
   stopRight(): void {
-    if (this.moving.right) {
-      this.moving.right = false;
+    if (this.moving['right']) {
+      this.moving['right'] = false;
       this.vx = 0;
       this.orientationList.splice(this.orientationList.indexOf('right'), 1);
     }
@@ -211,9 +216,9 @@ export default class PlayCharacter {
   }
 
   left(): void {
-    if (!this.moving.left) {
-      this.vx = -1 * Constants.DEFAULT_VX * this.character.speed;
-      this.moving.left = true;
+    if (!this.moving['left']) {
+      this.vx = -1 * Constants.DEFAULT_VX * this.character!.speed!;
+      this.moving['left'] = true;
       this.orientationList.push('left');
       this.playAnimation();
     }
@@ -221,8 +226,8 @@ export default class PlayCharacter {
   }
 
   stopLeft(): void {
-    if (this.moving.left) {
-      this.moving.left = false;
+    if (this.moving['left']) {
+      this.moving['left'] = false;
       this.vx = 0;
       this.orientationList.splice(this.orientationList.indexOf('left'), 1);
     }
@@ -254,7 +259,9 @@ export default class PlayCharacter {
         this.currentFrame++;
       }
     } else {
-      if (this.currentHitFrame === this.sprites['hit-' + this.orientation].length - 1) {
+      const orientation: CharacterSpriteOption = ('hit-' +
+        this.orientation) as CharacterSpriteOption;
+      if (this.currentHitFrame === this.sprites[orientation].length - 1) {
         this.currentHitFrame = 0;
         this.hitting = false;
         this.stopHitting = true;
@@ -266,7 +273,7 @@ export default class PlayCharacter {
       if (this.currentDieFrame === this.sprites['death'].length - 1) {
         this.currentDieFrame = 0;
         this.stopAnimation();
-        this._onDie.dispatch(this, this.character.type);
+        this._onDie.dispatch(this, this.character!.type!);
       } else {
         this.currentDieFrame++;
       }
@@ -281,8 +288,8 @@ export default class PlayCharacter {
 
   collission(obj1: PositionSize, obj2: Position): boolean {
     const rect2: PositionSize = new PositionSize(
-      obj2.x * Constants.TILE_WIDTH,
-      obj2.y * Constants.TILE_HEIGHT,
+      obj2.x! * Constants.TILE_WIDTH,
+      obj2.y! * Constants.TILE_HEIGHT,
       Constants.TILE_WIDTH,
       Constants.TILE_HEIGHT,
     );
@@ -334,46 +341,46 @@ export default class PlayCharacter {
     if (this.dying) {
       return;
     }
-    if (this.moving.up || this.moving.down || this.moving.right || this.moving.left) {
-      const newPosX: number = this.blockPos.x + this.vx;
-      const newPosY: number = this.blockPos.y + this.vy;
+    if (this.moving['up'] || this.moving['down'] || this.moving['right'] || this.moving['left']) {
+      const newPosX: number = this.blockPos!.x! + this.vx;
+      const newPosY: number = this.blockPos!.y! + this.vy;
       // Colisión con los bordes de la pantalla
       if (
         newPosX < 0 ||
         newPosY < 0 ||
-        newPosX + this.blockPos.width > Constants.SCENARIO_WIDTH ||
-        newPosY + this.blockPos.height > Constants.SCENARIO_HEIGHT
+        newPosX + this.blockPos!.width! > Constants.SCENARIO_WIDTH ||
+        newPosY + this.blockPos!.height! > Constants.SCENARIO_HEIGHT
       ) {
-        if (!this.npcData.isNPC) {
+        if (!this.npcData!.isNPC) {
           const next: Position = this.getNextTile();
           const playConnection = new PlayConnection();
           // Izquierda
-          if (newPosX < 0 && this.connections.left !== null) {
-            playConnection.to = this.connections.left.to;
+          if (newPosX < 0 && this.connections!.left !== null) {
+            playConnection.to = this.connections!.left.to;
             playConnection.x = 0;
             playConnection.y = next.y;
           }
           // Arriba
-          if (newPosY < 0 && this.connections.up !== null) {
-            playConnection.to = this.connections.up.to;
+          if (newPosY < 0 && this.connections!.up !== null) {
+            playConnection.to = this.connections!.up.to;
             playConnection.x = next.x;
             playConnection.y = 0;
           }
           // Derecha
           if (
-            newPosX + this.blockPos.width > Constants.SCENARIO_WIDTH &&
-            this.connections.right !== null
+            newPosX + this.blockPos!.width! > Constants.SCENARIO_WIDTH &&
+            this.connections!.right !== null
           ) {
-            playConnection.to = this.connections.right.to;
+            playConnection.to = this.connections!.right.to;
             playConnection.x = Constants.SCENARIO_COLS;
             playConnection.y = next.y;
           }
           // Abajo
           if (
-            newPosY + this.blockPos.height > Constants.SCENARIO_HEIGHT &&
-            this.connections.down !== null
+            newPosY + this.blockPos!.height! > Constants.SCENARIO_HEIGHT &&
+            this.connections!.down !== null
           ) {
-            playConnection.to = this.connections.down.to;
+            playConnection.to = this.connections!.down.to;
             playConnection.x = next.x;
             playConnection.y = Constants.SCENARIO_ROWS;
           }
@@ -394,19 +401,19 @@ export default class PlayCharacter {
         this.blockPos.width,
         this.blockPos.height,
       );
-      this.scenario.blockers.forEach((object: Position): void => {
+      this.scenario!.blockers.forEach((object: Position): void => {
         if (this.collission(newPos, object)) {
           hit = true;
         }
       });
-      if (!this.npcData.isNPC) {
-        this.scenario.npcs.forEach((npc: PlayNPC): void => {
+      if (!this.npcData!.isNPC) {
+        this.scenario!.npcs.forEach((npc: PlayNPC): void => {
           if (this.npcCollision(newPos, npc)) {
             hit = true;
           }
         });
       } else {
-        const npcList: PlayNPC[] = [...this.scenario.npcs];
+        const npcList: PlayNPC[] = [...this.scenario!.npcs];
         const npcInd: number = npcList.findIndex(
           (x: PlayNPC): boolean =>
             x.blockPos.x === this.blockPos.x && x.blockPos.y === this.blockPos.y,
@@ -417,20 +424,20 @@ export default class PlayCharacter {
             hit = true;
           }
         });
-        if (this.npcCollision(newPos, this.scenario.player)) {
+        if (this.npcCollision(newPos, this.scenario!.player!)) {
           hit = true;
         }
       }
       if (hit) {
-        if (this.npcData.isNPC) {
+        if (this.npcData!.isNPC) {
           this.stopNPC();
         }
         return;
       }
 
       // Actualizo posición
-      this.blockPos.x += this.vx;
-      this.blockPos.y += this.vy;
+      this.blockPos!.x! += this.vx;
+      this.blockPos!.y! += this.vy;
       this.updateCenter();
     } else {
       this.stopAnimation();
@@ -438,79 +445,83 @@ export default class PlayCharacter {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    let img = this.sprites[this.orientation][this.currentFrame];
-    let posX: number = null;
-    let posY: number = null;
-    if (!this.hitting) {
+    let img: HTMLImageElement | null = this.sprites[this.orientation][this.currentFrame];
+    let posX: number | null = null;
+    let posY: number | null = null;
+    if (img && !this.hitting) {
       switch (this.orientation) {
         case 'down':
           {
-            posX = this.blockPos.x - (img.width - this.blockPos.width) / 2;
-            posY = this.blockPos.y - (img.height - this.blockPos.height);
+            posX = this.blockPos!.x! - (img.width - this.blockPos!.width!) / 2;
+            posY = this.blockPos!.y! - (img.height - this.blockPos!.height!);
           }
           break;
         case 'left':
           {
-            posX = this.blockPos.x - (img.width - this.blockPos.width);
-            posY = this.blockPos.y - (img.height - this.blockPos.height);
+            posX = this.blockPos!.x! - (img.width - this.blockPos!.width!);
+            posY = this.blockPos!.y! - (img.height - this.blockPos!.height!);
           }
           break;
         case 'right':
           {
-            posX = this.blockPos.x;
-            posY = this.blockPos.y - (img.height - this.blockPos.height);
+            posX = this.blockPos!.x!;
+            posY = this.blockPos!.y! - (img.height - this.blockPos!.height!);
           }
           break;
         case 'up':
           {
-            posX = this.blockPos.x - (img.width - this.blockPos.width) / 2;
-            posY = this.blockPos.y - (img.height - this.blockPos.height);
+            posX = this.blockPos!.x! - (img.width - this.blockPos!.width!) / 2;
+            posY = this.blockPos!.y! - (img.height - this.blockPos!.height!);
           }
           break;
       }
     }
     if (this.hitting) {
-      img = this.sprites['hit-' + this.orientation][this.currentHitFrame];
-      switch (this.orientation) {
-        case 'down':
-          {
-            posX = this.blockPos.x - (img.width - this.blockPos.width) / 2;
-            posY = this.blockPos.y;
-          }
-          break;
-        case 'left':
-          {
-            posX = this.blockPos.x - (img.width - this.blockPos.width);
-            posY = this.blockPos.y - (img.height - this.blockPos.height) / 2;
-          }
-          break;
-        case 'right':
-          {
-            posX = this.blockPos.x;
-            posY = this.blockPos.y - (img.height - this.blockPos.height) / 2;
-          }
-          break;
-        case 'up':
-          {
-            posX = this.blockPos.x - (img.width - this.blockPos.width) / 2;
-            posY = this.blockPos.y - (img.height - this.blockPos.height);
-          }
-          break;
+      const orientation: CharacterSpriteOption = ('hit-' +
+        this.orientation) as CharacterSpriteOption;
+      img = this.sprites[orientation][this.currentHitFrame];
+      if (img) {
+        switch (this.orientation) {
+          case 'down':
+            {
+              posX = this.blockPos!.x! - (img.width - this.blockPos!.width!) / 2;
+              posY = this.blockPos!.y!;
+            }
+            break;
+          case 'left':
+            {
+              posX = this.blockPos!.x! - (img.width - this.blockPos!.width!) / 2;
+              posY = this.blockPos!.y! - (img.height - this.blockPos!.height!) / 2;
+            }
+            break;
+          case 'right':
+            {
+              posX = this.blockPos!.x!;
+              posY = this.blockPos!.y! - (img.height - this.blockPos!.height!) / 2;
+            }
+            break;
+          case 'up':
+            {
+              posX = this.blockPos!.x! - (img.width - this.blockPos!.width!) / 2;
+              posY = this.blockPos!.y! - (img.height - this.blockPos!.height!);
+            }
+            break;
+        }
       }
-      if (this.stopHitting && this.orientation == 'down') {
-        posX = this.blockPos.x;
-        posY = this.blockPos.y;
+      if (this.stopHitting && this.orientation === 'down') {
+        posX = this.blockPos!.x!;
+        posY = this.blockPos!.y!;
       }
     }
-    ctx.drawImage(img, posX, posY, img.width, img.height);
+    ctx.drawImage(img!, posX!, posY!, img!.width, img!.height);
     if (this.dying) {
-      const centerX: number = posX + img.width / 2;
-      const centerY: number = posY + img.height / 2;
-      const deathImg = this.sprites['death'][this.currentDieFrame];
-      const deathPosX: number = centerX - deathImg.width / 2;
-      const deathPosY: number = centerY - deathImg.height / 2;
+      const centerX: number = posX! + img!.width / 2;
+      const centerY: number = posY! + img!.height / 2;
+      const deathImg: HTMLImageElement | null = this.sprites['death'][this.currentDieFrame];
+      const deathPosX: number = centerX - deathImg!.width / 2;
+      const deathPosY: number = centerY - deathImg!.height / 2;
 
-      ctx.drawImage(deathImg, deathPosX, deathPosY, deathImg.width, deathImg.height);
+      ctx.drawImage(deathImg!, deathPosX, deathPosY, deathImg!.width, deathImg!.height);
     }
     /*ctx.globalAlpha = 0.62;
 		ctx.globalCompositeOperation = 'source-atop';
@@ -519,10 +530,15 @@ export default class PlayCharacter {
     if (Constants.DEBUG) {
       ctx.strokeStyle = '#f00';
       ctx.lineWidth = 1;
-      ctx.strokeRect(posX, posY, img.width, img.height);
+      ctx.strokeRect(posX!, posY!, img!.width, img!.height);
       ctx.strokeStyle = '#00f';
       ctx.lineWidth = 1;
-      ctx.strokeRect(this.blockPos.x, this.blockPos.y, this.blockPos.width, this.blockPos.height);
+      ctx.strokeRect(
+        this.blockPos!.x!,
+        this.blockPos!.y!,
+        this.blockPos!.width!,
+        this.blockPos!.height!,
+      );
     }
   }
 }

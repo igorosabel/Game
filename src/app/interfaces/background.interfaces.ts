@@ -1,6 +1,6 @@
 export interface BackgroundCategoryInterface {
-  id: number;
-  name: string;
+  id: number | null;
+  name: string | null;
 }
 
 export interface BackgroundCategoryResult {
@@ -9,11 +9,11 @@ export interface BackgroundCategoryResult {
 }
 
 export interface BackgroundInterface {
-  id: number;
-  idBackgroundCategory: number;
-  idAsset: number;
-  assetUrl: string;
-  name: string;
+  id: number | null;
+  idBackgroundCategory: number | null;
+  idAsset: number | null;
+  assetUrl: string | null;
+  name: string | null;
   crossable: boolean;
 }
 

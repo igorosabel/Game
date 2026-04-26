@@ -9,9 +9,9 @@ import { RouterLink } from '@angular/router';
 })
 export default class HeaderComponent {
   leftUrl: InputSignal<string[]> = input<string[]>([]);
-  leftTitle: InputSignal<string> = input<string>(null);
-  img: InputSignal<string> = input<string>(null);
+  leftTitle: InputSignal<string | null> = input<string | null>(null);
+  img: InputSignal<string | null> = input<string | null>(null);
   title: InputSignal<string> = input<string>('The Game');
   rightUrl: InputSignal<string[]> = input<string[]>([]);
-  rightTitle: InputSignal<string> = input<string>(null);
+  rightTitle: InputSignal<string | null> = input<string | null>(null);
 }

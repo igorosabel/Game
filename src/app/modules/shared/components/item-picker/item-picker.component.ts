@@ -9,11 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Constants from '@app/constants';
-import {
-  ItemInterface,
-  ItemResult,
-  ItemTypeInterface,
-} from '@interfaces/item.interfaces';
+import { ItemInterface, ItemResult, ItemTypeInterface } from '@interfaces/item.interfaces';
 import Item from '@model/item.model';
 import ApiService from '@services/api.service';
 import ClassMapperService from '@services/class-mapper.service';
@@ -29,11 +25,11 @@ export default class ItemPickerComponent implements OnInit {
   private cms: ClassMapperService = inject(ClassMapperService);
 
   show: WritableSignal<boolean> = signal<boolean>(false);
-  itemFilter: number = null;
+  itemFilter: number | null = null;
   typeList: ItemTypeInterface[] = Constants.ITEM_TYPE_LIST;
   itemList: Item[] = [];
   itemListFiltered: WritableSignal<Item[]> = signal<Item[]>([]);
-  selected: number = null;
+  selected: number | null = null;
 
   selectItemEvent: OutputEmitterRef<ItemInterface> = output<ItemInterface>();
 
@@ -59,9 +55,7 @@ export default class ItemPickerComponent implements OnInit {
     if (this.itemFilter === null) {
       filteredList = this.itemList;
     } else {
-      filteredList = this.itemList.filter(
-        (x: Item): boolean => x.type === this.itemFilter
-      );
+      filteredList = this.itemList.filter((x: Item): boolean => x.type === this.itemFilter);
     }
     this.itemListFiltered.set(filteredList);
   }
@@ -79,10 +73,8 @@ export default class ItemPickerComponent implements OnInit {
     this.updateFilteredList();
   }
 
-  getItemById(id: number): ItemInterface {
-    const itemFind: Item[] = this.itemList.filter(
-      (x: Item): boolean => x.id === id
-    );
+  getItemById(id: number): ItemInterface | null {
+    const itemFind: Item[] = this.itemList.filter((x: Item): boolean => x.id === id);
     if (itemFind.length == 0) {
       return null;
     } else {

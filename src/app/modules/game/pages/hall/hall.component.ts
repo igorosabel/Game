@@ -15,10 +15,10 @@ import DataShareService from '@services/data-share.service';
   imports: [FormsModule],
 })
 export default class HallComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private dss: DataShareService = inject(DataShareService);
-  private router: Router = inject(Router);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly dss: DataShareService = inject(DataShareService);
+  private readonly router: Router = inject(Router);
 
   games: WritableSignal<Game[]> = signal<Game[]>([]);
   gameSelected: number = 0;
@@ -66,7 +66,7 @@ export default class HallComponent implements OnInit {
     }
     const games: Game[] = this.games();
     const params: NewGameInterface = {
-      idGame: games[this.gameSelected].id,
+      idGame: games[this.gameSelected].id as number,
       name: this.newGameName() as string,
     };
 
@@ -93,7 +93,7 @@ export default class HallComponent implements OnInit {
       '¿Estás seguro de querer borrar esta partida? Este proceso es irreversible y no se podrá recuperar una vez borrado.',
     );
     if (conf) {
-      this.as.deleteGame(game.id).subscribe((result: StatusResult): void => {
+      this.as.deleteGame(game.id as number).subscribe((result: StatusResult): void => {
         if (result.status === 'ok') {
           this.loadGames();
         } else {

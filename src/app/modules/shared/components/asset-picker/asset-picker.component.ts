@@ -8,11 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  AssetInterface,
-  AssetResult,
-  TagResult,
-} from '@interfaces/asset.interfaces';
+import { AssetInterface, AssetResult, TagResult } from '@interfaces/asset.interfaces';
 import { WorldResult } from '@interfaces/world.interfaces';
 import Asset from '@model/asset.model';
 import Tag from '@model/tag.model';
@@ -31,14 +27,14 @@ export default class AssetPickerComponent implements OnInit {
   private cms: ClassMapperService = inject(ClassMapperService);
 
   show: WritableSignal<boolean> = signal<boolean>(false);
-  tagFilter: number = null;
-  worldFilter: number = null;
+  tagFilter: number | null = null;
+  worldFilter: number | null = null;
   tagList: Tag[] = [];
   worldList: World[] = [];
   assetList: Asset[] = [];
   assetListFiltered: Asset[] = [];
   nameCopy: boolean = true;
-  selectedItem: number = null;
+  selectedItem: number | null = null;
 
   selectAssetEvent: OutputEmitterRef<AssetInterface> = output<AssetInterface>();
 
@@ -84,26 +80,20 @@ export default class AssetPickerComponent implements OnInit {
     } else {
       if (this.tagFilter !== null && this.worldFilter !== null) {
         filteredList = this.assetList.filter((x: Asset): boolean => {
-          const tagsFiltered: Tag[] = x.tags.filter(
-            (t: Tag): boolean => t.id === this.tagFilter
-          );
+          const tagsFiltered: Tag[] = x.tags.filter((t: Tag): boolean => t.id === this.tagFilter);
           return tagsFiltered.length > 0;
         });
-        filteredList = filteredList.filter(
-          (x: Asset): boolean => x.idWorld === this.worldFilter
-        );
+        filteredList = filteredList.filter((x: Asset): boolean => x.idWorld === this.worldFilter);
       } else {
         if (this.tagFilter !== null) {
           filteredList = this.assetList.filter((x: Asset): boolean => {
-            const tagsFiltered: Tag[] = x.tags.filter(
-              (t: Tag): boolean => t.id === this.tagFilter
-            );
+            const tagsFiltered: Tag[] = x.tags.filter((t: Tag): boolean => t.id === this.tagFilter);
             return tagsFiltered.length > 0;
           });
         }
         if (this.worldFilter !== null) {
           filteredList = this.assetList.filter(
-            (x: Asset): boolean => x.idWorld === this.worldFilter
+            (x: Asset): boolean => x.idWorld === this.worldFilter,
           );
         }
       }
@@ -128,10 +118,8 @@ export default class AssetPickerComponent implements OnInit {
     this.updateFilteredList();
   }
 
-  getAssetById(id: number): AssetInterface {
-    const assetFind: Asset[] = this.assetList.filter(
-      (x: Asset): boolean => x.id === id
-    );
+  getAssetById(id: number): AssetInterface | null {
+    const assetFind: Asset[] = this.assetList.filter((x: Asset): boolean => x.id === id);
     if (assetFind.length == 0) {
       return null;
     } else {

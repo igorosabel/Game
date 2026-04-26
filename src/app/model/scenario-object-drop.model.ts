@@ -3,11 +3,11 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ScenarioObjectDrop {
   constructor(
-    public id: number = null,
-    public idItem: number = null,
-    public itemName: string = null,
-    public assetUrl: string = null,
-    public num: number = null
+    public id: number | null = null,
+    public idItem: number | null = null,
+    public itemName: string | null = null,
+    public assetUrl: string | null = null,
+    public num: number | null = null,
   ) {}
 
   fromInterface(sod: ScenarioObjectDropInterface): ScenarioObjectDrop {

@@ -1,38 +1,40 @@
 import { ItemInterface } from '@interfaces/item.interfaces';
 
 export interface InventoryInterface {
-  id: number;
-  idGame: number;
-  idItem: number;
-  item: ItemInterface;
-  order: number;
-  num: number;
+  id: number | null;
+  idGame: number | null;
+  idItem: number | null;
+  item: ItemInterface | null;
+  order: number | null;
+  num: number | null;
 }
 
 export interface EquipmentInterface {
-  head: ItemInterface;
-  necklace: ItemInterface;
-  body: ItemInterface;
-  boots: ItemInterface;
-  weapon: ItemInterface;
+  head: ItemInterface | null;
+  necklace: ItemInterface | null;
+  body: ItemInterface | null;
+  boots: ItemInterface | null;
+  weapon: ItemInterface | null;
 }
 
 export interface PositionInterface {
-  x: number;
-  y: number;
+  x: number | null;
+  y: number | null;
 }
 
 export interface PositionSizeInterface {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  x: number | null;
+  y: number | null;
+  width: number | null;
+  height: number | null;
 }
 
 export interface NPCData {
   isNPC: boolean;
   isEnemy: boolean;
   status: string;
-  timer: number | null;
+  timer: number | undefined;
   remainingTime: number;
 }
+
+export type KeyHandler = () => void;

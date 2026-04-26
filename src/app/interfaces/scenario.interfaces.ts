@@ -1,3 +1,4 @@
+import { Orientation } from '@interfaces/interfaces';
 import Connection from '@model/connection.model';
 
 export interface ScenarioTriggerTypeInterface {
@@ -6,11 +7,11 @@ export interface ScenarioTriggerTypeInterface {
 }
 
 export interface ScenarioInterface {
-  id: number;
-  idWorld: number;
-  name: string;
-  startX: number;
-  startY: number;
+  id: number | null;
+  idWorld: number | null;
+  name: string | null;
+  startX: number | null;
+  startY: number | null;
   initial: boolean;
   friendly: boolean;
 }
@@ -67,8 +68,6 @@ export interface ConnectionListInterface {
   right: Connection | null;
 }
 
-export type Orientation = 'up' | 'down' | 'left' | 'right';
-
 export interface ConnectionInterface {
   from: number | null;
   fromName: string | null;
@@ -83,10 +82,10 @@ export interface ConnectionResult {
 }
 
 export interface PlayConnectionInterface {
-  to: number;
-  x: number;
-  y: number;
-  idGame: number;
+  to: number | null;
+  x: number | null;
+  y: number | null;
+  idGame: number | null;
 }
 
 export interface ScenarioDataResult {
@@ -97,36 +96,36 @@ export interface ScenarioDataResult {
 }
 
 export interface ScenarioObjectDropInterface {
-  id: number;
-  idItem: number;
-  itemName: string;
-  assetUrl: string;
-  num: number;
+  id: number | null;
+  idItem: number | null;
+  itemName: string | null;
+  assetUrl: string | null;
+  num: number | null;
 }
 
 export interface ScenarioObjectFrameInterface {
-  id: number;
-  idAsset: number;
-  assetUrl: string;
-  order: number;
+  id: number | null;
+  idAsset: number | null;
+  assetUrl: string | null;
+  order: number | null;
 }
 
 export interface ScenarioObjectInterface {
-  id: number;
-  name: string;
-  idAsset: number;
-  assetUrl: string;
-  width: number;
-  blockWidth: number;
-  height: number;
-  blockHeight: number;
+  id: number | null;
+  name: string | null;
+  idAsset: number | null;
+  assetUrl: string | null;
+  width: number | null;
+  blockWidth: number | null;
+  height: number | null;
+  blockHeight: number | null;
   crossable: boolean;
   activable: boolean;
-  idAssetActive: number;
-  assetActiveUrl: string;
-  activeTime: number;
-  activeTrigger: number;
-  activeTriggerCustom: string;
+  idAssetActive: number | null;
+  assetActiveUrl: string | null;
+  activeTime: number | null;
+  activeTrigger: number | null;
+  activeTriggerCustom: string | null;
   pickable: boolean;
   grabbable: boolean;
   breakable: boolean;

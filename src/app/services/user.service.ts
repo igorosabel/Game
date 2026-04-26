@@ -4,15 +4,15 @@ import DataShareService from '@services/data-share.service';
 
 @Injectable()
 export default class UserService {
-  private dss: DataShareService = inject(DataShareService);
+  private readonly dss: DataShareService = inject(DataShareService);
 
   logged: boolean = false;
-  id: number = null;
-  email: string = null;
-  token: string = null;
+  id: number | null = null;
+  email: string | null = null;
+  token: string | null = null;
 
   loadLogin(): void {
-    const loginObj: LoginResult = this.dss.getGlobal('login');
+    const loginObj: LoginResult | null = this.dss.getGlobal('login') as LoginResult | null;
     if (loginObj === null) {
       this.logout();
     } else {
@@ -26,9 +26,9 @@ export default class UserService {
   saveLogin(): void {
     const loginObj: LoginResult = {
       status: 'ok',
-      id: this.id,
-      email: this.email,
-      token: this.token,
+      id: this.id as number,
+      email: this.email as string,
+      token: this.token as string,
     };
     this.dss.setGlobal('login', loginObj);
   }

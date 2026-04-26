@@ -9,33 +9,37 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ScenarioObject {
   constructor(
-    public id: number = null,
-    public name: string = null,
-    public idAsset: number = null,
-    public assetUrl: string = null,
-    public width: number = null,
-    public blockWidth: number = null,
-    public height: number = null,
-    public blockHeight: number = null,
+    public id: number | null = null,
+    public name: string | null = null,
+    public idAsset: number | null = null,
+    public assetUrl: string | null = null,
+    public width: number | null = null,
+    public blockWidth: number | null = null,
+    public height: number | null = null,
+    public blockHeight: number | null = null,
     public crossable: boolean = false,
     public activable: boolean = false,
-    public idAssetActive: number = null,
-    public assetActiveUrl: string = null,
-    public activeTime: number = null,
-    public activeTrigger: number = null,
-    public activeTriggerCustom: string = null,
+    public idAssetActive: number | null = null,
+    public assetActiveUrl: string | null = null,
+    public activeTime: number | null = null,
+    public activeTrigger: number | null = null,
+    public activeTriggerCustom: string | null = null,
     public pickable: boolean = false,
     public grabbable: boolean = false,
     public breakable: boolean = false,
     public drops: ScenarioObjectDrop[] = [],
-    public frames: ScenarioObjectFrame[] = []
+    public frames: ScenarioObjectFrame[] = [],
   ) {}
 
   get allFrames(): string[] {
     const frameList: string[] = [];
-    frameList.push(this.assetUrl);
+    if (this.assetUrl !== null) {
+      frameList.push(this.assetUrl);
+    }
     for (const frame of this.frames) {
-      frameList.push(frame.assetUrl);
+      if (frame.assetUrl !== null) {
+        frameList.push(frame.assetUrl);
+      }
     }
     return frameList;
   }
@@ -60,16 +64,12 @@ export default class ScenarioObject {
     this.pickable = so.pickable;
     this.grabbable = so.grabbable;
     this.breakable = so.breakable;
-    this.drops = so.drops.map(
-      (sod: ScenarioObjectDropInterface): ScenarioObjectDrop => {
-        return new ScenarioObjectDrop().fromInterface(sod);
-      }
-    );
-    this.frames = so.frames.map(
-      (sof: ScenarioObjectFrameInterface): ScenarioObjectFrame => {
-        return new ScenarioObjectFrame().fromInterface(sof);
-      }
-    );
+    this.drops = so.drops.map((sod: ScenarioObjectDropInterface): ScenarioObjectDrop => {
+      return new ScenarioObjectDrop().fromInterface(sod);
+    });
+    this.frames = so.frames.map((sof: ScenarioObjectFrameInterface): ScenarioObjectFrame => {
+      return new ScenarioObjectFrame().fromInterface(sof);
+    });
 
     return this;
   }
@@ -91,22 +91,16 @@ export default class ScenarioObject {
       activeTime: this.activeTime,
       activeTrigger: this.activeTrigger,
       activeTriggerCustom:
-        this.activeTriggerCustom !== null
-          ? urlencode(this.activeTriggerCustom)
-          : null,
+        this.activeTriggerCustom !== null ? urlencode(this.activeTriggerCustom) : null,
       pickable: this.pickable,
       grabbable: this.grabbable,
       breakable: this.breakable,
-      drops: this.drops.map(
-        (sod: ScenarioObjectDrop): ScenarioObjectDropInterface => {
-          return sod.toInterface();
-        }
-      ),
-      frames: this.frames.map(
-        (sof: ScenarioObjectFrame): ScenarioObjectFrameInterface => {
-          return sof.toInterface();
-        }
-      ),
+      drops: this.drops.map((sod: ScenarioObjectDrop): ScenarioObjectDropInterface => {
+        return sod.toInterface();
+      }),
+      frames: this.frames.map((sof: ScenarioObjectFrame): ScenarioObjectFrameInterface => {
+        return sof.toInterface();
+      }),
     };
   }
 }

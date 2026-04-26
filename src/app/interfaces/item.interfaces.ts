@@ -1,8 +1,8 @@
 export interface ItemFrameInterface {
-  id: number;
-  idAsset: number;
-  assetUrl: string;
-  order: number;
+  id: number | null;
+  idAsset: number | null;
+  assetUrl: string | null;
+  order: number | null;
 }
 
 export interface ItemTypeInterface {
@@ -11,17 +11,17 @@ export interface ItemTypeInterface {
 }
 
 export interface ItemInterface {
-  id: number;
-  type: number;
-  idAsset: number;
-  assetUrl: string;
-  name: string;
-  money: number;
-  health: number;
-  attack: number;
-  defense: number;
-  speed: number;
-  wearable: number;
+  id: number | null;
+  type: number | null;
+  idAsset: number | null;
+  assetUrl: string | null;
+  name: string | null;
+  money: number | null;
+  health: number | null;
+  attack: number | null;
+  defense: number | null;
+  speed: number | null;
+  wearable: number | null;
   frames: ItemFrameInterface[];
 }
 

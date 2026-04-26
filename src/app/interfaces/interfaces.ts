@@ -1,7 +1,3 @@
-export interface DataShareGlobals {
-  [key: string]: any;
-}
-
 export interface StatusResult {
   status: string;
 }
@@ -39,3 +35,5 @@ export interface LoadingStatusInterface {
   unlockedWorlds: boolean;
   connections: boolean;
 }
+
+export type Orientation = 'up' | 'down' | 'left' | 'right';

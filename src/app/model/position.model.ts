@@ -1,7 +1,10 @@
 import { PositionInterface } from '@interfaces/player.interfaces';
 
 export default class Position {
-  constructor(public x: number = null, public y: number = null) {}
+  constructor(
+    public x: number | null = null,
+    public y: number | null = null,
+  ) {}
 
   fromInterface(p: PositionInterface): Position {
     this.x = p.x;

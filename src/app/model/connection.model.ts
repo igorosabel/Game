@@ -1,4 +1,5 @@
-import { ConnectionInterface, Orientation } from '@interfaces/scenario.interfaces';
+import { Orientation } from '@interfaces/interfaces';
+import { ConnectionInterface } from '@interfaces/scenario.interfaces';
 import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Connection {

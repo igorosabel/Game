@@ -3,17 +3,16 @@ import Item from '@model/item.model';
 
 export default class Equipment {
   constructor(
-    public head: Item = null,
-    public necklace: Item = null,
-    public body: Item = null,
-    public boots: Item = null,
-    public weapon: Item = null
+    public head: Item | null = null,
+    public necklace: Item | null = null,
+    public body: Item | null = null,
+    public boots: Item | null = null,
+    public weapon: Item | null = null,
   ) {}
 
   fromInterface(e: EquipmentInterface): Equipment {
     this.head = e.head !== null ? new Item().fromInterface(e.head) : null;
-    this.necklace =
-      e.necklace !== null ? new Item().fromInterface(e.necklace) : null;
+    this.necklace = e.necklace !== null ? new Item().fromInterface(e.necklace) : null;
     this.body = e.body !== null ? new Item().fromInterface(e.body) : null;
     this.boots = e.boots !== null ? new Item().fromInterface(e.boots) : null;
     this.weapon = e.weapon !== null ? new Item().fromInterface(e.weapon) : null;

@@ -25,13 +25,13 @@ export default class AssetCache {
   }
 
   addScenarioObject(so: ScenarioObject): void {
-    this.add(so.assetUrl);
-    this.add(so.assetActiveUrl);
+    this.add(so.assetUrl!);
+    this.add(so.assetActiveUrl!);
     for (const drop of so.drops) {
-      this.add(drop.assetUrl);
+      this.add(drop.assetUrl!);
     }
     for (const frame of so.frames) {
-      this.add(frame.assetUrl);
+      this.add(frame.assetUrl!);
     }
   }
 
@@ -42,40 +42,40 @@ export default class AssetCache {
   }
 
   addCharacter(c: Character): void {
-    this.add(c.assetUpUrl);
-    this.add(c.assetDownUrl);
-    this.add(c.assetLeftUrl);
-    this.add(c.assetRightUrl);
-    this.add(c.dropAssetUrl);
+    this.add(c.assetUpUrl!);
+    this.add(c.assetDownUrl!);
+    this.add(c.assetLeftUrl!);
+    this.add(c.assetRightUrl!);
+    this.add(c.dropAssetUrl!);
     for (const frame of c.framesUp) {
-      this.add(frame.assetUrl);
+      this.add(frame.assetUrl!);
     }
     for (const frame of c.framesDown) {
-      this.add(frame.assetUrl);
+      this.add(frame.assetUrl!);
     }
     for (const frame of c.framesLeft) {
-      this.add(frame.assetUrl);
+      this.add(frame.assetUrl!);
     }
     for (const frame of c.framesRight) {
-      this.add(frame.assetUrl);
+      this.add(frame.assetUrl!);
     }
   }
 
   addEquipment(equipment: Equipment): void {
     if (equipment.head !== null) {
-      this.add(equipment.head.assetUrl);
+      this.add(equipment.head.assetUrl!);
     }
     if (equipment.necklace !== null) {
-      this.add(equipment.necklace.assetUrl);
+      this.add(equipment.necklace.assetUrl!);
     }
     if (equipment.body !== null) {
-      this.add(equipment.body.assetUrl);
+      this.add(equipment.body.assetUrl!);
     }
     if (equipment.boots !== null) {
-      this.add(equipment.boots.assetUrl);
+      this.add(equipment.boots.assetUrl!);
     }
     if (equipment.weapon !== null) {
-      this.add(equipment.weapon.assetUrl);
+      this.add(equipment.weapon.assetUrl!);
     }
   }
 

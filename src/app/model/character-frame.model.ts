@@ -3,11 +3,11 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class CharacterFrame {
   constructor(
-    public id: number = null,
-    public idAsset: number = null,
-    public assetUrl: string = null,
-    public orientation: string = null,
-    public order: number = null
+    public id: number | null = null,
+    public idAsset: number | null = null,
+    public assetUrl: string | null = null,
+    public orientation: string | null = null,
+    public order: number | null = null,
   ) {}
 
   fromInterface(cf: CharacterFrameInterface): CharacterFrame {

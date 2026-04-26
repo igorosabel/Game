@@ -4,25 +4,29 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Item {
   constructor(
-    public id: number = null,
-    public type: number = null,
-    public idAsset: number = null,
-    public assetUrl: string = null,
-    public name: string = null,
-    public money: number = null,
-    public health: number = null,
-    public attack: number = null,
-    public defense: number = null,
-    public speed: number = null,
-    public wearable: number = null,
-    public frames: ItemFrame[] = []
+    public id: number | null = null,
+    public type: number | null = null,
+    public idAsset: number | null = null,
+    public assetUrl: string | null = null,
+    public name: string | null = null,
+    public money: number | null = null,
+    public health: number | null = null,
+    public attack: number | null = null,
+    public defense: number | null = null,
+    public speed: number | null = null,
+    public wearable: number | null = null,
+    public frames: ItemFrame[] = [],
   ) {}
 
   get allFrames(): string[] {
     const frameList: string[] = [];
-    frameList.push(this.assetUrl);
+    if (this.assetUrl !== null) {
+      frameList.push(this.assetUrl);
+    }
     for (const frame of this.frames) {
-      frameList.push(frame.assetUrl);
+      if (frame.assetUrl !== null) {
+        frameList.push(frame.assetUrl);
+      }
     }
     return frameList;
   }
@@ -39,7 +43,7 @@ export default class Item {
     this.defense = i.defense;
     this.speed = i.speed;
     this.wearable = i.wearable;
-    this.frames = i.frames.map((itf: ItemFrame): ItemFrame => {
+    this.frames = i.frames.map((itf: ItemFrameInterface): ItemFrame => {
       return new ItemFrame().fromInterface(itf);
     });
 

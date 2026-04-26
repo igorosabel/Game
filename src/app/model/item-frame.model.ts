@@ -3,10 +3,10 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class ItemFrame {
   constructor(
-    public id: number = null,
-    public idAsset: number = null,
-    public assetUrl: string = null,
-    public order: number = null
+    public id: number | null = null,
+    public idAsset: number | null = null,
+    public assetUrl: string | null = null,
+    public order: number | null = null,
   ) {}
 
   fromInterface(itf: ItemFrameInterface): ItemFrame {

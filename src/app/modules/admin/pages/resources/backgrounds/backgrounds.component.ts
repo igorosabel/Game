@@ -10,10 +10,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AssetInterface } from '@interfaces/asset.interfaces';
-import {
-  BackgroundCategoryResult,
-  BackgroundResult,
-} from '@interfaces/background.interfaces';
+import { BackgroundCategoryResult, BackgroundResult } from '@interfaces/background.interfaces';
 import { StatusMessageResult, StatusResult } from '@interfaces/interfaces';
 import BackgroundCategory from '@model/background-category.model';
 import Background from '@model/background.model';
@@ -32,18 +29,16 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [FormsModule, HeaderComponent, AssetPickerComponent, RouterLink],
 })
 export default class BackgroundsComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
-  backgroundCategoryFilter: number = null;
+  backgroundCategoryFilter: number | null = null;
   filterListOption: string = 'items';
   backgroundCategoryList: BackgroundCategory[] = [];
   backgroundList: Background[] = [];
-  backgroundListFiltered: WritableSignal<Background[]> = signal<Background[]>(
-    []
-  );
-  message: WritableSignal<string> = signal<string>(null);
+  backgroundListFiltered: WritableSignal<Background[]> = signal<Background[]>([]);
+  message: WritableSignal<string | null> = signal<string | null>(null);
   loadedBackground: Background = new Background();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   backgroundDetailHeader: WritableSignal<string> = signal<string>('');
@@ -63,15 +58,11 @@ export default class BackgroundsComponent implements OnInit {
   }
 
   loadBackgroundCategories(): void {
-    this.as
-      .getBackgroundCategories()
-      .subscribe((result: BackgroundCategoryResult): void => {
-        if (result.status == 'ok') {
-          this.backgroundCategoryList = this.cms.getBackgroundCategories(
-            result.list
-          );
-        }
-      });
+    this.as.getBackgroundCategories().subscribe((result: BackgroundCategoryResult): void => {
+      if (result.status == 'ok') {
+        this.backgroundCategoryList = this.cms.getBackgroundCategories(result.list);
+      }
+    });
   }
 
   loadBackgrounds(): void {
@@ -89,8 +80,7 @@ export default class BackgroundsComponent implements OnInit {
       filteredList = this.backgroundList;
     } else {
       filteredList = this.backgroundList.filter(
-        (x: Background): boolean =>
-          x.idBackgroundCategory === this.backgroundCategoryFilter
+        (x: Background): boolean => x.idBackgroundCategory === this.backgroundCategoryFilter,
       );
     }
     this.backgroundListFiltered.set(filteredList);
@@ -108,7 +98,7 @@ export default class BackgroundsComponent implements OnInit {
     this.loadedBackground.assetUrl = '/admin/no-asset.svg';
   }
 
-  showAddBackground(ev: MouseEvent = null): void {
+  showAddBackground(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -136,10 +126,7 @@ export default class BackgroundsComponent implements OnInit {
 
   saveBackground(): void {
     let validate: boolean = true;
-    if (
-      this.loadedBackground.name === null ||
-      this.loadedBackground.name === ''
-    ) {
+    if (this.loadedBackground.name === null || this.loadedBackground.name === '') {
       validate = false;
       alert('¡No puedes dejar el nombre del fondo en blanco!');
     }
@@ -184,7 +171,7 @@ export default class BackgroundsComponent implements OnInit {
       background.idAsset,
       background.assetUrl,
       background.name,
-      background.crossable
+      background.crossable,
     );
 
     this.backgroundDetailHeader.set('Editar fondo');
@@ -193,10 +180,10 @@ export default class BackgroundsComponent implements OnInit {
 
   deleteBackground(background: Background): void {
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el fondo "' + background.name + '"?'
+      '¿Estás seguro de querer borrar el fondo "' + background.name + '"?',
     );
     if (conf) {
-      this.as.deleteBackground(background.id).subscribe({
+      this.as.deleteBackground(background.id as number).subscribe({
         next: (result: StatusMessageResult): void => {
           if (result.status === 'ok') {
             this.loadBackgrounds();
@@ -204,7 +191,7 @@ export default class BackgroundsComponent implements OnInit {
           if (result.status === 'in-use') {
             alert(
               'El fondo está siendo usado en un escenario. Cámbialo o bórralo antes de poder borrar este fondo\n\n' +
-                urldecode(result.message)
+                urldecode(result.message),
             );
           }
           if (result.status === 'error') {

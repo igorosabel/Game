@@ -16,6 +16,7 @@ module.exports = defineConfig(
     processor: angular.processInlineTemplates,
     rules: {
       '@typescript-eslint/no-inferrable-types': 'off',
+      'no-useless-assignment': 'off',
       '@angular-eslint/directive-selector': [
         'error',
         {

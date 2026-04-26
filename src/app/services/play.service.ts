@@ -1,9 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { CharacterInterface } from '@interfaces/character.interfaces';
-import {
-  ConnectionListInterface,
-  ScenarioObjectInterface,
-} from '@interfaces/scenario.interfaces';
+import { ConnectionListInterface, ScenarioObjectInterface } from '@interfaces/scenario.interfaces';
 import Character from '@model/character.model';
 import Game from '@model/game.model';
 import Key from '@model/key.model';
@@ -30,8 +27,8 @@ export default class PlayService {
 
   makeScenario(
     canvas: PlayCanvas,
-    mapBackground: any,
-    blockers: Position[]
+    mapBackground: HTMLImageElement | null,
+    blockers: Position[],
   ): PlayScenario {
     return new PlayScenario(canvas, mapBackground, blockers);
   }
@@ -43,16 +40,16 @@ export default class PlayService {
     blockWidth: number,
     blockHeight: number,
     scenario: PlayScenario,
-    connections: ConnectionListInterface
+    connections: ConnectionListInterface,
   ): PlayPlayer {
     const playPlayer = new PlayPlayer(
-      game.positionX,
-      game.positionY,
+      game.positionX!,
+      game.positionY!,
       width,
       height,
       blockWidth,
       blockHeight,
-      scenario
+      scenario,
     );
     const character = new Character();
     character.name = game.name;
@@ -66,22 +63,18 @@ export default class PlayService {
     character.type = -1;
     playPlayer.character = character;
     playPlayer.connections = connections;
-    playPlayer.orientation = game.orientation;
+    playPlayer.orientation = game.orientation!;
     return playPlayer;
   }
 
-  makePlayObject(
-    so: ScenarioObjectInterface,
-    data: ScenarioData,
-    assets: AssetCache
-  ): PlayObject {
+  makePlayObject(so: ScenarioObjectInterface, data: ScenarioData, assets: AssetCache): PlayObject {
     const scenarioObject = this.cms.getScenarioObject(so);
     const po = new PlayObject(
-      data.x,
-      data.y,
-      data.scenarioObjectWidth,
-      data.scenarioObjectHeight,
-      scenarioObject
+      data.x!,
+      data.y!,
+      data.scenarioObjectWidth!,
+      data.scenarioObjectHeight!,
+      scenarioObject,
     );
     po.addObjectSprites(assets);
 
@@ -92,20 +85,20 @@ export default class PlayService {
     c: CharacterInterface,
     data: ScenarioData,
     scenario: PlayScenario,
-    assets: AssetCache
+    assets: AssetCache,
   ): PlayNPC {
     const character = this.cms.getCharacter(c);
     character.currentHealth = data.characterHealth;
     const playNPC = new PlayNPC(
-      data.x,
-      data.y,
-      data.characterWidth,
-      data.characterHeight,
-      data.characterBlockWidth,
-      data.characterBlockHeight,
+      data.x!,
+      data.y!,
+      data.characterWidth!,
+      data.characterHeight!,
+      data.characterBlockWidth!,
+      data.characterBlockHeight!,
       scenario,
       character,
-      data.id
+      data.id!,
     );
     playNPC.addCharacterSprites(assets);
     // Death sprites
@@ -130,7 +123,7 @@ export default class PlayService {
     currentHealth: number,
     money: number,
     canvas: PlayCanvas,
-    assets: AssetCache
+    assets: AssetCache,
   ): PlayHud {
     return new PlayHud(health, currentHealth, money, canvas, assets);
   }
@@ -143,7 +136,10 @@ export default class PlayService {
     return key;
   }
 
-  removeKeyboard(key: Key): void {
+  removeKeyboard(key: Key | null): void {
+    if (key === null) {
+      return;
+    }
     window.removeEventListener('keydown', key.downHandler, false);
     window.removeEventListener('keyup', key.upHandler, false);
   }

@@ -3,13 +3,13 @@ import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Scenario {
   constructor(
-    public id: number = null,
-    public idWorld: number = null,
-    public name: string = null,
-    public startX: number = null,
-    public startY: number = null,
+    public id: number | null = null,
+    public idWorld: number | null = null,
+    public name: string | null = null,
+    public startX: number | null = null,
+    public startY: number | null = null,
     public initial: boolean = false,
-    public friendly: boolean = false
+    public friendly: boolean = false,
   ) {}
 
   fromInterface(s: ScenarioInterface): Scenario {

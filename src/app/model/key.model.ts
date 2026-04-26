@@ -1,13 +1,15 @@
+import { KeyHandler } from '@interfaces/player.interfaces';
+
 export default class Key {
-  press;
-  release;
+  press: KeyHandler | null = null;
+  release: KeyHandler | null = null;
 
   constructor(
-    public code: string = null,
+    public code: string | null = null,
     public isDown: boolean = false,
     public isUp: boolean = true,
     public disabled: boolean = false,
-    public onlyEsc: boolean = false
+    public onlyEsc: boolean = false,
   ) {}
 
   downHandler(event: KeyboardEvent): void {

@@ -14,9 +14,9 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [FormsModule, HeaderComponent],
 })
 export default class LoginComponent {
-  private as: ApiService = inject(ApiService);
-  private user: UserService = inject(UserService);
-  private router: Router = inject(Router);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly user: UserService = inject(UserService);
+  private readonly router: Router = inject(Router);
 
   selectedTab: WritableSignal<string> = signal<string>('login');
   loginData: LoginData = {
@@ -30,10 +30,10 @@ export default class LoginComponent {
   };
   loading: WritableSignal<boolean> = signal<boolean>(false);
   loginError: WritableSignal<boolean> = signal<boolean>(false);
-  registerError: WritableSignal<string> = signal<string>(null);
+  registerError: WritableSignal<string | null> = signal<string | null>(null);
 
   selectTab(option: string): void {
-    if (this.loading) {
+    if (this.loading()) {
       return;
     }
     this.selectedTab.set(option);
@@ -76,7 +76,7 @@ export default class LoginComponent {
     if (ev) {
       ev.preventDefault();
     }
-    this.registerError = null;
+    this.registerError.set(null);
     if (this.registerData.email == '') {
       alert('¡No puedes dejar el email en blanco!');
       return;
@@ -98,21 +98,19 @@ export default class LoginComponent {
     }
 
     this.loading.set(true);
-    this.as
-      .register(this.registerData)
-      .subscribe((result: LoginResult): void => {
-        if (result.status === 'ok') {
-          this.user.logged = true;
-          this.user.id = result.id;
-          this.user.email = urldecode(result.email);
-          this.user.token = urldecode(result.token);
-          this.user.saveLogin();
+    this.as.register(this.registerData).subscribe((result: LoginResult): void => {
+      if (result.status === 'ok') {
+        this.user.logged = true;
+        this.user.id = result.id;
+        this.user.email = urldecode(result.email);
+        this.user.token = urldecode(result.token);
+        this.user.saveLogin();
 
-          this.router.navigate(['/game/hall']);
-        } else {
-          this.loading.set(false);
-          this.registerError.set(result.status);
-        }
-      });
+        this.router.navigate(['/game/hall']);
+      } else {
+        this.loading.set(false);
+        this.registerError.set(result.status);
+      }
+    });
   }
 }
