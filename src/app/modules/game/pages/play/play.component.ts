@@ -2,10 +2,11 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  ViewChild,
+  Signal,
   WritableSignal,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Constants from '@app/constants';
@@ -56,15 +57,15 @@ export default class PlayComponent implements OnInit, OnDestroy {
     unlockedWorlds: false,
     connections: false,
   };
-  gameId: number = null;
-  worldId: number = null;
-  scenarioId: number = null;
+  gameId: number | null = null;
+  worldId: number | null = null;
+  scenarioId: number | null = null;
   assetCache: AssetCache = new AssetCache();
 
   game: Game = new Game();
-  scenario: PlayScenario = null;
+  scenario: PlayScenario | null = null;
   blockers: Position[] = [];
-  mapBackground: string = null;
+  mapBackground: string | null = null;
   scenarioDatas: ScenarioData[] = [];
   scenarioObjects: ScenarioObject[] = [];
   characters: Character[] = [];
@@ -75,9 +76,9 @@ export default class PlayComponent implements OnInit, OnDestroy {
     right: null,
   };
 
-  hud: PlayHud = null;
+  hud: PlayHud | null = null;
   start: number = 0;
-  playerUpdateTimer: number = null;
+  playerUpdateTimer: number | undefined = undefined;
 
   keyboard: KeyboardLayoutInterface = {
     down: null,
@@ -93,7 +94,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   showOver: boolean = false;
 
   showNarratives: WritableSignal<boolean> = signal<boolean>(false);
-  currentCharacter: PlayNPC = null;
+  currentCharacter: PlayNPC | null = null;
   currentNarrative: number = 0;
 
   showPortal: WritableSignal<boolean> = signal<boolean>(false);
@@ -102,9 +103,10 @@ export default class PlayComponent implements OnInit, OnDestroy {
   travelling: boolean = false;
 
   showMessage: WritableSignal<boolean> = signal<boolean>(false);
-  currentObject: PlayObject = null;
+  currentObject: PlayObject | null = null;
 
-  @ViewChild('inventory', { static: false }) inventory: InventoryComponent;
+  readonly inventory: Signal<InventoryComponent | undefined> =
+    viewChild<InventoryComponent>('inventory');
 
   ngOnInit(): void {
     this.getPlayData();
@@ -112,7 +114,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   getPlayData(): void {
     this.gameId = this.dss.getGlobal('idGame');
-    this.as.getPlayData(this.gameId).subscribe((result: PlayResult): void => {
+    this.as.getPlayData(this.gameId as number).subscribe((result: PlayResult): void => {
       this.worldId = result.idWorld;
       this.scenarioId = result.idScenario;
       this.game = this.cms.getGame(result.game);
@@ -161,7 +163,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
         this.checkAllLoaded();
       });
 
-      this.as.getUnlockedWorlds(this.gameId).subscribe((result: WorldResult): void => {
+      this.as.getUnlockedWorlds(this.gameId as number).subscribe((result: WorldResult): void => {
         this.unlockedWorlds.set(this.cms.getWorlds(result.list));
         this.allLoaded.unlockedWorlds = true;
         this.checkAllLoaded();
@@ -177,7 +179,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
           };
           const connections: Connection[] = this.cms.getConnections(result.list);
           for (const connection of connections) {
-            this.connections[connection.orientation] = connection;
+            this.connections[connection.orientation!] = connection;
           }
           this.allLoaded.connections = true;
           this.checkAllLoaded();
@@ -350,29 +352,29 @@ export default class PlayComponent implements OnInit, OnDestroy {
     this.scenario = this.play.makeScenario(
       canvas,
       this.assetCache.get(this.mapBackground),
-      this.blockers
+      this.blockers,
     );
     this.scenario.blockers = this.blockers;
 
     this.scenarioDatas.forEach((data: ScenarioData): void => {
-      let ind: number = null;
+      let ind: number | null = null;
       if (data.idScenarioObject !== null) {
         ind = this.scenarioObjects.findIndex(
-          (x: ScenarioObject): boolean => x.id === data.idScenarioObject
+          (x: ScenarioObject): boolean => x.id === data.idScenarioObject,
         );
-        this.scenario.addObject(
-          this.play.makePlayObject(this.scenarioObjects[ind].toInterface(), data, this.assetCache)
+        this.scenario!.addObject(
+          this.play.makePlayObject(this.scenarioObjects[ind].toInterface(), data, this.assetCache),
         );
       }
       if (data.idCharacter !== null) {
         ind = this.characters.findIndex((x: Character): boolean => x.id === data.idCharacter);
-        this.scenario.addNPC(
+        this.scenario!.addNPC(
           this.play.makePlayNPC(
             this.characters[ind].toInterface(),
             data,
-            this.scenario,
-            this.assetCache
-          )
+            this.scenario!,
+            this.assetCache,
+          ),
         );
       }
     });
@@ -384,7 +386,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       1,
       1,
       this.scenario,
-      this.connections
+      this.connections,
     );
     player = this.updatePlayerAssets(player);
     this.scenario.addPlayer(player);
@@ -402,7 +404,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     this.scenario.onPlayerConnection.subscribe(
       (c: PlayScenario, connection: PlayConnection): void => {
         this.changeScenario(connection);
-      }
+      },
     );
     this.scenario.onPlayerHit.subscribe((c: PlayScenario, npc: PlayNPC): void => {
       this.playerHit(npc);
@@ -413,7 +415,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
       player.character.currentHealth,
       player.character.money,
       canvas,
-      this.assetCache
+      this.assetCache,
     );
 
     // Pinto escenario
@@ -431,18 +433,18 @@ export default class PlayComponent implements OnInit, OnDestroy {
     this.loading.set(false);
     this.playerUpdateTimer = window.setInterval(
       this.updatePlayerPosition.bind(this),
-      Constants.PLAYER_UPDATE_TIME
+      Constants.PLAYER_UPDATE_TIME,
     );
   }
 
   gameLoop(timestamp: number = 0): void {
     requestAnimationFrame(this.gameLoop.bind(this));
     if (timestamp >= this.start) {
-      this.scenario.render();
-      this.scenario.player.move();
-      this.scenario.npcs.forEach((npc: PlayNPC): void => npc.move());
-      this.scenario.renderItems();
-      this.hud.render();
+      this.scenario!.render();
+      this.scenario!.player.move();
+      this.scenario!.npcs.forEach((npc: PlayNPC): void => npc.move());
+      this.scenario!.renderItems();
+      this.hud!.render();
 
       this.start = timestamp + Constants.FRAME_DURATION;
     }
@@ -463,12 +465,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.up = this.play.keyboard('w');
       this.keyboard.up.press = (): void => {
         if (!this.showOver) {
-          this.scenario.player.up();
+          this.scenario!.player.up();
         }
       };
       this.keyboard.up.release = (): void => {
         if (!this.showOver) {
-          this.scenario.player.stopUp();
+          this.scenario!.player.stopUp();
         }
       };
 
@@ -476,12 +478,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.down = this.play.keyboard('s');
       this.keyboard.down.press = (): void => {
         if (!this.showOver) {
-          this.scenario.player.down();
+          this.scenario!.player.down();
         }
       };
       this.keyboard.down.release = (): void => {
         if (!this.showOver) {
-          this.scenario.player.stopDown();
+          this.scenario!.player.stopDown();
         }
       };
 
@@ -489,12 +491,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.right = this.play.keyboard('d');
       this.keyboard.right.press = (): void => {
         if (!this.showOver) {
-          this.scenario.player.right();
+          this.scenario!.player.right();
         }
       };
       this.keyboard.right.release = (): void => {
         if (!this.showOver) {
-          this.scenario.player.stopRight();
+          this.scenario!.player.stopRight();
         }
       };
 
@@ -502,12 +504,12 @@ export default class PlayComponent implements OnInit, OnDestroy {
       this.keyboard.left = this.play.keyboard('a');
       this.keyboard.left.press = (): void => {
         if (!this.showOver) {
-          this.scenario.player.left();
+          this.scenario!.player.left();
         }
       };
       this.keyboard.left.release = (): void => {
         if (!this.showOver) {
-          this.scenario.player.stopLeft();
+          this.scenario!.player.stopLeft();
         }
       };
 
@@ -523,14 +525,14 @@ export default class PlayComponent implements OnInit, OnDestroy {
           return;
         }
         if (!this.showOver) {
-          this.scenario.player.doAction();
+          this.scenario!.player.doAction();
         }
       };
 
       // I - Inventario
       this.keyboard.openInventory = this.play.keyboard('i');
       this.keyboard.openInventory.press = (): void => {
-        if (this.inventory.isOpened()) {
+        if (this.inventory()?.isOpened()) {
           this.closeInventory(true);
           return;
         }
@@ -551,7 +553,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
           return;
         }
         if (!this.showOver) {
-          this.scenario.player.hit();
+          this.scenario!.player.hit();
         }
       };
 
@@ -563,7 +565,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
         this.showMessage.set(false);
         this.showOver = false;
         this.disableKeyboard(false);
-        this.inventory.close();
+        this.inventory()?.close();
       };
     } else {
       this.play.removeKeyboard(this.keyboard.up);
@@ -637,10 +639,10 @@ export default class PlayComponent implements OnInit, OnDestroy {
 
   updatePlayerPosition(): void {
     const pos: Position = PlayUtils.getTile(
-      new Position(this.scenario.player.blockPos.x, this.scenario.player.blockPos.y)
+      new Position(this.scenario!.player.blockPos.x, this.scenario!.player.blockPos.y),
     );
     this.as
-      .updatePosition(this.gameId, pos.x, pos.y, this.scenario.player.orientation)
+      .updatePosition(this.gameId as number, pos.x, pos.y, this.scenario!.player.orientation)
       .subscribe((result: StatusResult): void => {
         if (result.status == 'error') {
           alert('¡Ocurrió un error al actualizar la última posición del jugador!');
@@ -656,7 +658,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   nextNarrative(): void {
-    if (this.currentCharacter.character.narratives.length == this.currentNarrative + 1) {
+    if (this.currentCharacter!.character.narratives.length == this.currentNarrative + 1) {
       this.showNarratives.set(false);
       this.showOver = false;
       this.currentNarrative = 0;
@@ -703,7 +705,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     }
 
     const currentWorldInd: number = this.unlockedWorlds().findIndex(
-      (x: World): boolean => x.id === this.worldId
+      (x: World): boolean => x.id === this.worldId,
     );
     if (
       this.portalWorld.wordOne == this.unlockedWorlds()[currentWorldInd].wordOne ||
@@ -732,7 +734,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
     }
     this.travelling = true;
     this.as
-      .travel(this.gameId, world.id, world.wordOne, world.wordTwo, world.wordThree)
+      .travel(this.gameId as number, world.id, world.wordOne, world.wordTwo, world.wordThree)
       .subscribe((result: StatusIdResult): void => {
         if (result.status !== 'ok') {
           alert('¡No existe ningún mundo con las palabras indicadas!');
@@ -743,7 +745,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   openInventory(): void {
     this.showOver = true;
     this.escKeyboard(true);
-    this.inventory.show();
+    this.inventory()?.show();
   }
 
   closeInventory(ev: boolean): void {
@@ -754,7 +756,7 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   changeScenario(connection: PlayConnection): void {
-    connection.idGame = this.gameId;
+    connection.idGame = this.gameId as number;
     this.loading.set(true);
     this.disableKeyboard(true);
     this.as.changeScenario(connection.toInterface()).subscribe((result: StatusResult): void => {
@@ -771,9 +773,9 @@ export default class PlayComponent implements OnInit, OnDestroy {
     if (enemy.dying) {
       return;
     }
-    console.log(PlayUtils.getVector(this.scenario.player, enemy));
+    console.log(PlayUtils.getVector(this.scenario!.player, enemy));
     enemy.character.currentHealth -=
-      this.scenario.player.character.attack - enemy.character.defense;
+      this.scenario!.player.character.attack - enemy.character.defense;
     if (enemy.character.currentHealth < 1) {
       enemy.die();
     }
@@ -784,10 +786,10 @@ export default class PlayComponent implements OnInit, OnDestroy {
   }
 
   enemyKilled(enemy: PlayNPC): void {
-    const ind: number = this.scenario.npcs.findIndex(
-      (x: PlayNPC): boolean => x.idScenarioData === enemy.idScenarioData
+    const ind: number = this.scenario!.npcs.findIndex(
+      (x: PlayNPC): boolean => x.idScenarioData === enemy.idScenarioData,
     );
-    this.scenario.npcs.splice(ind, 1);
+    this.scenario!.npcs.splice(ind, 1);
   }
 
   ngOnDestroy(): void {

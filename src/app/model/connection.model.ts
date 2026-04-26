@@ -1,13 +1,13 @@
-import { ConnectionInterface } from '@interfaces/scenario.interfaces';
+import { ConnectionInterface, Orientation } from '@interfaces/scenario.interfaces';
 import { urldecode, urlencode } from '@osumi/tools';
 
 export default class Connection {
   constructor(
-    public from: number = null,
-    public fromName: string = null,
-    public to: number = null,
-    public toName: string = null,
-    public orientation: string = null
+    public from: number | null = null,
+    public fromName: string | null = null,
+    public to: number | null = null,
+    public toName: string | null = null,
+    public orientation: Orientation | null = null,
   ) {}
 
   fromInterface(c: ConnectionInterface): Connection {

@@ -33,6 +33,6 @@ export interface NPCData {
   isNPC: boolean;
   isEnemy: boolean;
   status: string;
-  timer: number;
+  timer: number | null;
   remainingTime: number;
 }

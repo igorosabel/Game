@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameResult, NewGameInterface } from '@interfaces/game.interfaces';
@@ -29,7 +23,7 @@ export default class HallComponent implements OnInit {
   games: WritableSignal<Game[]> = signal<Game[]>([]);
   gameSelected: number = 0;
   showNewGame: WritableSignal<boolean> = signal<boolean>(false);
-  newGameName: WritableSignal<string> = signal<string>(null);
+  newGameName: WritableSignal<string | null> = signal<string | null>(null);
 
   ngOnInit(): void {
     this.loadGames();
@@ -42,9 +36,7 @@ export default class HallComponent implements OnInit {
   }
 
   changeSelectedGame(game: Game): void {
-    this.gameSelected = this.games().findIndex(
-      (x: Game): boolean => x.id === game.id
-    );
+    this.gameSelected = this.games().findIndex((x: Game): boolean => x.id === game.id);
   }
 
   selectGame(game: Game): void {
@@ -57,7 +49,7 @@ export default class HallComponent implements OnInit {
     }
   }
 
-  closeNewGame(ev = null): void {
+  closeNewGame(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -72,17 +64,22 @@ export default class HallComponent implements OnInit {
       alert('¡No puedes dejar el nombre del personaje en blanco!');
       return;
     }
+    const games: Game[] = this.games();
     const params: NewGameInterface = {
-      idGame: this.games[this.gameSelected].id,
-      name: this.newGameName(),
+      idGame: games[this.gameSelected].id,
+      name: this.newGameName() as string,
     };
 
     this.as.newGame(params).subscribe((result: StatusIdResult): void => {
-      if (result.status == 'ok') {
-        this.games[this.gameSelected].idScenario = result.id;
-        this.games[this.gameSelected].name = params.name;
+      if (result.status === 'ok') {
+        this.games.update((games: Game[]): Game[] => {
+          const updatedGames: Game[] = [...games];
+          updatedGames[this.gameSelected].idScenario = result.id;
+          updatedGames[this.gameSelected].name = params.name;
+          return updatedGames;
+        });
 
-        this.selectGame(this.games[this.gameSelected]);
+        this.selectGame(games[this.gameSelected]);
       } else {
         alert('¡Ocurrión un error!');
       }
@@ -93,7 +90,7 @@ export default class HallComponent implements OnInit {
     ev.preventDefault();
     ev.stopPropagation();
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar esta partida? Este proceso es irreversible y no se podrá recuperar una vez borrado.'
+      '¿Estás seguro de querer borrar esta partida? Este proceso es irreversible y no se podrá recuperar una vez borrado.',
     );
     if (conf) {
       this.as.deleteGame(game.id).subscribe((result: StatusResult): void => {

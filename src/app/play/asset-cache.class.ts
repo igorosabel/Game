@@ -6,15 +6,13 @@ export default class AssetCache {
   _items: string[] = [];
   _toLoad: number = 0;
   _loaded: number = 0;
-  _list = {};
+  _list: Record<string, HTMLImageElement> = {};
 
   add(item: string): void {
     if (item === null || item === '') {
       return;
     }
-    const ind: number = this._items.findIndex(
-      (x: string): boolean => x === item
-    );
+    const ind: number = this._items.findIndex((x: string): boolean => x === item);
     if (ind == -1) {
       this._items.push(item);
     }
@@ -94,7 +92,7 @@ export default class AssetCache {
       };
 
       this._items.forEach((item: string): void => {
-        const image = new Image();
+        const image = new HTMLImageElement();
         image.addEventListener('load', loadHandler, false);
         image.src = item;
 
@@ -103,7 +101,7 @@ export default class AssetCache {
     });
   }
 
-  get(item: string): any {
+  get(item: string): HTMLImageElement | null {
     return this._list[item] ? this._list[item] : null;
   }
 }

@@ -4,10 +4,7 @@ import {
   InventoryInterface,
   PositionInterface,
 } from '@interfaces/player.interfaces';
-import {
-  ScenarioDataInterface,
-  ScenarioObjectInterface,
-} from '@interfaces/scenario.interfaces';
+import { ScenarioDataInterface, ScenarioObjectInterface } from '@interfaces/scenario.interfaces';
 import Key from '@model/key.model';
 
 export interface GameInterface {
@@ -38,14 +35,14 @@ export interface NewGameInterface {
 }
 
 export interface KeyboardLayoutInterface {
-  down: Key;
-  up: Key;
-  left: Key;
-  right: Key;
-  doAction: Key;
-  openInventory: Key;
-  hit: Key;
-  esc: Key;
+  down: Key | null;
+  up: Key | null;
+  left: Key | null;
+  right: Key | null;
+  doAction: Key | null;
+  openInventory: Key | null;
+  hit: Key | null;
+  esc: Key | null;
 }
 
 export interface PlayResult {

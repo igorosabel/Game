@@ -1,7 +1,7 @@
 import Constants from '@app/constants';
 import { CharacterSizeInterface } from '@interfaces/character.interfaces';
 import { NPCData } from '@interfaces/player.interfaces';
-import { ConnectionListInterface } from '@interfaces/scenario.interfaces';
+import { ConnectionListInterface, Orientation } from '@interfaces/scenario.interfaces';
 import Character from '@model/character.model';
 import PositionSize from '@model/position-size.model';
 import Position from '@model/position.model';
@@ -13,31 +13,51 @@ import PlayUtils from '@play/play-utils.class';
 import { EventDispatcher } from 'strongly-typed-events';
 
 export default class PlayCharacter {
-  idScenarioData: number;
-  orientation: string;
-  orientationList: string[];
-  blockPos: PositionSize;
+  idScenarioData: number | null = null;
+  orientation: string = 'down';
+  orientationList: string[] = [];
+  blockPos: PositionSize | null = null;
   originalSize: CharacterSizeInterface = { width: 0, height: 0 };
-  center: Position;
-  sprites;
-  scenario: PlayScenario;
-  vx: number;
-  vy: number;
-  moving;
-  hitting: boolean;
-  stopHitting: boolean;
-  frames;
-  currentFrame: number;
-  currentHitFrame: number;
-  playing: boolean;
-  dying: boolean;
-  currentDieFrame: number;
-  interval: number;
-  character: Character;
-  connections: ConnectionListInterface;
-  npcData: NPCData;
+  center: Position = new Position();
+  sprites: Record<string, (HTMLImageElement | null)[]> = {
+    up: [],
+    right: [],
+    down: [],
+    left: [],
+    death: [],
+  };
+  type: string | null = null;
+  scenario: PlayScenario | null = null;
+  vx: number = 0;
+  vy: number = 0;
+  moving: Record<string, boolean> = {
+    up: false,
+    down: false,
+    right: false,
+    left: false,
+  };
+  hitting: boolean = false;
+  stopHitting: boolean = false;
+  frames: Record<string, (HTMLImageElement | null)[]> = {
+    up: [],
+    right: [],
+    down: [],
+    left: [],
+  };
+  currentFrame: number = 0;
+  currentHitFrame: number = 0;
+  playing: boolean = false;
+  dying: boolean = false;
+  currentDieFrame: number = 0;
+  interval: number | null = null;
+  character: Character | null = null;
+  connections: ConnectionListInterface | null = null;
+  npcData: NPCData | null = null;
 
-  _onConnection = new EventDispatcher<PlayCharacter, PlayConnection>();
+  _onConnection: EventDispatcher<PlayCharacter, PlayConnection> = new EventDispatcher<
+    PlayCharacter,
+    PlayConnection
+  >();
   _onDie: EventDispatcher<PlayCharacter, number> = new EventDispatcher<PlayCharacter, number>();
 
   constructor(
@@ -47,48 +67,16 @@ export default class PlayCharacter {
     height: number,
     blockWidth: number,
     blockHeight: number,
-    scenario: PlayScenario
+    scenario: PlayScenario,
   ) {
-    this.orientation = 'down';
-    this.orientationList = [];
     this.blockPos = new PositionSize(
       x * Constants.TILE_WIDTH,
       y * Constants.TILE_HEIGHT,
       blockWidth * Constants.TILE_WIDTH,
-      blockHeight * Constants.TILE_HEIGHT
+      blockHeight * Constants.TILE_HEIGHT,
     );
     this.originalSize = { width, height };
     this.scenario = scenario;
-    this.center = new Position();
-    this.sprites = {
-      up: [],
-      right: [],
-      down: [],
-      left: [],
-      death: [],
-    };
-    this.vx = 0;
-    this.vy = 0;
-    this.moving = {
-      up: false,
-      down: false,
-      right: false,
-      left: false,
-    };
-    this.hitting = false;
-    this.stopHitting = false;
-    this.frames = {
-      up: [],
-      right: [],
-      down: [],
-      left: [],
-    };
-    this.currentFrame = 0;
-    this.currentHitFrame = 0;
-    this.playing = false;
-    this.dying = false;
-    this.currentDieFrame = 0;
-    this.interval = null;
     this.updateCenter();
     this.npcData = {
       isNPC: false,
@@ -100,21 +88,23 @@ export default class PlayCharacter {
   }
 
   addCharacterSprites(assets: AssetCache): void {
-    for (const frame of this.character.allFramesUp) {
-      this.addSprite('up', assets.get(frame));
-    }
-    for (const frame of this.character.allFramesDown) {
-      this.addSprite('down', assets.get(frame));
-    }
-    for (const frame of this.character.allFramesLeft) {
-      this.addSprite('left', assets.get(frame));
-    }
-    for (const frame of this.character.allFramesRight) {
-      this.addSprite('right', assets.get(frame));
+    if (this.character !== null) {
+      for (const frame of this.character.allFramesUp) {
+        this.addSprite('up', assets.get(frame));
+      }
+      for (const frame of this.character.allFramesDown) {
+        this.addSprite('down', assets.get(frame));
+      }
+      for (const frame of this.character.allFramesLeft) {
+        this.addSprite('left', assets.get(frame));
+      }
+      for (const frame of this.character.allFramesRight) {
+        this.addSprite('right', assets.get(frame));
+      }
     }
   }
 
-  addSprite(ind: string, sprite): void {
+  addSprite(ind: Orientation, sprite: HTMLImageElement | null): void {
     this.sprites[ind].push(sprite);
   }
 
@@ -294,7 +284,7 @@ export default class PlayCharacter {
       obj2.x * Constants.TILE_WIDTH,
       obj2.y * Constants.TILE_HEIGHT,
       Constants.TILE_WIDTH,
-      Constants.TILE_HEIGHT
+      Constants.TILE_HEIGHT,
     );
 
     return PlayUtils.collision(obj1, rect2);
@@ -305,7 +295,7 @@ export default class PlayCharacter {
       character.blockPos.x,
       character.blockPos.y,
       character.blockPos.width,
-      character.blockPos.height
+      character.blockPos.height,
     );
 
     return PlayUtils.collision(pos, charPos);
@@ -402,7 +392,7 @@ export default class PlayCharacter {
         newPosX,
         newPosY,
         this.blockPos.width,
-        this.blockPos.height
+        this.blockPos.height,
       );
       this.scenario.blockers.forEach((object: Position): void => {
         if (this.collission(newPos, object)) {
@@ -419,7 +409,7 @@ export default class PlayCharacter {
         const npcList: PlayNPC[] = [...this.scenario.npcs];
         const npcInd: number = npcList.findIndex(
           (x: PlayNPC): boolean =>
-            x.blockPos.x === this.blockPos.x && x.blockPos.y === this.blockPos.y
+            x.blockPos.x === this.blockPos.x && x.blockPos.y === this.blockPos.y,
         );
         npcList.splice(npcInd, 1);
         npcList.forEach((npc: PlayNPC): void => {

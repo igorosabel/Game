@@ -20,9 +20,9 @@
 				 alt="">
 		</div>
 		<div class="dialog-text">
-			<div class="dialog-title">{{currentCharacter.character.name}}</div>
+			<div class="dialog-title">{{ currentCharacter?.character.name }}</div>
 			<div class="dialog-dialog">
-				{{currentCharacter.character.narratives[currentNarrative].dialog}}
+				{{ currentCharacter.character.narratives[currentNarrative].dialog }}
 				@if (currentNarrative<currentCharacter.character.narratives.length-1) {
 																 <img
 																 src="/play/narratives-more.svg"
@@ -42,9 +42,9 @@
 				 alt="">
 		</div>
 		<div class="dialog-text">
-			<div class="dialog-title">{{currentObject.object.name}}</div>
+			<div class="dialog-title">{{ currentObject.object.name }}</div>
 			<div class="dialog-dialog">
-				{{currentObject.object.activeTriggerCustom}}
+				{{ currentObject.object.activeTriggerCustom }}
 			</div>
 		</div>
 	</div>
@@ -86,12 +86,12 @@
 				<div class="item"
 					 [class]="{'current': world.id === worldId}"
 					 (click)="portalTravel(world)">
-					<div class="header">{{world.name}}</div>
-					<div class="description">{{world.description}}</div>
+					<div class="header">{{ world.name }}</div>
+					<div class="description">{{ world.description }}</div>
 					<div class="word-list">
-						<div class="word">{{world.wordOne}}</div>
-						<div class="word">{{world.wordTwo}}</div>
-						<div class="word">{{world.wordThree}}</div>
+						<div class="word">{{ world.wordOne }}</div>
+						<div class="word">{{ world.wordTwo }}</div>
+						<div class="word">{{ world.wordThree }}</div>
 					</div>
 				</div>
 				}

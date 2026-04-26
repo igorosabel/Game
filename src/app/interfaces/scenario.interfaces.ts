@@ -36,43 +36,45 @@ export interface SelectedScenarioDataInterface {
 }
 
 export interface ScenarioDataInterface {
-  id: number;
-  idScenario: number;
-  x: number;
-  y: number;
-  idBackground: number;
-  backgroundName: string;
-  backgroundAssetUrl: string;
-  idScenarioObject: number;
-  scenarioObjectName: string;
-  scenarioObjectAssetUrl: string;
-  scenarioObjectWidth: number;
-  scenarioObjectHeight: number;
-  scenarioObjectBlockWidth: number;
-  scenarioObjectBlockHeight: number;
-  idCharacter: number;
-  characterName: string;
-  characterAssetUrl: string;
-  characterWidth: number;
-  characterHeight: number;
-  characterBlockWidth: number;
-  characterBlockHeight: number;
-  characterHealth: number;
+  id: number | null;
+  idScenario: number | null;
+  x: number | null;
+  y: number | null;
+  idBackground: number | null;
+  backgroundName: string | null;
+  backgroundAssetUrl: string | null;
+  idScenarioObject: number | null;
+  scenarioObjectName: string | null;
+  scenarioObjectAssetUrl: string | null;
+  scenarioObjectWidth: number | null;
+  scenarioObjectHeight: number | null;
+  scenarioObjectBlockWidth: number | null;
+  scenarioObjectBlockHeight: number | null;
+  idCharacter: number | null;
+  characterName: string | null;
+  characterAssetUrl: string | null;
+  characterWidth: number | null;
+  characterHeight: number | null;
+  characterBlockWidth: number | null;
+  characterBlockHeight: number | null;
+  characterHealth: number | null;
 }
 
 export interface ConnectionListInterface {
-  up: Connection;
-  down: Connection;
-  left: Connection;
-  right: Connection;
+  up: Connection | null;
+  down: Connection | null;
+  left: Connection | null;
+  right: Connection | null;
 }
 
+export type Orientation = 'up' | 'down' | 'left' | 'right';
+
 export interface ConnectionInterface {
-  from: number;
-  fromName: string;
-  to: number;
-  toName: string;
-  orientation: string;
+  from: number | null;
+  fromName: string | null;
+  to: number | null;
+  toName: string | null;
+  orientation: Orientation | null;
 }
 
 export interface ConnectionResult {
