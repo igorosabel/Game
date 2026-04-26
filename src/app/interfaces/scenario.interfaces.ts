@@ -22,18 +22,18 @@ export interface ScenarioResult {
 }
 
 export interface SelectedScenarioDataInterface {
-  selecting: string;
-  idBackground: number;
+  selecting: string | null;
+  idBackground: number | null;
   backgroundAssetUrl: string;
-  idScenarioObject: number;
+  idScenarioObject: number | null;
   scenarioObjectAssetUrl: string;
-  scenarioObjectWidth: number;
-  scenarioObjectHeight: number;
-  idCharacter: number;
+  scenarioObjectWidth: number | null;
+  scenarioObjectHeight: number | null;
+  idCharacter: number | null;
   characterAssetUrl: string;
-  characterWidth: number;
-  characterHeight: number;
-  characterHealth: number;
+  characterWidth: number | null;
+  characterHeight: number | null;
+  characterHealth: number | null;
 }
 
 export interface ScenarioDataInterface {

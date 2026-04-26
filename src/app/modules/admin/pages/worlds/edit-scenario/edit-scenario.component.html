@@ -96,7 +96,7 @@
 				<div class="edit-scenario-row">
 					@for (cell of row; track cell) {
 					<div class="edit-scenario-cell"
-						 [class]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario.startX && cell.y === loadedScenario.startY}"
+						 [class]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario?.startX && cell.y === loadedScenario?.startY}"
 						 (click)="openCell(null, cell)">
 						@if (cell.idBackground !== null) {
 						<img [src]="cell.backgroundAssetUrl"
@@ -106,13 +106,13 @@
 						@if (cell.idScenarioObject !== null) {
 						<img [src]="cell.scenarioObjectAssetUrl"
 							 class="edit-scenario-cell-over"
-							 [style]="{'width': (100 * cell.scenarioObjectWidth) + '%', 'height': (100 * cell.scenarioObjectHeight) + '%'}"
+							 [style]="{'width': (100 * (cell.scenarioObjectWidth ?? 1)) + '%', 'height': (100 * (cell.scenarioObjectHeight ?? 1)) + '%'}"
 							 alt="">
 						}
 						@if (cell.idCharacter !== null) {
 						<img [src]="cell.characterAssetUrl"
 							 class="edit-scenario-cell-over"
-							 [style]="{'width': (100 * cell.characterWidth) + '%', 'height': (100 * cell.characterHeight) + '%'}"
+							 [style]="{'width': (100 * (cell.characterWidth ?? 1)) + '%', 'height': (100 * (cell.characterHeight ?? 1)) + '%'}"
 							 alt="">
 						}
 						<span>{{cell.x}} - {{cell.y}}</span>

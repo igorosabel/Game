@@ -18,7 +18,9 @@ export default class Asset {
     if (this._tagList === null) {
       const str_tags: string[] = [];
       for (const t of this.tags) {
-        str_tags.push(t.name);
+        if (t.name !== null) {
+          str_tags.push(t.name);
+        }
       }
       this._tagList = str_tags.join(', ');
     }

@@ -26,8 +26,8 @@ export default class InventoryComponent {
   tooltip: TooltipComponent = this.viewContainerRef.createComponent(TooltipComponent).instance;
 
   inventoryList: ModelSignal<Inventory[]> = model.required<Inventory[]>();
-  equipment: ModelSignal<Equipment> = model.required<Equipment>();
-  player: ModelSignal<PlayPlayer> = model.required<PlayPlayer>();
+  equipment: ModelSignal<Equipment | null> = model.required<Equipment | null>();
+  player: ModelSignal<PlayPlayer | null> = model.required<PlayPlayer | null>();
 
   showInventory: WritableSignal<boolean> = signal<boolean>(false);
   closed: OutputEmitterRef<boolean> = output<boolean>();

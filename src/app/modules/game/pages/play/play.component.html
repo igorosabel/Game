@@ -12,18 +12,18 @@
 
 <div class="game"></div>
 
-@if (showNarratives()) {
+@if (showNarratives() && currentCharacter; as narrativeCharacter) {
 <div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
-			<img [src]="currentCharacter.sprites['down'][0].src"
+			<img [src]="narrativeCharacter.sprites['down'][0]?.src"
 				 alt="">
 		</div>
 		<div class="dialog-text">
-			<div class="dialog-title">{{ currentCharacter?.character.name }}</div>
+			<div class="dialog-title">{{ narrativeCharacter.character?.name }}</div>
 			<div class="dialog-dialog">
-				{{ currentCharacter.character.narratives[currentNarrative].dialog }}
-				@if (currentNarrative<currentCharacter.character.narratives.length-1) {
+				{{ narrativeCharacter.character?.narratives?.[currentNarrative]?.dialog }}
+				@if (narrativeCharacter.character && currentNarrative<narrativeCharacter.character.narratives.length-1) {
 																 <img
 																 src="/play/narratives-more.svg"
 																 alt="">
@@ -34,17 +34,17 @@
 </div>
 }
 
-@if (showMessage()) {
+@if (showMessage() && currentObject; as messageObject) {
 <div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
-			<img [src]="currentObject.sprites[0].src"
+			<img [src]="messageObject.sprites[0]?.src"
 				 alt="">
 		</div>
 		<div class="dialog-text">
-			<div class="dialog-title">{{ currentObject.object.name }}</div>
+			<div class="dialog-title">{{ messageObject.object.name }}</div>
 			<div class="dialog-dialog">
-				{{ currentObject.object.activeTriggerCustom }}
+				{{ messageObject.object.activeTriggerCustom }}
 			</div>
 		</div>
 	</div>
@@ -101,10 +101,10 @@
 </div>
 }
 
-@if (scenario) {
+@if (scenario; as currentScenario) {
 <game-inventory #inventory
 				[(inventoryList)]="game.items"
 				[(equipment)]="game.equipment"
-				[(player)]="scenario.player"
+				[(player)]="currentScenario.player"
 				(closed)="closeInventory($event)" />
 }

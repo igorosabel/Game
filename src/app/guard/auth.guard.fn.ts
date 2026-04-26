@@ -8,10 +8,11 @@ const isLoggedGuardFn: CanActivateFn = (): Observable<boolean> => {
   return inject(AuthService)
     .isAuthenticated()
     .pipe(
-      tap(
-        (isLoggedIn: boolean): Promise<boolean> =>
-          !isLoggedIn && router.navigate(['/'])
-      )
+      tap((isLoggedIn: boolean): void => {
+        if (!isLoggedIn) {
+          void router.navigate(['/']);
+        }
+      }),
     );
 };
 export default isLoggedGuardFn;

@@ -28,11 +28,11 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [FormsModule, HeaderComponent, AssetPickerComponent],
 })
 export default class ItemsComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
-  itemFilter: number = null;
+  itemFilter: number | null = null;
   filterListOption: string = 'items';
   typeList: ItemTypeInterface[] = [
     { id: 0, name: 'Moneda' },
@@ -49,7 +49,7 @@ export default class ItemsComponent implements OnInit {
   ];
   itemList: Item[] = [];
   itemListFiltered: WritableSignal<Item[]> = signal<Item[]>([]);
-  message: WritableSignal<string> = signal<string>(null);
+  message: WritableSignal<string | null> = signal<string | null>(null);
   loadedItem: Item = new Item();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   detailtTab: string = 'data';
@@ -57,10 +57,10 @@ export default class ItemsComponent implements OnInit {
   savingItem: WritableSignal<boolean> = signal<boolean>(false);
   assetPicker: Signal<AssetPickerComponent> =
     viewChild.required<AssetPickerComponent>('assetPicker');
-  assetPickerWhere: string = null;
-  animationImage: string = null;
+  assetPickerWhere: string | null = null;
+  animationImage: string | null = null;
   animationInd: number = -1;
-  animationTimer: number = null;
+  animationTimer: number | null = null;
 
   ngOnInit(): void {
     this.loadItems();
@@ -86,9 +86,7 @@ export default class ItemsComponent implements OnInit {
     if (this.itemFilter === null) {
       filteredList = this.itemList;
     } else {
-      filteredList = this.itemList.filter(
-        (x: Item): boolean => x.type === this.itemFilter
-      );
+      filteredList = this.itemList.filter((x: Item): boolean => x.type === this.itemFilter);
     }
     this.itemListFiltered.set(filteredList);
   }
@@ -113,7 +111,7 @@ export default class ItemsComponent implements OnInit {
     }
   }
 
-  showAddItem(ev = null): void {
+  showAddItem(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -135,7 +133,7 @@ export default class ItemsComponent implements OnInit {
   openAssetPicker(type: string): void {
     if (type === 'frame' && this.loadedItem.idAsset === null) {
       alert(
-        'Primero tienes que elegir un recurso para el item. Una vez hecho esto podrás añadir frames a la animación.'
+        'Primero tienes que elegir un recurso para el item. Una vez hecho esto podrás añadir frames a la animación.',
       );
       return;
     }
@@ -156,7 +154,7 @@ export default class ItemsComponent implements OnInit {
         null,
         selectedAsset.id,
         selectedAsset.url,
-        this.loadedItem.frames.length
+        this.loadedItem.frames.length,
       );
       this.loadedItem.frames.push(frame);
     }
@@ -193,7 +191,7 @@ export default class ItemsComponent implements OnInit {
     if (conf) {
       const ind: number = this.loadedItem.frames.findIndex(
         (x: ItemFrame): boolean =>
-          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+          x.id + x.idAsset!.toString() === frame.id + frame.idAsset!.toString(),
       );
       this.loadedItem.frames.splice(ind, 1);
       this.updateFrameOrders();
@@ -203,7 +201,7 @@ export default class ItemsComponent implements OnInit {
   frameLeft(frame: ItemFrame): void {
     const ind: number = this.loadedItem.frames.findIndex(
       (x: ItemFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+        x.id + x.idAsset!.toString() === frame.id + frame.idAsset!.toString(),
     );
     if (ind === 0) {
       return;
@@ -217,7 +215,7 @@ export default class ItemsComponent implements OnInit {
   frameRight(frame: ItemFrame): void {
     const ind: number = this.loadedItem.frames.findIndex(
       (x: ItemFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+        x.id + x.idAsset!.toString() === frame.id + frame.idAsset!.toString(),
     );
     if (ind === this.loadedItem.frames.length - 1) {
       return;
@@ -251,26 +249,14 @@ export default class ItemsComponent implements OnInit {
       alert('¡No has elegido ningún tipo!');
     }
 
-    if (
-      validate &&
-      this.loadedItem.type === 1 &&
-      this.loadedItem.attack === null
-    ) {
+    if (validate && this.loadedItem.type === 1 && this.loadedItem.attack === null) {
       validate = false;
-      alert(
-        '¡Has indicado que es un arma pero no has marcado cuanto daño hace!'
-      );
+      alert('¡Has indicado que es un arma pero no has marcado cuanto daño hace!');
     }
 
-    if (
-      validate &&
-      this.loadedItem.type === 2 &&
-      this.loadedItem.health === null
-    ) {
+    if (validate && this.loadedItem.type === 2 && this.loadedItem.health === null) {
       validate = false;
-      alert(
-        '¡Has indicado que es una poción pero no has marcado cuanta salud recupera!'
-      );
+      alert('¡Has indicado que es una poción pero no has marcado cuanta salud recupera!');
     }
 
     if (
@@ -281,9 +267,7 @@ export default class ItemsComponent implements OnInit {
         this.loadedItem.wearable === null)
     ) {
       validate = false;
-      alert(
-        '¡Has indicado que es un equipo pero no has rellenado su defensa, equipo o donde va!'
-      );
+      alert('¡Has indicado que es un equipo pero no has rellenado su defensa, equipo o donde va!');
     }
 
     if (validate) {
@@ -347,7 +331,7 @@ export default class ItemsComponent implements OnInit {
       item.defense,
       item.speed,
       item.wearable,
-      []
+      [],
     );
     for (const frame of item.frames) {
       this.loadedItem.frames.push(frame);
@@ -370,11 +354,9 @@ export default class ItemsComponent implements OnInit {
   }
 
   deleteItem(item: Item): void {
-    const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el item "' + item.name + '"?'
-    );
+    const conf: boolean = confirm('¿Estás seguro de querer borrar el item "' + item.name + '"?');
     if (conf) {
-      this.as.deleteItem(item.id).subscribe({
+      this.as.deleteItem(item.id as number).subscribe({
         next: (result: StatusMessageResult): void => {
           if (result.status === 'ok') {
             this.loadItems();
@@ -382,7 +364,7 @@ export default class ItemsComponent implements OnInit {
           if (result.status === 'in-use') {
             alert(
               'El item está siendo usado. Cámbialo o bórralo antes de poder borrar este item.\n\n' +
-                urldecode(result.message)
+                urldecode(result.message),
             );
           }
           if (result.status === 'error') {

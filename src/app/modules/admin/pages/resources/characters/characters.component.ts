@@ -10,8 +10,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { AssetInterface } from '@interfaces/asset.interfaces';
 import {
-  AnimationImageInterface,
-  AnimationNumInterface,
+  CharacterFrameDirection,
   CharacterResult,
   CharacterTypeInterface,
 } from '@interfaces/character.interfaces';
@@ -28,6 +27,16 @@ import PlayService from '@services/play.service';
 import AssetPickerComponent from '@shared/components/asset-picker/asset-picker.component';
 import HeaderComponent from '@shared/components/header/header.component';
 import ItemPickerComponent from '@shared/components/item-picker/item-picker.component';
+
+type AnimationDirection = 'up' | 'down' | 'left' | 'right';
+type AnimationImages = Record<AnimationDirection, string>;
+type AnimationIndexes = Record<AnimationDirection, number>;
+type AnimationTimers = Record<AnimationDirection, number | null>;
+type CharacterAssetIdKey = 'idAssetUp' | 'idAssetDown' | 'idAssetLeft' | 'idAssetRight';
+type CharacterAssetUrlKey = 'assetUpUrl' | 'assetDownUrl' | 'assetLeftUrl' | 'assetRightUrl';
+type CharacterFrameKey = 'framesUp' | 'framesDown' | 'framesLeft' | 'framesRight';
+type CharacterAllFramesKey = 'allFramesUp' | 'allFramesDown' | 'allFramesLeft' | 'allFramesRight';
+type AssetPickerWhere = AnimationDirection | CharacterFrameKey;
 
 @Component({
   selector: 'game-characters',
@@ -55,27 +64,34 @@ export default class CharactersComponent implements OnInit {
   characterDetailHeader: WritableSignal<string> = signal<string>('');
   dropItemName: WritableSignal<string> = signal<string>('');
   savingCharacter: WritableSignal<boolean> = signal<boolean>(false);
-  assetPickerWhere: string | null = null;
+  assetPickerWhere: AssetPickerWhere | null = null;
   assetPicker: Signal<AssetPickerComponent> =
     viewChild.required<AssetPickerComponent>('assetPicker');
   itemPicker: Signal<ItemPickerComponent> = viewChild.required<ItemPickerComponent>('itemPicker');
-  animationImage: AnimationImageInterface = {
+  animationImage: AnimationImages = {
     up: '',
     down: '',
     left: '',
     right: '',
   };
-  animationInd: AnimationNumInterface = {
+  animationInd: AnimationIndexes = {
     up: -1,
     down: -1,
     left: -1,
     right: -1,
   };
-  animationTimer: AnimationNumInterface = {
-    up: undefined,
-    down: undefined,
-    left: undefined,
-    right: undefined,
+  animationTimer: AnimationTimers = {
+    up: null,
+    down: null,
+    left: null,
+    right: null,
+  };
+  private readonly animationDirections: AnimationDirection[] = ['up', 'down', 'left', 'right'];
+  private readonly characterDirections: Record<AnimationDirection, CharacterFrameDirection> = {
+    up: 'Up',
+    down: 'Down',
+    left: 'Left',
+    right: 'Right',
   };
 
   ngOnInit(): void {
@@ -117,10 +133,9 @@ export default class CharactersComponent implements OnInit {
   }
 
   resetLoadedCharacter(): void {
-    clearInterval(this.animationTimer.up);
-    clearInterval(this.animationTimer.down);
-    clearInterval(this.animationTimer.left);
-    clearInterval(this.animationTimer.right);
+    for (const sent of this.animationDirections) {
+      this.clearAnimationTimer(sent);
+    }
     this.loadedCharacter = new Character();
     this.loadedCharacter.dropAssetUrl = '/admin/no-asset.svg';
     this.dropItemName.set('Elige un item');
@@ -174,11 +189,13 @@ export default class CharactersComponent implements OnInit {
   }
 
   openAssetPicker(where: string): void {
-    if (where.indexOf('frames') !== -1) {
-      const orientation: string = where.replace('frames', '').toLowerCase();
-      const whereCheck: string =
-        orientation.substring(0, 1).toUpperCase() + orientation.substring(1);
-      if (this.loadedCharacter['idAsset' + whereCheck] === null) {
+    if (!this.isAssetPickerWhere(where)) {
+      return;
+    }
+
+    if (this.isFrameKey(where)) {
+      const direction: CharacterFrameDirection = this.getFrameKeyDirection(where);
+      if (this.loadedCharacter[this.getAssetIdKey(direction)] === null) {
         alert('Antes de añadir un frame tienes que elegir una imagen principal.');
         return;
       }
@@ -188,8 +205,14 @@ export default class CharactersComponent implements OnInit {
   }
 
   selectedAsset(selectedAsset: AssetInterface): void {
-    if (this.assetPickerWhere.indexOf('frames') !== -1) {
-      const orientation: string = this.assetPickerWhere.replace('frames', '').toLowerCase();
+    if (this.assetPickerWhere === null) {
+      return;
+    }
+
+    if (this.isFrameKey(this.assetPickerWhere)) {
+      const orientation: AnimationDirection = this.getFrameKeyDirection(
+        this.assetPickerWhere,
+      ).toLowerCase() as AnimationDirection;
       const frame: CharacterFrame = new CharacterFrame(
         null,
         selectedAsset.id,
@@ -199,89 +222,92 @@ export default class CharactersComponent implements OnInit {
       );
       this.loadedCharacter[this.assetPickerWhere].push(frame);
     } else {
-      const where: string =
-        this.assetPickerWhere.substring(0, 1).toUpperCase() + this.assetPickerWhere.substring(1);
-      this.loadedCharacter['idAsset' + where] = selectedAsset.id;
-      this.loadedCharacter['asset' + where + 'Url'] = selectedAsset.url;
+      const direction: CharacterFrameDirection = this.characterDirections[this.assetPickerWhere];
+      this.loadedCharacter[this.getAssetIdKey(direction)] = selectedAsset.id;
+      this.loadedCharacter[this.getAssetUrlKey(direction)] = selectedAsset.url;
     }
     this.startAnimation();
   }
 
   startAnimation(): void {
-    const sentList: string[] = ['up', 'down', 'left', 'right'];
-    for (const sent of sentList) {
-      clearInterval(this.animationTimer[sent]);
-      const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
+    for (const sent of this.animationDirections) {
+      this.clearAnimationTimer(sent);
+      const direction: CharacterFrameDirection = this.characterDirections[sent];
+      const allFrames: string[] = this.loadedCharacter[this.getAllFramesKey(direction)];
 
-      if (this.loadedCharacter['allFrames' + sentUpper].length > 1) {
-        this.animationTimer[sent] = setInterval((): void => {
+      if (allFrames.length > 1) {
+        this.animationTimer[sent] = window.setInterval((): void => {
           this.animatePreview(sent);
         }, 300);
       } else {
-        this.animationImage[sent] = this.loadedCharacter['asset' + sentUpper + 'Url'];
+        this.animationImage[sent] =
+          this.loadedCharacter[this.getAssetUrlKey(direction)] ?? '/admin/no-asset.svg';
       }
     }
   }
 
-  animatePreview(sent: string): void {
-    const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
+  animatePreview(sent: AnimationDirection): void {
+    const direction: CharacterFrameDirection = this.characterDirections[sent];
+    const allFrames: string[] = this.loadedCharacter[this.getAllFramesKey(direction)];
+
     this.animationInd[sent]++;
-    if (this.animationInd[sent] >= this.loadedCharacter['allFrames' + sentUpper].length) {
+    if (this.animationInd[sent] >= allFrames.length) {
       this.animationInd[sent] = 0;
     }
-    this.animationImage[sent] =
-      this.loadedCharacter['allFrames' + sentUpper][this.animationInd[sent]];
+    this.animationImage[sent] = allFrames[this.animationInd[sent]] ?? '/admin/no-asset.svg';
   }
 
-  frameDelete(sent: string, frame: CharacterFrame): void {
+  frameDelete(sent: AnimationDirection, frame: CharacterFrame): void {
     const conf: boolean = confirm('¿Estás seguro de querer borrar este frame?');
     if (conf) {
-      const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
-      const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
+      const direction: CharacterFrameDirection = this.characterDirections[sent];
+      const frames: CharacterFrame[] = this.loadedCharacter[this.getFrameKey(direction)];
+      const ind: number = frames.findIndex(
         (x: CharacterFrame): boolean =>
-          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString(),
+          String(x.id) + String(x.idAsset) === String(frame.id) + String(frame.idAsset),
       );
-      this.loadedCharacter['frames' + sentUpper].splice(ind, 1);
-      this.updateFrameOrders(sentUpper);
+      frames.splice(ind, 1);
+      this.updateFrameOrders(direction);
     }
   }
 
-  frameLeft(sent: string, frame: CharacterFrame): void {
-    const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
-    const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
+  frameLeft(sent: AnimationDirection, frame: CharacterFrame): void {
+    const direction: CharacterFrameDirection = this.characterDirections[sent];
+    const frames: CharacterFrame[] = this.loadedCharacter[this.getFrameKey(direction)];
+    const ind: number = frames.findIndex(
       (x: CharacterFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString(),
+        String(x.id) + String(x.idAsset) === String(frame.id) + String(frame.idAsset),
     );
     if (ind === 0) {
       return;
     }
-    const aux: CharacterFrame = this.loadedCharacter['frames' + sentUpper][ind];
-    this.loadedCharacter['frames' + sentUpper][ind] =
-      this.loadedCharacter['frames' + sentUpper][ind - 1];
-    this.loadedCharacter['frames' + sentUpper][ind - 1] = aux;
-    this.updateFrameOrders(sentUpper);
+    const aux: CharacterFrame = frames[ind];
+    frames[ind] = frames[ind - 1];
+    frames[ind - 1] = aux;
+    this.updateFrameOrders(direction);
   }
 
-  frameRight(sent: string, frame: CharacterFrame): void {
-    const sentUpper: string = sent.substring(0, 1).toUpperCase() + sent.substring(1);
-    const ind: number = this.loadedCharacter['frames' + sentUpper].findIndex(
+  frameRight(sent: AnimationDirection, frame: CharacterFrame): void {
+    const direction: CharacterFrameDirection = this.characterDirections[sent];
+    const frames: CharacterFrame[] = this.loadedCharacter[this.getFrameKey(direction)];
+    const ind: number = frames.findIndex(
       (x: CharacterFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString(),
+        String(x.id) + String(x.idAsset) === String(frame.id) + String(frame.idAsset),
     );
-    if (ind === this.loadedCharacter['frames' + sentUpper].length - 1) {
+    if (ind === frames.length - 1) {
       return;
     }
-    const aux: CharacterFrame = this.loadedCharacter['frames' + sentUpper][ind];
-    this.loadedCharacter['frames' + sentUpper][ind] =
-      this.loadedCharacter['frames' + sentUpper][ind + 1];
-    this.loadedCharacter['frames' + sentUpper][ind + 1] = aux;
-    this.updateFrameOrders(sentUpper);
+    const aux: CharacterFrame = frames[ind];
+    frames[ind] = frames[ind + 1];
+    frames[ind + 1] = aux;
+    this.updateFrameOrders(direction);
   }
 
-  updateFrameOrders(sent: string): void {
-    for (const frameOrder in this.loadedCharacter['frames' + sent]) {
-      this.loadedCharacter['frames' + sent][frameOrder].order = parseInt(frameOrder);
-    }
+  updateFrameOrders(sent: CharacterFrameDirection): void {
+    const frames: CharacterFrame[] = this.loadedCharacter[this.getFrameKey(sent)];
+    frames.forEach((frame: CharacterFrame, frameOrder: number): void => {
+      frame.order = frameOrder;
+    });
   }
 
   addNarrative(): void {
@@ -481,19 +507,17 @@ export default class CharactersComponent implements OnInit {
       [],
       character.narratives,
     );
-    const sentList: string[] = ['Up', 'Down', 'Left', 'Right'];
+    const sentList: CharacterFrameDirection[] = ['Up', 'Down', 'Left', 'Right'];
     for (const sent of sentList) {
-      for (const frame of character['frames' + sent]) {
-        this.loadedCharacter['frames' + sent].push(frame);
+      for (const frame of character[this.getFrameKey(sent)]) {
+        this.loadedCharacter[this.getFrameKey(sent)].push(frame);
       }
 
-      this.animationImage[sent.toLowerCase()] =
-        this.loadedCharacter['asset' + sent + 'Url'] !== null
-          ? this.loadedCharacter['asset' + sent + 'Url']
-          : '/admin/no-asset.svg';
-      this.animationInd[sent.toLowerCase()] = -1;
-      clearInterval(this.animationTimer[sent.toLowerCase()]);
-      this.animationTimer[sent.toLowerCase()] = null;
+      const animationDirection: AnimationDirection = sent.toLowerCase() as AnimationDirection;
+      const assetUrl: string | null = this.loadedCharacter[this.getAssetUrlKey(sent)];
+      this.animationImage[animationDirection] = assetUrl ?? '/admin/no-asset.svg';
+      this.animationInd[animationDirection] = -1;
+      this.clearAnimationTimer(animationDirection);
     }
 
     this.assetPickerWhere = null;
@@ -501,8 +525,8 @@ export default class CharactersComponent implements OnInit {
     this.startAnimation();
 
     if (character.dropIdItem !== null) {
-      const dropItem: ItemInterface = this.itemPicker().getItemById(character.dropIdItem);
-      this.dropItemName.set(dropItem.name);
+      const dropItem: ItemInterface | null = this.itemPicker().getItemById(character.dropIdItem);
+      this.dropItemName.set(dropItem?.name ?? 'Elige un item');
     } else {
       this.dropItemName.set('Elige un item');
     }
@@ -515,7 +539,7 @@ export default class CharactersComponent implements OnInit {
     const conf: boolean = confirm(
       '¿Estás seguro de querer borrar el personaje "' + character.name + '"?',
     );
-    if (conf) {
+    if (conf && character.id !== null) {
       this.as.deleteCharacter(character.id).subscribe({
         next: (result: StatusMessageResult): void => {
           if (result.status === 'ok') {
@@ -538,5 +562,40 @@ export default class CharactersComponent implements OnInit {
         },
       });
     }
+  }
+
+  private clearAnimationTimer(sent: AnimationDirection): void {
+    if (this.animationTimer[sent] !== null) {
+      clearInterval(this.animationTimer[sent]);
+      this.animationTimer[sent] = null;
+    }
+  }
+
+  private getAssetIdKey(direction: CharacterFrameDirection): CharacterAssetIdKey {
+    return `idAsset${direction}` as CharacterAssetIdKey;
+  }
+
+  private getAssetUrlKey(direction: CharacterFrameDirection): CharacterAssetUrlKey {
+    return `asset${direction}Url` as CharacterAssetUrlKey;
+  }
+
+  private getFrameKey(direction: CharacterFrameDirection): CharacterFrameKey {
+    return `frames${direction}` as CharacterFrameKey;
+  }
+
+  private getAllFramesKey(direction: CharacterFrameDirection): CharacterAllFramesKey {
+    return `allFrames${direction}` as CharacterAllFramesKey;
+  }
+
+  private getFrameKeyDirection(frameKey: CharacterFrameKey): CharacterFrameDirection {
+    return frameKey.replace('frames', '') as CharacterFrameDirection;
+  }
+
+  private isAssetPickerWhere(where: string): where is AssetPickerWhere {
+    return this.animationDirections.includes(where as AnimationDirection) || this.isFrameKey(where);
+  }
+
+  private isFrameKey(where: string): where is CharacterFrameKey {
+    return ['framesUp', 'framesDown', 'framesLeft', 'framesRight'].includes(where);
   }
 }

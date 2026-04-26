@@ -13,9 +13,9 @@ export default class TooltipComponent {
   positionX: WritableSignal<number | null> = signal<number | null>(null);
   positionY: WritableSignal<number | null> = signal<number | null>(null);
 
-  load(item: Item): void {
+  load(item: Item | null): void {
     this.item.set(item);
-    this.show(true);
+    this.show(item !== null);
   }
 
   show(mode: boolean): void {

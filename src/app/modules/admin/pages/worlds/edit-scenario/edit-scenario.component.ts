@@ -16,6 +16,7 @@ import Constants from '@app/constants';
 import { BackgroundInterface } from '@interfaces/background.interfaces';
 import { CharacterInterface } from '@interfaces/character.interfaces';
 import {
+  Orientation,
   StatusIdResult,
   StatusMessageResult,
   StatusResult,
@@ -41,6 +42,8 @@ import CharacterPickerComponent from '@shared/components/character-picker/charac
 import HeaderComponent from '@shared/components/header/header.component';
 import ScenarioObjectPickerComponent from '@shared/components/scenario-object-picker/scenario-object-picker.component';
 
+type CopyMode = 'background' | 'scenarioObject' | 'character';
+
 @Component({
   selector: 'game-edit-scenario',
   templateUrl: './edit-scenario.component.html',
@@ -54,12 +57,12 @@ import ScenarioObjectPickerComponent from '@shared/components/scenario-object-pi
   ],
 })
 export default class EditScenarioComponent implements OnInit {
-  private router: Router = inject(Router);
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly router: Router = inject(Router);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
-  selected: SelectedScenarioDataInterface = {
+  selected: SelectedScenarioDataInterface & { selecting: CopyMode | null } = {
     selecting: null,
     idBackground: null,
     backgroundAssetUrl: '/img/admin/color-picker.svg',
@@ -76,22 +79,16 @@ export default class EditScenarioComponent implements OnInit {
   startSelecting: WritableSignal<boolean> = signal<boolean>(false);
   mapGenerating: string = '/img/admin/create-map.svg';
   showDebug: boolean = false;
-  worldId: InputSignalWithTransform<number, unknown> = input.required<
-    number,
-    unknown
-  >({
+  worldId: InputSignalWithTransform<number, unknown> = input.required<number, unknown>({
     transform: numberAttribute,
   });
-  scenarioId: InputSignalWithTransform<number, unknown> = input.required<
-    number,
-    unknown
-  >({
+  scenarioId: InputSignalWithTransform<number, unknown> = input.required<number, unknown>({
     transform: numberAttribute,
   });
   scenarioWidth: number = Constants.SCENARIO_COLS;
   scenarioHeight: number = Constants.SCENARIO_ROWS;
   scenario: WritableSignal<ScenarioData[][]> = signal<ScenarioData[][]>([]);
-  loadedScenario: Scenario = null;
+  loadedScenario: Scenario | null = null;
   loadedCell: ScenarioData = new ScenarioData();
   showCellDetail: boolean = false;
   savingCell: WritableSignal<boolean> = signal<boolean>(false);
@@ -103,7 +100,7 @@ export default class EditScenarioComponent implements OnInit {
   };
   scenarioList: WritableSignal<Scenario[]> = signal<Scenario[]>([]);
   showConnectionsDetail: WritableSignal<boolean> = signal<boolean>(false);
-  connectWhere: string = null;
+  connectWhere: Orientation | null = null;
   backgroundPicker: Signal<BackgroundPickerComponent> =
     viewChild.required<BackgroundPickerComponent>('backgroundPicker');
   scenarioObjectPicker: Signal<ScenarioObjectPickerComponent> =
@@ -122,54 +119,52 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   loadScenario(): void {
-    this.as
-      .getScenario(this.scenarioId())
-      .subscribe((result: ScenarioDataResult): void => {
-        this.loadedScenario = this.cms.getScenario(result.scenario);
-        const scenario: ScenarioData[][] = [];
-        for (let y: number = 0; y < this.scenarioHeight; y++) {
-          scenario[y] = [];
-          for (let x: number = 0; x < this.scenarioWidth; x++) {
-            scenario[y][x] = new ScenarioData(null, this.scenarioId(), x, y);
-          }
+    this.as.getScenario(this.scenarioId()).subscribe((result: ScenarioDataResult): void => {
+      this.loadedScenario = this.cms.getScenario(result.scenario);
+      const scenario: ScenarioData[][] = [];
+      for (let y: number = 0; y < this.scenarioHeight; y++) {
+        scenario[y] = [];
+        for (let x: number = 0; x < this.scenarioWidth; x++) {
+          scenario[y][x] = new ScenarioData(null, this.scenarioId(), x, y);
         }
-        this.scenario.set(scenario);
-        const scenarioDataList: ScenarioData[] = this.cms.getScenarioDatas(
-          result.data
-        );
-        for (const scenarioData of scenarioDataList) {
-          this.scenario.update((value: ScenarioData[][]): ScenarioData[][] => {
-            value[scenarioData.y][scenarioData.x] = scenarioData;
-            return value;
-          });
+      }
+      this.scenario.set(scenario);
+      const scenarioDataList: ScenarioData[] = this.cms.getScenarioDatas(result.data);
+      for (const scenarioData of scenarioDataList) {
+        if (scenarioData.x === null || scenarioData.y === null) {
+          continue;
         }
-        this.connections = {
-          up: null,
-          down: null,
-          left: null,
-          right: null,
-        };
-        const connections: Connection[] = this.cms.getConnections(
-          result.connection
-        );
-        for (const connection of connections) {
-          this.connections[connection.orientation] = connection;
+        const x: number = scenarioData.x;
+        const y: number = scenarioData.y;
+        this.scenario.update((value: ScenarioData[][]): ScenarioData[][] => {
+          value[y][x] = scenarioData;
+          return value;
+        });
+      }
+      this.connections = {
+        up: null,
+        down: null,
+        left: null,
+        right: null,
+      };
+      const connections: Connection[] = this.cms.getConnections(result.connection);
+      for (const connection of connections) {
+        if (connection.orientation === null) {
+          continue;
         }
-      });
+        this.connections[connection.orientation] = connection;
+      }
+    });
   }
 
   loadScenarioList(): void {
-    this.as
-      .getScenarios(this.worldId())
-      .subscribe((result: ScenarioResult): void => {
-        const scenarios: Scenario[] = this.cms.getScenarios(result.list);
-        this.scenarioList.set(
-          scenarios.filter((x: Scenario): boolean => x.id !== this.scenarioId())
-        );
-      });
+    this.as.getScenarios(this.worldId()).subscribe((result: ScenarioResult): void => {
+      const scenarios: Scenario[] = this.cms.getScenarios(result.list);
+      this.scenarioList.set(scenarios.filter((x: Scenario): boolean => x.id !== this.scenarioId()));
+    });
   }
 
-  copyCell(mode: string): void {
+  copyCell(mode: CopyMode): void {
     if (this.selected.selecting == mode) {
       this.selected.selecting = null;
     } else {
@@ -177,18 +172,11 @@ export default class EditScenarioComponent implements OnInit {
     }
   }
 
-  cancelCopyCell(ev: MouseEvent, mode: string): void {
+  cancelCopyCell(ev: MouseEvent, mode: CopyMode): void {
     if (ev) {
       ev.preventDefault();
     }
-    const firstUpper: string =
-      mode.substring(0, 1).toUpperCase() + mode.substring(1);
-    this.selected['id' + firstUpper] = null;
-    this.selected[mode + 'AssetUrl'] = '/img/admin/color-picker.svg';
-    if (mode == 'scenarioObject' || mode == 'character') {
-      this.selected[mode + 'Width'] = null;
-      this.selected[mode + 'Height'] = null;
-    }
+    this.clearSelectedCell(mode);
   }
 
   selectStart(): void {
@@ -196,51 +184,52 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   selectWorldStart(cell: ScenarioData, check: boolean = true): void {
+    if (cell.x === null || cell.y === null) {
+      return;
+    }
     const params: WorldStartInterface = {
       idScenario: this.scenarioId(),
       x: cell.x,
       y: cell.y,
       check: check,
     };
-    this.as
-      .selectWorldStart(params)
-      .subscribe((result: StatusMessageResult): void => {
-        if (result.status === 'in-use') {
-          const conf: boolean = confirm(
-            '¡Atención! Este mundo tiene ya un punto de inicio en otro escenario ("' +
-              urldecode(result.message) +
-              '"). ¿Estás seguro de querer marcar este punto como inicio?'
-          );
-          if (conf) {
-            this.selectWorldStart(cell, false);
-          }
+    this.as.selectWorldStart(params).subscribe((result: StatusMessageResult): void => {
+      if (result.status === 'in-use') {
+        const conf: boolean = confirm(
+          '¡Atención! Este mundo tiene ya un punto de inicio en otro escenario ("' +
+            urldecode(result.message) +
+            '"). ¿Estás seguro de querer marcar este punto como inicio?',
+        );
+        if (conf) {
+          this.selectWorldStart(cell, false);
         }
-        if (result.status === 'ok') {
+      }
+      if (result.status === 'ok') {
+        if (this.loadedScenario !== null) {
           this.loadedScenario.startX = cell.x;
           this.loadedScenario.startY = cell.y;
-          this.startSelecting.set(false);
         }
-        if (result.status == 'error') {
-          alert('ERROR: Ocurrió un error al marcar el punto de inicio.');
-        }
-      });
+        this.startSelecting.set(false);
+      }
+      if (result.status == 'error') {
+        alert('ERROR: Ocurrió un error al marcar el punto de inicio.');
+      }
+    });
   }
 
   createMap(): void {
     this.mapGenerating = '/img/loading.svg';
-    this.as
-      .generateMap(this.scenarioId())
-      .subscribe((result: StatusResult): void => {
-        this.mapGenerating = '/img/admin/create-map.svg';
-        if (result.status == 'ok') {
-          alert('¡Mapa creado!');
-        } else {
-          alert('¡Ocurrió un error al crear el mapa!');
-        }
-      });
+    this.as.generateMap(this.scenarioId()).subscribe((result: StatusResult): void => {
+      this.mapGenerating = '/img/admin/create-map.svg';
+      if (result.status == 'ok') {
+        alert('¡Mapa creado!');
+      } else {
+        alert('¡Ocurrió un error al crear el mapa!');
+      }
+    });
   }
 
-  openCell(ev = null, cell: ScenarioData = null): void {
+  openCell(ev: MouseEvent | null = null, cell: ScenarioData | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -251,17 +240,8 @@ export default class EditScenarioComponent implements OnInit {
       }
 
       if (this.selected.selecting != null) {
-        const mode: string = this.selected.selecting;
-        const firstUpper: string =
-          mode.substring(0, 1).toUpperCase() + mode.substring(1);
-        if (cell['id' + firstUpper] != null) {
-          this.selected['id' + firstUpper] = cell['id' + firstUpper];
-          this.selected[mode + 'AssetUrl'] = cell[mode + 'AssetUrl'];
-          if (mode == 'scenarioObject' || mode == 'character') {
-            this.selected[mode + 'Width'] = cell[mode + 'Width'];
-            this.selected[mode + 'Height'] = cell[mode + 'Height'];
-            this.selected.characterHealth = cell.characterHealth;
-          }
+        const mode: CopyMode = this.selected.selecting;
+        if (this.copySelectedCellData(mode, cell)) {
           this.selected.selecting = null;
         }
         return;
@@ -274,28 +254,22 @@ export default class EditScenarioComponent implements OnInit {
         cell.y,
         cell.idBackground,
         cell.idBackground != null ? cell.backgroundName : 'Sin fondo',
-        cell.idBackground != null
-          ? cell.backgroundAssetUrl
-          : '/img/admin/no-asset.svg',
+        cell.idBackground != null ? cell.backgroundAssetUrl : '/img/admin/no-asset.svg',
         cell.idScenarioObject,
         cell.idScenarioObject != null ? cell.scenarioObjectName : 'Sin objeto',
-        cell.idScenarioObject != null
-          ? cell.scenarioObjectAssetUrl
-          : '/img/admin/no-asset.svg',
+        cell.idScenarioObject != null ? cell.scenarioObjectAssetUrl : '/img/admin/no-asset.svg',
         cell.scenarioObjectWidth,
         cell.scenarioObjectHeight,
         cell.scenarioObjectBlockWidth,
         cell.scenarioObjectBlockHeight,
         cell.idCharacter,
         cell.idCharacter != null ? cell.characterName : 'Sin personaje',
-        cell.idCharacter != null
-          ? cell.characterAssetUrl
-          : '/img/admin/no-asset.svg',
+        cell.idCharacter != null ? cell.characterAssetUrl : '/img/admin/no-asset.svg',
         cell.characterWidth,
         cell.characterHeight,
         cell.characterBlockWidth,
         cell.characterBlockHeight,
-        cell.characterHealth
+        cell.characterHealth,
       );
 
       let saveDirectly: boolean = false;
@@ -306,11 +280,9 @@ export default class EditScenarioComponent implements OnInit {
       }
       if (this.selected.idScenarioObject != null) {
         this.loadedCell.idScenarioObject = this.selected.idScenarioObject;
-        this.loadedCell.scenarioObjectAssetUrl =
-          this.selected.scenarioObjectAssetUrl;
+        this.loadedCell.scenarioObjectAssetUrl = this.selected.scenarioObjectAssetUrl;
         this.loadedCell.scenarioObjectWidth = this.selected.scenarioObjectWidth;
-        this.loadedCell.scenarioObjectHeight =
-          this.selected.scenarioObjectHeight;
+        this.loadedCell.scenarioObjectHeight = this.selected.scenarioObjectHeight;
         saveDirectly = true;
       }
       if (this.selected.idCharacter != null) {
@@ -354,7 +326,7 @@ export default class EditScenarioComponent implements OnInit {
   openScenarioObjectPicker(): void {
     if (this.loadedCell.idCharacter != null) {
       alert(
-        'No puedes añadir un objeto y un personaje en la misma casilla. Si quieres añadir un objeto, quita antes el personaje.'
+        'No puedes añadir un objeto y un personaje en la misma casilla. Si quieres añadir un objeto, quita antes el personaje.',
       );
       return;
     }
@@ -381,7 +353,7 @@ export default class EditScenarioComponent implements OnInit {
   openCharacterPicker(): void {
     if (this.loadedCell.idScenarioObject != null) {
       alert(
-        'No puedes añadir un objeto y un personaje en la misma casilla. Si quieres añadir un personaje, quita antes el objeto.'
+        'No puedes añadir un objeto y un personaje en la misma casilla. Si quieres añadir un personaje, quita antes el objeto.',
       );
       return;
     }
@@ -407,14 +379,20 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   saveCell(): void {
+    if (this.loadedCell.x === null || this.loadedCell.y === null) {
+      return;
+    }
+
     this.savingCell.set(true);
+    const x: number = this.loadedCell.x;
+    const y: number = this.loadedCell.y;
     this.as
       .saveScenarioData(this.loadedCell.toInterface())
       .subscribe((result: StatusIdResult): void => {
         if (result.status == 'ok') {
           this.loadedCell.id = result.id;
           this.scenario.update((value: ScenarioData[][]): ScenarioData[][] => {
-            value[this.loadedCell.y][this.loadedCell.x] = this.loadedCell;
+            value[y][x] = this.loadedCell;
             return value;
           });
           this.savingCell.set(false);
@@ -423,14 +401,15 @@ export default class EditScenarioComponent implements OnInit {
       });
   }
 
-  connect(sent: string): void {
-    if (this.connections[sent] != null) {
+  connect(sent: Orientation): void {
+    const connection: Connection | null = this.connections[sent];
+    if (connection != null) {
       this.router.navigate([
         '/admin',
         'world',
         this.worldId,
         'scenario',
-        this.connections[sent].to,
+        connection.to,
       ]);
       return;
     } else {
@@ -439,12 +418,16 @@ export default class EditScenarioComponent implements OnInit {
     }
   }
 
-  deleteConnection(ev: MouseEvent, sent: string): void {
+  deleteConnection(ev: MouseEvent, sent: Orientation): void {
     if (ev) {
       ev.preventDefault();
     }
+    const connection: Connection | null = this.connections[sent];
+    if (connection === null) {
+      return;
+    }
     this.as
-      .deleteConnection(this.connections[sent].toInterface())
+      .deleteConnection(connection.toInterface())
       .subscribe((result: StatusResult): void => {
         if (result.status == 'ok') {
           this.connections[sent] = null;
@@ -454,7 +437,7 @@ export default class EditScenarioComponent implements OnInit {
       });
   }
 
-  showConnectionDetail(ev: MouseEvent = null, mode = false): void {
+  showConnectionDetail(ev: MouseEvent | null = null, mode = false): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -462,14 +445,15 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   selectScenarioConnection(scenario: Scenario): void {
+    if (this.loadedScenario === null || this.connectWhere === null) {
+      return;
+    }
+
     const connectionCheck: boolean =
       (this.connections.up != null && this.connections.up.to == scenario.id) ||
-      (this.connections.down != null &&
-        this.connections.down.to == scenario.id) ||
-      (this.connections.left != null &&
-        this.connections.left.to == scenario.id) ||
-      (this.connections.right != null &&
-        this.connections.right.to == scenario.id);
+      (this.connections.down != null && this.connections.down.to == scenario.id) ||
+      (this.connections.left != null && this.connections.left.to == scenario.id) ||
+      (this.connections.right != null && this.connections.right.to == scenario.id);
     if (connectionCheck) {
       alert('¡Atención! Ya hay una conexión al escenario elegido.');
       return;
@@ -479,19 +463,73 @@ export default class EditScenarioComponent implements OnInit {
       this.loadedScenario.name,
       scenario.id,
       scenario.name,
-      this.connectWhere
+      this.connectWhere,
     );
+    const connectWhere: Orientation = this.connectWhere;
 
-    this.as
-      .saveConnection(connection.toInterface())
-      .subscribe((result: StatusResult): void => {
-        if (result.status == 'ok') {
-          this.connections[this.connectWhere] = connection;
-          this.connectWhere = null;
-          this.showConnectionDetail(null, false);
-        } else {
-          alert('¡Ocurrió un error al guardar la conexión!');
-        }
-      });
+    this.as.saveConnection(connection.toInterface()).subscribe((result: StatusResult): void => {
+      if (result.status == 'ok') {
+        this.connections[connectWhere] = connection;
+        this.connectWhere = null;
+        this.showConnectionDetail(null, false);
+      } else {
+        alert('¡Ocurrió un error al guardar la conexión!');
+      }
+    });
+  }
+
+  private clearSelectedCell(mode: CopyMode): void {
+    if (mode === 'background') {
+      this.selected.idBackground = null;
+      this.selected.backgroundAssetUrl = '/img/admin/color-picker.svg';
+      return;
+    }
+
+    if (mode === 'scenarioObject') {
+      this.selected.idScenarioObject = null;
+      this.selected.scenarioObjectAssetUrl = '/img/admin/color-picker.svg';
+      this.selected.scenarioObjectWidth = null;
+      this.selected.scenarioObjectHeight = null;
+      return;
+    }
+
+    this.selected.idCharacter = null;
+    this.selected.characterAssetUrl = '/img/admin/color-picker.svg';
+    this.selected.characterWidth = null;
+    this.selected.characterHeight = null;
+    this.selected.characterHealth = null;
+  }
+
+  private copySelectedCellData(mode: CopyMode, cell: ScenarioData): boolean {
+    if (mode === 'background') {
+      if (cell.idBackground === null) {
+        return false;
+      }
+      this.selected.idBackground = cell.idBackground;
+      this.selected.backgroundAssetUrl = cell.backgroundAssetUrl ?? '/img/admin/color-picker.svg';
+      return true;
+    }
+
+    if (mode === 'scenarioObject') {
+      if (cell.idScenarioObject === null) {
+        return false;
+      }
+      this.selected.idScenarioObject = cell.idScenarioObject;
+      this.selected.scenarioObjectAssetUrl =
+        cell.scenarioObjectAssetUrl ?? '/img/admin/color-picker.svg';
+      this.selected.scenarioObjectWidth = cell.scenarioObjectWidth;
+      this.selected.scenarioObjectHeight = cell.scenarioObjectHeight;
+      return true;
+    }
+
+    if (cell.idCharacter === null) {
+      return false;
+    }
+    this.selected.idCharacter = cell.idCharacter;
+    this.selected.characterAssetUrl = cell.characterAssetUrl ?? '/img/admin/color-picker.svg';
+    this.selected.characterWidth = cell.characterWidth;
+    this.selected.characterHeight = cell.characterHeight;
+    this.selected.characterHealth = cell.characterHealth;
+    return true;
   }
 }

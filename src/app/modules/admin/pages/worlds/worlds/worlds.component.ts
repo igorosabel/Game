@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { StatusResult } from '@interfaces/interfaces';
@@ -23,12 +17,12 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [RouterLink, FormsModule, HeaderComponent],
 })
 export default class WorldsComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
   worldList: WritableSignal<World[]> = signal<World[]>([]);
-  message: WritableSignal<string> = signal<string>('Cargando...');
+  message: WritableSignal<string | null> = signal<string | null>('Cargando...');
   loadedWorld: World = new World();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   worldDetailHeader: WritableSignal<string> = signal<string>('');
@@ -51,15 +45,11 @@ export default class WorldsComponent implements OnInit {
           this.message.set(null);
           this.worldList.set(this.cms.getWorlds(result.list));
         } else {
-          this.message.set(
-            'ERROR: Ocurrió un error al obtener la lista de mundos.'
-          );
+          this.message.set('ERROR: Ocurrió un error al obtener la lista de mundos.');
         }
       },
       error: (): void => {
-        this.message.set(
-          'ERROR: Ocurrió un error al obtener la lista de mundos.'
-        );
+        this.message.set('ERROR: Ocurrió un error al obtener la lista de mundos.');
       },
     });
   }
@@ -68,7 +58,7 @@ export default class WorldsComponent implements OnInit {
     this.loadedWorld = new World();
   }
 
-  showAddWorld(ev: MouseEvent = null): void {
+  showAddWorld(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -90,26 +80,17 @@ export default class WorldsComponent implements OnInit {
       alert('¡No puedes dejar el nombre del mundo en blanco!');
     }
 
-    if (
-      (validate && this.loadedWorld.wordOne === null) ||
-      this.loadedWorld.wordOne === ''
-    ) {
+    if ((validate && this.loadedWorld.wordOne === null) || this.loadedWorld.wordOne === '') {
       validate = false;
       alert('¡No puedes dejar la primera palabra en blanco!');
     }
 
-    if (
-      (validate && this.loadedWorld.wordTwo === null) ||
-      this.loadedWorld.wordTwo === ''
-    ) {
+    if ((validate && this.loadedWorld.wordTwo === null) || this.loadedWorld.wordTwo === '') {
       validate = false;
       alert('¡No puedes dejar la segunda palabra en blanco!');
     }
 
-    if (
-      (validate && this.loadedWorld.wordThree === null) ||
-      this.loadedWorld.wordThree === ''
-    ) {
+    if ((validate && this.loadedWorld.wordThree === null) || this.loadedWorld.wordThree === '') {
       validate = false;
       alert('¡No puedes dejar la tercera palabra en blanco!');
     }
@@ -141,7 +122,7 @@ export default class WorldsComponent implements OnInit {
       world.wordOne,
       world.wordTwo,
       world.wordThree,
-      world.friendly
+      world.friendly,
     );
 
     this.worldDetailHeader.set('Editar mundo');
@@ -149,11 +130,9 @@ export default class WorldsComponent implements OnInit {
   }
 
   deleteWorld(world: World): void {
-    const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el mundo "' + world.name + '"?'
-    );
+    const conf: boolean = confirm('¿Estás seguro de querer borrar el mundo "' + world.name + '"?');
     if (conf) {
-      this.as.deleteWorld(world.id).subscribe((result: StatusResult): void => {
+      this.as.deleteWorld(world.id as number).subscribe((result: StatusResult): void => {
         if (result.status == 'ok') {
           this.loadWorlds();
         } else {

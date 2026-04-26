@@ -26,18 +26,15 @@ import HeaderComponent from '@shared/components/header/header.component';
   imports: [RouterLink, FormsModule, HeaderComponent],
 })
 export default class ScenariosComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
-  worldId: InputSignalWithTransform<number, unknown> = input.required<
-    number,
-    unknown
-  >({
+  worldId: InputSignalWithTransform<number, unknown> = input.required<number, unknown>({
     transform: numberAttribute,
   });
   scenarioList: WritableSignal<Scenario[]> = signal<Scenario[]>([]);
-  message: WritableSignal<string> = signal<string>(null);
+  message: WritableSignal<string | null> = signal<string | null>(null);
   loadedScenario: Scenario = new Scenario();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   scenarioDetailHeader: WritableSignal<string> = signal<string>('');
@@ -61,15 +58,11 @@ export default class ScenariosComponent implements OnInit {
           this.message.set(null);
           this.scenarioList.set(this.cms.getScenarios(result.list));
         } else {
-          this.message.set(
-            'ERROR: Ocurrió un error al obtener la lista de escenarios.'
-          );
+          this.message.set('ERROR: Ocurrió un error al obtener la lista de escenarios.');
         }
       },
       error: (): void => {
-        this.message.set(
-          'ERROR: Ocurrió un error al obtener la lista de escenarios.'
-        );
+        this.message.set('ERROR: Ocurrió un error al obtener la lista de escenarios.');
       },
     });
   }
@@ -79,7 +72,7 @@ export default class ScenariosComponent implements OnInit {
     this.loadedScenario.idWorld = this.worldId();
   }
 
-  showAddScenario(ev: MouseEvent = null): void {
+  showAddScenario(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -95,9 +88,7 @@ export default class ScenariosComponent implements OnInit {
 
   saveScenario(): void {
     let validate: boolean = true;
-    if (
-      (this.loadedScenario.name === null || this.loadedScenario.name) === ''
-    ) {
+    if ((this.loadedScenario.name === null || this.loadedScenario.name) === '') {
       validate = false;
       alert('¡No puedes dejar el nombre del escenario en blanco!');
     }
@@ -110,9 +101,7 @@ export default class ScenariosComponent implements OnInit {
             this.loadScenarios();
           } else {
             alert('¡Ocurrió un error al guardar el escenario!');
-            this.message.set(
-              'ERROR: Ocurrió un error al guardar el escenario.'
-            );
+            this.message.set('ERROR: Ocurrió un error al guardar el escenario.');
           }
         },
         error: (): void => {
@@ -130,7 +119,7 @@ export default class ScenariosComponent implements OnInit {
       scenario.startX,
       scenario.startY,
       scenario.initial,
-      scenario.friendly
+      scenario.friendly,
     );
 
     this.scenarioDetailHeader.set('Editar escenario');
@@ -139,10 +128,10 @@ export default class ScenariosComponent implements OnInit {
 
   deleteScenario(scenario: Scenario): void {
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el escenario "' + scenario.name + '"?'
+      '¿Estás seguro de querer borrar el escenario "' + scenario.name + '"?',
     );
     if (conf) {
-      this.as.deleteScenario(scenario.id).subscribe({
+      this.as.deleteScenario(scenario.id as number).subscribe({
         next: (result: StatusResult): void => {
           if (result.status === 'ok') {
             this.loadScenarios();

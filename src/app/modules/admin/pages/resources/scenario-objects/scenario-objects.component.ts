@@ -35,25 +35,18 @@ import ItemPickerComponent from '@shared/components/item-picker/item-picker.comp
   selector: 'game-scenario-objects',
   templateUrl: './scenario-objects.component.html',
   styleUrls: ['./scenario-objects.component.scss', '../../scss/resources.scss'],
-  imports: [
-    FormsModule,
-    HeaderComponent,
-    AssetPickerComponent,
-    ItemPickerComponent,
-  ],
+  imports: [FormsModule, HeaderComponent, AssetPickerComponent, ItemPickerComponent],
 })
 export default class ScenarioObjectsComponent implements OnInit {
-  private as: ApiService = inject(ApiService);
-  private cms: ClassMapperService = inject(ClassMapperService);
-  private play: PlayService = inject(PlayService);
+  private readonly as: ApiService = inject(ApiService);
+  private readonly cms: ClassMapperService = inject(ClassMapperService);
+  private readonly play: PlayService = inject(PlayService);
 
   worldList: World[] = [];
   scenarioList: Scenario[] = [];
   filterListOption: string = 'items';
-  scenarioObjectList: WritableSignal<ScenarioObject[]> = signal<
-    ScenarioObject[]
-  >([]);
-  message: WritableSignal<string> = signal<string>(null);
+  scenarioObjectList: WritableSignal<ScenarioObject[]> = signal<ScenarioObject[]>([]);
+  message: WritableSignal<string | null> = signal<string | null>(null);
   loadedScenarioObject: ScenarioObject = new ScenarioObject();
   showDetail: WritableSignal<boolean> = signal<boolean>(false);
   detailtTab: string = 'data';
@@ -64,16 +57,15 @@ export default class ScenarioObjectsComponent implements OnInit {
     { id: 2, name: 'Orden personalizada' },
     { id: 3, name: 'Obtener item' },
   ];
-  activeTriggerWorld: number = null;
+  activeTriggerWorld: number | null = null;
   animationImage: string = '';
-  animationTimer: number = null;
+  animationTimer: number | undefined = undefined;
   animationInd: number = -1;
-  assetPickerWhere: string = null;
+  assetPickerWhere: string | null = null;
   savingScenarioObject: WritableSignal<boolean> = signal<boolean>(false);
   assetPicker: Signal<AssetPickerComponent> =
     viewChild.required<AssetPickerComponent>('assetPicker');
-  itemPicker: Signal<ItemPickerComponent> =
-    viewChild.required<ItemPickerComponent>('itemPicker');
+  itemPicker: Signal<ItemPickerComponent> = viewChild.required<ItemPickerComponent>('itemPicker');
 
   ngOnInit(): void {
     this.loadWorlds();
@@ -95,13 +87,11 @@ export default class ScenarioObjectsComponent implements OnInit {
   }
 
   loadScenarioObjects(): void {
-    this.as
-      .getScenarioObjects()
-      .subscribe((result: ScenarioObjectResult): void => {
-        if (result.status === 'ok') {
-          this.scenarioObjectList.set(this.cms.getScenarioObjects(result.list));
-        }
-      });
+    this.as.getScenarioObjects().subscribe((result: ScenarioObjectResult): void => {
+      if (result.status === 'ok') {
+        this.scenarioObjectList.set(this.cms.getScenarioObjects(result.list));
+      }
+    });
   }
 
   changeFilterListOption(ev: MouseEvent, option: string): void {
@@ -121,7 +111,7 @@ export default class ScenarioObjectsComponent implements OnInit {
     this.scenarioList = [];
   }
 
-  showAddScenarioObject(ev = null): void {
+  showAddScenarioObject(ev: MouseEvent | null = null): void {
     if (ev) {
       ev.preventDefault();
     }
@@ -149,10 +139,7 @@ export default class ScenarioObjectsComponent implements OnInit {
   }
 
   openItemPicker(): void {
-    if (
-      this.loadedScenarioObject.pickable &&
-      this.loadedScenarioObject.drops.length === 1
-    ) {
+    if (this.loadedScenarioObject.pickable && this.loadedScenarioObject.drops.length === 1) {
       alert('Si el objeto se puede obtener solo puedes añadir un item.');
       return;
     }
@@ -161,7 +148,7 @@ export default class ScenarioObjectsComponent implements OnInit {
 
   selectedItem(selectedItem: ItemInterface): void {
     const ind: number = this.loadedScenarioObject.drops.findIndex(
-      (x: ScenarioObjectDrop): boolean => x.idItem === selectedItem.id
+      (x: ScenarioObjectDrop): boolean => x.idItem === selectedItem.id,
     );
     if (ind === -1) {
       const drop: ScenarioObjectDrop = new ScenarioObjectDrop(
@@ -169,11 +156,12 @@ export default class ScenarioObjectsComponent implements OnInit {
         selectedItem.id,
         selectedItem.name,
         selectedItem.assetUrl,
-        1
+        1,
       );
       this.loadedScenarioObject.drops.push(drop);
     } else {
-      this.loadedScenarioObject.drops[ind].num++;
+      const drop: ScenarioObjectDrop = this.loadedScenarioObject.drops[ind];
+      drop.num = (drop.num ?? 0) + 1;
     }
   }
 
@@ -192,7 +180,7 @@ export default class ScenarioObjectsComponent implements OnInit {
         null,
         selectedAsset.id,
         selectedAsset.url,
-        this.loadedScenarioObject.frames.length
+        this.loadedScenarioObject.frames.length,
       );
       this.loadedScenarioObject.frames.push(frame);
     }
@@ -224,11 +212,9 @@ export default class ScenarioObjectsComponent implements OnInit {
 
   loadSelectedWorldScenarios(): void {
     if (this.activeTriggerWorld !== null) {
-      this.as
-        .getScenarios(this.activeTriggerWorld)
-        .subscribe((result: ScenarioResult): void => {
-          this.scenarioList = this.cms.getScenarios(result.list);
-        });
+      this.as.getScenarios(this.activeTriggerWorld).subscribe((result: ScenarioResult): void => {
+        this.scenarioList = this.cms.getScenarios(result.list);
+      });
     }
   }
 
@@ -240,7 +226,7 @@ export default class ScenarioObjectsComponent implements OnInit {
         this.animatePreview();
       }, 300);
     } else {
-      this.animationImage = this.loadedScenarioObject.assetUrl;
+      this.animationImage = this.loadedScenarioObject.assetUrl ?? '/admin/no-asset.svg';
     }
   }
 
@@ -250,7 +236,7 @@ export default class ScenarioObjectsComponent implements OnInit {
       this.animationInd = 0;
     }
     this.animationImage =
-      this.loadedScenarioObject.allFrames[this.animationInd];
+      this.loadedScenarioObject.allFrames[this.animationInd] ?? '/admin/no-asset.svg';
   }
 
   frameDelete(frame: ScenarioObjectFrame): void {
@@ -258,7 +244,7 @@ export default class ScenarioObjectsComponent implements OnInit {
     if (conf) {
       const ind: number = this.loadedScenarioObject.frames.findIndex(
         (x: ScenarioObjectFrame): boolean =>
-          x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+          this.scenarioObjectFrameMatches(x, frame),
       );
       this.loadedScenarioObject.frames.splice(ind, 1);
       this.updateFrameOrders();
@@ -268,14 +254,13 @@ export default class ScenarioObjectsComponent implements OnInit {
   frameLeft(frame: ScenarioObjectFrame): void {
     const ind: number = this.loadedScenarioObject.frames.findIndex(
       (x: ScenarioObjectFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+        this.scenarioObjectFrameMatches(x, frame),
     );
     if (ind === 0) {
       return;
     }
     const aux: ScenarioObjectFrame = this.loadedScenarioObject.frames[ind];
-    this.loadedScenarioObject.frames[ind] =
-      this.loadedScenarioObject.frames[ind - 1];
+    this.loadedScenarioObject.frames[ind] = this.loadedScenarioObject.frames[ind - 1];
     this.loadedScenarioObject.frames[ind - 1] = aux;
     this.updateFrameOrders();
   }
@@ -283,14 +268,13 @@ export default class ScenarioObjectsComponent implements OnInit {
   frameRight(frame: ScenarioObjectFrame): void {
     const ind: number = this.loadedScenarioObject.frames.findIndex(
       (x: ScenarioObjectFrame): boolean =>
-        x.id + x.idAsset.toString() === frame.id + frame.idAsset.toString()
+        this.scenarioObjectFrameMatches(x, frame),
     );
     if (ind === this.loadedScenarioObject.frames.length - 1) {
       return;
     }
     const aux: ScenarioObjectFrame = this.loadedScenarioObject.frames[ind];
-    this.loadedScenarioObject.frames[ind] =
-      this.loadedScenarioObject.frames[ind + 1];
+    this.loadedScenarioObject.frames[ind] = this.loadedScenarioObject.frames[ind + 1];
     this.loadedScenarioObject.frames[ind + 1] = aux;
     this.updateFrameOrders();
   }
@@ -306,12 +290,12 @@ export default class ScenarioObjectsComponent implements OnInit {
       ev.preventDefault();
     }
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el item "' + drop.itemName + '"?'
+      '¿Estás seguro de querer borrar el item "' + drop.itemName + '"?',
     );
     if (conf) {
       const ind: number = this.loadedScenarioObject.drops.findIndex(
         (x: ScenarioObjectDrop): boolean =>
-          x.id + x.idItem.toString() === drop.id + drop.idItem.toString()
+          this.scenarioObjectDropMatches(x, drop),
       );
       this.loadedScenarioObject.drops.splice(ind, 1);
     }
@@ -348,21 +332,21 @@ export default class ScenarioObjectsComponent implements OnInit {
     if (validate && this.loadedScenarioObject.activable) {
       if (this.loadedScenarioObject.idAssetActive === null) {
         alert(
-          'Has marcado que el objeto se puede activar, pero no has elegido ninguna imagen para su estado activo.'
+          'Has marcado que el objeto se puede activar, pero no has elegido ninguna imagen para su estado activo.',
         );
         validate = false;
       }
 
       if (validate && this.loadedScenarioObject.activeTime === null) {
         alert(
-          'Has marcado que el objeto se puede activar, pero no has marcado el tiempo que se mantiene activado. Introduce 0 para indefinido.'
+          'Has marcado que el objeto se puede activar, pero no has marcado el tiempo que se mantiene activado. Introduce 0 para indefinido.',
         );
         validate = false;
       }
 
       if (validate && this.loadedScenarioObject.activeTrigger === null) {
         alert(
-          'Has marcado que el objeto se puede activar, pero no has elegido el tipo de activador.'
+          'Has marcado que el objeto se puede activar, pero no has elegido el tipo de activador.',
         );
         validate = false;
       }
@@ -373,7 +357,7 @@ export default class ScenarioObjectsComponent implements OnInit {
           this.loadedScenarioObject.activeTriggerCustom === null
         ) {
           alert(
-            'Has elegido mensaje como tipo de activador, pero no has introducido ningún mensaje.'
+            'Has elegido mensaje como tipo de activador, pero no has introducido ningún mensaje.',
           );
           validate = false;
         }
@@ -384,7 +368,7 @@ export default class ScenarioObjectsComponent implements OnInit {
           this.loadedScenarioObject.activeTriggerCustom === null
         ) {
           validate = confirm(
-            'Has elegido teleportación como tipo de activador, pero no has elegido ningún escenario. ¿Quieres continuar? En caso de hacerlo el objeto se comportará como un portal.'
+            'Has elegido teleportación como tipo de activador, pero no has elegido ningún escenario. ¿Quieres continuar? En caso de hacerlo el objeto se comportará como un portal.',
           );
         }
 
@@ -393,7 +377,7 @@ export default class ScenarioObjectsComponent implements OnInit {
           this.loadedScenarioObject.activeTriggerCustom === null
         ) {
           alert(
-            'Has elegido orden personalida como tipo de activador, pero no has introducido ninguna orden.'
+            'Has elegido orden personalida como tipo de activador, pero no has introducido ninguna orden.',
           );
           validate = false;
         }
@@ -403,7 +387,7 @@ export default class ScenarioObjectsComponent implements OnInit {
           this.loadedScenarioObject.drops.length === 0
         ) {
           alert(
-            'Has elegido obtener items como tipo de activador, pero no has elegido ningún item.'
+            'Has elegido obtener items como tipo de activador, pero no has elegido ningún item.',
           );
           validate = false;
         }
@@ -421,7 +405,7 @@ export default class ScenarioObjectsComponent implements OnInit {
           alert(
             '¡No puedes dejar en blanco el número de unidades para el item "' +
               drop.itemName +
-              '"!'
+              '"!',
           );
           validate = false;
           break;
@@ -431,32 +415,26 @@ export default class ScenarioObjectsComponent implements OnInit {
 
     if (validate) {
       this.savingScenarioObject.set(true);
-      this.as
-        .saveScenarioObject(this.loadedScenarioObject.toInterface())
-        .subscribe({
-          next: (result: StatusResult): void => {
-            this.savingScenarioObject.set(false);
-            if (result.status === 'ok') {
-              this.showAddScenarioObject();
-              this.loadScenarioObjects();
-              this.itemPicker().resetSelected();
-              this.assetPicker().resetSelected();
-            } else {
-              alert('¡Ocurrió un error al guardar el objeto de escenario!');
-              this.message.set(
-                'ERROR: Ocurrió un error al guardar el objeto de escenario.'
-              );
-            }
-          },
-          error: (error): void => {
-            console.error(error);
-            this.savingScenarioObject.set(false);
+      this.as.saveScenarioObject(this.loadedScenarioObject.toInterface()).subscribe({
+        next: (result: StatusResult): void => {
+          this.savingScenarioObject.set(false);
+          if (result.status === 'ok') {
+            this.showAddScenarioObject();
+            this.loadScenarioObjects();
+            this.itemPicker().resetSelected();
+            this.assetPicker().resetSelected();
+          } else {
             alert('¡Ocurrió un error al guardar el objeto de escenario!');
-            this.message.set(
-              'ERROR: Ocurrió un error al guardar el objeto de escenario.'
-            );
-          },
-        });
+            this.message.set('ERROR: Ocurrió un error al guardar el objeto de escenario.');
+          }
+        },
+        error: (error): void => {
+          console.error(error);
+          this.savingScenarioObject.set(false);
+          alert('¡Ocurrió un error al guardar el objeto de escenario!');
+          this.message.set('ERROR: Ocurrió un error al guardar el objeto de escenario.');
+        },
+      });
     }
   }
 
@@ -473,19 +451,15 @@ export default class ScenarioObjectsComponent implements OnInit {
       scenarioObject.crossable,
       scenarioObject.activable,
       scenarioObject.idAssetActive,
-      scenarioObject.assetActiveUrl != null
-        ? scenarioObject.assetActiveUrl
-        : null,
+      scenarioObject.assetActiveUrl != null ? scenarioObject.assetActiveUrl : null,
       scenarioObject.activeTime,
       scenarioObject.activeTrigger,
-      scenarioObject.activeTriggerCustom != null
-        ? scenarioObject.activeTriggerCustom
-        : null,
+      scenarioObject.activeTriggerCustom != null ? scenarioObject.activeTriggerCustom : null,
       scenarioObject.pickable,
       scenarioObject.grabbable,
       scenarioObject.breakable,
       [],
-      []
+      [],
     );
     for (const frame of scenarioObject.frames) {
       this.loadedScenarioObject.frames.push(frame);
@@ -500,7 +474,7 @@ export default class ScenarioObjectsComponent implements OnInit {
         : '/admin/no-asset.svg';
     this.animationInd = -1;
     clearInterval(this.animationTimer);
-    this.animationTimer = null;
+    this.animationTimer = undefined;
 
     this.assetPickerWhere = null;
     this.changeTab('data');
@@ -512,9 +486,9 @@ export default class ScenarioObjectsComponent implements OnInit {
 
   deleteScenarioObject(scenarioObject: ScenarioObject): void {
     const conf: boolean = confirm(
-      '¿Estás seguro de querer borrar el objeto "' + scenarioObject.name + '"?'
+      '¿Estás seguro de querer borrar el objeto "' + scenarioObject.name + '"?',
     );
-    if (conf) {
+    if (conf && scenarioObject.id !== null) {
       this.as.deleteScenarioObject(scenarioObject.id).subscribe({
         next: (result: StatusMessageResult): void => {
           if (result.status === 'ok') {
@@ -523,24 +497,40 @@ export default class ScenarioObjectsComponent implements OnInit {
           if (result.status === 'in-use') {
             alert(
               'El objeto de escenario está siendo usado. Cámbialo o bórralo antes de poder borrarlo.\n\n' +
-                urldecode(result.message)
+                urldecode(result.message),
             );
           }
           if (result.status === 'error') {
             alert('¡Ocurrio un error al borrar el objeto de escenario!');
-            this.message.set(
-              'ERROR: Ocurrió un error al borrar el objeto de escenario.'
-            );
+            this.message.set('ERROR: Ocurrió un error al borrar el objeto de escenario.');
           }
         },
         error: (error): void => {
           console.error(error);
           alert('¡Ocurrio un error al borrar el objeto de escenario!');
-          this.message.set(
-            'ERROR: Ocurrió un error al borrar el objeto de escenario.'
-          );
+          this.message.set('ERROR: Ocurrió un error al borrar el objeto de escenario.');
         },
       });
     }
+  }
+
+  private scenarioObjectFrameMatches(
+    firstFrame: ScenarioObjectFrame,
+    secondFrame: ScenarioObjectFrame,
+  ): boolean {
+    return (
+      String(firstFrame.id) + String(firstFrame.idAsset) ===
+      String(secondFrame.id) + String(secondFrame.idAsset)
+    );
+  }
+
+  private scenarioObjectDropMatches(
+    firstDrop: ScenarioObjectDrop,
+    secondDrop: ScenarioObjectDrop,
+  ): boolean {
+    return (
+      String(firstDrop.id) + String(firstDrop.idItem) ===
+      String(secondDrop.id) + String(secondDrop.idItem)
+    );
   }
 }
