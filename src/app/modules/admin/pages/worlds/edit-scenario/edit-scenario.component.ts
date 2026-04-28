@@ -29,9 +29,11 @@ import {
   SelectedScenarioDataInterface,
 } from '@interfaces/scenario.interfaces';
 import { WorldStartInterface } from '@interfaces/world.interfaces';
+import Background from '@model/background.model';
 import Connection from '@model/connection.model';
 import Key from '@model/key.model';
 import ScenarioData from '@model/scenario-data.model';
+import ScenarioObject from '@model/scenario-object.model';
 import Scenario from '@model/scenario.model';
 import { urldecode } from '@osumi/tools';
 import ApiService from '@services/api.service';
@@ -309,9 +311,10 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   selectedBackground(background: BackgroundInterface): void {
-    this.loadedCell.idBackground = background.id;
-    this.loadedCell.backgroundAssetUrl = background.assetUrl;
-    this.loadedCell.backgroundName = background.name;
+    const obj: Background = new Background().fromInterface(background);
+    this.loadedCell.idBackground = obj.id;
+    this.loadedCell.backgroundAssetUrl = obj.assetUrl;
+    this.loadedCell.backgroundName = obj.name;
   }
 
   deleteBackground(ev: MouseEvent): void {
@@ -334,11 +337,12 @@ export default class EditScenarioComponent implements OnInit {
   }
 
   selectedScenarioObject(scenarioObject: ScenarioObjectInterface): void {
-    this.loadedCell.idScenarioObject = scenarioObject.id;
-    this.loadedCell.scenarioObjectAssetUrl = scenarioObject.assetUrl;
-    this.loadedCell.scenarioObjectName = scenarioObject.name;
-    this.loadedCell.scenarioObjectWidth = scenarioObject.width;
-    this.loadedCell.scenarioObjectHeight = scenarioObject.height;
+    const obj: ScenarioObject = new ScenarioObject().fromInterface(scenarioObject);
+    this.loadedCell.idScenarioObject = obj.id;
+    this.loadedCell.scenarioObjectAssetUrl = obj.assetUrl;
+    this.loadedCell.scenarioObjectName = obj.name;
+    this.loadedCell.scenarioObjectWidth = obj.width;
+    this.loadedCell.scenarioObjectHeight = obj.height;
   }
 
   deleteScenarioObject(ev: MouseEvent): void {
@@ -404,13 +408,7 @@ export default class EditScenarioComponent implements OnInit {
   connect(sent: Orientation): void {
     const connection: Connection | null = this.connections[sent];
     if (connection != null) {
-      this.router.navigate([
-        '/admin',
-        'world',
-        this.worldId,
-        'scenario',
-        connection.to,
-      ]);
+      this.router.navigate(['/admin', 'world', this.worldId, 'scenario', connection.to]);
       return;
     } else {
       this.connectWhere = sent;
@@ -426,15 +424,13 @@ export default class EditScenarioComponent implements OnInit {
     if (connection === null) {
       return;
     }
-    this.as
-      .deleteConnection(connection.toInterface())
-      .subscribe((result: StatusResult): void => {
-        if (result.status == 'ok') {
-          this.connections[sent] = null;
-        } else {
-          alert('¡Ocurrió un error al borrar la conexión!');
-        }
-      });
+    this.as.deleteConnection(connection.toInterface()).subscribe((result: StatusResult): void => {
+      if (result.status == 'ok') {
+        this.connections[sent] = null;
+      } else {
+        alert('¡Ocurrió un error al borrar la conexión!');
+      }
+    });
   }
 
   showConnectionDetail(ev: MouseEvent | null = null, mode = false): void {
