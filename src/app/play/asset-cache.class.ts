@@ -92,7 +92,7 @@ export default class AssetCache {
       };
 
       this._items.forEach((item: string): void => {
-        const image = new HTMLImageElement();
+        const image = new Image();
         image.addEventListener('load', loadHandler, false);
         image.src = item;
 
