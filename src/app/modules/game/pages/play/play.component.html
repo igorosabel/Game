@@ -16,7 +16,7 @@
 <div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
-			<img [src]="narrativeCharacter.sprites['down'][0]?.src"
+			<img [src]="$safeNavigationMigration(narrativeCharacter.sprites['down'][0]?.src)"
 				 alt="">
 		</div>
 		<div class="dialog-text">
@@ -38,7 +38,7 @@
 <div class="dialog">
 	<div class="dialog-box">
 		<div class="dialog-picture">
-			<img [src]="messageObject.sprites[0]?.src"
+			<img [src]="$safeNavigationMigration(messageObject.sprites[0]?.src)"
 				 alt="">
 		</div>
 		<div class="dialog-text">

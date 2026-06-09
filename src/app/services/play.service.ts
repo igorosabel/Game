@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { CharacterInterface } from '@interfaces/character.interfaces';
 import { ConnectionListInterface, ScenarioObjectInterface } from '@interfaces/scenario.interfaces';
 import Character from '@model/character.model';
@@ -15,9 +15,7 @@ import PlayPlayer from '@play/play-player.class';
 import PlayScenario from '@play/play-scenario.class';
 import ClassMapperService from '@services/class-mapper.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export default class PlayService {
   private cms: ClassMapperService = inject(ClassMapperService);
 

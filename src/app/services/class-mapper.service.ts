@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { AssetInterface, TagInterface } from '@interfaces/asset.interfaces';
 import {
   BackgroundCategoryInterface,
@@ -46,9 +46,7 @@ import Scenario from '@model/scenario.model';
 import Tag from '@model/tag.model';
 import World from '@model/world.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export default class ClassMapperService {
   getInventories(is: InventoryInterface[]): Inventory[] {
     return is.map((i: InventoryInterface): Inventory => {

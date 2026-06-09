@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { environment } from '@env/environment';
 import { AssetInterface, AssetResult, TagResult } from '@interfaces/asset.interfaces';
 import {
@@ -33,9 +33,7 @@ import {
 import { WorldInterface, WorldResult, WorldStartInterface } from '@interfaces/world.interfaces';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export default class ApiService {
   private http: HttpClient = inject(HttpClient);
 

@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import isLoggedGuardFn from '@app/guard/auth.guard.fn';
+import isLoggedGuardFn from '@guard/auth.guard.fn';
 
 const GAME_ROUTES: Route[] = [
   {

@@ -1,8 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { LoginResult } from '@interfaces/interfaces';
 import DataShareService from '@services/data-share.service';
 
-@Injectable()
+@Service()
 export default class UserService {
   private readonly dss: DataShareService = inject(DataShareService);
 

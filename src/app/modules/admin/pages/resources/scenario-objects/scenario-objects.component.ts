@@ -243,8 +243,7 @@ export default class ScenarioObjectsComponent implements OnInit {
     const conf: boolean = confirm('¿Estás seguro de querer borrar este frame?');
     if (conf) {
       const ind: number = this.loadedScenarioObject.frames.findIndex(
-        (x: ScenarioObjectFrame): boolean =>
-          this.scenarioObjectFrameMatches(x, frame),
+        (x: ScenarioObjectFrame): boolean => this.scenarioObjectFrameMatches(x, frame),
       );
       this.loadedScenarioObject.frames.splice(ind, 1);
       this.updateFrameOrders();
@@ -253,8 +252,7 @@ export default class ScenarioObjectsComponent implements OnInit {
 
   frameLeft(frame: ScenarioObjectFrame): void {
     const ind: number = this.loadedScenarioObject.frames.findIndex(
-      (x: ScenarioObjectFrame): boolean =>
-        this.scenarioObjectFrameMatches(x, frame),
+      (x: ScenarioObjectFrame): boolean => this.scenarioObjectFrameMatches(x, frame),
     );
     if (ind === 0) {
       return;
@@ -267,8 +265,7 @@ export default class ScenarioObjectsComponent implements OnInit {
 
   frameRight(frame: ScenarioObjectFrame): void {
     const ind: number = this.loadedScenarioObject.frames.findIndex(
-      (x: ScenarioObjectFrame): boolean =>
-        this.scenarioObjectFrameMatches(x, frame),
+      (x: ScenarioObjectFrame): boolean => this.scenarioObjectFrameMatches(x, frame),
     );
     if (ind === this.loadedScenarioObject.frames.length - 1) {
       return;
@@ -294,8 +291,7 @@ export default class ScenarioObjectsComponent implements OnInit {
     );
     if (conf) {
       const ind: number = this.loadedScenarioObject.drops.findIndex(
-        (x: ScenarioObjectDrop): boolean =>
-          this.scenarioObjectDropMatches(x, drop),
+        (x: ScenarioObjectDrop): boolean => this.scenarioObjectDropMatches(x, drop),
       );
       this.loadedScenarioObject.drops.splice(ind, 1);
     }

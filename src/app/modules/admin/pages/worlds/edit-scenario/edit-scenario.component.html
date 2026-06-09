@@ -96,7 +96,7 @@
 				<div class="edit-scenario-row">
 					@for (cell of row; track cell) {
 					<div class="edit-scenario-cell"
-						 [class]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario?.startX && cell.y === loadedScenario?.startY}"
+						 [class]="{'debug': showDebug, 'start-cell': cell.x === loadedScenario?.startX && cell.y === loadedScenario.startY}"
 						 (click)="openCell(null, cell)">
 						@if (cell.idBackground !== null) {
 						<img [src]="cell.backgroundAssetUrl"

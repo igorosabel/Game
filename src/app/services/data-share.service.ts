@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
-@Injectable()
+@Service()
 export default class DataShareService {
   saveLocalStorage: boolean = true;
   globals: Record<string, unknown> = {};
